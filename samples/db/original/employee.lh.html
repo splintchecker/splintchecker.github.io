@@ -1,0 +1,101 @@
+<A NAME="line30"></A><html><head>
+<title>employee.lh</title>
+</head><body>
+<h3>employee.lh</h3>
+<PRE>
+<A NAME="line1"></A>/* Output from LCLint 2.1a */
+<A NAME="line2"></A>#include "<A HREF="bool.h.html">bool.h</A>"
+<A NAME="line3"></A> 
+<A NAME="line4"></A> 
+<A NAME="line5"></A># ifndef EXPOSED_TYPE_gender
+<A NAME="line6"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;
+<A NAME="line7"></A># endif
+<A NAME="line8"></A> 
+<A NAME="line9"></A> 
+<A NAME="line10"></A># ifndef EXPOSED_TYPE_job
+<A NAME="line11"></A>typedef enum {MGR, NONMGR, job_ANY} job;
+<A NAME="line12"></A># endif
+<A NAME="line13"></A> 
+<A NAME="line14"></A> 
+<A NAME="line15"></A># ifndef EXPOSED_TYPE_employee
+<A NAME="line16"></A>typedef struct {
+<A NAME="line17"></A>    int ssNum;
+<A NAME="line18"></A>    char name[maxEmployeeName];
+<A NAME="line19"></A>    int salary;
+<A NAME="line20"></A>    gender gen;
+<A NAME="line21"></A>    job j;
+<A NAME="line22"></A>    } employee;
+<A NAME="line23"></A># endif
+<A NAME="line24"></A> 
+<A NAME="line25"></A>extern void employee_sprint (char s[], employee e);
+<A NAME="line26"></A>extern bool employee_equal (employee *e1, employee *e2);
+<A NAME="line27"></A>extern bool employee_setName (employee *e, char na[]);
+<A NAME="line28"></A>extern void employee_initMod (void);
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

@@ -1,0 +1,103 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/checkchecks1'
+lclint +lh -enumint -type -allimponly +allmacros +showscan +stats +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+Warning: setting +showscan redundant with current value
+Warning: setting +stats redundant with current value
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+employee.c: (in function employee_sprint)
+<A HREF="employee.c.html#line33" target="source">employee.c:33,5</A>: Array fetch using non-integer, gender: gender[e.gen]
+  To allow enum types to index arrays, use +enumindex. Use +enumindex to
+  suppress message.
+<A HREF="employee.c.html#line33" target="source">employee.c:33,20</A>: Array fetch using non-integer, job: jobs[e.j]
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+dbase.c: (in function uncheckedHire)
+<A HREF="dbase.c.html#line118" target="source">dbase.c:118,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+<A HREF="dbase.c.html#line120" target="source">dbase.c:120,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+<A HREF="dbase.c.html#line123" target="source">dbase.c:123,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+<A HREF="dbase.c.html#line125" target="source">dbase.c:125,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+dbase.c: (in function promote)
+<A HREF="dbase.c.html#line154" target="source">dbase.c:154,23</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+<A HREF="dbase.c.html#line158" target="source">dbase.c:158,27</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+<A HREF="dbase.c.html#line170" target="source">dbase.c:170,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+<A HREF="dbase.c.html#line171" target="source">dbase.c:171,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+<A HREF="dbase.c.html#line175" target="source">dbase.c:175,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+<A HREF="dbase.c.html#line176" target="source">dbase.c:176,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+dbase.c: (in function query)
+<A HREF="dbase.c.html#line226" target="source">dbase.c:226,29</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+<A HREF="dbase.c.html#line227" target="source">dbase.c:227,30</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+<A HREF="dbase.c.html#line230" target="source">dbase.c:230,29</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+<A HREF="dbase.c.html#line231" target="source">dbase.c:231,30</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+<A HREF="dbase.c.html#line238" target="source">dbase.c:238,29</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+<A HREF="dbase.c.html#line239" target="source">dbase.c:239,30</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+<A HREF="dbase.c.html#line242" target="source">dbase.c:242,25</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+<A HREF="dbase.c.html#line244" target="source">dbase.c:244,25</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+<A HREF="dbase.c.html#line250" target="source">dbase.c:250,29</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+<A HREF="dbase.c.html#line251" target="source">dbase.c:251,30</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+<A HREF="dbase.c.html#line254" target="source">dbase.c:254,25</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+<A HREF="dbase.c.html#line256" target="source">dbase.c:256,25</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 24 code errors found
+391 spec, 2967 source (1247 before pre-processing) lines in 4.77 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/checkchecks1'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

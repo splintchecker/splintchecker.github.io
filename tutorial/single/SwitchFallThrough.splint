@@ -1,0 +1,11 @@
+Splint 3.0.1.6 --- 14 Mar 2002
+
+SwitchFallThrough.c: (in function main)
+SwitchFallThrough.c:7:38: Return value (type int) ignored: scanf("%d", &Number)
+  Result returned by function call is not used. If this is intended, can cast
+  result to (void) to eliminate message. (Use -retvalint to inhibit warning)
+SwitchFallThrough.c:15:10: Fall through case (no preceding break)
+  Execution falls through from the previous case. (Use -casebreak to inhibit
+  warning)
+
+Finished checking --- 2 code warnings

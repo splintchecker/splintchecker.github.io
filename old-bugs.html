@@ -1,0 +1,679 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>Splint - Bugs</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<center><h1>
+Old Bugs
+</h1></center>
+
+This page documents bugs fixed before the Splint 3.0.1 release.
+<p>
+
+<h3>
+Confirmed Bugs
+</h3>
+
+<b>internal typedefs</b>
+<blockquote>
+LCLint will report an internal error for typedef's inside functions that
+are redefine previously-define type names.
+<p>
+(Reported by Andrew Schulman.  Fixed in 3.0.0.12.)
+</blockquote>
+
+<b>open result</b>
+<blockquote>
+In cpp_openIncludeFile, the code checks the result of <tt>open</tt> is
+non-zero.  On errors, <tt>open</tt> returns -1, so this gives the wrong
+behaviors.  This will cause the wrong include file to be used in cases
+where it can be found on multiple include paths.
+<p>
+(Reported and fix provided by Robin Watts.)
+</blockquote>
+
+<b>LINKFLAGS</b>
+<blockquote>
+The bash version of Makefile.in has a typo on line 175.  It should be:
+<pre>
+	LINKFLAGS='$(LINKFLAGS)'; export LINKFLAGS; \
+</pre>
+(Reported by Benjamin Lutz.  Fixed in 3.0.0.10.)
+</blockquote>
+
+<b>include/CPATH confusion</b>
+<blockquote>
+The pre-processor uses the "CPATH" environment variable to set the
+include path, but the system directories (for purposes of error
+reporting) are set from the "include" environment variable, and
+directories on the "include" environment variable are added to the
+search path.  This doesn't really make sense.  It would be better to
+just use one of these environment variables consistently.
+<p>
+(Reported by Sandor Hojtsy.)
+</blockquote>
+
+<b>'%p' directives in printf</b>
+<blockquote>
+LCLint doesn't interpret '%p' directives correctly and will report spurious warnings for possibly null or incompletely defined reference.
+<p>
+Fix: exprNode.c:1403:
+<pre>
+			case 'p': /* pointer */
+			  expecttype = ctype_makePointer (ctype_void);
+
+	==>
+
+			case 'p': /* pointer */
+			  expecttype = ctype_makePointer (ctype_void);
+			  uentry_setDefState (regArg, SS_RELDEF); /* need not be defined */
+			  sRef_setPosNull (uentry_getSref (regArg), fileloc_undefined); /* could be null */
+</pre>
+(Reported by John Skilleter.  Fixed in 3.0.0.12.)
+</blockquote>
+
+<b>Nested local struct declarations</b>
+<blockquote>
+LCLint will report an internal errors for nested struct specification in
+local variable declarations.  Example:
+<pre>
+static int f ()
+{
+    union {            
+      int hword;
+      struct {
+	struct {
+	  int x;
+	} x;
+	short MSB;
+	short LSB;
+      } byte;
+    } checksum;
+}
+</pre>
+<b>Fix:</b> We need to keep track of scope nesting in <tt>sRef.c</tt>.
+Replace the old <tt>sRef_setGlobalScopeSafe</tt> and
+<tt>sRef_clearGlobalScopeSafe</tt> functions with:
+<pre>
+static int nestedScope = 0;
+
+void sRef_setGlobalScopeSafe ()
+{
+  if (nestedScope == 0)
+    {
+      oldInFunction = inFunction;
+    }
+  
+  nestedScope++;
+  inFunction = FALSE;
+}
+
+void sRef_clearGlobalScopeSafe ()
+{
+  nestedScope--;
+  llassert (nestedScope >= 0);
+  
+  if (nestedScope == 0)
+    {
+      inFunction = oldInFunction;
+    }
+}
+</pre>
+
+(Reported by Rick Caldbeck.  Fixed in 3.0.0.10.)
+</blockquote>
+
+<b>undefinitions</b>
+<blockquote>
+
+LCLint doesn't produce appropriate messages for redeclarations of
+macros that were <tt>#undef</tt>'d.  Example:
+<pre>
+#define BYTE char
+#undef BYTE
+
+typedef char BYTE;
+</pre>
+(Reported by Kevin Broadey.)
+</blockquote>
+
+<b>-D annotations</b>
+<blockquote>
+LCLint will report an internal error when a command line -D is used to define an annotation (e.g., <tt>-D_EXITS=/*@exits@*/</tt>.
+<p>
+Fix in cpplib.c, replace line 6791:
+<pre>
+  g_currentloc = fileloc_create (fid, line, 1);
+</pre>
+with
+<pre>
+      if (fileId_isValid (fid))
+        {
+          g_currentloc = fileloc_create (fid, line, 1);
+        }
+      else
+        {
+          g_currentloc = fileloc_createBuiltin ();
+        }
+</pre>
+(Reported by John Skilleter.  Fixed in 3.0.0.10.)
+</blockquote>
+
+
+<b>unsigned long long</b>
+<blockquote>
+LCLint does not recognized <tt>unsigned long long</tt> types as
+unsigned.  
+<p>
+Fix in ctype.c:2309: (insert this line before <tt>|| c == ctype_unsignedintegral</tt>)
+<pre>
+         || c == ctype_ullint
+</pre>
+(Reported by Joseph Heenan.  Fixed in 3.0.0.1)
+</blockquote>
+<p>
+
+<b>sys/time.h</b> 
+<blockquote>
+LCLint will not compile on some versions of Debian Linux because the
+cpplib.c code includes <tt>sys/time.h</tt>, not <tt>time.h</tt> as it
+should for the definition of <tt>struct tm</tt>.  The C standard
+prescribes the <tt>struct tm</tt> is defined in <tt>time.h</tt> (not
+<tt>sys/time.h</tt>).  The line,
+<pre>
+# include &lt;time.h&gt;
+</pre>
+should be inserted to <tt>cpplib.c</tt> before line 80.
+<p>
+(Thanks to Paul Smith for reporting this problem.  Fixed in 3.0.0.10 and 2.5r.)
+</blockquote>
+<p>
+
+<b>impabstract and accessmodule</b>
+<blockquote>
+If <tt>+impabstract</tt> is used with <tt>+acceessmodule</tt>, LCLint
+incorrectly disallows access to the implicitly abstract type in its
+defining module.  (Reported by Linus Rydberg.)
+<p>
+Patch:
+<p>
+<b>clabstract.c:1565</b> - remove lines 1567-1577:
+<pre>
+
+      if (uentry_isMaybeAbstract (e))
+	{
+	  if (context_getFlag (FLG_IMPABSTRACT))
+	    {
+	      uentry_setAbstract (e);
+	    }
+	  else
+	    {
+	      uentry_setConcrete (e);
+	    }
+	}
+</pre>
+<b>usymtab.c:1045</b> Replace usymtab_supReturnTypeEntry with:
+<pre>
+uentry
+usymtab_supReturnTypeEntry (/*@only@*/ uentry e)
+  /*@globals globtab, filetab@*/
+  /*@modifies globtab@*/
+{
+  usymId uid;
+  
+  if (uentry_isAbstractDatatype (e))
+    {
+      uid = usymtab_supAbstractTypeEntry (e, FALSE);
+    }
+  else if (uentry_isMaybeAbstract (e) && context_getFlag (FLG_IMPABSTRACT))
+    {
+      uid = usymtab_supAbstractTypeEntry (e, FALSE);
+      uentry_setAbstract (e);
+    }
+  else
+    {
+      uid = usymtab_supEntryAux (globtab, e, FALSE);
+
+      if (uentry_isMaybeAbstract (e))
+	{
+	  uentry_setConcrete (e);
+	}
+    }
+  
+  if (sRef_modInFunction ())
+    {
+      recordFunctionType (globtab->entries[uid]);
+    }
+
+    return (globtab->entries[uid]);
+}
+</pre>
+(Fixed in 3.0.0.1)
+</blockquote>
+
+<b>Windows include files</b>
+<blockquote>
+The pre-processor doesn't handle Windows include directories correctly.  Kay Buschner suggests the following patch:
+<pre>
+In the file cpplib.c, function do_include() is already the VMS directory fix
+available. 
+
+Just include this lines before it :
+...
+#define WIN_UNIX
+#ifdef WIN_UNIX
+	/* Fix all unixdir slashes to win dir slashes */
+	if (searchptr->fname && (searchptr->fname[0] != 0)) 
+	{
+		replace_unixdir_with_windir(fname);
+	}
+#endif /* WIN_UNIX */
+...
+
+and add the function :
+...
+void replace_unixdir_with_windir(char *filename)
+{
+	int i=0;
+
+	while(filename[i] != '\0')
+	{
+		if(filename[i] == '/')
+			filename[i] = '\\';
+		i++;
+	}
+}
+...
+</pre>
+(Fixed in 3.0.0.1)
+</blockquote>
+
+<b>strdup annotations</b>
+<blockquote>
+The strdup declaration in lib/unix.h is missing annotations.  It should be:
+<pre>
+extern /*@null@*/ /*@only@*/ char * strdup (char *s) /*@*/ ;
+</pre>
+(Reported by Richard A. O'Keefe.  Fixed in 3.0.0.12.)
+</blockquote>
+
+
+<b>Invalid Characters</b>
+<blockquote>
+LCLint will report invalid characters for ctrl-M's in MS-DOS edited
+source files.  Fix: (cscanner.l:530)
+<pre>
+                  if ((int) *yytext == 13 ) {
+		     ;
+                  } else {
+		    voptgenerror
+		      (FLG_SYNTAX, 
+		       message ("Invalid character (ascii: %d), skipping character",
+				(int)(*yytext)),
+		       g_currentloc);
+		  }
+</pre>
+(Fixed in 3.0.0.1.)
+</blockquote>
+
+<b>Spurious struct redeclaration/inconsistent declaration messages</b>
+<blockquote>
+
+LCLint will occasionally report a spurious inconsistent declaration
+error for two structs with identical fields but different tags.
+The fix is:
+
+<pre>
+ctbase.i:2327
+    case CT_STRUCT:
+    case CT_UNION:
+      /* evs 2000-07-28: this block was missing! */
+      if (strict) {
+	int ncmp = cstring_compare (c1->contents.su->name,
+				    c2->contents.su->name);
+
+	if (ncmp != 0) {
+	  if (isFakeTag (c1->contents.su->name) 
+	      && isFakeTag (c2->contents.su->name)) {
+	    ; /* If they are both fake struct tags, don't require match. */
+	  } else {
+	    return ncmp;
+	  }
+	}
+      }
+      /* end patch */
+
+      return (uentryList_compareFields (c1->contents.su->fields,
+					c2->contents.su->fields));
+</pre>
+(Reported by Jim Zelenka.  Fixed in 3.0.0.1)
+</blockquote>
+
+<b>Type declarations of type unsigned long long</b>
+<blockquote>
+
+The unsigned long long type isn't handled correctly in type
+declarations.  Fix:
+<pre>
+	ctype.c:2095
+
+	  /* evs 2000-07-28: added this line */
+	  if (dominant == ctype_llint) return ctype_ullint;
+	  /* end patch */
+
+	  if ((dominant == ctype_uint) || dominant == ctype_uchar)
+</pre>
+(Reported by Jim Zelenka.  Fixed in 3.0.0.1)
+</blockquote>
+
+<b>Spurious struct tag redeclaration errors</b>
+<blockquote>
+When header files are listed on the command line, LCLint will incorrectly think two declarations are in different locations.  Fix:
+<blockquote>
+in fileId.h, line 25:
+<pre>
+extern bool fileId_equal (fileId p_t1, fileId p_t2) /*@*/ ;
+# define fileId_equal(p_t1, p_t2) (fileTable_sameBase (context_fileTable (), p_t1, p_t2))
+/* evs 2000-07-27: was
+# define fileId_equal(t1,t2) ((t1) == (t2))
+*/
+</pre>
+(Reported by Jim Zelenka.  Fixed in 3.0.0.1.)  
+</blockquote>
+</blockquote>
+
+<p>
+<h3>
+Fixed in Version 2.5q
+</h3>
+
+<b>User boolean type checking problems</b>
+<blockquote>
+If a user defines the boolean type using an enum (e.g., <tt>typedef enum
+{ FALSE = 0, TRUE } bool;</tt>), spurious errors are reported.
+</blockquote>
+
+<b>Special Clauses at function exit</b> <blockquote> LCLint reports an
+internal error for violations of pre-clauses at function exits.  The
+pre special clauses should not be checked at function exit points.  (Reported by Bernd Warken).
+</blockquote>
+
+<b>Passing incompatible long/int pointers</b>
+<blockquote>
+If +relaxquals is set (as in standard mode), LCLint does not report an
+error when an int * is passed as a long int *, even though this is
+dangerous.  (Reported by Peter van Hoof).
+</blockquote>
+
+<B>Mysterious Parse Errors</b>
+<blockquote>
+The parser appeared broken under certain compilers with optimizations
+turned on and versions of bison.  This had to do with stray use of an
+old sgrammar.h and sgrammar_tokens.h files.
+</blockquote>
+
+<b>Include Files</b>
+<blockquote>
+Search path for include files in nested directories does not handle
+current directory correctly.  (Reported by Simon Dyke)
+</blockquote>
+
+<b>Unnamed Array Parameters</b>
+<blockquote>
+LCLint handles int[][2] in a parameter list differently from int p[][2]
+(revealed through spurious incomplete type errors).  (Reported by Peter
+van Hoof.)
+</blockquote>
+
+<b>Parsing malformed comments</b>
+<blockquote>
+LCLint crashes on malformed syntactic comments like
+<tt>/*@-PRIVATE-CALLS-@*/</tt>.  (Reported by Wolfgang Stolzenburg.)
+</blockquote>
+
+<b>Printing long long</b>
+<blockquote>
+LCLint does not support %lld format codes in printf for <tt>long
+long</tt>.  (Reported by Denis Baylor.)
+</blockquote>
+
+<b>Spurious stack-allocation errors</b>
+<blockquote>
+LCLint incorrectly assumes elements of stack-allocated arrays are
+stack-allocated.  (Reported by Denis Baylor.)
+</blockquote>
+
+<b>Result Codes</b>
+<blockquote>
+LCLint does not return EXIT_FAILURE as it should when the error counts
+do not match.  (Reported by Herbert Dietze.)
+</blockquote>
+
+<b>Hex Constants with UL</b>
+<blockquote>
+LCLint reports an error for hex constants ending with U and L modifiers.
+(Reported by David Denholm.)
+</blockquote>
+
+<b>Dumping special ctypes</b>
+<blockquote>
+Internal error in cttable.i when creating a library file requires a
+comparison between two special ctypes (e.g., "..." in function types).
+(Reported by Martin Smoot.)
+</blockquote>
+
+<h3>
+Fixed in Version 2.5m
+</h3>
+
+<b>Case Markers</b>
+<blockquote>
+
+Fixed case/default parsing by making them markers instead of statements (<tt>switch (p) { case 2: }</tt> produced a parse error). (See tests2.4/emptycase.c.)
+<p>
+
+<b>Switch Body Structure</b>
+Fixed symbol table structure to support unstructured cases:
+<pre>
+    switch(a) {
+    case 1:   
+      while (c>3) {
+	case 3: ++c;
+      }
+    }     
+</pre>
+
+In the hope that this won't encourage more code like this!  (See
+tests2.4/duffs.c, bug1.c, bug2.c, bug3.c.)
+</blockquote>
+
+<b>Label Parsing</b>
+<blockquote>
+Fixed label parsing to handle labels not followed by statements (Reported by N. Komazaki) (See tests2.4/komazi.c.)
+</blockquote>
+
+<b>Pre-processor Definitions with Parameters</b>
+<blockquote>
+Fixed pre-processor bug handling command line definitions with
+  parameters (e.g., <tt>lclint '-D__P(x)=x'</tt>)
+  (tests2.4/cpptest.c)
+</blockquote>
+
+<b>Pre-processor Handling</b>
+<blockquote>
+Fixed handling of spaces in command line definitions (-D X=3)
+  (reported by Daniel Barker) (tests2.4/command line)
+<p>
+Incorporated pre-processor fix sent in by N. Komazaki
+<p>
+Fixed handling of "#" (empty) in cpp (reported by Ulrich Ottersbach) (tests2.4/ulrich.c)
+<p>
+Added warning for comment open ("/*") inside comment (tests2.4/innercomment.c)
+</blockquote>
+
+
+<b>LCL pathnames</b>
+<blockquote>
+Fixed handling of direct pathnames in lcl files (reported by Dana Harrington)
+  (tests2.4/subdir/main.lcl)
+</blockquote>
+
+<b>Function Pointer Declarations</b>
+<blockquote>
+Fixed handling of function pointer declarations like,
+<tt>void (**(sig_func))(void);</tt>.  (reported by Buck Hodges) (tests2.4/enumtest.c)
+</blockquote>
+
+<b>Nested static declarations</b>
+<blockquote>
+Fixed handling of static function declarations inside method scopes (tests2.4/nothing.c)
+</blockquote>
+
+<b>printf %n format</b>
+<blockquote>
+Fixed handling of %n printf format.  It should be /*@out@*/ int *
+  (tests2.4/print.c)
+</blockquote>
+
+<b>enum initializers</b>
+<blockquote>
+Added checking for enum members types (using initializers)
+</blockquote>
+
+<b>enum parsing</b>
+<blockquote>
+Fixed parsing of undefined system-like identifiers in enum member lists (reported
+  by Steve Fink)
+  (tests2.4/fink.c)
+</blockquote>
+
+<b>gcc __extension__ keyword</b>
+<blockquote>
+Fixed handling of gcc extension __extension__ (should not be treated
+  as a token)
+  (tests2.4/driverstub.c)
+</blockquote>
+
+<b>Hex Constants</b>
+<blockquote>
+Hexidecimal constants (e.g., <tt>0xFF</tt>) are typed as unsigned, but decimal
+constants are signed.
+</blockquote>
+
+<b>Compound member designator in offsetof</b>
+<blockquote>
+Fixed parsing of offsetof expressions, like:
+<pre>
+typedef struct { union { int i; } u; } S;
+int main() { return (int)offsetof(S, u.i); }
+</pre>
+</blockquote>
+
+<b>Bitfield casts</b>
+<blockquote>
+An internal error is raised for casts in bitfield widths:
+<pre>
+typedef unsigned S;
+typedef struct {
+  unsigned u : ((S)4);
+} T;
+</pre>
+</blockquote>
+
+<p>
+<h3>Fixed in Version 2.4b</h3>
+These bugs were fixed in update 2.4b.
+<p>
+<b>Checked macros in #ifdefs, etc.</b>
+<blockquote>
+LCLint will incorrectly interpret #ifdefs and other preprocessor
+commands that involve checked macros.  Since the macro is not expanded
+by the preprocessor, it does not appear to be defined in the #ifdef.
+</blockquote>
+<b>File format in preprocessor messages</b>
+<blockquote>
+The <tt>parentfileformat</tt> and <tt>showcolumn</tt> flags do not
+effect messages reported in the preprocessing phase.
+</blockquote>
+
+<b>observer arrays</b>
+<blockquote>
+LCLint does not allow observer to be used with an array:
+<pre>
+/*@observer@*/ char name[] = "Joe-Max";
+</pre>
+Version 2.4b interprets observer on an array in the same way as a
+pointer to observer storage --- a warning is reported if any element of 
+the array is modified. 
+</blockquote>
+
+<b>strerror</b>
+<blockquote>
+LCLint won't compile on some UNIX systems because it assumses sys_nerr
+is defined (note, LCLint checking would have detected this, if I didn't
+override it!).  It should just use strerror from the standard library.
+</blockquote>
+
+<p>
+<p>
+<h3>Fixed in Version 2.4a</h3>
+These bugs were fixed in update 2.4a.  
+<p>
+<b>errno.h</b>
+<blockquote>
+<tt>osd.c</tt> should include <tt>errno.h</tt>.
+</blockquote>
+<b>-DHAVE_STRERROR</b>
+<blockquote>
+The source package did not include <tt>-DHAVE_STRERROR</tt> in the
+compile flags.  On some systems, this leads to an error when
+<tt>llerror.c</tt> is compiled.
+</blockquote>
+<b>Address operator on fields</b>
+<blockquote>
+LCLint incorrectly marks storage resulting form &(<field>) as
+stack-allocated.
+</blockquote>
+<b>isalnum type</b>
+<blockquote>
+The ansi.h library incorrectly declared isalnum and related functions to
+take an unsigned int parameter (instead of an int).  This results from a
+problem with alternate types and type modifiers, the declaration
+<pre>
+unsigned char /*@alt int@*/
+</pre>
+was interpreted as
+<pre>
+unsigned int | char
+</pre>
+</blockquote>
+<b>Internal Bug at aliasChecks.c:413</b>
+<blockquote>
+LCLint reports internal errors for certain memory checks involving field
+assignments.
+</blockquote>
+<p>
+<b>Typing of bitwise operators</b>
+<blockquote>
+LCLint thinks the type of <tt>int | unsigned int</tt> is int.  It should
+be unsigned int.  
+</blockquote>
+<b>Internal Bug at guardSet.c:50</b>
+<blockquote>
+A assertion fails for code like while <tt>(a[0] != 0) a[0+2]=0;</tt>.
+</blockquote>
+<b>ifndef not handled correctly</b>
+<blockquote>
+LCLint preprocesses #ifndef like #ifdef!
+</blockquote>
+<b>Internal Bug at clabstract.c:1111</b>
+<blockquote>
+An internal assertion fails when a function declaration has both special
+clauses and a globals clause.
+</blockquote>
+
+
+<!--#include virtual="footer.html"-->

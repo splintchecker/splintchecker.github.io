@@ -1,0 +1,30 @@
+LCLint 2.2 --- 25 Aug 96
+
+<A HREF="names.c.html#line1" target="source">names.c:1,7</A>: Name stringreverse is reserved for future
+    ANSI library extensions.  Functions that begin
+    with "str" and a lowercase letter may be added to
+    <stdlib.h> or <string.h>. (See ANSI, Section
+    4.13.7)
+  External name is reserved for system in ANSI
+  standard. (-ansireserved will suppress message)
+names.c: (in function f)
+<A HREF="names.c.html#line6" target="source">names.c:6,7</A>: Internal identifier looka1ike is not
+    distinguishable from lookalike except by lookalike
+    characters
+  An internal name is not distinguishable from another
+  internal name using the number of significant
+  characters. According to ANSI Standard (3.1), an
+  implementation may only consider the first 31
+  characters significant. The +internalnamelen <n>
+  flag changes the number of significant characters,
+  -internalnamecaseinsensitive to makes alphabetical
+  case significant, and +internalnamelookalike to make
+  similar-looking characters non-distinct.
+  (-distinctinternalnames will suppress message)
+   <A HREF="names.c.html#line5" target="source">names.c:5,7</A>: Declaration of lookalike
+<A HREF="names.c.html#line10" target="source">names.c:10,11</A>: Variable x shadows outer declaration
+  An outer declaration is shadowed by the local
+  declaration. (-shadow will suppress message)
+   <A HREF="names.c.html#line3" target="source">names.c:3,12</A>: Previous declaration of x: int
+
+Finished LCLint checking --- 3 code errors found

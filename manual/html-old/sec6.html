@@ -1,0 +1,406 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 6. Sharing</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+
+<h1 style='margin-left:0in;text-indent:0in'><a name=
+"_Ref348845247"></a><a name="_Ref348796245"></a><a name=
+"_Toc344355413"></a><a name="_Ref344355210"></a><a name=
+"_Ref343064238"></a><a name="_Ref343064188"></a><a name=
+"_Toc534974969"></a><a name="_Ref534642796"></a><a name=
+"_Ref534642146">6<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a id="sharing" name="sharing">
+Sharing</a></a></h1>
+<p class="TextFontCX">Errors involving unexpected sharing of
+storage can cause serious problems.&nbsp; Undocumented sharing may
+lead to unpredictable modifications, and some library calls (e.g.,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>strcpy</span></span>) have undefined behavior if
+parameters share storage.&nbsp; Another class of sharing errors
+occurs when clients of an abstract type may obtain a reference to
+mutable storage that is part of the abstract representation.&nbsp;
+This exposes the representation of the abstract type, since clients
+may modify an instance of the abstract type indirectly through this
+shared storage.</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Ref534977801"></a><a name="_Toc534974970">6.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Aliasing</a></h2>
+<p class="TextFontCX">Splint detects errors involving dangerous
+aliasing of parameters.&nbsp; Some of these errors are already
+detected through the standard memory annotations (e.g.,
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>only</span></span>&nbsp;parameters may not
+      be aliases.)&nbsp;&nbsp; Two additional annotations are
+      provided for constraining aliasing of parameters and return
+      values.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974971"></a><a name="_Ref347469444">6.1.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Unique Parameters</a></h3>
+<p class="TextFontCX">The <span class="Annot"><span style=
+'font-size:10.0pt'>unique</span></span>&nbsp;annotation denotes a
+parameter that may not be aliased by any other storage reachable
+from the function implementation &#8212; that is, any storage
+reachable through the other parameters or global variables used by
+the function.&nbsp; The <span class="Annot"><span style=
+'font-size:10.0pt'>unique</span></span> annotation places similar
+constraints on function parameters as the <span class=
+"Annot"><span style='font-size:10.0pt'>only</span></span>
+annotation, but it does not transfer the obligation to release
+storage.&nbsp; Splint will report an error if a <span class=
+"Annot"><span style='font-size:10.0pt'>unique</span></span>
+parameter may be aliased by another parameter or global
+variable.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Splint reports an error if a function returns
+a reference to storage reachable from one of its parameters (if
+<span class="Flag"><span style=
+'font-size:10.0pt'>retalias</span></span> is on) since this may
+introduce unexpected aliases in the body of the calling function
+when the result is assigned.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Figure 10 illustrated sharing checks.&nbsp;
+An error is reported since the first parameter to the library
+function <span class="CodeText"><span style=
+'font-size:10.0pt'>strcpy</span></span> is declared with
+unique.&nbsp; If a <span class="CodeText"><span style=
+'font-size:10.0pt'>unique</span></span> qualifier were added to the
+parameter declaration for <span class="CodeText"><span style=
+'font-size:10.0pt'>s</span></span> or <span class=
+"CodeText"><span style='font-size:10.0pt'>t</span></span>, no error
+would be reported.&nbsp;</p>
+<center>
+<table class="MsoNormalTable" border="0" cellspacing="0"
+cellpadding="0" style=
+'margin-left:5.4pt;border-collapse:collapse; margin-left:-2.25pt;margin-right:-2.25pt'>
+<tr>
+<td valign="top" style=
+'border:solid black 1.5pt; border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<span class="Keyword"><b><span style=
+'font-size:10.0pt; color:white'>unique.c</span></b></span></p></td>
+<td valign="top" style=
+'border-top:solid black 1.5pt; border-left:none;border-bottom:none;border-right:solid black 1.5pt; background:black;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<b><span style='color:white'>Running
+Splint</span></b></p></td></tr>
+<tr>
+<td valign="top" style=
+'border:solid black 1.5pt; border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+<p class="Verbatim"># include &lt;string.h&gt;</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">void&nbsp;</p>
+<p class="Verbatim">capitalize (/*@out@*/ char *s,</p>
+<p class="Verbatim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char *t)</p>
+<p class="Verbatim">{</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>&nbsp;7</span></span>&nbsp; strcpy (s, t);</p>
+<p class="Verbatim">&nbsp;&nbsp; *s = toupper (*s);</p>
+<p class="Verbatim">}</p></td>
+<td valign="top" style=
+'border-top:none;border-left: none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="lclintrun">&gt; splint unique.c</p>
+<p class="lclintrun">&nbsp;</p>
+<p class="lclintrun">unique.c: (in function capitalize)</p>
+<p class="lclintrun">unique.c:7: Parameter 1 (s) to function strcpy
+is</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; declared unique but may be
+aliased externally by</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; parameter 2 (t)</p>
+<p class="lclintrun">&nbsp;</p></td></tr></table>
+<table cellspacing="0" cellpadding="0" hspace="0" vspace="0">
+<tr>
+<td valign="top" align="left" style=
+'padding-top:6.5pt;padding-right: 9.35pt;padding-bottom:6.5pt;padding-left:9.35pt'>
+<p class="MsoCaption"><a name="_Toc534824614"></a><a name=
+"_Ref534822167">Figure 10</a>.&nbsp; Unique
+parameters</p></td></tr></table></center>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974972"></a><a name="_Ref347469448">6.1.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Returned Parameters</a></h3>
+<p class="TextFontCX">The <span class="Annot"><span style=
+'font-size:10.0pt'>returned</span></span> annotation denotes a
+parameter that may be aliased by the return value.&nbsp; Splint
+checks the call assuming the result may be an alias to the
+<span class="Annot"><span style=
+'font-size:10.0pt'>returned</span></span> parameter.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Consider the following code excerpt:</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="Verbatim">extern intSet intSet_insert (/*@returned@*/
+intSet s, int x);</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">intSet intSet_singleton (int x)</p>
+<p class="Verbatim">{</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>7</span></span>&nbsp; return (intSet_insert
+(intSet_new (), x));</p>
+<p class="TextFontCX">}</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Without the <span class=
+      "Annot"><span style='font-size:10.0pt'>returned</span></span>
+      qualifier on the parameter to <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>intSet_insert</span></span>, a memory leak
+      error would be reported for line 7, since the <span class=
+      "Annot"><span style='font-size:10.0pt'>only</span></span>
+      storage returned by <span class="CodeText"><span style=
+      'font-size:10.0pt'>intSet_new</span></span> is not
+      released.&nbsp; Because of the <span class=
+      "Annot"><span style='font-size:10.0pt'>returned</span></span>
+      qualifier, Splint assumes the result of <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>intSet_insert</span></span> is the same
+      storage as its first parameter, in this case the storage
+      returned by <span class="CodeText"><span style=
+      'font-size:10.0pt'>intSet_new</span></span>.&nbsp; No error
+      is reported, since the only storage is then transferred
+      through the return value (which has an implicit only
+      annotation, see Section 5.3).</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Ref344907981"></a><a name="_Ref344894258"></a><a name=
+"_Ref344809320"></a><a name="_Toc344355414"></a><a name=
+"_Toc534974973"></a><a name="_Ref345591408"></a><a name=
+"_Ref345591053">6.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Exposure</a></h2>
+<p class="TextFontCX">Splint detects places where the
+representation of an abstract type is exposed.&nbsp; This occurs if
+a client has a pointer to storage that is part of the
+representation of an instance of the abstract type.&nbsp; The
+client can then modify or examine the storage this points to, and
+manipulate the value of the abstract type instance without using
+its operations.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">There are three ways a representation may be
+exposed:</p>
+<p class="TextFontCX" style=
+'margin-left:.25in; text-indent:-.25in'>1.<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Returning (or assigning to a global variable) an object that
+includes a pointer to a mutable component of an abstract
+type&nbsp;representation.&nbsp; (Controlled by <span class=
+"Flag"><span style=
+'font-size:10.0pt'>ret-expose</span></span>).</p>
+<p class="TextFontCX" style=
+'margin-left:.25in; text-indent:-.25in'>2.<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Assigning a mutable component of an abstract object to storage
+reachable from an actual parameter or a global variable that may be
+used after the call. &nbsp;&nbsp;This means the client may
+manipulate the abstract object using the actual parameter after the
+call.&nbsp; Note that if the corresponding formal parameter is
+declared <span class="Annot"><span style=
+'font-size:10.0pt'>only</span></span>, the caller may not use the
+actual parameter after the call so the representation is not
+exposed.&nbsp; (Controlled by <span class="Flag"><span style=
+'font-size:10.0pt'>assign-expose</span></span>).</p>
+<p class="TextFontCX" style=
+'margin-left:.25in; text-indent:-.25in'>3.<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Casting mutable storage to or from an abstract type.&nbsp;
+(Controlled by <span class="Flag"><span style=
+'font-size:10.0pt'>cast-expose</span></span>).</p>
+<p class="afterlist">Annotations may be used to allow exposed
+storage to be returned safely by restricting how the caller may use
+the returned storage.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974974"></a><a name="_Ref347469553">6.2.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Read-Only Storage</a></h3>
+<p class="beforelist">It is often useful for a function to return a
+pointer to internal storage (or an instance of a mutable abstract
+type) that is intended only as an <i>observer</i>.&nbsp; The caller
+may use the result, but should not modify the storage it points
+to.&nbsp; For example, consider a na&#239;ve implementation of the
+<span class="CodeText"><span style=
+'font-size:10.0pt'>employee_getName</span></span> operation for the
+abstract <span class="CodeText"><span style=
+'font-size:10.0pt'>employee</span></span> type:</p>
+<p class="Verbatim">&nbsp;&nbsp; typedef /*@abstract@*/ struct
+{</p>
+<p class="Verbatim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char *name;</p>
+<p class="Verbatim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int id;</p>
+<p class="Verbatim">&nbsp;&nbsp; } *employee;</p>
+<p class="Verbatim">&nbsp;&nbsp; &#8230;</p>
+<p class="Verbatim">&nbsp;&nbsp; char *employee_getName (employee
+e) { return e-&gt;name; }</p>
+<p class="afterlist">Splint produces a message to indicate that the
+return value exposes the representation.&nbsp; One solution would
+be to return a fresh copy of <span class=
+      "CodeText"><span style='font-size:10.0pt'>e-&gt;name</span></span>.&nbsp;
+      This is expensive, though, especially if we expect
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>employee_getName</span></span> is used
+      mainly just to get a string for searching or printing.&nbsp;
+      Instead, we could change the declaration of <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>employee_getName</span></span> to:</p>
+<p class="example">extern /*@observer@*/ char *employee_getName
+(employee e);</p>
+<p class="TextFontCX">Now, the original implementation is
+correct.&nbsp; The declaration indicates that the caller may not
+modify the result, so it is acceptable to return shared
+storage.&nbsp; (The program must also not use the returned observer
+storage after any other calls to the abstract type module using the
+same parameter.&nbsp; Splint does not attempt to check this, and in
+practice it is rarely a problem.)&nbsp; Splint checks that the
+caller does not modify the return value.&nbsp; An error is reported
+if observer storage is modified directly, passed as a function
+parameter that may be modified, assigned to a global variable or
+reference derivable from a global variable that is not declared
+with an <span class="Annot"><span style=
+'font-size: 10.0pt'>observer</span></span> annotation , or returned
+as a function result or a reference derivable from the function
+result that is not annotation with an <span class=
+"Annot"><span style='font-size:10.0pt'>observer</span></span>
+annotation.</p>
+<h4 style='margin-left:0in;text-indent:0in'><a name=
+"_Ref347469563"></a><a name="_Ref348017065">String
+Literals</a></h4>
+<p class="TextFontCX">A program that attempts to modify&nbsp;a
+string literal has undefined&nbsp;behavior [ISO, 6.4.5]. This is
+not enforced by most C compilers, and can lead to particularly
+pernicious bugs that only appear when optimizations are turned on
+and the compiler attempts to minimize storage for string
+literals.&nbsp; Splint can be used to check that string literals
+are not modified, by treating them as -<span class=
+"Annot"><span style=
+'font-size:10.0pt'>observer</span></span>&nbsp;storage.&nbsp; If
+<span class="Flag"><span style=
+'font-size:10.0pt'>+read-only-strings</span></span> is set (default
+in standard mode), Splint will report an error if a string literal
+is modified.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974975">6.2.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Exposed Storage</a></h3>
+<p class="TextFontCX">Sometimes it is necessary to expose the
+representation of an abstract type.&nbsp; This may be evidence of a
+design flaw, but in some cases is justified for efficiency
+reasons.&nbsp; The <span class="Annot"><span style=
+'font-size:10.0pt'>exposed</span></span> annotation&nbsp;denotes
+storage that is exposed.&nbsp; It may be used on a return value for
+results that reference storage internal to an abstract
+representation, on a parameter value to indicate a parameter that
+may be assigned directly to part of an abstract representation
+(note that if the parameter is annotated with <span class=
+"Annot"><span style='font-size:10.0pt'>only</span></span>, it is
+not an error to assign it to part of an abstract representation,
+since the caller may not use the storage after the call returns),
+or on a field of an abstract representation to indicate that
+external references to the storage may exist.&nbsp; <a name=
+"_Toc344355415"></a><a name="_Ref343064165"></a><a name=
+"_Ref347254440"></a><a name="_Ref347169365">An error is reported
+if</a> <span class="Annot"><span style=
+'font-size:10.0pt'>exposed</span></span> storage is released, but
+unlike an <span class="Annot"><span style=
+'font-size:10.0pt'>observer</span></span>, no error is reported if
+it is modified.&nbsp; Figure 11 shows examples of exposure problems
+detected by Splint.</p>
+<p class="TextFontCX">&nbsp;</p>
+<center>
+<table class="MsoNormalTable" border="0" cellspacing="0"
+cellpadding="0" style=
+'margin-left:6.75pt;border-collapse:collapse; margin-left:-2.25pt;margin-right:-2.25pt'>
+<tr>
+<td width="45%" valign="top" style=
+'border:solid black 1.5pt; border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<span class="Keyword"><b><span style=
+'font-size:10.0pt; color:white'>exposure.c</span></b></span></p></td>
+<td valign="top" style=
+'border-top:solid black 1.5pt; border-left:none;border-bottom:none;border-right:solid black 1.5pt; background:black;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<b><span style='color:white'>Running
+Splint</span></b></p></td></tr>
+<tr>
+<td valign="top" style=
+'border:solid black 1.5pt; border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+<p class="Verbatim"># include "employee.h"</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">char *</p>
+<p class="Verbatim">employee_getName (employee e)</p>
+<p class="Verbatim">{</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>6</span></span>&nbsp; return e-&gt;name;</p>
+<p class="Verbatim">}</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">/*@observer@*/ char *</p>
+<p class="Verbatim">employee_obsName (employee e)</p>
+<p class="Verbatim">{ return e-&gt;name; }</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">/*@exposed@*/ char *</p>
+<p class="Verbatim">employee_exposeName (employee e)</p>
+<p class="Verbatim">{ return e-&gt;name; }</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">void</p>
+<p class="Verbatim">employee_capName (employee e)</p>
+<p class="Verbatim">{</p>
+<p class="Verbatim">&nbsp; char *name;</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">&nbsp; name = employee_obsName (e);</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>23</span></span> *name = toupper (*name);</p>
+<p class="Verbatim">}</p></td>
+<td valign="top" style=
+'border-top:none;border-left:none; border-bottom:solid black 1.5pt;border-right:solid black 1.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="lclintrun">&gt; splint exposure.c +checks</p>
+<p class="lclintrun">&nbsp;</p>
+<p class="lclintrun">exposure.c:6: Function returns reference
+to</p>
+<p class="lclintrun">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+parameter e: e-&gt;name</p>
+<p class="lclintrun">exposure.c:6: Return value exposes rep of</p>
+<p class="lclintrun">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+employee: e-&gt;name</p>
+<p class="lclintrun">exposure.c:6: Released storage e-&gt;name
+reachable</p>
+<p class="lclintrun">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+from parameter at return point</p>
+<p class="lclintrun">&nbsp;&nbsp; exposure.c:6: Storage e-&gt;name
+is released</p>
+<p class="lclintrun">exposure.c:23: Suspect modification of
+observer</p>
+<p class="lclintrun">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+name: *name = toupper(*name)</p>
+<p class="TextFontCX" style='page-break-after: avoid'>&nbsp;</p>
+<p class="TextFontCX" align="left" style=
+'text-align:left;page-break-after:avoid'><i><span style=
+'font-size: 10.0pt'>Three messages are reported for line 6 where a
+mutable field of an abstract type is returned with no sharing
+qualifier (without</span></i> <span class="Flag"><span style=
+'font-size:10.0pt'>+checks</span></span><i><span style=
+'font-size:10.0pt'>only the third one would be reported.)&nbsp; The
+error for line 23 reports a modification of an observer.&nbsp; If
+the call in line 22 were changed to call</span></i>
+      <span class="CodeText"><span style=
+      'font-size: 10.0pt'>employee_exposeName</span></span><i><span style='font-size:10.0pt'>
+, no error would be reported.</span></i></p></td></tr></table>
+<table cellspacing="0" cellpadding="0" hspace="0" vspace="0">
+<tr>
+<td valign="top" style=
+'padding-top:.1in;padding-right: 9.35pt;padding-bottom:.1in;padding-left:9.35pt'>
+<p class="MsoCaption"><a name="_Toc534824615">Figure 11.&nbsp;
+Exposure</a></p></td></tr></table></center>
+
+<p>
+<a href="sec7.html"><b>Next:</b> 7. Function Interfaces</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

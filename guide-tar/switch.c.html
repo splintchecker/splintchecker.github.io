@@ -1,0 +1,82 @@
+<A NAME="line11"></A><html><head>
+<title>switch.c</title>
+</head><body>
+<h3>switch.c</h3>
+<PRE>
+<A NAME="line1"></A>typedef enum {
+<A NAME="line2"></A>  YES, NO, DEFINITELY,
+<A NAME="line3"></A>  PROBABLY, MAYBE } ynm;
+<A NAME="line4"></A> 
+<A NAME="line5"></A>void decide (ynm y)
+<A NAME="line6"></A>{
+<A NAME="line7"></A>  switch (y)
+<A NAME="line8"></A>    {
+<A NAME="line9"></A>    case PROBABLY:
+<A NAME="line10"></A>    case NO: printf ("No!");
+<A NAME="line11"></A>    case MAYBE: printf ("Maybe");    
+<A NAME="line12"></A>         /*@fallthrough@*/
+<A NAME="line13"></A>    case YES: printf ("Yes!");
+<A NAME="line14"></A>    }
+<A NAME="line15"></A>}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

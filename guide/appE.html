@@ -1,0 +1,128 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint User's Guide - Appendix E: Control Comments</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<a name="app-E"></a>
+<h2>Appendix E  Control Comments</h2></a></a>
+<a name="_Ref348010146"><a name="_Toc349905960"></b><p>
+<b><i>Error Suppression</a></a></i></b><p>
+<b><i></i></b>Several comments are provided for suppressing messages.  In
+general, it is usually better to use specific flags to suppress a particular
+error permanently, but the general error suppression flags may be more
+convenient for quickly suppressing messages for code that will be corrected or
+documented later.<p>
+<tt>ignore</tt><br>
+<tt>end</tt>
+<blockquote>
+No errors will be reported in code regions between <tt>/*@ignore@*/</tt>
+and <tt>/*@end@*/</tt>. These comments can be used to easily suppress an
+unlimited number of messages, but are dangerous since if real errors are
+introduced in the <tt>ignore ... end</tt> region they will not be
+reported. The ignore and end comments must be matched - a warning is
+printed if the file ends in an ignore region or if ignore is used inside
+ignore region.
+</blockquote>
+<tt>i</tt><br>
+<blockquote>
+No errors will be reported from an <tt>/*@i@*/</tt> comment to the end of the line.<p>
+</blockquote>
+<tt>i</tt><i>&lt;n&gt;</i><br>
+<blockquote>
+ No errors will be reported from an /*@i<i>&lt;n&gt;</i>@*/ (e.g.,
+<tt>/*@i3@*/</tt>) comment to the end of the line. If there are not
+exactly <i>n </i>errors suppressed from the comment point to the end of
+the line, LCLint will report an error.  This is more robust than i or
+ignore since a message is generated if the expected number errors is not
+present.  Since errors are not necessarily detected until after this
+file is processed (for example, and unused variable error), suppress
+count errors are reported after all files have been processed. The <a
+href="appC.html#flag-supcounts"><tt>-supcounts</tt></a> flag may be
+used to suppress these errors.  This is useful when a system if being
+rechecked with different flag settings.  
+</blockquote>
+<tt>t</tt><br>
+<tt>t</tt><i>&lt;n&gt;</i><br>
+<blockquote>
+Like <tt>i</tt> and <tt>i</tt><i>&lt;n&gt;</i>, except controlled by
+<tt>+tmpcomments</tt> flag.  These can be used to temporarily suppress
+certain errors.  Then, <tt>-tmpcomments</tt> can be set to find them
+again.
+</blockquote>
+<p>
+<b><i>Type Access</i></b><p>
+<b><i></i></b>Control comments may also be used to override type access
+settings. The syntax <tt>/*@access </tt><i>&lt;type&gt;</i>,+<tt>@*/</tt> allows the following code to
+access the representation of <i>&lt;type&gt;</i>.  Similarly,
+<tt>/*@noaccess </tt><i>&lt;type&gt;</i>,+<tt>@*/</tt> restricts access
+to the representation of <i>&lt;type&gt;</i>.  The type in a noaccess
+comment must have been declared as an abstract type.  Type access
+applies from the point of the comment to the end of the file or the next
+access control comment for this type. 
+<a name="_Toc349905962"><p>
+<b><i>Macro Expansion</a></i></b><p>
+<b><i></i></b>The <tt>/*@notfunction@*/</tt>indicates that the next macro definition is
+not intended to be a function, and should be expanded in line instead of
+checked as a macro function definition.
+<a name="_Ref347471625"><a name="_Toc349905963"><p>
+<b><i>Traditional Lint Comments</a></a></i></b><p>
+<b><i></i></b>Some of the control comments supported by most standard UNIX
+lints are supported by LCLint so legacy systems can be checked more easily.
+These comments are not lexically consistent with LCLint comments, and their
+meanings are less precise (and may vary between different lint programs), so we
+recommend that LCLint comments are used instead except for checking legacy
+systems already containing standard lint comments.<p>
+<p>
+These standard lint comments supported by LCLint:<p>
+<tt>/*FALLTHROUGH*/</tt> (alternate misspelling, <tt>/*FALLTHRU*/</tt>)
+<blockquote>
+Prevents errors for fall-through cases.  Same meaning as <tt>/*@fallthrough@*/</tt>.
+</blockquote>
+<tt>/*NOTREACHED*/</tt>
+<blockquote>
+Prevents errors about unreachable code (until the end of the function).  Same
+meaning as <tt>/*@notreached@*/</tt>.  
+</blockquote>
+<tt>/*PRINTFLIKE*/</tt>
+<blockquote>
+Arguments similar to the printf library function (there didn't seem to be much
+of a consensus among standard lints as to exactly what this means).  LCLint
+supports:
+<p>
+<tt>/*@printflike@*/</tt>
+<blockquote>
+Function takes zero or more arguments of any type, an unmodified char * format
+string argument and zero of more arguments of type and number dictated by the
+format string.  Format codes are interpreted identically to the printf standard
+library function.  May return a result of any type.  (LCLint interprets
+<tt>/*PRINTFLIKE*/</tt> as <tt>/*@printflike@*/</tt>.)<p>
+</blockquote>
+<tt>/*@scanflike@*/</tt>
+<blockquote>
+Like printflike, except format codes are interpreted as in the scanf library
+function.
+</blockquote>
+</blockquote>
+<tt>/*ARGSUSED*/</tt>
+<blockquote>
+Turns off unused parameter messages for this function.  The control
+comment, <tt>/*@-paramuse@*/</tt> can be used to the same effect, or
+<tt>/*@unused@*/</tt> can be used in individual parameter declarations.
+</blockquote>
+<p>
+LCLint will ignore standard lint comments if <a
+href="appC.html#flag-lintcomments"><tt>-lintcomments</tt></a> is used.
+If <a
+href="appC.html#flag-warnlintcomments"><tt>+warnlintcomments</tt></a>
+is used, LCLint generates a message for standard lint comments and suggest replacements,
+
+<p>
+<b>Next: <A HREF="appF.html">Appendix F. Libraries</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+<!--#include virtual="footer.html"-->
+

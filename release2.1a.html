@@ -1,0 +1,103 @@
+<html>
+<head>
+<title>Release 2.1a</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<center>
+<H2>
+LCLint Version 2.1a
+</H2>
+<em>23 April 1996</em>
+</center>
+<P>
+Version 2.1a is a minor upgrade to the last publically released version
+of LCLint, Version 2.0. 
+<p>
+<h3> Bug Fixes </h3>
+<a href="release2.1a-bugs.html">All known bugs in Version 2.0</a> have been fixed.
+
+<h3> New Features </h3>
+
+New features in LCLint Version 2.1a are document in a supplement to the
+LCLint User's Guide.  This is availble in <a
+href="guide/supplement.html">html</a>, <a href="ftp://ftp.sds.lcs.mit.edu/pub/lclint/supplement.doc.gz">Word .doc</a> or <a
+href="ftp://ftp.sds.lcs.mit.edu/pub/lclint/supplement.ps.gz">PostScript</a>
+format.   
+
+<h4> <a href="guide/sec7.html#sec-7.4">Special Clauses</a> </h4>
+
+Special clauses provide a way to express lower-level interface details.
+For example, we can declare a function that returns a structure with one
+field defined, one field allocated and the other fields undefined; or a
+function that deallocates the storage associated with a field of a
+parameter.
+
+<h4> <a href="guide/appF.html#headers">File Inclusion</a></h4>
+
+The rules for including header files have been changed to allow LCLint
+to be used on platforms with non-standard C features in their system
+header files.  The <a
+href="guide/appC.html#flag-skipansiheaders"><tt>skipansiheaders</tt></a>
+flag controls whether or not  header files corresponding to standard library files are skipped.  The
+<a href="guide/appC.html#flag-gnuextensions"><tt>+gnuextensions</tt></a>
+flag causes LCLint to recognize some of the GNU (<tt>gcc</tt>) compiler
+extensions. 
+
+<h4> <a href="guide/sec3.html#sec-3.4.4">Abritrary Integral Types</a></h4>
+
+The standard library types <tt>size_t</tt>, <tt>ptr_diff</tt> and
+<tt>wchar_t</tt> are now declared as arbitrary integral types.  They are
+known to be integral, but no assumptions about their size or sign
+representation should be made.  The <a
+href="guide/appC.html#flag-matchanyintegral"><tt>matchanyintegral</tt></a>,
+<a href="guide/appC.html#flag-longintegral"><tt>longintegral</tt></a>
+and <a
+href="guide/appC.html#flag-longunsignedintegral"><tt>longunsignedintegral</tt></a>
+flags control type checking for the arbitrary integral type.
+
+<h3> Request </h3>
+
+I am hoping to get some reports of LCLint use in the "real world" to
+include in <a
+href="http://www.sds.lcs.mit.edu/~evs/pldi96-abstract.html">my talk
+at PLDI '96</a>.  If you are using or have used LCLint in a developement
+or maintenence project, please <a
+href="mailto:evans@cs.virginia.edu">send me email</a>.
+
+<h3> Thanks </h3>
+
+Many people have contributed to this release with suggestions for new
+features, bug reports, and bug fixes.  As always, LCLint development is
+largely user-driven, and your comments and suggestions are much
+appreciated.  I particularly want to thank Eric Bloodworth for
+suggestions leading to special clauses, Marc Espie, Debra Aubrey, and
+Frohjwalt Egerer for help with the file inclusion problems, and Jutta
+Degener for tracking down the fseek bug.
+
+<p>
+
+<h3>Previous release notices</h3>
+
+<ul>
+<li> <a href="release1.3.html">Version 1.3</a>
+<li> <a href="release1.4.html">Version 1.4</a>
+<li> <a href="release1.4a.html">Version 1.4a</a>
+<li> <a href="release1.4c.html">Version 1.4c</a>
+<li> <a href="release2.0.html">Version 2.0</a>
+</ul>
+
+<HR>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

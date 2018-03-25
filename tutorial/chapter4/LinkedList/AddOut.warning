@@ -1,0 +1,6 @@
+AddOut.c:62:15: Possibly null storage new_record passed as non-null param:
+                   copy_record (new_record, ...)
+  A possibly null pointer is passed as a parameter corresponding to a formal
+  parameter with no /*@null@*/ annotation.  If NULL may be used for this
+  parameter, add a /*@null@*/ annotation to the function parameter declaration.
+  (Use -nullpass to inhibit warning)

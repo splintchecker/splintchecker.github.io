@@ -1,0 +1,122 @@
+<A NAME="line86"></A><html><head>
+<title>dbase.lsl</title>
+</head><body>
+<h3>dbase.lsl</h3>
+<PRE>
+<A NAME="line1"></A>dbase: trait
+<A NAME="line2"></A>  assumes dbaseAssumptions
+<A NAME="line3"></A>  includes Set(db for C, employee for E, new for {},
+<A NAME="line4"></A>               hire for insert)
+<A NAME="line5"></A>  db_q tuple of g:gender, j: job, l: int, h: int
+<A NAME="line6"></A>  db_status enumeration of db_OK, salERR, genderERR,
+<A NAME="line7"></A>                           jobERR, duplERR
+<A NAME="line8"></A>introduces
+<A NAME="line9"></A>   query: db, db_q -&gt; empset
+<A NAME="line10"></A>   match: gender, gender -&gt; bool
+<A NAME="line11"></A>   match: job, job -&gt; bool
+<A NAME="line12"></A>   fire, promote: db, int -&gt; db
+<A NAME="line13"></A>   setSal: db, int, int -&gt; db
+<A NAME="line14"></A>   find: db, int -&gt; employee
+<A NAME="line15"></A>   employed: db, int -&gt; bool
+<A NAME="line16"></A>   numEmployees: db -&gt; int
+<A NAME="line17"></A>asserts
+<A NAME="line18"></A>   \forall e: employee, k: int, g, gq: gender,
+<A NAME="line19"></A>              j, jq: job, q: db_q, sal: int, d: db
+<A NAME="line20"></A>     query(new, q) == { };
+<A NAME="line21"></A>     query(hire(e, d), q) ==
+<A NAME="line22"></A>       if match(q.g, e.gen) /\ match(q.j, e.j)
+<A NAME="line23"></A>          /\ q.l &lt;= e.salary /\ e.salary &lt;= q.h
+<A NAME="line24"></A>         then insert(e, query(d, q)) else query(d, q);
+<A NAME="line25"></A>     match(gq, g) == gq = gender_ANY \/ g = gq;
+<A NAME="line26"></A>     match(jq, j) == jq = job_ANY \/ j = jq;
+<A NAME="line27"></A>     fire(new, k) == new;
+<A NAME="line28"></A>     fire(hire(e, d), k) ==
+<A NAME="line29"></A>       if e.ssNum = k
+<A NAME="line30"></A>         then fire(d, k) else hire(e, fire(d, k));
+<A NAME="line31"></A>     promote(new, k) == new;
+<A NAME="line32"></A>     promote(hire(e, d), k) ==
+<A NAME="line33"></A>       if e.ssNum = k
+<A NAME="line34"></A>         then hire(set_j(e, MGR), promote(d, k)) 
+<A NAME="line35"></A>         else hire(e, promote(d, k));
+<A NAME="line36"></A>     setSal(new, k, sal) == new;
+<A NAME="line37"></A>     setSal(hire(e, d), k, sal) ==
+<A NAME="line38"></A>       if e.ssNum = k
+<A NAME="line39"></A>         then hire(set_salary(e, sal),
+<A NAME="line40"></A>                   setSal(d, k, sal))
+<A NAME="line41"></A>         else hire(e, setSal(d, k, sal));
+<A NAME="line42"></A>     employed(d, k)
+<A NAME="line43"></A>       =&gt; (find(d, k).ssNum = k /\ find(d, k) \in d);
+<A NAME="line44"></A>     employed(new, k) == false;
+<A NAME="line45"></A>     employed(hire(e, d), k) ==
+<A NAME="line46"></A>       e.ssNum = k \/ employed(d, k);
+<A NAME="line47"></A>     numEmployees(new) == 0;
+<A NAME="line48"></A>     numEmployees(hire(e, d)) == numEmployees(d)
+<A NAME="line49"></A>        + (if employed(d, e.ssNum) then 0 else 1);
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

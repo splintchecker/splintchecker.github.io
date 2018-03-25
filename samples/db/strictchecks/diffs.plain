@@ -1,0 +1,355 @@
+Plain Differences between current directory and namechecks
+33a34
+> /*@noaccess bool@*/
+6c6
+<   mMGRS, fMGRS, mNON, fNON
+---
+>   KND_MMGRS, KND_FMGRS, KND_MNON, KND_FNON
+10c10
+< # define firstERC mMGRS
+---
+> # define firstERC KND_MMGRS
+13c13
+< # define lastERC fNON
+---
+> # define lastERC KND_FNON
+59c59
+<   return erefNIL;
+---
+>   return eref_undefined;
+69c69,70
+<       if (!eref_equal (er, erefNIL))
+---
+> 
+>       if (eref_isDefined (er))
+75c76
+<   return erefNIL;
+---
+>   return eref_undefined;
+98c99
+< db_status hire (employee e)
+---
+> db_status db_hire (employee e)
+100,101c101,102
+<   if (e.gen == gender_ANY)
+<     return genderERR;
+---
+>   if (e.gen == GENDER_UNKNOWN)
+>     return DBS_GENDERERR;
+103,104c104,105
+<   if (e.j == job_ANY)
+<     return jobERR;
+---
+>   if (e.j == JOB_UNKNOWN)
+>     return DBS_JOBERR;
+107c108
+<     return salERR;
+---
+>     return DBS_SALERR;
+109,110c110,111
+<   if (!eref_equal (db_keyGet (e.ssNum), erefNIL))
+<     return duplERR;
+---
+>   if (eref_isDefined (db_keyGet (e.ssNum)))
+>     return DBS_DUPLERR;
+112,113c113,114
+<   uncheckedHire (e);
+<   return db_OK;
+---
+>   db_uncheckedHire (e);
+>   return DBS_OK;
+116c117
+< void uncheckedHire (employee e)
+---
+> void db_uncheckedHire (employee e)
+126c127
+<       erc_insert (db[(int) mMGRS], er);
+---
+>       erc_insert (db[(int) KND_MMGRS], er);
+128c129
+<       erc_insert (db[(int) mNON], er);
+---
+>       erc_insert (db[(int) KND_MNON], er);
+131c132
+<       erc_insert (db[(int) fMGRS], er);
+---
+>       erc_insert (db[(int) KND_FMGRS], er);
+133c134
+<       erc_insert (db[(int) fNON], er);
+---
+>       erc_insert (db[(int) KND_FNON], er);
+136c137
+< bool fire (int ssNum)
+---
+> bool db_fire (int ssNum)
+154c155
+< bool promote (int ssNum)
+---
+> bool db_promote (int ssNum)
+162c163
+<   er = db_ercKeyGet (db[(int) mNON], ssNum);
+---
+>   er = db_ercKeyGet (db[(int) KND_MNON], ssNum);
+164c165
+<   if (eref_equal (er, erefNIL))
+---
+>   if (!eref_isDefined (er))
+166,167c167,168
+<       er = db_ercKeyGet (db[(int) fNON], ssNum);
+<       if (eref_equal (er, erefNIL))
+---
+>       er = db_ercKeyGet (db[(int) KND_FNON], ssNum);
+>       if (!eref_isDefined (er))
+178,179c179,180
+<       erc_delete (db[(int) mNON], er);
+<       erc_insert (db[(int) mMGRS], er);
+---
+>       erc_delete (db[(int) KND_MNON], er);
+>       erc_insert (db[(int) KND_MMGRS], er);
+183,184c184,185
+<       erc_delete (db[(int) fNON], er);
+<       erc_insert (db[(int) fMGRS], er);
+---
+>       erc_delete (db[(int) KND_FNON], er);
+>       erc_insert (db[(int) KND_FMGRS], er);
+190c191
+< db_status setSalary (int ssNum, int sal)
+---
+> db_status db_setSalary (int ssNum, int sal)
+197c198
+<       return salERR;
+---
+>       return DBS_SALERR;
+202c203
+<   if (eref_equal (er, erefNIL))
+---
+>   if (!eref_isDefined (er))
+204c205
+<       return missERR;
+---
+>       return DBS_MISSERR;
+211c212
+<   return db_OK;
+---
+>   return DBS_OK;
+214c215
+< int query (db_q q, empset s)
+---
+> int db_query (db_q q, empset s)
+225c226
+<     case gender_ANY:
+---
+>     case GENDER_UNKNOWN:
+228c229
+<         case job_ANY:
+---
+>         case JOB_UNKNOWN:
+238,239c239,240
+<           numAdded = db_addEmpls (db[(int) mMGRS], l, h, s);
+<           numAdded += db_addEmpls (db[(int) fMGRS], l, h, s);
+---
+>           numAdded = db_addEmpls (db[(int) KND_MMGRS], l, h, s);
+>           numAdded += db_addEmpls (db[(int) KND_FMGRS], l, h, s);
+242,243c243,244
+<           numAdded = db_addEmpls (db[(int) mNON], l, h, s);
+<           numAdded += db_addEmpls (db[(int) fNON], l, h, s);
+---
+>           numAdded = db_addEmpls (db[(int) KND_MNON], l, h, s);
+>           numAdded += db_addEmpls (db[(int) KND_FNON], l, h, s);
+249,251c250,252
+<         case job_ANY:
+<           numAdded = db_addEmpls (db[(int) mMGRS], l, h, s);
+<           numAdded += db_addEmpls (db[(int) mNON], l, h, s);
+---
+>         case JOB_UNKNOWN:
+>           numAdded = db_addEmpls (db[(int) KND_MMGRS], l, h, s);
+>           numAdded += db_addEmpls (db[(int) KND_MNON], l, h, s);
+254c255
+<           return db_addEmpls (db[(int) mMGRS], l, h, s);
+---
+>           return db_addEmpls (db[(int) KND_MMGRS], l, h, s);
+256c257
+<           return db_addEmpls (db[(int) mNON], l, h, s);
+---
+>           return db_addEmpls (db[(int) KND_MNON], l, h, s);
+261,263c262,264
+<         case job_ANY:
+<           numAdded = db_addEmpls (db[(int) fMGRS], l, h, s);
+<           numAdded += db_addEmpls (db[(int) fNON], l, h, s);
+---
+>         case JOB_UNKNOWN:
+>           numAdded = db_addEmpls (db[(int) KND_FMGRS], l, h, s);
+>           numAdded += db_addEmpls (db[(int) KND_FNON], l, h, s);
+266c267
+<           return db_addEmpls (db[(int) fMGRS], l, h, s);
+---
+>           return db_addEmpls (db[(int) KND_FMGRS], l, h, s);
+268c269
+<           return db_addEmpls (db[(int) fNON], l, h, s);
+---
+>           return db_addEmpls (db[(int) KND_FNON], l, h, s);
+4,5c4,5
+< typedef enum {db_OK, salERR, genderERR, jobERR,
+<               duplERR, missERR} db_status;
+---
+> typedef enum { DBS_OK, DBS_SALERR, DBS_GENDERERR, DBS_JOBERR,
+>                DBS_DUPLERR, DBS_MISSERR } db_status;
+17c17
+< db_status hire(employee e) db d; 
+---
+> db_status db_hire (employee e) db d; 
+32c32
+< void uncheckedHire(employee e) db d; 
+---
+> void db_uncheckedHire (employee e) db d; 
+41c41
+< bool fire(int ssNum) db d; 
+---
+> bool db_fire (int ssNum) db d; 
+49c49
+< int query(db_q q, empset s) db d; 
+---
+> int db_query (db_q q, empset s) db d; 
+57c57
+< bool promote(int ssNum) db d; 
+---
+> bool db_promote (int ssNum) db d; 
+68c68
+< db_status setSalary(int ssNum, int sal) db d; 
+---
+> db_status db_setSalary (int ssNum, int sal) db d; 
+96a97
+> 
+125c125
+<           check (hire(e) == db_OK); 
+---
+>           check (db_hire(e) == DBS_OK); 
+129c129
+<           uncheckedHire(e); status = hire(e);
+---
+>           db_uncheckedHire(e); status = db_hire(e);
+134c134
+<          bool_unparse (/*@-usedef@*/ status == duplERR /*@=usedef@*/)); 
+---
+>          bool_unparse (/*@-usedef@*/ status == DBS_DUPLERR /*@=usedef@*/)); 
+138,139c138,139
+<   check (fire(17));
+<   q.g = FEMALE; q.j = job_ANY; q.l = 158; q.h = 185;
+---
+>   check (db_fire(17));
+>   q.g = FEMALE; q.j = JOB_UNKNOWN; q.l = 158; q.h = 185;
+144c144
+<   i = query(q, em1 = empset_create());
+---
+>   i = db_query(q, em1 = empset_create());
+151c151
+<   i = query(q, em2 = empset_create());
+---
+>   i = db_query(q, em2 = empset_create());
+165c165
+<   check (fire(empset_choose(em3).ssNum));
+---
+>   check (db_fire(empset_choose(em3).ssNum));
+34c34
+<   (void) sprintf (s, employeeFormat, e.ssNum, e.name,
+---
+>   (void) sprintf (s, FORMATEMPLOYEE, e.ssNum, e.name,
+8c8
+< # define employeeFormat "%9d  %-20s  %-6s  %-11s  %6d.00"
+---
+> # define FORMATEMPLOYEE "%9d  %-20s  %-6s  %-11s  %6d.00"
+6,7c6,7
+< typedef enum { MALE, FEMALE, gender_ANY } gender;
+< typedef enum { MGR, NONMGR, job_ANY } job;
+---
+> typedef enum { MALE, FEMALE, GENDER_UNKNOWN } gender;
+> typedef enum { MGR, NONMGR, JOB_UNKNOWN } job;
+15c15
+<   return erefNIL;
+---
+>   return eref_undefined;
+20c20
+<   return (!eref_equal(empset_get (e, s), erefNIL));
+---
+>   return (eref_isDefined (empset_get (e, s)));
+30c30
+<   if (!eref_equal (empset_get (e, s), erefNIL)) 
+---
+>   if (eref_isDefined (empset_get (e, s)))
+47c47
+<   if (eref_equal (er, erefNIL)) 
+---
+>   if (!eref_isDefined (er))
+63c63
+<   if (eref_equal (er, erefNIL)) 
+---
+>   if (!eref_isDefined (er))
+66a67
+> 
+5c5
+< static eref_ERP eref_Pool;     /* private */
+---
+> static erefTable eref_Pool;     /* private */
+14c14
+<   for (i=0; (eref_Pool.status[i] == used) && (i < eref_Pool.size); i++);
+---
+>   for (i=0; (eref_Pool.status[i] == ST_USED) && (i < eref_Pool.size); i++);
+31,32c31,32
+<         (eref_status *) realloc (eref_Pool.status,
+<                                  2 * eref_Pool.size * sizeof (eref_status));
+---
+>         (erefStatus *) realloc (eref_Pool.status,
+>                                  2 * eref_Pool.size * sizeof (erefStatus));
+43c43
+<         eref_Pool.status[i] = avail;
+---
+>         eref_Pool.status[i] = ST_AVAIL;
+46c46
+<   eref_Pool.status[res] = used;
+---
+>   eref_Pool.status[res] = ST_USED;
+74c74
+<   eref_Pool.status = (eref_status *) malloc (size * sizeof (eref_status));
+---
+>   eref_Pool.status = (erefStatus *) malloc (size * sizeof (erefStatus));
+87c87
+<       eref_Pool.status[i] = avail;
+---
+>       eref_Pool.status[i] = ST_AVAIL;
+96c96
+<   eref_Pool.status[er] = avail;
+---
+>   eref_Pool.status[er] = ST_AVAIL;
+9c9
+< typedef enum { used, avail } eref_status;
+---
+> typedef enum { ST_USED, ST_AVAIL } erefStatus;
+12c12
+<   /*@only@*/ eref_status *status;
+---
+>   /*@only@*/ erefStatus *status;
+14c14
+< } eref_ERP;
+---
+> } erefTable;
+18c18,20
+< # define erefNIL -1
+---
+> # define eref_undefined -1
+> 
+> # define eref_isDefined(e)    ((e) != eref_undefined)
+21a24
+> 
+3a4,5
+> constant eref eref_undefined;
+> 
+7d8
+< constant eref erefNIL;
+13a15,16
+> 
+> bool eref_isDefined (eref er) map m; { }
+37c37,38
+<   return erefNIL;
+---
+> 
+>   return eref_undefined;

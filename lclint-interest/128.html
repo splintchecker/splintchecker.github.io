@@ -1,0 +1,111 @@
+<h3>lclint-interest message 128</h3>
+<pre>
+From evans@cs.virginia.edu Sun Dec 22 12:10:52 1996
+Date: Sun, 22 Dec 96 12:02:34 -0500
+From: evans@cs.virginia.edu (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Marc Espie's message of Fri, 20 Dec 1996 14:06:28 +0100 (MET) <199612201306.OAA25584@chaland.ens.fr>
+Subject: FILE object resource leaks
+
+
+One way to handle this would be to make up a new abstract type to
+represent FILE *.  We pretend that the file pointer returned by fopen is
+only, and force the close operation to be called.  For example,
+
+filePointer.h:
+
+typedef /*@abstract@*/ /*@null@*/ FILE *filePointer;
+
+/*@constant null filePointer filePointer_undefined@*/
+# define filePointer_undefined (NULL)
+
+extern filePointer filePointer_open (char *, char *);
+extern int filePointer_close (/*@only@*/ filePointer);
+
+/* ... need wrappers for other FILE function here ... */
+
+filePointer.c:
+
+# include <stdio.h>
+# include "bool.h"
+# include "filePointer.h"
+
+filePointer filePointer_open (char *path, char *mode)
+{
+  /*@-dependenttrans@*/ return (fopen (path, mode)); /*@=dependenttrans@*/
+  /* without the -dependenttrans, lclint reports:
+     filePointer.c:7,10: Dependent storage returned as implicitly only:
+                            (fopen(path, mode))
+     since fopen returns a dependent pointer.  We want to pretend it
+     is only, to force filePointer_close to be called.
+  */
+}
+
+int filePointer_close (/*@only@*/ filePointer f)
+{
+  if (f != filePointer_undefined) {
+    /*@-mustfree@*/ return (fclose (f)); /*@=mustfree@*/  
+    /* Without -mustfree, lclint would report::
+          filePointer.c:19,25: Only storage f not released before return
+       since we are only pretenting the filePointer's are only
+       to force the filePointer_close call.
+     */
+  } else {
+    return 0;
+  }
+}
+
+
+Then, a user file filePointer will get lclint messages if the open/close
+semantics is not followed correctly:
+
+void f ()
+{
+  filePointer f1 = filePointer_open ("test", "r");
+  filePointer f2 = filePointer_open ("test", "r");
+  filePointer f3 = filePointer_open ("test", "r");
+
+  /* ... */
+
+  free (f1);
+  filePointer_close (f2);
+}
+
+usefile.c: (in function f)
+usefile.c:13,9: Function free expects arg 1 to be void * gets
+filePointer: f1
+  Types are incompatible. (-type will suppress message)
+usefile.c:14,3: Return value (type int) ignored: filePointer_clos...
+  Result returned by function call is not used. If this is intended, can cast
+  result to (void) to eliminate message. (-retvalint will suppress message)
+usefile.c:15,2: Fresh storage f3 not released before return
+  A memory leak has been detected. Newly-allocated or only-qualified storage is
+  not released before the last reference to it is lost. (-mustfree will 
+  suppress message)
+
+> IMHO, lclint is missing an `abstract NULL pointer' (well, distinguished 
+> value), with the corresponding mechanisms to handle it, a generalized 
+> version of the /*@null@*/ et al annotations.
+
+Yes, I agree that something like this would be useful (but have no plans
+to implement it).
+
+--- Dave
+
+
+</pre>
+<A HREF="127.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="129.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

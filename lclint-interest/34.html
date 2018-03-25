@@ -1,0 +1,50 @@
+<h3>lclint-interest message 34</h3>
+<pre>
+Date: 14 Jun 95 17:07:45 EDT
+From: "JR (John Rogers)" <72634.2402@compuserve.com>
+To: Jon Freeman <freeman_jon@jpmorgan.com>
+Cc: LCLint interest list <lclint-interest@larch.lcs.mit.edu>
+Subject: Tagging printf-like functions
+
+Hi Jon!  Regarding your interest in tagging "printf-like" functions in your
+code, I may be able to help.  
+
+Besides LCLint, there are PC-lint and Flexelint (both from Gimpel), both of
+which allow checking of printf-like calls.  (I recommend PC-lint highly.)
+They give the argument number of the format string in the comment.
+Using their scheme, I tag my function like this:
+
+   /*lint -printf(1,error) */
+   void
+   error(
+      const char *,        /* printf-style format */
+      ...);                /* optional argument(s) */
+
+I think PC-lint also looks for weird format strings, and there is a way to
+turn off that warning too.
+
+An equivalent comment (for newer UNIX versions of lint) is:
+
+   /*PRINTFLIKE1*/
+
+PC-lint supports a number of aliases for UNIX lint comments.  I suspect
+they'll support this one too eventually.
+
+Happy hacking!
+--JR (John Rogers)
+</pre>
+<A HREF="33.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="35.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

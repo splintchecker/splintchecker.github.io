@@ -1,0 +1,126 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/memchecks1'
+lclint +lh +allimponly -macrovarprefixexclude +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+employee.c: (in function employee_setName)
+<A HREF="employee.c.html#line14" target="source">employee.c:14,11</A>: Parameter 1 (e->name) to function strcpy is declared unique
+                     but may be aliased externally by parameter 2 (na)
+  A unique or only parameter may be aliased by some other parameter or visible
+  global. Use -mayaliasunique to suppress message.
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+eref.c: (in function eref_initMod)
+<A HREF="eref.c.html#line62" target="source">eref.c:62,3</A>: Implicitly only storage eref_Pool.conts not released before
+    assignment: eref_Pool.conts = (employee *)malloc(size * sizeof(employee))
+  A memory leak has been detected. Newly-allocated or only-qualified storage is
+  not released before the last reference to is it lost. Use -mustfree to
+  suppress message.
+<A HREF="eref.c.html#line70" target="source">eref.c:70,3</A>: Implicitly only storage eref_Pool.status not released before
+    assignment: eref_Pool.status = (eref_status *)malloc(size *
+    sizeof(eref_status))
+<A HREF="eref.c.html#line84" target="source">eref.c:84,2</A>: Global storage *(eref_Pool.conts) contains 4 undefined fields when
+                call returns: ssNum, salary, gen, j
+  Storage derivable from a parameter, return value or global is not defined.
+  Use /*@out@*/ to denote passed or returned storage which need not be defined.
+  Use -compdef to suppress message.
+<A HREF="eref.c.html#line84" target="source">eref.c:84,2</A>: Global storage eref_Pool contains 1 undefined field when call
+                returns: status
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+empset.c: (in function empset_insertUnique)
+<A HREF="empset.c.html#line44" target="source">empset.c:44,5</A>: Clauses exit with er referencing fresh storage in true branch,
+                  local storage in continuation
+  The state of a variable is different depending on which branch is taken. This
+  means no annotation can sensibly be applied to the storage. Use -branchstate
+  to suppress message.
+   <A HREF="empset.c.html#line41" target="source">empset.c:41,7</A>: Fresh storage er allocated
+empset.c: (in function empset_intersect)
+<A HREF="empset.c.html#line126" target="source">empset.c:126,2</A>: Fresh storage toDelete not released before return
+   <A HREF="empset.c.html#line112" target="source">empset.c:112,31</A>: Fresh storage toDelete allocated
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+erc.c: (in function erc_create)
+<A HREF="erc.c.html#line39" target="source">erc.c:39,10</A>: Null storage c->vals derivable from return value: c
+  A possibly null pointer is dereferenced or misused. Value is either the
+  result of a function which may return null (in which case, code should check
+  it is not null), or a global, parameter or structure field declared with the
+  null qualifier. Use -null to suppress message.
+   <A HREF="erc.c.html#line37" target="source">erc.c:37,13</A>: Storage c->vals becomes null
+erc.c: (in function erc_clear)
+<A HREF="erc.c.html#line55" target="source">erc.c:55,2</A>: Function returns with null storage derivable from parameter c->vals
+   <A HREF="erc.c.html#line53" target="source">erc.c:53,13</A>: Storage c->vals becomes null
+erc.c: (in function erc_final)
+<A HREF="erc.c.html#line60" target="source">erc.c:60,9</A>: Implicitly temp storage c passed as only param: free (c)
+  Temp storage (associated with a formal parameter) is transferred to a
+  non-temporary reference. The storage may be released or new aliases created.
+  Use -temptrans to suppress message.
+erc.c: (in function erc_delete)
+<A HREF="erc.c.html#line104" target="source">erc.c:104,6</A>: Implicitly only storage prev->next not released before assignment:
+                prev->next = elem->next
+<A HREF="erc.c.html#line104" target="source">erc.c:104,6</A>: Clauses exit with elem referencing implicitly only storage in true
+                branch, local storage in false branch
+   <A HREF="erc.c.html#line102" target="source">erc.c:102,6</A>: Storage elem becomes implicitly only
+<A HREF="erc.c.html#line104" target="source">erc.c:104,6</A>: Storage c->vals->next is kept in one path, but live in another.
+   <A HREF="erc.c.html#line104" target="source">erc.c:104,6</A>: Storage c->vals->next becomes kept
+<A HREF="erc.c.html#line108" target="source">erc.c:108,16</A>: Released storage c->vals reachable from parameter at return point
+  Memory is used after it has been released (either by passing as an only param
+  or assigning to and only global. Use -usereleased to suppress message.
+   <A HREF="erc.c.html#line106" target="source">erc.c:106,10</A>: Storage c->vals is released
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+dbase.c: (in function uncheckedHire)
+<A HREF="dbase.c.html#line121" target="source">dbase.c:121,2</A>: Fresh storage er not released before return
+   <A HREF="dbase.c.html#line108" target="source">dbase.c:108,3</A>: Fresh storage er allocated
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+drive.c: (in function main)
+<A HREF="drive.c.html#line140" target="source">drive.c:140,16</A>: Fresh storage em1 not released before assignment:
+                   em1 = empset_create()
+   <A HREF="drive.c.html#line35" target="source">drive.c:35,3</A>: Fresh storage em1 allocated
+<A HREF="drive.c.html#line146" target="source">drive.c:146,16</A>: Fresh storage em2 not released before assignment:
+                   em2 = empset_create()
+   <A HREF="drive.c.html#line74" target="source">drive.c:74,3</A>: Fresh storage em2 allocated
+<A HREF="drive.c.html#line147" target="source">drive.c:147,3</A>: Fresh storage em3 not released before assignment:
+                  em3 = empset_disjointUnion(em2, em1)
+   <A HREF="drive.c.html#line87" target="source">drive.c:87,3</A>: Fresh storage em3 allocated
+<A HREF="drive.c.html#line163" target="source">drive.c:163,12</A>: Fresh storage em1 not released before return
+   <A HREF="drive.c.html#line140" target="source">drive.c:140,16</A>: Fresh storage em1 allocated
+<A HREF="drive.c.html#line163" target="source">drive.c:163,12</A>: Fresh storage em2 not released before return
+   <A HREF="drive.c.html#line146" target="source">drive.c:146,16</A>: Fresh storage em2 allocated
+<A HREF="drive.c.html#line163" target="source">drive.c:163,12</A>: Fresh storage em3 not released before return
+   <A HREF="drive.c.html#line147" target="source">drive.c:147,3</A>: Fresh storage em3 allocated
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 21 code errors found
+392 spec, 3011 source (1207 before pre-processing) lines in 4.28 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/memchecks1'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

@@ -1,0 +1,154 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint Sample - Original</title>
+</head>
+<body>
+<!--#include virtual="../../../header.html"-->
+
+<center><h1>
+LCLint Sample - Original
+</h1></center>
+
+
+This is the original version published in the Larch Book.  You must have
+<A HREF="http://www.sds.lcs.mit.edu/spd/larch/LSL/index.html"> <tt>lsl</tt>
+</A> installed to check this version (you don't need <tt>lsl</tt> to
+check any of the later versions).
+
+<P>
+
+<H3> Modules </H3>
+
+Each module includes an LCL specification describing the module
+interface, an LSL trait giving the abstract semantics of sorts used in
+the LCL specification.  Checking done by LCLint does not exploit LSL
+traits or some of the information in LCL specifications.  All the
+relevant information could be provided using stylized comments in the
+code instead.
+
+<UL>
+<LI>employee - employee datatype (<A HREF="employee.lcl.html">LCL Interface Specification</A>,
+<A HREF="employee.lsl.html">LSL Trait</A>,
+<A HREF="employeeConstants.lsl.html">employeeConstants Trait</A>,
+<A HREF="employee.c.html">Code</A>, 
+<A HREF="employee.h.html">Header</A>)
+
+<LI>empset - sets of employees (<A HREF="empset.lcl.html">LCL Interface Specification</A>,
+<A HREF="empset.c.html">Code</A>, 
+<A HREF="empset.h.html">Header</A>)
+
+<LI>dbase - database of employees (<A HREF="dbase.lcl.html">LCL Interface Specification</A>, 
+<A HREF="dbase.lsl.html">LSL Trait</A>,
+<A HREF="dbaseAssumptions.lsl.html">dbaseAssumptions Trait</A>,
+<A HREF="dbase.c.html">Code</A>, 
+<A HREF="dbase.h.html">Header</A>)
+
+<LI>eref - reference to an employee (<A HREF="eref.lcl.html">LCL Interface Specification</A>,
+<A HREF="eref.c.html">Code</A>, 
+<A HREF="eref.h.html">Header</A>)
+
+<LI>erc - collection of erefs (<A HREF="erc.lcl.html">LCL Interface Specification</A>,
+<A HREF="erc.lsl.html">LSL Trait</A>,
+<A HREF="erc.c.html">Code</A>, 
+<A HREF="erc.h.html">Header</A>)
+
+<LI>ereftab - table of employees and erefs (<A HREF="ereftab.lcl.html">LCL Interface Specification</A>,
+<A HREF="ereftab.lsl.html">LSL Trait</A>,
+<A HREF="ereftab.c.html">Code</A>, 
+<A HREF="ereftab.h.html">Header</A>)
+
+<LI>Auxillary Traits - <A HREF="file.lsl.html">file.lsl</A>, <A HREF="refTable.lsl.html">refTable.lsl</A>, <A HREF="sprint.lsl.html">sprint.lsl</A>
+</UL>
+
+</UL>
+
+<P>
+<H3> Running LCLint </H3>
+
+<P>
+Here, the -weak mode is used so only the most relevant errors are
+reported.
+
+<PRE>
+lclint +lh -weak +showscan +stats +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+Warning: setting +showscan redundant with current value
+Warning: setting +stats redundant with current value
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+employee.c: (in function employee_equal)
+<A HREF="employee.c.html#line18" target="source">employee.c:18,17</A>: Function strncmp expects arg 3 to be size_t gets int:
+                     maxEmployeeName
+  To allow arbitrary integral types to match any integral type, use
+  +matchanyintegral.
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+empset.c: (in function empset_insert)
+<A HREF="empset.c.html#line22" target="source">empset.c:22,8</A>: Variable er declared but not used
+  A variable is declared but never used. Use /*@unused@*/ in front of
+  declaration to suppress message. Use -varuse to suppress message.
+empset.c: (in function empset_disjointUnion)
+<A HREF="empset.c.html#line58" target="source">empset.c:58,32</A>: Undocumented modification of s1 possible from call to
+                   erc_iterStart (through alias s2): erc_iterStart(s2)
+  An externally-visible object is modified by a function, but not listed in its
+  modifies clause. Use -mods to suppress message.
+<A HREF="empset.c.html#line58" target="source">empset.c:58,32</A>: Undocumented modification of s2 possible from call to
+                   erc_iterStart: erc_iterStart(s2)
+empset.c: (in function empset_union)
+<A HREF="empset.c.html#line75" target="source">empset.c:75,32</A>: Undocumented modification of s2 possible from call to
+                   erc_iterStart (through alias s1): erc_iterStart(s1)
+<A HREF="empset.c.html#line75" target="source">empset.c:75,32</A>: Undocumented modification of s1 possible from call to
+                   erc_iterStart: erc_iterStart(s1)
+empset.c: (in function empset_subset)
+<A HREF="empset.c.html#line99" target="source">empset.c:99,32</A>: Undocumented modification of s1 possible from call to
+                   erc_iterStart: erc_iterStart(s1)
+<A HREF="empset.c.html#line95" target="source">empset.c:95,12</A>: Variable e declared but not used
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+ereftab.c: (in function ereftab_lookup)
+<A HREF="ereftab.c.html#line30" target="source">ereftab.c:30,32</A>: Undocumented modification of t possible from call to
+                    erc_iterStart: erc_iterStart(t)
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+erc.c: (in function erc_member)
+<A HREF="erc.c.html#line34" target="source">erc.c:34,9</A>: Operands of == are abstract type (eref): tmpc->val == er
+  An abstraction barrier is broken. If necessary, use /*@access <type>@*/ to
+  allow access to an abstract type. Use -abstract to suppress message.
+erc.c: (in function erc_delete)
+<A HREF="erc.c.html#line58" target="source">erc.c:58,9</A>: Operands of == are abstract type (eref): elem->val == er
+erc.c: (in function erc_sprint)
+<A HREF="erc.c.html#line103" target="source">erc.c:103,26</A>: Function malloc expects arg 1 to be size_t gets int:
+                 erc_size(c) * (employeePrintSize + 1) + 1
+<A HREF="erc.c.html#line110" target="source">erc.c:110,32</A>: Undocumented modification of c possible from call to
+                 erc_iterStart: erc_iterStart(c)
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+dbase.c: (in function query)
+<A HREF="dbase.c.html#line137" target="source">dbase.c:137,8</A>: Variable er declared but not used
+<A HREF="dbase.c.html#line138" target="source">dbase.c:138,12</A>: Variable e declared but not used
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+drive.c: (in function main)
+<A HREF="drive.c.html#line87" target="source">drive.c:87,25</A>: Return value (type db_status) ignored: hire(e)
+  Result returned by function call is not used. If this is intended, can cast
+  result to (void) to eliminate message. Use -retvalother to suppress message.
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+< cleaning .......... >
+
+Finished LCLint checking --- 16 code errors found
+299 spec, 2449 source (948 before pre-processing) lines in 8.83 s.
+</pre>
+
+Before looking at these messages, we will remove the lsl dependencies
+and reformat the code a bit for readability.
+
+<P>
+<b><A HREF="../weakchecks/index.html">Next: Continue to Weak Checks</A></b><br>
+<A HREF="../index.html">Return to Summary</A>
+
+<!--#include virtual="../../../footer.html"-->

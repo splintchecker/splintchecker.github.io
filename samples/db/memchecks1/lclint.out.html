@@ -1,0 +1,112 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/memchecks1'
+lclint +lh -allimponly -macrovarprefixexclude +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+employee.c: (in function employee_setName)
+<A HREF="employee.c.html#line14" target="source">employee.c:14,11</A>: Parameter 1 (e->name) to function strcpy is declared unique
+                     but may be aliased externally by parameter 2 (na)
+  A unique or only parameter may be aliased by some other parameter or visible
+  global. Use -mayaliasunique to suppress message.
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+eref.c: (in function eref_alloc)
+<A HREF="eref.c.html#line19" target="source">eref.c:19,24</A>: Unqualified storage passed as only param:
+                 realloc (eref_Pool.conts, ...)
+  Unqualified storage is transferred in an inconsistent way. Use
+  -unqualifiedtrans to suppress message.
+<A HREF="eref.c.html#line29" target="source">eref.c:29,27</A>: Unqualified storage passed as only param:
+                 realloc (eref_Pool.status, ...)
+<A HREF="eref.c.html#line45" target="source">eref.c:45,21</A>: Storage eref_Pool.status reachable from global is only (should be
+                 unqualified)
+  Storage derivable from a parameter does not match the alias kind expected for
+  the formal parameter. Use -compmempass to suppress message.
+   <A HREF="eref.c.html#line30" target="source">eref.c:30,48</A>: Storage eref_Pool.status becomes only
+<A HREF="eref.c.html#line45" target="source">eref.c:45,21</A>: Storage eref_Pool.conts reachable from global is only (should be
+                 unqualified)
+   <A HREF="eref.c.html#line20" target="source">eref.c:20,49</A>: Storage eref_Pool.conts becomes only
+eref.c: (in function eref_initMod)
+<A HREF="eref.c.html#line84" target="source">eref.c:84,2</A>: Storage eref_Pool.conts reachable from global is fresh (should be
+                unqualified)
+   <A HREF="eref.c.html#line62" target="source">eref.c:62,3</A>: Fresh storage eref_Pool.conts allocated
+<A HREF="eref.c.html#line84" target="source">eref.c:84,2</A>: Global storage *(eref_Pool.conts) contains 4 undefined fields when
+                call returns: ssNum, salary, gen, j
+  Storage derivable from a parameter, return value or global is not defined.
+  Use /*@out@*/ to denote passed or returned storage which need not be defined.
+  Use -compdef to suppress message.
+<A HREF="eref.c.html#line84" target="source">eref.c:84,2</A>: Storage eref_Pool.status reachable from global is fresh (should be
+                unqualified)
+   <A HREF="eref.c.html#line70" target="source">eref.c:70,3</A>: Fresh storage eref_Pool.status allocated
+<A HREF="eref.c.html#line84" target="source">eref.c:84,2</A>: Global storage eref_Pool contains 1 undefined field when call
+                returns: status
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+erc.c: (in function erc_create)
+<A HREF="erc.c.html#line39" target="source">erc.c:39,10</A>: Null storage c->vals derivable from return value: c
+  A possibly null pointer is dereferenced or misused. Value is either the
+  result of a function which may return null (in which case, code should check
+  it is not null), or a global, parameter or structure field declared with the
+  null qualifier. Use -null to suppress message.
+   <A HREF="erc.c.html#line37" target="source">erc.c:37,13</A>: Storage c->vals becomes null
+<A HREF="erc.c.html#line39" target="source">erc.c:39,10</A>: Fresh storage returned as unqualified (should be only): c
+  Fresh storage (newly allocated in this function) is transferred in a way that
+  the obligation to release storage is not propagated.  Use the /*@only@*/
+  annotation to indicate the a return value is the only reference to the
+  returned storage. Use -freshtrans to suppress message.
+   <A HREF="erc.c.html#line29" target="source">erc.c:29,3</A>: Fresh storage c allocated
+erc.c: (in function erc_clear)
+<A HREF="erc.c.html#line55" target="source">erc.c:55,2</A>: Function returns with null storage derivable from parameter c->vals
+   <A HREF="erc.c.html#line53" target="source">erc.c:53,13</A>: Storage c->vals becomes null
+erc.c: (in function erc_final)
+<A HREF="erc.c.html#line60" target="source">erc.c:60,9</A>: Implicitly temp storage c passed as only param: free (c)
+  Temp storage (associated with a formal parameter) is transferred to a
+  non-temporary reference. The storage may be released or new aliases created.
+  Use -temptrans to suppress message.
+erc.c: (in function erc_delete)
+<A HREF="erc.c.html#line108" target="source">erc.c:108,16</A>: Released storage c->vals reachable from parameter at return point
+  Memory is used after it has been released (either by passing as an only param
+  or assigning to and only global. Use -usereleased to suppress message.
+   <A HREF="erc.c.html#line106" target="source">erc.c:106,10</A>: Storage c->vals is released
+erc.c: (in function erc_sprint)
+<A HREF="erc.c.html#line147" target="source">erc.c:147,10</A>: Fresh storage returned as unqualified (should be only): result
+   <A HREF="erc.c.html#line128" target="source">erc.c:128,3</A>: Fresh storage result allocated
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 15 code errors found
+392 spec, 3011 source (1207 before pre-processing) lines in 4.23 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/memchecks1'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

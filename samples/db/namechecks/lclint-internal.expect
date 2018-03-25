@@ -1,0 +1,25 @@
+gmake[1]: Entering directory `/u/evs/lclint/web/sample/namechecks'
+lclint +lh +checks -allimponly +allmacros +distinctexternalnames -externalnamelength 14 +distinctinternalnames +internalnamelookalike +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.0+ --- Sat Feb 17 18:58:53 EST 1996
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- no code errors found
+392 spec, 2840 source (1270 before pre-processing) lines in 5.80 s.
+gmake[1]: Leaving directory `/u/evs/lclint/web/sample/namechecks'

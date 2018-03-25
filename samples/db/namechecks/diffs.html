@@ -1,0 +1,29 @@
+<p><h4>Changes in <A HREF="empset.c.html">empset.c</A> (<A HREF="../checkchecks2/empset.c.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="empset.c.html#line4">line 4</A> (was <A HREF="../checkchecks2/empset.c.html#line3">line 3</A>)<pre>
+&gt; static /*@only@*/ ereftab known;
+</pre><br>Added <A HREF="empset.c.html#line41">line 41</A> (was <A HREF="../checkchecks2/empset.c.html#line39">line 39</A>)<pre>
+&gt;    /*@modifies known@*/
+</pre><br>Added <A HREF="empset.c.html#line71">line 71</A> to <A HREF="empset.c.html#line72">line 72</A> (was <A HREF="../checkchecks2/empset.c.html#line68">line 68</A>)<pre>
+&gt;    /*@globals known@*/
+&gt;    /*@modifies known@*/
+</pre><br>Replaced <A HREF="../checkchecks2/empset.c.html#line148">line 148</A> with <A HREF="empset.c.html#line152">line 152</A> to <A HREF="empset.c.html#line155">line 155</A><pre>
+&lt;   if (initDone) return;
+---
+&gt;   if (initDone) 
+&gt;     {
+&gt;       /*@-globstate@*/ return; /*@=globstate@*/
+&gt;     }
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset.h.html">empset.h</A> (<A HREF="../checkchecks2/empset.h.html">previous version</A>)</h4><pre>
+</pre><br>Deleted <A HREF="../checkchecks2/empset.h.html#line10">line 10</A> to <A HREF="../checkchecks2/empset.h.html#line11">line 11</A> (matches <A HREF="empset.h.html#line9">line 9</A>)<pre>
+&lt; /*@only@*/ ereftab known;
+&lt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset.lcl.html">empset.lcl</A> (<A HREF="../checkchecks2/empset.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../checkchecks2/empset.lcl.html#line30">line 30</A> with <A HREF="empset.lcl.html#line30">line 30</A><pre>
+&lt;   modifies s;
+---
+&gt;   modifies s, internalState;
+</pre><br>Added <A HREF="empset.lcl.html#line47">line 47</A> (was <A HREF="../checkchecks2/empset.lcl.html#line46">line 46</A>)<pre>
+&gt;   modifies internalState;
+</pre><p><p>

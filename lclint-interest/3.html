@@ -1,0 +1,63 @@
+<h3>lclint-interest message 3</h3>
+<pre>
+Date: Mon, 24 Oct 94 15:08:25 -0400
+From: evs (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: peterc@a3.ph.man.ac.uk, horning@src.dec.com
+In-Reply-To: horning@src.dec.com's message of Mon, 24 Oct 94 11:34:16 -0700 <9410241834.AA11617@roustabout.pa.dec.com>
+Subject: improvement on predicates?
+
+
+>> From: peterc@a3.ph.man.ac.uk (Peter Chang)
+>> 
+>> Re the subject line. I'm not entirely happy with using +boolint (or is
+>> it -boolint) to stop lint producing warnings on predicates such as:
+>> "if (verbose)". Maybe a check for pure assignments in predicates is
+>> needed, eg warn against lines like "if (bar = foo())".
+
+> From: horning@src.dec.com
+>
+> Peter,
+>
+> Dave can check me on this, but I think you can eliminate this problem
+> merely by declaring verbose to be a bool, rather than an int, if it is
+> intended to be used for logical tests.
+>
+> Separately, a check for pure assignments in predicates might be a good
+> addition.
+>
+> Jim H.
+>
+
+Yes, if verbose is declared as a bool you will not get an error message
+here.  If you don't want to declare verbose as a bool here, you can
+still supress the error message without making bool and int
+indistinguishable in all contexts by using -pred instead.  
+
+However, Peter's suggestion that there should be a way to check for
+assignments in predicates is probably a good one.  For the case,
+
+		if (bar = foo())
+
+lclint will report an error if bar is not a bool (unless -pred is used).
+But if bar is a bool (and foo returns a bool), lclint with the default
+flag settings reports an error (because of bool comparison) for (bar ==
+foo()) but not (bar = foo()).
+
+--- Dave
+</pre>
+<A HREF="2.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="4.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

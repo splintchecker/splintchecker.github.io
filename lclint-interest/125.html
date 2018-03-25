@@ -1,0 +1,110 @@
+<h3>lclint-interest message 125</h3>
+<pre>
+From tgm@netcom.com Fri Dec 20 13:06:06 1996
+Date: Fri, 20 Dec 1996 03:51:17 -0500
+From: tgm@netcom.com (Thomas G. McWilliams)
+To: lclint-interest@larch.lcs.mit.edu
+Subject: FILE object resource leaks
+
+
+LCLINT AND THE C LIBRARY STREAM I/O INTERFACE.
+
+How should LCLint deal with file handles allocated by the standard C
+library stream i/o functions? What is the the proper way to annotate
+pointers to FILE?. How can LCLint be used to detect resource leaks
+in FILE objects?
+
+The problem is that stream pointers are similar to pointers returned
+by malloc functions. The main difference is that FILE handles are
+abstract. The implementation of FILE objects is hidden from us.
+However, like malloced pointers, they must be properly deallocated
+through the proper function calls (usually fclose()). If we fail to
+properly deallocate FILE handles we will create system memory leaks and
+we could actually run out of file handles (they are usually a finite
+system resource).
+
+As things presently stand with LCLint, annotating FILE pointers, fopen(),
+and fclose() with /*@only@*/ provides the best way for detecting these
+sorts of FILE handle leaks. However, this has the danger of allowing
+the error of passing a FILE pointer to free().  Such an error would go
+undetected by this scheme.
+
+Perhaps LCLint needs a way to register abstract allocator/deallocator
+functions.  Consider an abstract object FOO. Suppose the only way to
+create a FOO object is through open_foo(). Now suppose that in order to
+release resources owned by a FOO object, it must be passed to close_foo().
+It would be useful if there were a way for LCLint to check this at the
+interface level. The standard C stream i/o library is a good example
+of how LCLint as presently implemented can not properly detect certain
+resource leaks.
+
+Below is a program which illustrates the problem.
+
+Best Wishes for the Holidays,
+
+Thomas
+tgm@netcom.com
+ 
+ -------------------------------- cut here ----------------------------------
+
+/* 
+ maxhandle.c
+
+ demonstrate how a process can run out of file handles and
+ how we can "leak" file handles by losing all reference to them.
+ */
+
+#include <stdio.h>
+#include <unistd.h>
+#define TESTFILE "xxxxyyyy"
+
+int
+main()
+{
+    FILE *fptr;
+    int count = 0;
+
+    /* create test file */
+    fptr = fopen(TESTFILE, "w");
+
+    if (fptr != 0 && fclose(fptr) == 0) {
+
+	/* keep allocating file handles until fopen() fails */
+	for (;;) {
+	    fptr = fopen(TESTFILE, "r");
+	    if (fptr == 0)
+		break;
+	    count++;
+	}
+	/* 
+	   At this point there are no more file handles and we can not even 
+	   close them because we have lost all reference to them.
+	 */
+	printf("max = %d\n", count);
+
+	/* clean up and exit */
+	(void)unlink(TESTFILE);
+    } else {
+	printf("Can not create test file: %s\n", TESTFILE);
+    }
+    return 0;
+}
+
+
+
+</pre>
+<A HREF="124.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="126.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

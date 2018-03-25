@@ -1,0 +1,106 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint Sample - Strict Library</title>
+</head>
+<body>
+<!--#include virtual="../../../header.html"-->
+
+<center><h1>
+Strict Library
+</h1></center>
+
+<H3> Changes from <A HREF="../strictchecks/index.html">Strict Checks</A> </H3>
+
+<A HREF="diffs.html">Differences</A>
+<p>
+Fixed errors reported using strict mode checking.
+<p>
+Now, running LCLint in strict mode detects <a
+href="lclint-strict.out.html">no anomalies</a>.
+<P>
+
+<H3> Modules </H3>
+
+<UL>
+<LI>employee - employee datatype (<A HREF="employee.lcl.html">LCL</A>,
+<A HREF="employee.c.html">Code</A>,  <A HREF="employee.h.html">Header</A>)
+<LI>empset - sets of employees (<A HREF="empset.lcl.html">LCL</A>,
+<A HREF="empset.c.html">Code</A>,  <A HREF="empset.h.html">Header</A>)
+<LI>dbase - database of employees (<A HREF="dbase.lcl.html">LCL</A>, 
+<A HREF="dbase.c.html">Code</A>,  <A HREF="dbase.h.html">Header</A>)
+<LI>eref - reference to an employee (<A HREF="eref.lcl.html">LCL</A>,
+<A HREF="eref.c.html">Code</A>,  <A HREF="eref.h.html">Header</A>)
+<LI>erc - collection of erefs (<A HREF="erc.lcl.html">LCL</A>, <A
+HREF="erc.c.html">Code</A>,  <A HREF="erc.h.html">Header</A>)
+<LI>ereftab - table of employees and erefs (<A
+HREF="ereftab.lcl.html">LCL</A>, <A HREF="ereftab.c.html">Code</A>, <A HREF="ereftab.h.html">Header</A>)
+</UL>
+
+<H3><A href="../../../guide/appF.html">Strict Library</a></h3>
+
+Now we check the code using <tt>+strictlib</tt> to select the <A HREF="http://lclint.cs.virginia.edu/guide/appF.html">stricter
+version</A> of the standard library. 
+<p>
+LCLint reports <a href="lclint.out.html">77 anomalies</a>. 
+
+<h4><A href="../../../guide/sec10.html#sec-10.3.2">Ignored Return Values</a></h4>
+
+<A HREF="lclint-retval.out.html">Twenty-five messages</a> report
+ignored return values for calls to <tt>printf</tt> and <tt>fprint</tt>.
+The return value of <tt>printf</tt> is declared type <tt>int</tt> in the
+strict library, but either <tt>int</tt> or <tt>void</tt> in the standard
+library (to avoid a torrent of error messages for typical programs).
+The return value of the <tt>printf</tt> function is the number of
+characters transmitted, or a negative value if an error occurred.  For
+each <tt>printf</tt> call, we should check the return value is
+non-negative.  We use the <A HREF="check.lcl.html"><tt>check</tt></A>
+function to do this.  For a larger program, we would want to write a
+wrapper function that calls <tt>printf</tt> and checks the return value.
+
+<h4><A href="../../../guide/sec4.html#sec-4.1">Use and Modification of standard I/O</a></h4>
+
+The other <A HREF="lclint-io.out.html">52 messages</a> report uses and
+modifications of the standard steams, <tt>stderr</tt> and
+<tt>stdout</tt>.  In the standard library, these are declared using
+<tt>/*@unchecked@*/</tt>, so no use or modification errors are reported
+(with normal flag settings).  In the strict library, type are declared
+using <tt>/*@checked@*;</tt> so use and modification errors are
+reported.  <p> Some of the modifications of <tt>stdout</tt> are for
+error messages.  These should really be sent to <tt>stderr</tt> instead,
+so we replace the <tt>printf</tt> calls at <A
+HREF="eref.c.html#line36">eref.c:36</A>, <A
+HREF="eref.c.html#line46">eref.c:46</A>, <A
+HREF="eref.c.html#line82">eref.c:82</A>, <A
+HREF="eref.c.html#line90">eref.c:90</A>, <A
+HREF="erc.c.html#line26">erc.c:26</A>, <A
+HREF="erc.c.html#line78">erc.c:78</A>, and <A
+HREF="erc.c.html#line143">erc.c:143</A> with calls to <tt>fprintf
+(stderr, ...)</tt>.  We add <tt>stderr</tt> to the modifies clauses
+these functions.  The test driver, <tt>main</tt>, is specified to modify
+<tt>stdout</tt> and <tt>stderr</tt>.  <p> These modifies clauses
+propagate to the calling functions, and <A
+HREF="lclint-ioprop.edit.html">46 new anomalies</A> are detected.  We
+add <tt>stderr</tt> to the modifies clauses of
+<tt>empset_insertUnique</tt>, <tt>empset_disjointUnion</tt>,
+<tt>empset_union</tt>, <tt>empset_intersect</tt>,
+<tt>empset_initMod</tt>, <tt>empset_create</tt>, <tt>empset_sprint</tt>,
+<tt>ereftab_create</tt>, <tt>ereftab_insert</tt>,
+<tt>ereftab_initMod</tt>, <tt>erc_join</tt>, <tt>erc_initMod</tt>,
+<tt>db_initMod</tt>, <tt>db_uncheckedHire</tt>, <tt>db_promote</tt>, and
+<tt>db_print</tt>.
+<p>
+These in turn propagate to two more functions: <tt>db_hire</tt> and
+<tt>empset_insert</tt>.  The modifies clause added to <tt>db_hire</tt>
+propagates to produce an error message for <tt>db_addEmpls</tt>, and
+<tt>stderr</tt> is added to its modifies clause.  This in turn
+propagates to <tt>db_query</tt>.  After adding the modifies clause to
+<tt>db_query</tt>, no more anomalies are reported.
+<p>
+Now, it is clearly documented which functions may modify
+<tt>stderr</tt>.
+<p>
+<b><A HREF="../final/index.html">Next: Continue to Final</a></b><br>
+<A HREF="../index.html">Return to Summary</A>
+
+<!--#include virtual="../../../footer.html"-->

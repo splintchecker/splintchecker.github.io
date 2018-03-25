@@ -1,0 +1,347 @@
+
+annotglobs.c.html,0
+
+appA.html,0
+
+appB.html,0
+
+appC.html,302
+Function returns 749,33835
+Function returns 754,34330
+Function returns 757,34516
+Function returns 760,34700
+Function returns 763,34887
+Function or 1173,55571
+Function or 1210,57390
+ Function name 1251,59362
+Function parameter 1580,76058
+Function is 1583,76187
+Function definition 1654,79426
+
+appD.html,151
+function returning 180,8289
+Function never 192,8903
+Function may 194,8952
+Function does 196,9009
+Function does 198,9088
+Function always 200,9167
+
+appE.html,24
+Function takes 97,4467
+
+appF.html,58
+value of the character classification functions 107,4856
+
+appG.html,45
+Function exported 159,8223
+appendix 21,960
+
+appH.html,0
+
+bool.c.html,0
+
+bool.h.html,51
+<A NAME="line12"></A>typedef int bool;bool17,430
+
+contents.html,0
+
+employee.h.html,49
+<A NAME="line5"></A>} *employee;employee10,237
+
+exposure.c.html,0
+
+fig10-out.html,81
+<A HREF="unique.c.html#line7" target="source">unique.c:7,11</A>: Parameter 6,90
+
+fig10.html,0
+
+fig11-out.html,27
+    implicitly temp 7,198
+
+fig11.html,0
+
+fig12-out.html,49
+  exposed qualifier to return modifiable 21,946
+
+fig12.html,0
+
+fig13-out.html,46
+    defined (*x is undefined): getVal 11,405
+
+fig13.html,0
+
+fig14-out.html,113
+<A HREF="annotglobs.c.html#line22" target="source">annotglobs.c:22,2</A>: Only storage globname.firstname18,744
+
+fig14.html,0
+
+fig15-out.html,0
+
+fig15.html,0
+
+fig16-out.html,0
+
+fig16.html,0
+
+fig17-out.html,0
+
+fig17.html,0
+
+fig18-out.html,0
+
+fig18.html,0
+
+fig19-out.html,104
+<A HREF="order.c.html#line11" target="source">order.c:11,17</A>: Expression has undefined behavior6,80
+
+fig19.html,0
+
+fig2-out.html,37
+                      mstring:7,204
+
+fig2.html,0
+
+fig20-out.html,50
+  function called 12,411
+    in loop test 7,185
+
+fig20.html,0
+
+fig21-out.html,100
+<A HREF="noeffect.c.html#line8" target="source">noeffect.c:8,3</A>: Statement has no effect 10,395
+
+fig21.html,0
+
+fig22-out.html,100
+<A HREF="noeffect.c.html#line8" target="source">noeffect.c:8,3</A>: Statement has no effect 10,395
+
+fig22.html,0
+
+fig23-out.html,83
+<A HREF="ignore.c.html#line8" target="source">ignore.c:8,3</A>: Return value 6,86
+
+fig23.html,0
+
+fig3-out.html,18
+  nesting 14,553
+
+fig3.html,0
+
+fig4-out.html,0
+
+fig4.html,0
+
+fig5-out.html,0
+
+fig5.html,0
+
+fig6-out.html,23
+  Temp storage 15,611
+
+fig6.html,0
+
+fig7-out.html,0
+
+fig7.html,0
+
+fig8.html,39
+<A NAME="line4"></A>} *rec;rec10,329
+
+fig9-out.html,0
+
+fig9.html,0
+
+figure-tail.html,0
+
+figures.html,0
+
+globals.c.html,0
+
+guide-full.html,1113
+function contradict 41,1336
+function results.231,11552
+function context 273,13385
+function call 523,27431
+function interface)710,36108
+function but 716,36423
+function and 734,37621
+procedure match 836,42890
+function if 837,42962
+function called 838,43041
+procedure is 839,43115
+function depends 849,43572
+function that 922,47607
+function parameter,997,51710
+function result 1364,70104
+function defines 1671,85178
+function return 1685,86048
+function is 1695,86432
+function calls,1944,97849
+function and 2443,123993
+Function returns 3487,172458
+Function returns 3492,172953
+Function returns 3495,173139
+Function returns 3498,173323
+Function returns 3501,173510
+Function or 3911,194194
+Function or 3948,196013
+ Function name 3989,197985
+Function parameter 4318,214681
+Function is 4321,214810
+Function definition 4392,218049
+function returning 4829,237434
+Function never 4841,238048
+Function may 4843,238097
+Function does 4845,238154
+Function does 4847,238233
+Function always 4849,238312
+Function takes 4978,244593
+Function exported 5366,264422
+Program Development<5507,270182
+
+guide.html,0
+
+guide_fn.html,0
+
+ignore.c.html,0
+
+implicit.c.html,38
+<A NAME="line4"></A>} *rec;rec9,202
+
+index-mirror.html,0
+
+index.html,0
+
+intSet.h.html,45
+<A NAME="line5"></A>} *intSet intSet10,241
+
+list.c.html,41
+<A NAME="line5"></A>} *list;list10,275
+
+loop.c.html,37
+<A NAME="line14"></A>  while 19,552
+
+macros.c.html,0
+
+modify.c.html,0
+
+mstring.c.html,82
+<A NAME="line1"></A>typedef /*@abstract@*/ /*@null@*/ char *mstring;mstring6,98
+
+mstring.h.html,71
+<A NAME="line1"></A>typedef /*@abstract@*/ char *mstring;mstring6,97
+
+mstringnn.c.html,83
+<A NAME="line1"></A>typedef /*@abstract@*/ /*@null@*/ char *mstring;mstring6,101
+
+names.c.html,0
+
+noeffect.c.html,0
+
+null.c.html,33
+<A NAME="line8"></A>  if 13,327
+
+only.c.html,0
+
+order.c.html,44
+<A NAME="line14"></A>  i += modglob(19,541
+
+palindrome.c.html,0
+
+palindrome.h.html,0
+
+references.html,30
+Program Development<129,4718
+
+refs.c.html,47
+<A NAME="line5"></A>} *rstring;rstring10,255
+
+returned.c.html,0
+
+rgb.c.html,41
+<A NAME="line3"></A>} color;color8,202
+
+rstring.c.html,0
+
+rstring.h.html,46
+<A NAME="line4"></A>} *rstring;rstring9,249
+
+run.html,142
+<A HREF="http://lclint.cs.virginia.edu/guide/palindrome.c.html#line6">palindrome.c:6,29</A>: Cast from underlying abstract type mstring:4,67
+
+sample.c.html,71
+<A NAME="line1"></A>typedef /*@abstract@*/ char *mstring;mstring6,96
+
+sec1.html,56
+function contradict 29,1081
+function results.103,5568
+
+sec10.html,22
+function and 99,5059
+
+sec2.html,44
+function context 46,1862
+sample.c:36,1385
+
+sec3.html,24
+function call 126,6766
+
+sec4.html,219
+function interface)18,669
+function but 24,984
+function and 42,2182
+procedure match 144,7451
+function if 145,7523
+function called 146,7602
+procedure is 147,7676
+function depends 157,8133
+function that 230,12168
+
+sec5.html,28
+function parameter,79,4079
+
+sec6.html,110
+function result 120,5811
+calls 16,409
+   } *employee;employee101,4767
+   char *employee_getName 103,4790
+
+sec7.html,78
+function defines 278,13334
+function return 292,14204
+function is 302,14588
+
+sec8.html,25
+function calls,156,7492
+
+sec9.html,20
+namespace 121,6000
+
+setname.c.html,0
+
+setname.h.html,48
+<A NAME="line4"></A>} *employee;employee9,203
+
+special.c.html,45
+<A NAME="line5"></A>} *record;record10,230
+
+stack.c.html,0
+
+sumsquares.c.html,0
+
+supplement.html,71
+function defines 37,930
+function return 52,1801
+function is 63,2186
+
+switch.c.html,55
+<A NAME="line3"></A>  PROBABLY, MAYBE } ynm;ynm8,174
+
+testpal.c.html,0
+
+types.c.html,41
+<A NAME="line3"></A>} color;color8,206
+
+unique.c.html,0
+
+usedef.c.html,0

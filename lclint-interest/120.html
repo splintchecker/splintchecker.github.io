@@ -1,0 +1,109 @@
+<h3>lclint-interest message 120</h3>
+<pre>
+From goga@rsuh.ru Fri Nov  8 11:43:43 1996
+Date: Fri, 8 Nov 1996 19:28:01 +0300 (MSK)
+From: "George K.Bronnikov" <goga@rsuh.ru>
+To: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: <9611081555.AA21958@larch.lcs.mit.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+Hello,
+
+> Please post a brief message introducing yourself and describing your
+> professional interests.  Feel free to also include any ideas you have
+> for lclint development or comments on your experiences using lclint.
+
+I am currently a student of Russian State University for Humanitaries,
+in the Linguistics department, but this has nothing to do with my interest
+to LCLint.
+
+Me and my friends are starting a huge project of a nonstandard DBMS (a
+semantic net driven by daemons); we are using LCLint as a tool to
+formalize our interfaces.
+
+>    o Experiences using lclint ---
+> 	how is your organization using lclint?
+
+We are writing the interfaces for our project's subpackages as .lcl files.
+Of course, source files are also tested by LCLint.
+
+We have a memory management subsystem of our own, so it is unlikely that
+we will be able to use LCLint's memory checking extensively.
+
+> 	which checks are most effective in catching real bugs?
+
+Most errors I found were concerning uninitialized variables.
+
+>    o Ideas for improvements to lclint ---
+
+It would be great to have a way to tell LCLint some information that it
+cannot figure out itself. For example, suppose we have a structure
+
+struct qz
+{
+  int array_len;
+  int *array;
+};
+
+,where array should be NULL if and only if array_len == 0. I would like to
+write
+
+struct qz q;
+...
+if (q.array_len == 0)
+  {
+  /*@believe q.array == NULL @*/
+    ...
+  }
+else
+  {
+  /*@believe q.array != NULL @*/
+    ...
+  }
+
+Further, I could imagine three kinds of such declarations:
+  believe - LCLint should think the condition is true without checking it.
+  prove   - LCLInt should prove the condition and report an error if it
+	    cannot.
+  force   - LCLint should think the condition is true even if it can prove
+	    the opposite (useful for some kludges).
+
+In the end, I am sorry to say that I have already found some bugs in
+LCLint:
+	1. Type va_list is declared in the library file stdio.lcl and is
+NOT declared in stdarg.lcl.
+	2. In most cases, .lcl files cannot contain ANSI C keyword const.
+For example,
+
+void fun (const char *arg);
+
+does not work.
+	3. (the worse) The LCLint distribution I downloaded in source form
+>from sunsite.unc.edu:/pub/Linux/devel/... and compiled without any
+modifications on my Linux box sometimes crashes (it seems like it cannot
+extend the nametable). A member of our team, Yura Filimonov, is currently
+investigating the problem; we will report as soon as we find something.
+
+Regards,
+	Yura
+
+
+
+</pre>
+<A HREF="119.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="121.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

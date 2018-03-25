@@ -1,0 +1,26 @@
+<p><h4>Changes in <A HREF="dbase.c.html">dbase.c</A> (<A HREF="../allmacros/dbase.c.html">previous version</A>)</h4><pre>
+</pre><br>Deleted <A HREF="../allmacros/dbase.c.html#line4">line 4</A> to <A HREF="../allmacros/dbase.c.html#line7">line 7</A> (matches <A HREF="dbase.c.html#line3">line 3</A>)<pre>
+&lt; # define firstERC mMGRS
+&lt; # define lastERC fNON
+&lt; # define numERCS (lastERC - firstERC + 1)
+&lt; 
+</pre><br>Added <A HREF="dbase.c.html#line8">line 8</A> to <A HREF="dbase.c.html#line16">line 16</A> (was <A HREF="../allmacros/dbase.c.html#line11">line 11</A>)<pre>
+&gt; 
+&gt; /*@constant static employeeKinds firstERC;@*/
+&gt; # define firstERC mMGRS
+&gt; 
+&gt; /*@constant static employeeKinds lastERC;@*/
+&gt; # define lastERC fNON
+&gt; 
+&gt; /*@constant static int numERCS;@*/
+&gt; # define numERCS (lastERC - firstERC + 1)
+</pre><p><p>
+<p><h4>Changes in <A HREF="employee.h.html">employee.h</A> (<A HREF="../allmacros/employee.h.html">previous version</A>)</h4><pre>
+</pre><br>Deleted <A HREF="../allmacros/employee.h.html#line5">line 5</A> (matches <A HREF="employee.h.html#line4">line 4</A>)<pre>
+&lt; # define employeeFormat "%9d  %-20s  %-6s  %-11s  %6d.00"
+</pre><br>Added <A HREF="employee.h.html#line6">line 6</A> to <A HREF="employee.h.html#line9">line 9</A> (was <A HREF="../allmacros/employee.h.html#line6">line 6</A>)<pre>
+&gt; 
+&gt; /*@notfunction@*/
+&gt; # define employeeFormat "%9d  %-20s  %-6s  %-11s  %6d.00"
+&gt; 
+</pre><p><p>

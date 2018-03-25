@@ -1,0 +1,18 @@
+LCLint 2.2 --- 25 Aug 96
+
+stack.c: (in function f)
+<A HREF="stack.c.html#line12" target="source">stack.c:12,10</A>: Stack-allocated storage &loc reachable
+                  from return value: &loc
+  A stack reference is pointed to by an external
+  reference when the function returns. The
+  stack-allocated storage is destroyed after the call,
+  leaving a dangling reference. (-stackref will
+  suppress message)
+<A HREF="stack.c.html#line12" target="source">stack.c:12,15</A>: Stack-allocated storage *x reachable
+                  from parameter x
+   <A HREF="stack.c.html#line10" target="source">stack.c:10,3</A>: Storage *x becomes stack
+<A HREF="stack.c.html#line12" target="source">stack.c:12,15</A>: Stack-allocated storage glob reachable
+                  from global glob
+   <A HREF="stack.c.html#line9" target="source">stack.c:9,3</A>: Storage glob becomes stack
+
+Finished LCLint checking --- 3 code errors found

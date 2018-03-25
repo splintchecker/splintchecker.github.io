@@ -1,0 +1,12 @@
+Splint 3.0.1.4 --- 19 Jan 2002
+
+RunOutOfMemory.c: (in function main)
+RunOutOfMemory.c:16:7: Fresh storage p (type BigArray *) not released before
+                          assignment: p = malloc(sizeof((*p)))
+  A memory leak has been detected. Storage allocated locally is not released
+  before the last reference to it is lost. (Use -mustfreefresh to inhibit
+  warning)
+   RunOutOfMemory.c:12:3: Fresh storage p allocated
+
+Finished checking --- 1 code warning
+22 source lines in 0.01 s.

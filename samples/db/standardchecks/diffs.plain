@@ -1,0 +1,265 @@
+Plain Differences between current directory and useiters
+42,45c42
+<   eref er;
+<   ercIter it;
+<   
+<   for_ercElems (er, it, c)
+---
+>   erc_elements(c, er)
+47,51c44,45
+<       if (eref_get (er).ssNum == key)
+<         {
+<           erc_iterReturn (it, er);
+<         }
+<     }
+---
+>       if (eref_get(er).ssNum == key) return (er);
+>     } end_erc_elements ;
+75,76d68
+<   eref er;
+<   ercIter it;
+81c73
+<   for_ercElems (er, it, c)
+---
+>   erc_elements (c, er) 
+89c81
+<     }
+---
+>     } end_erc_elements ;
+134,135d125
+<   eref er;
+<   ercIter it;
+138c128,130
+<     for_ercElems (er, it, db[i])
+---
+>     {
+>       erc_elements(db[i], er)
+>         {
+141d132
+<           erc_iterFinal (it);
+143a135,136
+>             } 
+>         } end_erc_elements ;
+7,11c7
+<   eref er;
+<   ercIter it;
+<   employee e1;
+< 
+<   for_ercElems (er, it, s) 
+---
+>   erc_elements(s, er)
+13c9
+<       e1 = eref_get (er);
+---
+>       employee e1 = eref_get(er);
+15,16c11,12
+<         erc_iterReturn (it, er);
+<     }
+---
+>         return er;
+>     } end_erc_elements ;
+69,70d64
+<   ercIter it;
+<   eref er;
+83,86d76
+<   /*@-mods@*/
+<   for_ercElems (er, it, s2)
+<     empset_insertUnique (result, eref_get (er));
+<   /*@=mods@*/
+87a78,82
+>   empset_elements(s2, emp)
+>     {
+>       empset_insertUnique(result, emp);
+>     } end_empset_elements ;
+> 
+93,94d87
+<   eref er;
+<   ercIter it;
+108,112c101,105
+<   /*@-mods@*/
+<   for_ercElems (er, it, s1) 
+<     if (!empset_member (eref_get (er), s2))
+<       erc_insert (result, er);
+<   /*@=mods@*/
+---
+>   empset_elements (s1, emp)
+>     {
+>       if (!empset_member(emp, s2))
+>         empset_insert(result, emp);
+>     } end_empset_elements ;
+119,121c112
+<   eref er;
+<   ercIter it;
+<   erc toDelete;
+---
+>   erc toDelete = erc_create();
+123c114,118
+<   toDelete = erc_create ();
+---
+>   empset_elements (s2, emp)
+>     {
+>       if (!empset_member(emp, s2))
+>         empset_insert(toDelete, emp);
+>     } end_empset_elements ;
+125,127c120,123
+<   for_ercElems (er, it, s1)
+<     if (!empset_member (eref_get (er), s2))
+<       erc_insert (toDelete, er);
+---
+>   empset_elements (toDelete, emp)
+>     {
+>       empset_delete(s1, emp);
+>     } end_empset_elements;
+129,131d124
+<   for_ercElems (er, it, toDelete)
+<     erc_delete (s1, er);
+< 
+137,144c130,133
+<   eref er;
+<   ercIter it;
+< 
+<   /*@-mods@*/  
+<   for_ercElems (er, it, s1) 
+<     if (!empset_member (eref_get (er), s2))
+<       erc_iterReturn (it, FALSE);
+<   /*@=mods@*/
+---
+>   empset_elements(s1, emp)
+>     {
+>       if (!empset_member(emp, s2)) return FALSE;
+>     } end_empset_elements ;
+35a36,39
+> #define empset_elements(e, m_x) \
+>    erc_elements(e, m_y) { employee m_x = eref_get(m_y);
+> #define end_empset_elements        } end_erc_elements
+> 
+86a87,89
+> 
+> iter empset_elements (empset s, yield employee x);
+> 
+115,145d114
+< ercIter erc_iterStart (erc c) 
+< {
+<   ercIter result;
+< 
+<   result = (ercIter) malloc (sizeof (ercList));
+< 
+<   if (result == 0) 
+<     {
+<       printf ("Malloc returned null in erc_iterStart\n");
+<       exit (1);
+<     }
+<   
+<   *result = c->vals;
+<   return result;
+< } 
+< 
+< eref erc_yield (ercIter it) 
+< {
+<   eref result;
+< 
+<   if (*it == 0) 
+<     {
+<       return erefNIL;
+<       free (it); 
+<     }
+<   
+<   result = (*it)->val;
+<   *(it) = (*it)->next;
+<   return result;
+< }
+< 
+157,158d125
+<   eref er;
+<   ercIter it;
+172,173c139
+<   /*@-mods@*/
+<   for_ercElems (er, it, c) 
+---
+>   erc_elements(c, er)
+178,179c144
+<     }
+<   /*@=mods@*/  
+---
+>     } end_erc_elements;
+10d9
+< typedef ercList *ercIter;
+20c19,22
+< # define erc_iterFinal(it) (free(it)) 
+---
+> # define erc_elements(c, m_x) \
+>   { erc m_c = (c); ercElem *m_ec = (m_c)->vals; int m_i = 0; \
+>     while (m_i < (m_c)->size) { \
+>       eref m_x = m_ec->val; m_ec = m_ec->next; m_i++; 
+22,28c24
+< # define erc_iterReturn(it, result) \
+<     do { erc_iterFinal(it); return result; } while (0)
+< 
+< # define for_ercElems(er, it, c)\
+<     for (er = erc_yield (it = erc_iterStart (c)); \
+<          !eref_equal (er, erefNIL); \
+<          er = erc_yield (it))
+---
+> # define end_erc_elements }}
+4d3
+< mutable type ercIter;
+49,75d47
+< ercIter erc_iterStart(erc c) 
+< {
+<   modifies c;
+<   /* ensures fresh(result) /\ result' = [c^.val, c]
+<         /\ c' = startIter(c^);
+<   */
+< }
+< 
+< eref erc_yield(ercIter it) 
+< {
+<   modifies it; /* , it^.eObj */ 
+<   /* ensures if it^.toYield \neq { }
+<      then yielded(result, it^, it')
+<        /\ (it^.eObj)' = (it^.eObj)^
+<      else result = erefNIL /\ trashed(it)
+<        /\ (it^.eObj)' = endIter((it^.eObj)^);
+<  */
+< }
+< 
+< void erc_iterFinal(ercIter it) 
+< {
+<   modifies it; /* , it^.eObj; */
+<   /* ensures trashed(it)
+<      /\ (it^.eObj)' = endIter((it^.eObj)^);
+<   */
+< }
+< 
+97a70,71
+> 
+> iter erc_elements (erc c, yield eref el);  
+30d29
+<   eref er;
+32d30
+<   ercIter it;
+34,35c32
+<   /*@-mods@*/
+<   for_ercElems (er, it, t) 
+---
+>   ereftab_elements(t, er)
+38,44c35,36
+<       if (employee_equal (&e, &e1))
+<         {
+<           erc_iterReturn (it, er);
+<         }
+<     }
+<   /*@=mods@*/
+< 
+---
+>       if (employee_equal(&e, &e1)) return er;
+>     } end_ereftab_elements ;
+11a12,14
+> # define ereftab_elements(s, m_x) erc_elements(s, m_x)
+> # define end_ereftab_elements     end_erc_elements
+> 
+31a32,35
+> 
+> iter ereftab_elements(ereftab s, yield eref x);
+> 
+> 

@@ -1,0 +1,65 @@
+<h3>lclint-interest message 71</h3>
+<pre>
+From eric@rrinc.com Wed Apr 24 14:52:49 1996
+Sender: eric@access.rrinc.com
+Date: Wed, 24 Apr 1996 14:16:18 -0400
+From: Eric Bloodworth <eric@rrinc.com>
+Organization: Recognition Research, Inc
+X-Mailer: Mozilla 2.01 (X11; I; OSF1 V3.2 alpha)
+Mime-Version: 1.0
+To: lclint_sig <lclint-interest@larch.lcs.mit.edu>
+Subject: sanity check...
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+I must be missing something here, or there's a bug..
+ In the actual function, 
+*name becomes a pointer somewhere into path, but this
+fragment produces the same error.    
+
+lclint.c:18,11: Unqualified storage *name corresponds to storage listed
+in
+                   post:dependent clause
+  Dependent storage is transferred to a non-dependent reference. Use
+  -dependenttrans to suppress message.   
+
+
+extern int foobar(
+	char *path, 
+	/*@special@*/ char **name, 
+	/*@special@*/ int *len) 
+		/*@post:dependent *name@*/
+		/*@pre:notnull name, len@*/
+		/*@defines *name, *len@*/;
+
+int foobar(char *path,char **name,int *len)
+{
+
+	*name = path; 
+	*len = strlen(path); 
+
+
+	return 0;  /* this is line 18 */
+}
+
+
+
+ -- Eric
+
+
+</pre>
+<A HREF="70.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="72.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

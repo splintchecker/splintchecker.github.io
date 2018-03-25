@@ -1,0 +1,150 @@
+<h3>lclint-interest message 7</h3>
+<pre>
+Date: Mon, 7 Nov 94 13:09:27 -0500
+From: evs (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Subject: [johnm@vlibs.com: experiences with lclint]
+
+
+With John's permission, I'm forwarding his message to the list...
+
+=================
+
+Date: Sun, 6 Nov 94 15:29 PST
+From: johnm@vlibs.com (John Gerard Malecki)
+Subject: experiences with lclint
+
+
+dave,
+
+you should be well aware how much i like lclint.  i think it is a
+wonderfully useful tool and mention it's use to all my cohorts.
+
+recently i have been working with franc,ois pinard to enhance the gnu
+m4 macro language processor.  i have converted the eval() mechanism to
+work with a multi-precision library package and not the native C
+operators.  we have not yet released this version as we are still
+experimenting with certain features but the brunt of the enhancement
+(conversion) is complete.
+
+gnu m4 is distributed with source code.  one goal of the enhancement
+was to allow the user to select the eval() mechanism at compile time.
+we specifically opted for this compile-time selection and not a
+run-time selection.  iused lclint to help me perform the conversion.
+
+thanks to lclint i was able to effect the conversion in a multi-step,
+goal oriented fashion.  first i wrote a small lcl spec and ran lclint.
+directed by the lclint error messages i converted all of the
+representation explicit operations to use the abstract interface.
+
+next i wrote an implementation of the interface using the native C
+operators.  now i could compare the old implementation with the new.
+
+next i wrote an implementation using the extended precision library.
+the job went surprisingly quick.  using lclint gave me a certain
+confidence which "carried through".  in the past, when performing
+these types of enhancements quite often an error at a particular stage
+of abstraction would not be caught until much later.  one then spends
+a bit of time tracking down the problem.  this time, and i presume it
+was due to using lclint, this only occured once.
+
+as you seem to be doing research in the area of using tools like
+lclint if you have any specific questions please feel free to ask me.
+i'll do my best to answer them.
+
+-thanks
+
+PS - the only problem which occured, and i believe there really is a
+solution at hand, has to do with object creation and deletion.  a
+classic example of the original code is
+
+	static eval_error
+	add_term (eval_token et, eval_t *v1)
+	{
+	  eval_token op;
+	  eval_t v2;
+	  eval_error er;
+	 
+	  if ((er = mult_term (et, v1)) != NO_ERROR)
+	    return er;
+	 
+	  while ((op = eval_lex (&v2)) == PLUS || op == MINUS)
+	    {
+	      et = eval_lex (&v2);
+	      if (et == ERROR)
+	        return UNKNOWN_INPUT;
+	 
+	      if ((er = mult_term (et, &v2)) != NO_ERROR)
+	        return er;
+	 
+	      if (op == PLUS)
+	        *v1 = *v1 + v2;
+	      else
+	        *v1 = *v1 - v2;
+	    }
+	  if (op == ERROR)
+	    return UNKNOWN_INPUT;
+	 
+	  eval_undo ();
+	  return NO_ERROR;
+	}
+
+this was converted to
+
+	static eval_error
+	add_term (eval_token et, eval_t *v1)
+	{
+	  eval_token op;
+	  eval_t v2;
+	  eval_error er;
+	 
+	  if ((er = mult_term (et, v1)) != NO_ERROR)
+	    return er;
+	 
+*	  numb_init(v2);
+	  while ((op = eval_lex (&v2)) == PLUS || op == MINUS)
+	    {
+	      et = eval_lex (&v2);
+	      if (et == ERROR)
+	        return UNKNOWN_INPUT;
+	 
+	      if ((er = mult_term (et, &v2)) != NO_ERROR)
+	        return er;
+	 
+	      if (op == PLUS)
+	        numb_plus(v1,v1,&v2);
+	      else
+	        numb_minus(v1,v1,&v2);
+	    }
+*	  numb_fini(v2);
+	  if (op == ERROR)
+	    return UNKNOWN_INPUT;
+	 
+	  eval_undo ();
+	  return NO_ERROR;
+	}
+
+the error that i made was not recognizing the need of adding the first
+of the *-d statements.  i could swear that i can specify the need for
+numb_init() to be called but i haven't yet figured out how.
+
+-- 
+John Gerard Malecki;  johnm@vlibs.com;  voice 408.450.5302;  fax 408.970.9920
+VLSI Libraries Incorporated;  3135 Kifer Road;   Santa Clara, CA;  95051; USA
+
+</pre>
+<A HREF="6.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="8.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

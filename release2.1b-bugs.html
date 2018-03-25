@@ -1,0 +1,58 @@
+<html>
+<head>
+<title> Bugs Fixed</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<h1>
+Bugs Fixed<BR>
+</h1>
+
+This page documents reported bugs in LCLint 2.1a that are (believed to
+be) fixed in LCLint 2.1b.
+
+<P>
+<h4>hex constants using U</h4>
+<blockquote>
+<b>Bug:</b> Hex constants like 0x01U are not parsed correctly.  <br>
+</blockquote>
+
+<P>
+<h4>duplicatequals</h4>
+<blockquote>
+<b>Bug:</b> The <tt>duplicatequals</tt> flag does not work as advertised.<br>
+</blockquote>
+
+<P>
+<h4>complex alt types</h4>
+<blockquote>
+<b>Bug:</b> Alternate types cannot be complex (e.g., <tt>/*@alt int* @*/</tt>)<br>
+<b>Delayed:</b> This bug is not fixed yet.
+</blockquote>
+
+<h4>notorious bug</h4>
+<blockquote>
+<b>Bug:</b> Memory off the end of an allocated block was being accessed
+in <tt>sRefSet.c</tt>.  (Too bad lclint can't do bounds checking to
+detect this.)  If you have gotten unpredictable Segmentation Violations
+or other strange behavior, this was probably the cause.
+</blockquote>
+
+<p>
+<a href="release2.1a-bugs.html">Bugs in Version 2.0 that are fixed in Version
+2.1a</a>
+
+<HR>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

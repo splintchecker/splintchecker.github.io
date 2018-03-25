@@ -1,0 +1,90 @@
+<h3>lclint-interest message 188</h3>
+<pre>
+From evs Wed Feb 11 13:09:56 1998
+Date: Wed, 11 Feb 98 12:57:46 -0500
+From: evs (David Evans)
+To: 100566.1506@compuserve.com
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Hermann Kleier's message of Wed, 11 Feb 1998 15:07:50 +0100 (CET) <Pine.LNX.3.96.980211132018.531A-100000@opto4l.default.com>
+Subject: Constants in .lcl-files
+
+
+Note that although the syntax of LCL is close to C, it is not the same,
+and not everything that can be expressed in C can be expressed in LCL
+(and vice versa).  This is probably more for historical reasons than any
+real good reason.
+
+> I used to have the following four definitions/declarations in a header file:
+> 
+> #define FAR
+> #define RECORDSIZE 925
+> typedef char FAR Inrecord [RECORDSIZE];
+> typedef const char FAR *ConstString;
+>
+> The data types defined are used as function parameters.  Therefore I need to
+> move the declarations to my .lcl-file.   But then the problems occurr:
+>
+> (1) FAR:           Just a macro defined to an emty string for reasonable
+>                    operating systems. But some environments need to define `FAR'
+>                    as `far'.
+
+LCL files aren't run through a C pre-processor, so there is no way to
+use macros like this in an LCL file.  If you really need to do something
+like this, you could create a .pre-lcl file that gets run through a
+preprocessor to produce a real .lcl file (however this is not
+recommended).  
+
+> (2) const:         Simply yields a parse error.  I know, the /*@*/ can guarantee
+>                    that a function does not alter its parameters.  But a const
+>                    data type is recognized by any ANSI-C compiler.
+
+const is not supported by LCL.
+
+> (3) RECORDSIZE:    I dislike to seed my constants around in the program.  I
+>                    prefer macros or int constants.
+
+In LCL, you can do,
+
+	constant int RECORDSIZE;
+
+> This approach is portable.  Unluckily this is not supported by ANSI-C.
+> Instead ANSI-C offers the file <limits.h>, which can be used to typedef
+> portable types.  I put the stuff in a global file named "ptypes.h", which I
+> included in serveral projects over the years.
+>
+> How can I create types in a .lcl-file that depend on the contents of other
+> files?
+
+There's no way to do this, other than using a preprocessor on the LCL files.
+
+Perhaps, some of these interface level details are better expressed in
+.h files than using LCL, unless you are planning on writing detailed
+specifications that use them.
+
+--- Dave
+
+
+
+
+
+
+
+
+
+
+</pre>
+<A HREF="187.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="189.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

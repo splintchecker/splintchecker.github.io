@@ -1,0 +1,79 @@
+<h3>lclint-interest message 193</h3>
+<pre>
+From evs Fri Feb 20 20:44:18 1998
+Date: Fri, 20 Feb 98 19:43:43 -0500
+From: evs (David Evans)
+To: 100045.1545@compuserve.com
+Cc: lclint-interest@larch.lcs.mit.edu, weco@csi.com
+In-Reply-To: Hermann Kleier's message of Fri, 20 Feb 1998 22:33:11 +0100 (CET) <Pine.LNX.3.96.980220213850.18427C-100000@porky4.default.com>
+Subject: signal function interface
+
+
+> I tried to typedef the signal handler function and to use it:
+> 
+> > typedef void SignalHandlerT (int);
+> > void signal (int, SignalHandlerT *);
+> > #define SIG_ERR (SignalHandlerT *) -1
+>  
+> This time the output takes some more lines:
+> 
+> > LCLint 2.3i --- 15 Sep 97
+> >
+> > test.c:2,19: Parameter 2 of function signal has inconsistent type:
+> >                 declared SignalHandlerT *, specified [function (int)
+> > returns void] *
+> >  Types are incompatible. (-type will suppress message)
+> >   load file posixstrict.lcd: Specification: [function (int) returns
+> > void]
+> > *
+> > test.c: (in macro SIG_ERR)
+> > test.c:3,18: Constant SIG_ERR specified as [function (int) returns void]
+> > *, but defined as
+> >                SignalHandlerT *: (SignalHandlerT *)-1
+> >  A function, variable or constant is redefined with a different type.
+> > (-incondefs will suppress
+> >   message)
+> >    load file posixstrict.lcd: Specification of SIG_ERR
+> >
+> > Finished LCLint checking --- 2 code errors found
+
+This is a bug in the typechecking done by lclint.  It should type check
+correctly, the same as when the typedef was not used.  Sorry, I don't
+know of any workaround for this, but it'll be fixed in the next release.
+
+> LcLint declares `signal'
+> 
+> >  void signal (int, void (*) (int));
+> 
+> to be a function taking a signal number and a pointer to a signal handler
+> and RETURNING NOTHING.  What about checking the successfull installation
+> of signal handlers?  ANSI C declares signal
+> 
+> > void (*signal (int sig, void (*func) (int)))(int);
+
+This is also a bug!  The standard library (ansi.h) declares it
+correctly, but there is a bug in lclint that prevents it from reporting
+ignored return values for functions returning functions that return
+void.
+
+Thanks for reporting the problems,
+
+--- Dave
+
+
+</pre>
+<A HREF="192.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="194.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

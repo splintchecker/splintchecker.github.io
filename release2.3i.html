@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>Release 2.3i</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<center>
+<H2>
+LCLint Version 2.3i
+</H2>
+<em>3 September 1997</em>
+</center>
+<P>
+Versione 2.3i is a minor minor upgrade to Version 2.3h.  These are the
+release notes for Version 2.3h. 
+<p>
+<h3> Bug Fixes </h3>
+<a href="release2.3-bugs.html">Bugs reported in Version 2.2a</a> have been fixed.
+
+<h3> New Features </h3>
+
+<h4> Improved flow analysis</h4>
+
+LCLint now interprets obvious non-terminating loops (<tt>for (;;)</tt>
+and <tt>while (TRUE)</tt> that have no <tt>break</tt>s) correctly.  
+
+<h4> Bitwise Operators </h4>
+
+If <a
+href="guide/appC.html#flag-bitwisesigned"><tt>bitwise-signed</tt></a>
+is set, LCLint will report messages when a bitwise operator is used with
+a signed operand.  Similarily, if <a
+href="guide/appC.html#flag-shiftsigned"><tt>shift-signed</tt></a> is
+set, LCLint will report messages when the left operand of a shift
+operator is signed.
+
+<h4> Other New Flags </h4>
+
+<a href="guide/appC.html#flag-usestderr"><tt>use-stderr</tt></a>
+<blockquote>
+Send error messages to standard error (instead of standard out).
+</blockquote>
+
+<a href="guide/appC.html#flag-imptype"><tt>imp-type</tt></a><p>
+<blockquote>
+A variable declaration has no explicit type.  The type is
+implicitly int.
+</blockquote>
+<p>
+
+<a href="guide/appC.html#flag-incompletetype"><tt>incomplete-type</tt></a><p>
+<blockquote>
+A formal parameter is declared with an incomplete type (e.g.,
+<tt>int[][]</tt>).
+</blockquote>
+<p>
+
+<a href="guide/appC.html#flag-floatdouble"><tt>float-double</tt></a><p>
+<blockquote>
+Make <tt>float</tt> and <tt>double</tt> types equivalent.<p>
+</blockquote>
+
+<h3> Thanks </h3>
+
+Many people have contributed to this release with suggestions for new
+features, porting help, bug reports, and bug fixes.  As always, LCLint
+development is largely user-driven, and your comments and suggestions
+are much appreciated.
+
+<p>
+
+<h3>Previous release notices</h3>
+
+<ul>
+<li> <a href="release1.3.html">Version 1.3</a>
+<li> <a href="release1.4.html">Version 1.4</a>
+<li> <a href="release1.4a.html">Version 1.4a</a>
+<li> <a href="release1.4c.html">Version 1.4c</a>
+<li> <a href="release2.0.html">Version 2.0</a>
+<li> <a href="release2.1a.html">Version 2.1a</a>
+<li> <a href="release2.1b.html">Version 2.1b</a>
+<li> <a href="release2.2.html">Version 2.2</a>
+</ul>
+
+<HR>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

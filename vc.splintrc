@@ -1,0 +1,30 @@
+/*
+Date: Wed, 27 Feb 2002 12:35:13 +0100
+From: Arjan M Van Vught <avv@nl.ibm.com>
+To: David Evans <evans@virginia.edu>
+Cc: lclint-interest@virginia.edu, Walter Briscoe
+<wbriscoe@ponle.demon.co.uk>
+Subject: ~/.splintrc which works with VC++6.00
+
+
+Walter,
+
+Please find below a ~/.splintrc that is working for me with VC 6.0
+*/
+
+-I.
+-D_M_IX86=400
+-DWIN32
+-D_NTSYSTEM
+-D_WIN32_WINNT=0x0400
+-DWINVER=600
+-DNOGDI
+-DNOKERNEL
+-DNOUSER
+-DWIN32_LEAN_AND_MEAN
+-likelybool
+-D__int64=long
+-D_int64=int
+-D_wtoi=atoi
+-DSTRICT
+

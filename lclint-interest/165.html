@@ -1,0 +1,87 @@
+<h3>lclint-interest message 165</h3>
+<pre>
+From alt@artisan.com Tue Sep 23 13:46:08 1997
+X-Authentication-Warning: bastion.artisan.com: smap set sender to <alt@artisan.com> using -f
+Date: Tue, 23 Sep 1997 10:47:31 -0700 (PDT)
+From: "Albert L. Ting" <alt@artisan.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+To: evans@cs.virginia.edu, alt@artisan.com
+Cc: henrys@meerkat.dimensional.com, lclint-interest@larch.lcs.mit.edu
+Subject: Re: Subscription request
+References: <199709231717.LAA03239@meerkat.dimensional.com>
+	<9709231708.AA10491@larch.lcs.mit.edu>
+X-Mailer: VM 6.34 under Emacs 20.1.1
+
+David Evans writes:
+> From: evans@cs.virginia.edu (David Evans)
+> To: henrys@meerkat.dimensional.com
+> Subject: Subscription request
+> Date: Tue, 23 Sep 97 13:08:43 -0400
+> 
+> 
+> > developers about how they feel about it.  My second question is
+> > technical: Is there some way to make lclint output that can be parsed
+> > by emacs compilation mode?  The emacs command next-error allows
+> > visiting the file and line number of each file as reported from the
+> > compiler.  Actually I have only used it with gcc but I know that it
+> > works with other tools as well.  Another approach is to extend emacs
+> > to support the lclint output format.  Any information on this would be
+> > appreciated.  Sorry if these are commonly answered questions.
+> 
+> There is an emacs mode included with the lclint distribution in
+> emacs/lclint.el.  This defines lclint-next-error which will jump to the
+> line and column number of the next error message in your *lclint*
+> buffer.  Please see
+> http://lclint.cs.virginia.edu/guide/appH.html for more
+> information on emacs support.
+> 
+> --- Dave
+
+I don't know why there is a lclint.el file because the current emacs
+environment (version 20 and probably 19.34) seems to work just fine.  You
+just have to add an additional regex to make it fully understand the lclint
+error messages.  The emacs folks (RMS) will probably update the sources to
+automatically support lclint.  In the meantime, add the following into your
+.emacs file.  In version 20, font-lock highlighting will work as well.
+
+(eval-after-load
+ "compile"
+ '(let (
+        ;; similar to the first regexp in compile.el (v20), but also looks
+        ;; for a comma
+	(lclint
+	 "\\([a-zA-Z]?:?[^:( \t\n]+\\)[:(][ \t]*\\([0-9]+\\)\\([) \t]\\|\
+:\\|,\\([^0-9\n]\\|\\([0-9]+:\\)\\)\\)")
+	)
+      
+    (setq compilation-error-regexp-alist
+	  `((,lclint 1 2 5)
+	    ,@compilation-error-regexp-alist
+	    ))
+    ))
+
+
+-- 
+Albert L. M. Ting * alt@artisan.com * 408-487-5327 (phone) * 408-453-3500 (fax)
+Artisan Components, Inc., 2077 Gateway Place, Suite 300, San Jose, CA 95110 USA
+
+
+
+</pre>
+<A HREF="164.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="166.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

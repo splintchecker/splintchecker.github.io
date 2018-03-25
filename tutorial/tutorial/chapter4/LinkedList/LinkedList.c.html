@@ -1,0 +1,210 @@
+<html><head>
+<title>LinkedList.c</title>
+</head>
+
+<body>
+<PRE><CODE>
+/*1*/	#include "stddef.h"
+/*2*/	#include "stdlib.h"
+/*3*/	#include "stdio.h"
+/*4*/	
+/*5*/	#define MAX_LENGTH 20
+/*6*/	
+/*7*/	
+/*8*/	/*!Begin Typedefs!*/
+/*9*/	typedef struct emp_rec
+/*10*/	{
+/*11*/	  char LastName[MAX_LENGTH];
+/*12*/	  char FirstName[MAX_LENGTH];
+/*13*/	  double Salary;
+/*14*/	  struct emp_rec *next;
+/*15*/	}  emp_record;
+/*16*/	
+/*17*/	
+/*18*/	typedef emp_record *emp_list;
+/*19*/	/*!End Typedefs!*/
+/*20*/	
+/*21*/	
+/*22*/	
+/*23*/	/*!Begin copy_record!*/
+/*24*/	void copy_record(emp_record *a, emp_record *b)
+/*25*/	{
+/*26*/	  strncpy(a->LastName, b->LastName, MAX_LENGTH);
+/*27*/	  strncpy(a->FirstName, b->FirstName, MAX_LENGTH);
+/*28*/	  a->Salary = b->Salary;
+/*29*/	  a->next = b->next;
+/*30*/	}
+/*31*/	/*!End copy_record!*/
+/*32*/	
+/*33*/	
+/*34*/	void print_record(emp_record *e)
+/*35*/	{
+/*36*/	  printf("Last Name: %s\n", e->LastName);
+/*37*/	  printf("First Name: %s\n", e->FirstName);
+/*38*/	  printf("Salary: %.2f\n", e->Salary);
+/*39*/	}
+/*40*/	  
+/*41*/	
+/*42*/	/*!Begin emp_list_create!*/
+/*43*/	/*@null@*/ emp_list emp_list_create()
+/*44*/	{
+/*45*/	  return NULL;
+/*46*/	}
+/*47*/	/*!End emp_list_create!*/
+/*48*/	
+/*49*/	/*!Begin insert_record!*/
+/*50*/	emp_list insert_record(emp_list lst, emp_record *e)
+/*51*/	{
+/*52*/	  emp_record *new_record;
+/*53*/	  emp_record *curr = lst;
+/*54*/	  emp_record *prev = NULL;
+/*55*/	
+/*56*/	  for(; curr != NULL; prev=curr, curr=curr->next)
+/*57*/	    {
+/*58*/	      if (strcmp(e->LastName, curr->LastName) <= 0)
+/*59*/		break;
+/*60*/	    }
+/*61*/	  new_record = malloc(sizeof(*new_record));
+/*62*/	  copy_record(new_record, e); 
+/*63*/	  new_record->next = curr; 
+/*64*/	  if (prev == NULL)  /* inserting at the beginning */
+/*65*/	      lst = new_record;
+/*66*/	  else               /* inserting at the middle or end*/
+/*67*/	    prev->next = new_record;
+/*68*/	  return lst;
+/*69*/	}
+/*70*/	/*!End insert_record!*/
+/*71*/	
+/*72*/	emp_list delete_record(emp_list lst, char* lastname)
+/*73*/	{
+/*74*/	 
+/*75*/	  emp_record *curr = lst;
+/*76*/	  emp_record *prev = NULL;
+/*77*/	
+/*78*/	  for(; curr != NULL; prev=curr, curr=curr->next)
+/*79*/	    {
+/*80*/	      if (strcmp(curr->LastName, lastname) == 0)
+/*81*/		break;
+/*82*/	    }
+/*83*/	
+/*84*/	  if (curr == NULL)
+/*85*/	    {
+/*86*/	      printf("delete_record: Employee named %s not found\n", lastname);
+/*87*/	      return lst;
+/*88*/	    }
+/*89*/	
+/*90*/	  if (prev == NULL) 
+/*91*/	      lst = lst->next;   
+/*92*/	  else
+/*93*/	      prev->next = prev->next->next;
+/*94*/	  free(curr);
+/*95*/	  return lst;
+/*96*/	}    
+/*97*/	  
+/*98*/	
+/*99*/	
+/*100*/	emp_record* find_record(emp_list lst, char* lastname)
+/*101*/	{
+/*102*/	  
+/*103*/	  emp_record *curr = lst;
+/*104*/	  emp_record *prev = NULL;
+/*105*/	
+/*106*/	  for(; curr != NULL; prev=curr, curr=curr->next)
+/*107*/	    {
+/*108*/	      if (strcmp(curr->LastName, lastname) == 0)
+/*109*/		return curr;
+/*110*/	    }
+/*111*/	  
+/*112*/	  printf("find_record: Employee named %s not found\n", lastname);
+/*113*/	  return NULL;  
+/*114*/	}
+/*115*/	
+/*116*/	
+/*117*/	void print_list(emp_list lst)
+/*118*/	{
+/*119*/	  
+/*120*/	  emp_record *curr = lst;
+/*121*/	  emp_record *prev = NULL;
+/*122*/	
+/*123*/	  for(; curr != NULL; prev=curr, curr=curr->next)
+/*124*/	    {    
+/*125*/	      print_record(curr); 
+/*126*/	      printf("\n");
+/*127*/	    }
+/*128*/	}
+/*129*/	
+/*130*/	
+/*131*/	/*!Begin test_bench!*/
+/*132*/	emp_list add_employees(emp_list lst);
+/*133*/	
+/*134*/	int main()
+/*135*/	{
+/*136*/	  emp_record *zim = malloc(sizeof(*zim));
+/*137*/	  emp_list test_list = emp_list_create();
+/*138*/	  
+/*139*/	  printf("Adding employees...\n\n"); 
+/*140*/	  test_list = add_employees(test_list);
+/*141*/	  printf("Employee list:\n");
+/*142*/	  print_list(test_list);  
+/*143*/	
+/*144*/	  printf("Removing from the middle...\n\n");
+/*145*/	  test_list = delete_record(test_list, "Hatton");
+/*146*/	  printf("Employee list:\n");
+/*147*/	  print_list(test_list);
+/*148*/	
+/*149*/	  printf("Removing the first...\n\n");
+/*150*/	  test_list = delete_record(test_list, "Bodycombe");
+/*151*/	  printf("Employee list:\n");
+/*152*/	  print_list(test_list);
+/*153*/	
+/*154*/	  printf("Inserting an employee at the end...\n\n");
+/*155*/	  strncpy(zim->LastName,"Zimmerman", MAX_LENGTH);
+/*156*/	  strncpy(zim->FirstName, "Phillip", MAX_LENGTH);
+/*157*/	  zim->Salary = 8000.50;
+/*158*/	  zim->next = NULL;
+/*159*/	  test_list = insert_record(test_list, zim);
+/*160*/	  printf("Employee list:\n");
+/*161*/	  print_list(test_list);
+/*162*/	  
+/*163*/	  printf("Finding salary of employee Smullyan...\n\n");
+/*164*/	  free(zim);
+/*165*/	  zim = find_record(test_list, "Smullyan");
+/*166*/	  printf("Salary of Smullyan is: %.2f\n", zim->Salary);
+/*167*/	
+/*168*/	
+/*169*/	  printf("Revmoing the last employee(Zimmerman)...\n\n");
+/*170*/	  test_list = delete_record(test_list, "Zimmerman");
+/*171*/	  printf("Employee list:\n");
+/*172*/	  print_list(test_list);
+/*173*/	  
+/*174*/	
+/*175*/	  return 0;
+/*176*/	
+/*177*/	}
+/*178*/	
+/*179*/	
+/*180*/	emp_list add_employees(emp_list lst)
+/*181*/	{
+/*182*/	  emp_record *e = malloc(sizeof(*e));
+/*183*/	
+/*184*/	  FILE *fp = fopen("emp_data.txt", "r");
+/*185*/	  char ln[MAX_LENGTH];
+/*186*/	  char fn[MAX_LENGTH];
+/*187*/	  float sal;
+/*188*/	
+/*189*/	  char Line[3*MAX_LENGTH];
+/*190*/	  while(fgets(Line, 3*MAX_LENGTH+1, fp))
+/*191*/	    {
+/*192*/	      sscanf(Line, "%s%s%f", ln, fn, &sal);  
+/*193*/	      strncpy(e->LastName, ln, MAX_LENGTH);
+/*194*/	      strncpy(e->FirstName, fn, MAX_LENGTH);
+/*195*/	      e->Salary=sal;
+/*196*/	      lst = insert_record(lst, e);
+/*197*/	    }
+/*198*/	  return lst;
+/*199*/	}
+/*200*/	/*!End test_bench!*/
+/*201*/	
+/*202*/	
+</PRE></CODE>
+</body></html>

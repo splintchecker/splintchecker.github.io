@@ -1,0 +1,27 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/sample/useiters'
+lclint +lh -weak +showscan +stats -macrovarprefixexclude +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.0 --- 21 Feb 96
+
+Warning: setting +showscan redundant with current value
+Warning: setting +stats redundant with current value
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- no code errors found
+407 spec, 2969 source (1261 before pre-processing) lines in 4.40 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/sample/useiters'

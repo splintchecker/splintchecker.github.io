@@ -1,0 +1,194 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint - Release 2.5m</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<center><h2>
+LCLint Release 2.5m
+</h2>
+<b>25 May 2000</b>
+</center>
+<p>
+
+Release 2.5m is a minor upgrade to the last public release, <a
+href="release-2.4b.html">Version 2.4b</a>.  It is believed to fix all
+reported and reproducible bugs in Version 2.4b. 
+<p>
+<b><a href="download.html">Download</a></b>
+<p>
+
+<h3>Enhancements</h3>
+
+<b>-larchpath <em>path</em> and -lclimportdir <em>dir</em> flags</b>
+<blockquote>
+
+The LARCH_PATH and LCLIMPORTDIR environment variables can now be
+overridden using the command line flags <tt>-larchpath</tt> and <tt>-lclimportdir</tt>.
+
+</blockquote>
+
+<b>Syslog format string</b>
+<blockquote>
+Added special handling for "%m" in syslog format string (it does not consume an argument)
+  (tests2.4/syslog.c)
+</blockquote>
+
+<b>Hints for type errors</b>
+<blockquote>
+Better hints for type errors (in presence of pointers) added +charunsignedchar flag
+</blockquote>
+
+<b>alignof</b>
+<blockquote>
+Added support for gcc extentsion __alignof__ (tests2.4/alignof.c)
+</blockquote>
+
+<b>long long</b>
+<blockquote>
+Support LL and ULL constant designators and long long and unsigned long long types (in C99) (suggested by Martin Smoot)
+</blockquote>
+
+<b>Win32 command line wildcards</b>
+<blockquote>
+Support wildcards in Win32 command lines (by linking with setargv.obj).
+</blockquote>
+
+<h3>Bug Fixes</h3>
+
+<b>Case Markers</b>
+<blockquote>
+
+Fixed case/default parsing by making them markers instead of statements (<tt>switch (p) { case 2: }</tt> produced a parse error). (See tests2.4/emptycase.c.)
+<p>
+
+<b>Switch Body Structure</b>
+Fixed symbol table structure to support unstructured cases:
+<pre>
+    switch(a) {
+    case 1:   
+      while (c>3) {
+	case 3: ++c;
+      }
+    }     
+</pre>
+
+In the hope that this won't encourage more code like this!  (See
+tests2.4/duffs.c, bug1.c, bug2.c, bug3.c.)
+</blockquote>
+
+<b>Label Parsing</b>
+<blockquote>
+Fixed label parsing to handle labels not followed by statements (Reported by N. Komazaki) (See tests2.4/komazi.c.)
+</blockquote>
+
+<b>Pre-processor Definitions with Parameters</b>
+<blockquote>
+Fixed pre-processor bug handling command line definitions with
+  parameters (e.g., <tt>lclint '-D__P(x)=x'</tt>)
+  (tests2.4/cpptest.c)
+</blockquote>
+
+<b>Pre-processor Handling</b>
+<blockquote>
+Fixed handling of spaces in command line definitions (-D X=3)
+  (reported by Daniel Barker) (tests2.4/command line)
+<p>
+Incorporated pre-processor fix sent in by N. Komazaki
+<p>
+Fixed handling of "#" (empty) in cpp (reported by Ulrich Ottersbach) (tests2.4/ulrich.c)
+<p>
+Added warning for comment open ("/*") inside comment (tests2.4/innercomment.c)
+</blockquote>
+
+
+<b>LCL pathnames</b>
+<blockquote>
+Fixed handling of direct pathnames in lcl files (reported by Dana Harrington)
+  (tests2.4/subdir/main.lcl)
+</blockquote>
+
+<b>Function Pointer Declarations</b>
+<blockquote>
+Fixed handling of function pointer declarations like,
+<tt>void (**(sig_func))(void);</tt>.  (reported by Buck Hodges) (tests2.4/enumtest.c)
+</blockquote>
+
+<b>Nested static declarations</b>
+<blockquote>
+Fixed handling of static function declarations inside method scopes (tests2.4/nothing.c)
+</blockquote>
+
+<b>printf %n format</b>
+<blockquote>
+Fixed handling of %n printf format.  It should be /*@out@*/ int *
+  (tests2.4/print.c)
+</blockquote>
+
+<b>enum initializers</b>
+<blockquote>
+Added checking for enum members types (using initializers)
+</blockquote>
+
+<b>enum parsing</b>
+<blockquote>
+Fixed parsing of undefined system-like identifiers in enum member lists (reported
+  by Steve Fink)
+  (tests2.4/fink.c)
+</blockquote>
+
+<b>gcc __extension__ keyword</b>
+<blockquote>
+Fixed handling of gcc extension __extension__ (should not be treated
+  as a token)
+  (tests2.4/driverstub.c)
+</blockquote>
+
+<b>Hex Constants</b>
+<blockquote>
+Hexidecimal constants (e.g., <tt>0xFF</tt>) are typed as unsigned, but decimal
+constants are signed.
+</blockquote>
+
+<b>Compound member designator in offsetof</b>
+<blockquote>
+Fixed parsing of offsetof expressions, like:
+<pre>
+typedef struct { union { int i; } u; } S;
+int main() { return (int)offsetof(S, u.i); }
+</pre>
+</blockquote>
+
+<b>Bitfield casts</b>
+<blockquote>
+An internal error is raised for casts in bitfield widths:
+<pre>
+typedef unsigned S;
+typedef struct {
+  unsigned u : ((S)4);
+} T;
+</pre>
+</blockquote>
+
+<!--#include virtual="footer.html"-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

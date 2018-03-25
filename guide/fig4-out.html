@@ -1,0 +1,29 @@
+<h3>LCLint Output</h3>
+<pre>
+LCLint 2.2 --- 25 Aug 96
+
+modify.c: (in function setx)
+<A HREF="modify.c.html#line4" target="source">modify.c:4,3</A>: Undocumented modification of *y: *y = *x
+  An externally-visible object is modified by a
+  function, but not listed in its modifies clause.
+  (-mods will suppress message)
+<A HREF="modify.c.html#line5" target="source">modify.c:5,1</A>: Suspect object listed in modifies of
+                 setx not modified: *x
+  An object listed in the modifies clause is not
+  modified by the implementation of the function. The
+  modification may not be detected if it is done
+  through a call to an unspecified function. (-mustmod
+  will suppress message)
+   <A HREF="modify.c.html#line1" target="source">modify.c:1,6</A>: Declaration of setx
+<A HREF="modify.c.html#line1" target="source">modify.c:1,6</A>: Function setx exported but not declared
+                 in header file
+  A declaration is exported, but does not appear in a
+  header file. (-exportheader will suppress message)
+   <A HREF="modify.c.html#line5" target="source">modify.c:5,1</A>: Definition of setx
+<A HREF="modify.c.html#line7" target="source">modify.c:7,6</A>: Function sety exported but not declared
+                 in header file
+   <A HREF="modify.c.html#line11" target="source">modify.c:11,1</A>: Definition of sety
+
+Finished LCLint checking --- 4 code errors found
+</pre>
+</html>

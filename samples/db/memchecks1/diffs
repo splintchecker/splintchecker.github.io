@@ -1,0 +1,114 @@
+diff standardchecks//drive.c memchecks1//drive.c
+12c12
+< int main(int argc, char *argv[]) 
+---
+> int main (int argc, /*@unused@*/ char *argv[]) 
+49c49
+<       employee_setName(&e, na);
+---
+>       assert (employee_setName(&e, na));
+65c65
+<       employee_setName(&e, na);
+---
+>       assert (employee_setName(&e, na));
+83c83
+<       employee_setName(&e, na);
+---
+>       assert (employee_setName(&e, na));
+120c120
+<       employee_setName(&e, na);
+---
+>       assert (employee_setName(&e, na));
+132c132
+<   printf("Should print 4: %d\n", j); 
+---
+>   printf("Should print 4: %d\n", /*@-usedef@*/ j /*@=usedef@*/); 
+135c135
+<   fire(17);
+---
+>   assert (fire(17));
+159c159
+<   fire(empset_choose(em3).ssNum);
+---
+>   assert (fire(empset_choose(em3).ssNum));
+diff standardchecks//employee.lcl memchecks1//employee.lcl
+50a51
+>   modifies internalState;
+diff standardchecks//empset.c memchecks1//empset.c
+22c22
+< bool empset_insert (empset s, employee e) 
+---
+> bool /*@alt void@*/ empset_insert (empset s, employee e) 
+49c49
+< bool empset_delete (empset s, employee e) 
+---
+> bool /*@alt void@*/ empset_delete (empset s, employee e) 
+diff standardchecks//empset.lcl memchecks1//empset.lcl
+21c21
+< bool empset_insert(empset s, employee e) 
+---
+> | bool : void | empset_insert(empset s, employee e) 
+34c34
+< bool empset_delete(empset s, employee e) 
+---
+> | bool : void | empset_delete(empset s, employee e) 
+84a85
+>   modifies internalState;
+diff standardchecks//erc.c memchecks1//erc.c
+27c27
+<       exit (1);
+---
+>       exit (EXIT_FAILURE);
+74c74
+<       exit (1);
+---
+>       exit (EXIT_FAILURE);
+127c127
+<       exit (1);
+---
+>       exit (EXIT_FAILURE);
+diff standardchecks//erc.h memchecks1//erc.h
+15c15
+< # define erc_choose(c) ((c->vals)->val)
+---
+> # define erc_choose(c) (((c)->vals)->val)
+diff standardchecks//erc.lcl memchecks1//erc.lcl
+25c25
+< bool erc_delete(erc c, eref er) 
+---
+> | bool : void | erc_delete(erc c, eref er) 
+95a96
+>   modifies internalState;
+diff standardchecks//eref.c memchecks1//eref.c
+25c25
+< 	  exit (1);
+---
+> 	  exit (EXIT_FAILURE);
+35c35
+< 	  exit (1);
+---
+> 	  exit (EXIT_FAILURE);
+53c53
+<   if (needsInit == FALSE) 
+---
+>   if (!needsInit) 
+67c67
+<       exit (1);
+---
+>       exit (EXIT_FAILURE);
+75c75
+<       exit (1);
+---
+>       exit (EXIT_FAILURE);
+diff standardchecks//eref.h memchecks1//eref.h
+24c24
+< # define eref_assign(er, e)   (eref_Pool.conts[er] = e) 
+---
+> # define eref_assign(er, e)   (eref_Pool.conts[er] = (e))
+26c26
+< # define eref_equal(er1, er2) (er1 == er2) 
+---
+> # define eref_equal(er1, er2) ((er1) == (er2))
+diff standardchecks//ereftab.lcl memchecks1//ereftab.lcl
+29a30
+>   modifies internalState;

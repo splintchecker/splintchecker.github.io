@@ -1,0 +1,93 @@
+<A NAME="line0"></A><html><head>
+<title>returned.c</title>
+</head><body>
+<h3>returned.c</h3>
+<PRE>
+<A NAME="line1"></A>#include "<A HREF="intSet.h.html">intSet.h</A>"
+<A NAME="line2"></A> 
+<A NAME="line3"></A>extern intSet intSet_insert  
+<A NAME="line4"></A>   (/*@returned@*/ intSet s, int x);
+<A NAME="line5"></A> 
+<A NAME="line6"></A>/*
+<A NAME="line7"></A>** with returned, no error is reported, since the same
+<A NAME="line8"></A>** storage is returned from insert, and returned 
+<A NAME="line9"></A>** from intSet_singleton as an implicit only result.
+<A NAME="line10"></A>*/
+<A NAME="line11"></A> 
+<A NAME="line12"></A>intSet intSet_singleton (int x)
+<A NAME="line13"></A>{
+<A NAME="line14"></A>   return (intSet_insert (intSet_new (), x));
+<A NAME="line15"></A> }
+<A NAME="line16"></A> 
+<A NAME="line17"></A>/*
+<A NAME="line18"></A>** without returned:
+<A NAME="line19"></A>*/
+<A NAME="line20"></A> 
+<A NAME="line21"></A>extern intSet intSet_insert2 (intSet s, int x);
+<A NAME="line22"></A> 
+<A NAME="line23"></A>intSet intSet_singleton2 (int x)
+<A NAME="line24"></A>{
+<A NAME="line25"></A>  return (intSet_insert2 (intSet_new (), x));
+<A NAME="line26"></A>}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

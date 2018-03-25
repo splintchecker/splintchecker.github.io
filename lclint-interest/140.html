@@ -1,0 +1,74 @@
+<h3>lclint-interest message 140</h3>
+<pre>
+From:	Jens Schweikhardt [Schweikhardt@rus.uni-stuttgart.de]
+Sent:	Friday, May 09, 1997 4:46 AM
+To:	Conor O'Neill
+Cc:	lclint-interest@larch.lcs.mit.edu
+Subject:	Re: Problems with Solaris system include files
+
+Conor,
+
+Hi all,
+
+We have built lclint on a Sparc Solaris 2.5.1 machine using GCC 2.7.2 It
+built fine and "build test" also ran fine but when we try to lint
+anything that includes system include files, it falls over with error
+messages indicating that we should send bug reports. We have set the
+switches to the most "slack" setting but it gives non-stop internal
+error problems in things like types.h.  Should we be using GNU libc or
+something?  Anyone else had this problem?
+ 
+Did you try the following flags? They helped me most of the time to get
+around various problems related to vendor extensions and such.  Note
+however, that this may only work for pure ISO C or POSIX sources because
+lclint knows about those headers internally.  
+
+   skipansiheaders 
+      prevent inclusion of header files in a system directory with names
+      that match standard ANSI headers. The symbolic information in the
+      standard library is used instead.  Flag in effect only if a library
+      including the ANSI library is loaded.  The ANSI headers are: assert,
+      ctype, errno, float, limits, locale, math, setjmp, signal, stdarg,
+      stddef, stdio, stdlib, strings, string, time, and wchar.  
+      Categories: directories, files 
+      Default Setting: + 
+      Set locally 
+
+   skipposixheaders
+      prevent inclusion of header files in a system directory with names
+      that match standard POSIX headers. The symbolic information in the
+      posix library is used instead.  The POSIX headers are: dirent,
+      fcntl, grp, pwd, termios, sys/stat, sys/times, sys/types,
+      sys/utsname, sys/wait, unistd, and utime.  Categories:
+      directories, files 
+      Default Setting: + 
+      Set locally
+
+   neverinclude
+     optimize header inclusion to not include any header files
+     Categories: headers, performance
+     Default Setting: -
+     Set globally only
+     Ignore header includes. Only works if relevant information is
+     loaded from a library.
+
+Jens
+--
+Jens Schweikhardt
+http://www.uni-stuttgart.de/People/schweikhardt/home.html 
+</pre>
+<A HREF="139.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="141.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

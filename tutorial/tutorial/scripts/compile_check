@@ -1,0 +1,4 @@
+#!/usr/cs/bin/bash
+echo "Compilation Errors: "
+cd $1
+for file in *.c; do $GCC -c $file -o $file.o; done

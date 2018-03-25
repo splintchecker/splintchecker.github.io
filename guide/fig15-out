@@ -1,0 +1,14 @@
+LCLint 2.2 --- 25 Aug 96
+
+null.c: (in function firstChar1)
+<A HREF="null.c.html#line3" target="source">null.c:3,11</A>: Dereference of possibly null pointer s:
+                *s
+  A possibly null pointer is dereferenced.  Value is
+  either the result of a function which may return
+  null (in which case, code should check it is not
+  null), or a global, parameter or structure field
+  declared with the null qualifier. (-nullderef will
+  suppress message)
+   <A HREF="null.c.html#line1" target="source">null.c:1,35</A>: Storage s may become null
+
+Finished LCLint checking --- 1 code error found

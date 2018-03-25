@@ -1,0 +1,40 @@
+<h3>lclint-interest message 122</h3>
+<pre>
+From evans@cs.virginia.edu Tue Nov 26 11:39:48 1996
+Date: Tue, 26 Nov 96 10:52:18 -0500
+From: evans@cs.virginia.edu (David Evans)
+To: alt@vlibs.com
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: "Albert L. Ting"'s message of Mon, 25 Nov 1996 13:14:52 -0800 (PST) <199611252114.NAA12225@seal.vlibs.com>
+Subject: lclint format-type question
+
+
+Type checking for printf format codes is enabled in -weak mode, the
+difference is the type checking --- since char and int are equivalent in
+weak mode, lclint will not report an error when a char is printed using
+%d, etc.  It will, for instance, report and error when a float is
+printed as %d.  
+
+If this is what you have in mind, then you would need to set -charint to
+get the errors reported in printf's (as elsewhere).  If there is some
+other kind of error you expect but aren't getting, let me know.
+
+--- Dave
+
+
+</pre>
+<A HREF="121.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="123.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

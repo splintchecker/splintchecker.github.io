@@ -1,0 +1,57 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/checkchecks2'
+lclint +lh +checks -allimponly +allmacros +showsummary  +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+< checking empset.c >
+empset.c:38,6: Function empset_insertUnique inconsistently redeclared with
+                  known in globals list
+  A function, variable or constant is redefined with a different type. Use
+  -incondefs to suppress message.
+   empset.lcl:27: Specification of empset_insertUnique
+empset.c: (in function empset_disjointUnion)
+empset.c:86,7: Called procedure empset_insertUnique may access global known
+  A checked global variable is used in the function, but not listed in its
+  globals clause. By default, only globals specified in .lcl files are checked.
+  To check all globals, use +allglobals. To check globals selectively use
+  /*@checked@*/ in the global declaration. Use -globs to suppress message.
+empset.c:144,6: Function empset_initMod inconsistently redeclared with known in
+                   globals list
+   empset.lcl:83: Specification of empset_initMod
+empset.c: (in function empset_initMod)
+empset.c:148,24: Function returns with global known undefined
+  A global variable does not satisfy its annotations when control is
+  transferred. Use -globstate to suppress message.
+   empset.lcl:83: Storage known becomes undefined
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+incondefs                    2           0
+usedef                       0           1
+exporttype                   0           5
+globs                        1           0
+macroempty                   0           1
+compdef                      0           1
+sizeoftype                   0           6
+globstate                    1           0
+                          ========  =========
+Total:                       4          14
+
+Finished LCLint checking --- 4 code errors found
+391 spec, 2985 source (1270 before pre-processing) lines in 4.28 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/checkchecks2'

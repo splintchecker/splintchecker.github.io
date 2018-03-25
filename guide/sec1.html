@@ -1,0 +1,112 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint User's Guide - Section 1: Overview</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<a name="overview">
+<H1>
+<center>
+LCLint User's Guide<BR>
+</center>
+</H1>
+
+LCLint is a tool for statically checking C programs.  With minimal effort,
+LCLint can be used as a better lint.<a href="guide_fn.html#fn1">[1]</a>  If
+additional effort is invested adding annotations to programs, LCLint can
+perform stronger checks than can be done by any standard lint.<p>
+<p>
+Some problems detected by LCLint include:<p>
+<ul>
+<li>	Violations of information hiding.  A user-defined type can be declared
+as <i>abstract</i>, and a message is reported where code inappropriately
+depends on the representation of the type.  (<a href="sec3.html">Section 3</a>) <p>
+<li>	Inconsistent modification of caller-visible state.  Functions can be
+annotated with information on what caller-visible state may be modified by the
+function, and an error is reported if the modifications produced by the
+function contradict its declaration.  (<a href="sec4.html#sec-4.1">Section 4.1</a>)<p>
+<li>	Inconsistent use of global variables.  Information on what global and
+file scope variables a function may use can be added to function declarations,
+and a message is reported if the implementation of the function uses other
+global variables or does not uses every global variable listed in its
+declaration.  (<a href="sec4.html#sec-4.2">Section 4.2</a>)<p>
+<li>	Memory management errors.  Instances where storage that has been
+deallocated is used, or where storage is not deallocated (memory leaks).
+(<a href="sec5.html#sec-5">Section 5</a>)<p>
+<li>	Dangerous data sharing or unexpected aliasing.  Parameters to a function
+share storage in a way that may lead to undefined or undesired behavior, or a
+reference to storage within the representation of an abstract type is created.
+(<a href="sec6.html#sec-6">Section 6</a>)<p>
+<li>	Using possibly undefined storage or returning storage that is not
+completely defined (except as documented).  (<a href="sec7.html#sec-7.1">Section 7.1</a>)<p>
+<li>	Dereferencing a possibly null pointer.  (<a href="sec7.html#sec-7.2">Section 7.2</a>)<p>
+<li>	Dangerous macro implementations or invocations. (<a href="sec8.html#sec-8">Section 8</a>)<p>
+<li>	Violations of customizable naming conventions. (<a href="sec9.html#sec-9">Section 9</a>)<p>
+<li>	Program behavior that is undefined because it depends on order of
+evaluation, likely infinite loops, fall-through cases, incomplete logic,
+statements with no effect, ignored return values, unused declarations, and
+exceeding certain standard limits.  (<a href="sec10.html#sec-10">Section 10</a>)<p>
+</ul>
+<p>
+LCLint checking can be customized to select what classes of errors are reported
+using command line flags and stylized comments in the code.<p>
+<p>
+
+This document is a guide to using LCLint.  <a
+href="sec1.html#sec-1">Section 1</a> is a brief overview of the design
+goals of LCLint. <a href="sec2.html#sec-2">Section 2</a> explains how
+to run LCLint, interpret messages produce, and control
+checking. Sections <a href="sec3.html">3</a>-<a href="sec10.html">10</a> describe particular checks done by LCLint.
+
+<h2>
+1. Overview
+</h2>
+
+The main goals for LCLint are to:<p>
+<ul>
+<li>	Detect a large number of bugs in typical C programs, without producing
+an unacceptable number of spurious messages.  We are willing to accept the
+possibility that a few spurious messages are produced as long as it enables
+significantly more powerful checking and the spurious messages can be
+suppressed easily.<p>
+<li>	Support a programming methodology involving abstract types and clean,
+documented interfaces in standard C programs.<p>
+<li>	Provide a gradual transition for programmers.  LCLint can be used like a
+better standard lint with minimal effort.  Adding a few annotations to programs
+enables significantly better checking.  As more effort is put into annotating
+programs, better checking results. A representational effort/benefit curve for
+using LCLint is shown in Figure 1 (not available in HTML format).  As
+different checks are turned on and more information is given in code
+annotations the number of bugs that can be detected increases dramatically. <p>
+<li>	Provide enough flexibility so that LCLint can be used effectively with a
+wide range of coding styles.  Especially important is making it easy to use
+LCLint effectively to maintain and modify legacy code.<p>
+<li>	Check programs quickly and with no user interaction.  LCLint
+runs faster than most compilers.  Libraries can be used to enable fast
+checking of a few modules in a large program.
+</ul>
+<p>
+
+LCLint does many of the traditional lint checks including unused declarations,
+type inconsistencies, use-before-definition, unreachable code, ignored return
+values, execution paths with no return, likely infinite loops, and fall-through
+cases.  This document focuses on more powerful checks that are made
+possible by additional information given in source code annotations. <a
+href="guide_fn.html#fn2">[2]</a>  Annotations are stylized comments that
+document certain assumptions about functions, variables, parameters, and types.
+They may be used to indicate where the representation of a user-defined type is
+hidden, to limit where a global variable may be used or modified, to constrain
+what a function implementation may do to its parameters, and to express checked
+assumptions about variables, types, structure fields, function parameters, and
+function results.  In addition to the checks specifically enabled by
+annotations, many of the traditional lint checks are improved by exploiting
+this additional information.
+<p>
+<b>Next: <A HREF="sec2.html">Operation</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+<!--#include virtual="footer.html"-->
+

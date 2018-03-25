@@ -1,0 +1,56 @@
+<h3>lclint-interest message 111</h3>
+<pre>
+From mikee@rd.bbc.co.uk Wed Oct 16 14:01:59 1996
+X-Mailer: exmh version 1.6.7 5/3/96
+To: lclint-interest@larch.lcs.mit.edu
+Cc: mikee@rd.bbc.co.uk
+Subject: LCLint and indent
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Wed, 16 Oct 1996 13:31:46 +0100
+From: Mike Ellis <mikee@rd.bbc.co.uk>
+
+Hiya!
+
+I've just started to set up a new project with automagic makefiles to do 
+everything for me.  This includes,  as part of the compilation phase,  
+running both indent and lclint over the code.  However,  I've come unstuck 
+as my version of indent seems to insist on mangling lclint's embedded 
+comments,  thus
+"/*@unused@*/" becomes "/* @unused@ */" and so on.  
+
+LClint (V2.2a) seems unable to cope with this and simply ignores the 
+comments,  thus causing all sorts of warnings to appear.  Has anyone else 
+experienced this problem and found a solution?  I could re-install a hacked 
+version of LCLint where "/*@" and "/* @" were equivalent,  but I'd rather 
+not have to do this if there is a better way.
+
+Thanks in advance,
+
+Mike.
+
+-- 
+      Mike Ellis,  Research and Development Engineer,  BBC R & D
+mike.ellis@rd.bbc.co.uk  DDI:(+44) 1737 836663   Fax:(+44) 1737 836667
+BBC R&D, Kingswood Warren, Woodland Way, Tadworth, Surrey KT20 6NP, UK
+Any opinions expressed are my own and may not reflect those of the BBC 
+
+
+
+
+</pre>
+<A HREF="110.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="112.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

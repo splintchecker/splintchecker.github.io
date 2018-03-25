@@ -1,0 +1,218 @@
+<html
+<head>
+<title> LCLint Sample - Weak Checks</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<h1>
+LCLint Sample - Weak Checks<BR>
+</h1>
+
+Here, we look run LCLint in <TT>-weak</TT> mode to detect the most
+obvious anomalies.
+
+<H3> Changes from <A HREF="../original/index.html">Original</A> </H3>
+
+<A HREF="diffs.html">Differences</A>
+<p>
+
+This is the original version with LSL dependancies removed.  The
+specifications are less expressive, since there is no way of describing
+the underlying semantics.  Parts of the specification which rely on LSL
+traits (e.g., more ensures and requires clause) have been replaced with
+comments.  LCLint checking does not exploit anything from LSL, however,
+and this version can be run without installing lsl on your system.
+<P>
+
+A few other changes were made:
+<UL>
+<LI> Replaced <TT>stdio.lcl</TT> with the standard <A
+HREF="imports-stdio.lcl.html">stdio.lcl</A> specification.  This is in the
+<TT>imports/</TT> directory in the release package, and is imported
+using <tt>imports &ltstdio&gt</tt>.
+	
+<LI> Replaced <TT>bool.h</TT> with the standard <A
+HREF="bool.h.html">bool.h</A> from the <TT>lib/</TT> directory in the release package.
+
+<LI> Added <TT>#include</TT>'s for necessary system library headers.
+
+<LI> Changed format of code to improve readability. In later
+directories, no superfluous changes will be made, so <TT>diff</TT> can be used to compare files.
+
+</UL>
+
+<H3> Modules </H3>
+
+<UL>
+<LI>employee - employee datatype (<A HREF="employee.lcl.html">LCL</A>,
+<A HREF="employee.c.html">Code</A>,  <A HREF="employee.h.html">Header</A>)
+<LI>empset - sets of employees (<A HREF="empset.lcl.html">LCL</A>,
+<A HREF="empset.c.html">Code</A>,  <A HREF="empset.h.html">Header</A>)
+<LI>dbase - database of employees (<A HREF="dbase.lcl.html">LCL</A>, 
+<A HREF="dbase.c.html">Code</A>,  <A HREF="dbase.h.html">Header</A>)
+<LI>eref - reference to an employee (<A HREF="eref.lcl.html">LCL</A>,
+<A HREF="eref.c.html">Code</A>,  <A HREF="eref.h.html">Header</A>)
+<LI>erc - collection of erefs (<A HREF="erc.lcl.html">LCL</A>, <A
+HREF="erc.c.html">Code</A>,  <A HREF="erc.h.html">Header</A>)
+<LI>ereftab - table of employees and erefs (<A
+HREF="ereftab.lcl.html">LCL</A>, <A HREF="ereftab.c.html">Code</A>, <A HREF="ereftab.h.html">Header</A>)
+</UL>
+
+<H3> Running LCLint </h3>
+
+<A HREF="run.html">Run LCLint</A>
+<P>
+Running <tt>make lint</tt> produces the <A HREF="lclint.out.html">16 error
+messages</A> (the same as were found for <A
+HREF="../original/index.html">original</A>, except with slightly
+different locations because of the format changes). 
+<P> 
+Four errors involve <A HREF="../../../guide/guide.html#sec-10.4">unused variables</A>:
+<PRE>
+<A HREF="empset.c.html#line28">empset.c:28,8</A>: Variable er declared but not used
+<A HREF="empset.c.html#line135">empset.c:135,12</A>: Variable e declared but not used
+<A HREF="dbase.c.html#line210">dbase.c:210,8</A>: Variable er declared but not used
+<A HREF="dbase.c.html#line211">dbase.c:211,12</A>: Variable e declared but not used
+</PRE>
+These are fixed simply by deleting the declaration.
+<P>
+Two errors involve <A href="../../../guide/guide.html#sec-3">abstraction violations</a>:
+<PRE>
+<A HREF="erc.c.html#line46">erc.c:46,9</A>: Operands of == are abstract type (eref): tmpc->val == er
+<A HREF="erc.c.html#line77">erc.c:77,11</A>: Operands of == are abstract type (eref): elem->val == er
+</PRE>
+<P>
+Since <TT>eref</TT> is an <A
+HREF="../../guide/guide.html#abstracttypes">abstract type</A>, code
+outside the <TT>eref</TT> module should not depend on its
+representation, and the <TT>==</TT> operator does.  Instead, the code should use <TT>eref_equal</TT> to compare <TT>eref</TT>'s.
+<P>
+Two errors involve <A href="../../../guide/guide.html#sec-3.4">incompatible types</a>:
+<P>
+<PRE>
+<A HREF="employee.c.html#line24">employee.c:24,9</A>: Function strncmp expects arg 3 to be size_t gets int:
+                    maxEmployeeName
+<A HREF="erc.c.html#line139">erc.c:139,27</A>: Function malloc expects arg 1 to be size_t gets int:
+                 erc_size(c) * (employeePrintSize + 1) + 1
+</PRE>
+<P>
+
+Since size_t is an arbitrary integral type, an int cannot be used where
+a size_t is expected.  The maxEmployeeName constant is declare in
+employee.lcl:
+
+<P>
+<PRE>
+   constant int maxEmployeeName;
+</PRE>
+<P>
+We change this to:
+<P>
+<PRE>
+   imports &ltstdio&gt ;  /* need stdio for size_t */
+
+   constant size_t maxEmployeeName;
+</PRE>
+<P>
+This leads to a new error in employee_setName:
+<P>
+<PRE>
+<A HREF="employee.c.html#line11">employee.c:11,11</A>: Operands of == have incompatible types (int, size_t):
+                     i == maxEmployeeName
+</PRE>
+<P>
+Hence, we change the type of <TT>i</TT>, to <TT>size_t</TT>.
+<P>
+The other error, is because the argument to <tt>malloc</tt> should be a
+<tt>size_t</tt>.  We need to make sure the argument is positive --- informally, we know
+this because <tt>erc_size</tt> always returns a non-negative, and
+<tt>employeePrintSize</tt> is non-negative.  To confirm this in the code, we add
+the <TT>int_toSize</TT> function that converts an <tt>int</tt> to a
+<tt>size_t</tt> and reports a run-time errors if the conversion does not
+have the same value.
+<P>
+(It would make most sense to put this in some kind of utilities library,
+but since there is none, it is added to <A HREF="erc.c.html#line4">erc.c</A>.)
+<P>
+
+Now, no errors are reported.  Since <TT>+relaxquals</TT> is set in the weak mode,
+an int may be passed as a long without error, since it is safe to assume
+no information is lost when the implicit conversion from int to long is
+made.
+
+<P>
+
+Seven errors involve <A
+href="../../../guide/guide.html#sec-4.1">undocumented modifications</a> produced through calls
+to <TT>erc_iterStart</TT> in <TT>empset_disjointUnion</TT>,
+<tt>empset_union</tt>, <tt>empset_subset</tt>, <tt>ereftab_lookup</tt>,
+and <tt>erc_sprint</tt>.  We could fix the inconsistency by adding
+appropriate modifies clauses to these functions; however, this would be
+misleading since they should produce no client visible modification.
+The problem is that the modification caused by <tt>erc_iterStart</tt> is undone
+before the function returns, so no modification is visible to the
+client.  For the call in <tt>ereftab_lookup</tt>, this is not true, since the
+loop may exit without undoing the modification, leading to a memory
+leak.  This fixed by replacing the return with an invokation of the
+<tt>erc_iterReturn</tt> macro which undoes the modification.  The
+<TT>/*@-mods@*/</TT> and <TT>/*@=mods@*/</TT> stylized comments are used
+around the callsites, to suppress the modification error messages.  <P>
+
+<P>
+The final error,
+<P>
+<PRE>
+drive.c: (in function main)
+<A HREF="drive.c.html#line123">drive.c:123,4</A>: Return value (type db_status) ignored: hire(e)
+  Result returned by function call is not used.  If this is intended, can cast
+  result to (void) to eliminate message.  Use -retvalother to suppress message.
+</PRE>
+<P>
+
+Concerns an <A href="../../../guide/guide.html#sec-10.3.2">ignored
+result</a>.  The code should check the status code returned by <TT>hire</TT>.  
+<p>
+To do this we use a <tt>check</tt> macro,
+similar to the standard <tt>assert</tt>, except that it is guaranteed to
+evaluate its argument exactly once.
+
+The <tt>checks</tt> macro is added to <A
+HREF="bool-next.h.html#line34"><tt>bool.h</tt></A>.  It would make more
+sense in a general utilities file if there was one.)
+<p>
+This produces a macro variable <A
+href="../../../guide/guide.html#sec-9.2">namespace</a> error: 
+<pre>
+<A HREF="drive-next.c.html#line124">drive.c:124,14</A>: Variable m_res name is not a macro variable (it is a local
+    variable), but matches the macro variable namespace prefix "m_"
+  A variable declared outside a macro body starts with the macrovarprefix.  Use
+  -macrovarprefixexclude to suppress message.
+</pre>
+This error is produced because the <tt>check</tt> macro is expanded by
+LCLint, so the <tt>m_res</tt> name appears to be a local variable in
+violation of a naming convention.  This will be fixed in the <a
+href="../allmacros/index.html">Macros</a> iteration, and we will return
+to namespaces in <a href="../namechecks/index.html">Name Conventions</a>.
+For now, we add the <tt>-macrovarprefixexclude</tt> flag to suppress the
+message. 
+
+<P>
+<HR>
+<A HREF="run.html">
+<IMG ALIGN=left SRC =
+"http://larch-www.lcs.mit.edu:8001/larch/lclint/lclint-run.jpg" ALT = "Run LCLint"></A>
+<A HREF="../useiters/index.html">
+<IMG ALIGN=left SRC = "http://larch-www.lcs.mit.edu:8001/larch/lclint/right-arrow.jpg" ALT = "Continue to Use Iterators"></A>
+<A HREF="../index.html">
+<IMG ALIGN=left SRC = "http://larch-www.lcs.mit.edu:8001/larch/lclint/up-arrow.jpg" ALT = "Return to Summary"></A>
+<A HREF="http://larch-www.lcs.mit.edu:8001/larch/lclint/index.html">
+<IMG ALIGN=left SRC = "http://larch-www.lcs.mit.edu:8001/larch/lclint/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://larch-www.lcs.mit.edu:8001/~evs">David
+Evans</a> <br>
+<A href="http://larch-www.lcs.mit.edu:8001/">Systematic Program Development</A><br>
+<a
+href="mailto:evs@larch.lcs.mit.edu"><em>evs@larch.lcs.mit.edu</em></a>
+</author>
+</body>
+</html>
+

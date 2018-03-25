@@ -1,0 +1,255 @@
+<h3>lclint-interest message 88</h3>
+<pre>
+From ok@yallara.cs.rmit.EDU.AU Mon Jul  8 11:12:05 1996
+Date: Mon, 8 Jul 1996 16:31:54 +1000 (EST)
+From: Richard A OKeefe <ok@yallara.cs.rmit.EDU.AU>
+To: buechler@ateng.az.honeywell.com
+Cc: lclint-interest@larch.lcs.mit.edu, lclint@larch.lcs.mit.edu
+Subject: Re: Formal array size check request >    It is a bad idea to put formal parameter names in prototypes. >    To an audience concerned with writing correct code, I don't need >    to explain why.
+
+
+	Well, I like to think that I am concerned with writing correct code, but I
+	still need to have this explained.
+
+	I know that the formal parameters are ignored in the function
+	prototype, 
+
+"It ain't what we don't know that kills us,
+ it's what we do know that ain't so."
+
+Where _did_ you get the idea that formal parameter names are ignored?
+THEY ARE STILL SUBJECT TO PREPROCESSING.
+
+That is the problem.
+
+For example, suppose I put
+
+	extern void deluset(uset_ty set);
+
+in a header.  Then along comes an innocent user, and does
+
+	#define not_set 0
+	#define set 1
+	<< 100 lines >>
+	#include "header.h"
+
+Suddenly, in the guts of a header which the innocent user 
+(a) has no reason to look at, and
+(b) HAS NO POWER TO ALTER,
+the compiler complains about a syntax error.  The innocent user looks
+at the header, and sees nothing wrong.  Poor innocent user; no idea
+that the _compiler_ thinks the header now says
+
+	extern void deluset(uset_ty 1);
+
+Now in this example,
+ - the function name 'deluset' IS part of the documented interface
+ - the type name 'uset_ty' IS part of the documented interface
+ - the formal parameter name is NOT part of the documented interface.
+
+In short, as far as *usage* is concerned, the formal parameter names
+have only nuisance value.
+
+	but I thought that they were a good idea from the point of view
+	of making the code understandable.
+
+If you are relying on function prototypes instead of proper documentation,
+I pity you.  There is *much* more information you need to use a function
+properly than just the parameter names!
+
+	For instance, for which of the following prototypes will a coder
+	most likely get the parameter order correct?
+
+	char *strtok(char *, char *)
+
+	OR
+
+	char *strtok(char *token_string, char *separator_string)
+
+Well, I would actually write
+
+	extern char *strtok(char *, char const *);	/*2.5.1*/
+
+because the 'const' in the second parameter is required by the standard.
+For what it's worth, that's _exactly_ the prototype in
+/usr/include/string.h on this Solaris 2.5.1 system, the one I've commented.
+And you know what?  THE ABSENCE OF PARAMETER NAMES FROM THE PROTOTYPE
+DOES NOTHING TO HINDER CODING.  And do you know why?  BECAUSE PEOPLE LOOK
+AT THE MANUAL PAGE, NOT THE HEADER!
+
+In fact, the UNIX manual page illustrates perfectly the danger of relying
+too heavily on prototypes.  Here's the prototype in the manual page:
+
+     char *strtok(char *s1, const char *s2);
+
+I for one find "s1" and "s2" no help at all in figuring out which
+parameter does what.  If the manual page didn't have a paragraph of
+explanatory text, I wouldn't know _what_ to do with that function.
+
+
+	If then the function is defined as
+
+	char *strtok char *s1, char *s2)
+
+	what harm has been done?
+
+Well, even apart from the syntax error, quite a lot.  The persone who is
+_implementing_ the function is just as much a 'coder' as the person _using_
+it.  Good parameter names and good comments are a big help while writing
+a function.
+
+If you want parameter names in your prototypes for human readers,
+there is a way you can have names in perfect safety:
+
+    USE COMMENTS!
+
+For example, my own string library back in the dear old K&R days had
+function declarations like
+
+	extern char *strtok(/*char* buffer, char*separators*/);
+
+
+	I suppose there would be a problem if somebody changed the order
+	of the parameters in the definition without changing them in the
+	prototype.  There would be no check which would find this
+	change.  On the other hand, if there are no names, there is
+	still no check to find the change, and coders who mistakenly
+	used the old parameter ordering are still in big trouble when
+	they link to the function using the new ordering.
+
+Changing parameter order has nothing to do with the case, tra-la.
+
+You keep on assuming that the prototype (hidden away in a header which
+is chiefly of interest to the compiler)
+(a) is and ought to be separately written, not derived from the code
+(b) is and ought to be a primary source of documentation.
+(c) cannot provide information by means of comments.
+I vehemently deny all three propositions.  I claim that
+
+(a') the best way to "write" headers would be to have a tool which reads
+     a file foobar.c and spits out into foobar.h suitable declarations of
+     the externally visible identifiers.  On a SVr4 system, this could
+     be done by parsing the DWARF information in the ELF file, but it's
+     if anything easier to parse C...  Again on a SVr4 system, this could
+     be done by parsing the cscope.out file, but that basically _is_ C,
+     so there's little to gain.
+
+(b') a header is primarily a device for instructing a *compiler* about the
+     interface of a module; it need only contain the information that the
+     compiler needs.  Humans need more information and better organised.
+
+     At a *minimum*, structured comments extracted and formatted by a tool    
+     such as c2man (it's free, and very handy) should be used.  (If you
+     use Emacs as your editor, find-definition can take you to the function
+     definition where you can read these comments and not just be stuck with
+     the driblet of information misered out in a prototype)
+
+(c') comments are a perfectly good way of including extra information in
+     a header if you really want to, and they AREN'T subject to preprocessing
+     so AREN'T a danger.
+
+	> Many students are putting prototypes inside functions.
+	> I don't suppose I need to explain the dangers of this either.
+
+	Um, yes, please do.  Am I correct in believing that the problem
+	is that the student expects the extern declaration to be visible
+	only within the block in which is is defined, while in fact it
+	is visible for the rest of the translation unit?
+
+There are actually four dangers.
+One is that the rule is, as you point out, astonishing.
+Another is that you cannot trust compilers to get it right.
+Another is that some useful tools (cscope for one) don't understand them.
+The last is that it is simply in the wrong place, where the
+compiler cannot check it.
+
+The last one is perhaps the major problem:  the habit of putting
+function prototypes inside functions is also the habit of *not* putting
+them in headers and *not* arranging for the compiler to include the header
+when it translates the module exporting the function.  In fact, I have
+*never* seen such a function prototype which was still valid after
+nontrivial maintenance.  (I have converted >100 000 lines of C code from
+K&R to ANSI, and one of the big problems is nested function declarations
+for standard functions that don't even have the right result type any more.)
+
+
+	Our rule here is that prototypes for globally visible functions
+	must be placed in header files.  Then this header file must be
+	included by any code which uses the function, and especially by
+	the code which defines the function.
+
+This is my rule exactly, and the rule of cautious C programmer.
+
+	Is this what you require of your students?
+
+I am a fair imitation of an expert programmer.
+I am not that hot at playing a teacher.
+So this year I was tutoring in the C course, not teaching it.
+
+There are two sad facts of life you have to deal with in a C course:
+
+(a) you can *tell* students till you are blue in the face to do something,
+    but if you don't *enforce* it, most of them won't *do* it.
+    In the last assignment this year, several students handed in C++ code,
+    not C code, despite the fact that their DOS C++ compilers have an
+    "ANSI C" switch.
+    I told the students in my tutorial group
+    (a) Use lint.
+    (b) Here is a shell script in your course directory call glint;
+	it runs gcc with all warnings enabled.  Use it.
+    (c) Here is an 'indent.pro' file; please run indent over your code
+	before handing it in.
+
+    Point (c) provoked *amazing* hostility, even though I provided written
+    justification for each of the indenting decisions in the indent.pro,
+    a written explanation of why it was in their best interests for me to
+    be able to read their code, and a clear explanation that this did NOT
+    mean that they had to WRITE their code in that style, only indent a
+    copy just before handing it in.  Needless to say, the students who
+    were most vociferous in protesting against this "fascism" were the
+    ones with no coherent indentation style of their own...
+
+    Points (a) and (b) didn't provoke hostility, but instead total apathy.
+    There were 5 assignments in the last semester.  After each one, I
+    explained to the students in my tutorial group how they could have
+    used 'lint' to find their mistakes before I did.  About 10% of students
+    were handing in lint-clean code by the end of the semester.
+
+(b) Most C textbooks are incredibly bad.  Kelley & Pohl's books are really
+    outstanding on the badness scale.  There is no folly so great that
+    students will not copy it from a textbook, however warned.  I have seen
+    more C textbooks than I really want to, and almost none of them explain
+    header usage well or provide good examples of header usage.
+
+    For example, almost all the students were following the pattern
+	assign3.h
+	assign3.c
+	foo.c
+	bar.c
+	ugh.c
+    with one header file for the whole program, despite the fact that
+    assign3.c (or whatever it was called) exported nothing (except main).
+    Why did they do this despite what they were told in class?
+    If a textbook says one thing and a teacher says another, they go with
+    the textbook.  (Except for the ones who don't buy the textbook, but
+    that's another story.)
+
+
+
+
+</pre>
+<A HREF="87.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="89.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

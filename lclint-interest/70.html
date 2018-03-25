@@ -1,0 +1,86 @@
+<h3>lclint-interest message 70</h3>
+<pre>
+From evs Tue Apr 16 15:33:49 1996
+Date: Tue, 16 Apr 96 15:20:10 -0400
+From: evs (David Evans)
+To: dea@gandalf.us.cis.philips.com
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Debra Aubrey's message of Tue, 16 Apr 1996 12:52:15 -0400 <199604161652.MAA02723@gandalf.knx.dvs.philips.com>
+Subject: Questions about LCLint 2.0
+
+
+> Here is one code snippet:
+> 
+>    ptr = (procid *) buffer;
+>    if (ptr->_state != PS_DEAD)
+>    {
+>      return (SUCCESS);
+>    }
+>
+> Here is the LCLint message:
+>
+>    cp_childcheck.c:125,7: Field ptr->_state used before definition
+
+Is buffer->_state defined before the assignment to ptr?  (Apparently,
+lclint doesn't think it is, but I can't tell without seeing the code
+before this.)
+
+> Along the same lines is this snippet:
+>
+>    switch (whichProcess)
+>    {
+>      case CP_CONFIG:
+>        procPtr = &CP_Config;
+>        break;
+>
+>      case CP_DISPLAY:
+>        procPtr = &CP_Display;
+>        break;
+>
+>      case CP_EBS:
+>        procPtr = &CP_Ebs;
+>        break;
+>        
+>      default:
+>        break;
+>    }
+>
+>    if (procPtr->procID == CP_DEAD)
+>    {
+>      return ((error_code)FAILURE);
+>    }
+>
+> And here is the LCLint message:
+> 
+>    cp_childcheck.c:111,7: Variable procPtr used before definition
+>    An rvalue is used that may not be initialized to a value on some execution
+>    path. Use -usedef to suppress message.
+>
+> Again, procPtr has been initialized as a pointer in the switch statement.
+> I don't understand why LCLint is complaining that it has not been
+> initialized?
+
+Ah, but its not.  If the default path through the switch is taken, then
+procPtr is not initialized!  Recall, that lclint will report a
+use-before-definition error if there is any path to the use on wich the
+variable is not defined.  
+
+--- Dave
+
+
+</pre>
+<A HREF="69.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="71.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

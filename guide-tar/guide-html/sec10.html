@@ -1,0 +1,407 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="lclint-guide.css" title="style1">
+<title>LCLint User's Guide - Section 10: Other Checks</title>
+</head>
+<body>
+<table border="0" rules="none" bgcolor="#FFFFBD" width=100% cellpadding=6 cellspacing=2>
+<tr>
+<td valign=top align=center width=5%>
+<a href="http://lclint.cs.virginia.edu/"><img border=0 align=center width=129 height=86 src="lclint-logo1.gif"></a><br>
+</td>
+<td valign=top>
+<b><a href="index.html">Guide Contents</a></b><br>
+<a href="sec1.html">1. Overview</a><br>
+<a href="sec2.html">2. Operation</a><br>
+<a href="sec3.html">3. Abstract Types</a><br>
+</td>
+<td valign=top>
+<a href="sec4.html">4. Function Interfaces</a><br>
+<a href="sec5.html">5. Memory Management</a><br>
+<a href="sec6.html">6. Sharing</a><br>
+<a href="sec7.html">7. Value Constraints</a><br>
+</td>
+<td valign=top>
+<a href="sec8.html">8. Macros</a><br>
+<a href="sec9.html">9. Naming Conventions</a><br>
+<a href="sec10.html">10. Other Checks</a><br>
+Contact: <a href="mailto:lclint@cs.virginia.edu"><em>lclint@cs.virginia.edu</em></a>
+</td>
+</tr>
+</table>
+<blockquote>
+
+<h2> <a name="sec-10"> 10. Other Checks </h2> 
+
+The section describes other errors detected by LCLint that are not
+directly related to extra information provided in annotations.  Many of
+the checks are significantly improved, however, because of the extra
+information that is known about the program.
+
+<h2> 
+<a name="sec-10.1">10.1 Undefined Evaluation Order
+</a></h2> 
+
+The order in which side effects take place in a C program is
+not entirely defined by the code.  Certain execution points are known as
+<i>sequence points</i> -- a function call (after the arguments have been
+evaluated), the end of a full expression (an initializer, expression in
+an expression statement, the control expression of an if, switch, while
+or do statement, each expression of a for statement, and the expression
+in a return statement), and after the first operand or a &amp;&amp;, ||,
+? or , operand.<p> <p> All side effects before a sequence point must be
+complete before the sequence point, and no evaluations after the
+sequence
+point shall have taken place [<a href="references.html#ref-ANSI">ANSI</A>, <a
+href="sec2.html#sec-2.1.2.3">Section 2.1.2.3</a>].  Between sequence
+points, side effects and evaluations may take place in any order.
+Hence, the order in which expressions or arguments are evaluated is not
+specified.  Compilers are free to evaluate function arguments and parts
+of expressions (that do not contain sequence points) in any order.  The
+behavior of code that uses a value that is modified by another
+expression that is not required to be evaluated before or after the
+other use is undefined.<p> <p> LCLint detects instances where
+undetermined order of evaluation produces undefined behavior.  If
+modifies clauses and globals lists are used, this checking is enabled in
+expressions involving function calls. Evaluation order checking is
+controlled by the evalorder flag.<p> <p> When checking systems without
+modifies and globals information, evaluation order checking may report
+errors when unconstrained functions are called in procedure arguments.
+Since LCLint has no annotations to constrain what these functions may
+modify, it cannot be guaranteed that the evaluation order is defined if
+another argument calls an unconstrained function or uses a global
+variable or storage reachable from a parameter to the unconstrained
+function.  Its best to add modifies and globals clauses to constrain the
+unconstrained functions in ways that eliminate the possibility of
+undefined behavior.  For large legacy systems, this may require too much
+effort.  Instead, the <a
+href="appC.html#flag-evalorderuncon"><tt>-evalorderuncon</tt></a> flag
+may be used to prevent reporting of undefined behavior due to the order
+of evaluation of unconstrained functions. <p>
+<p>
+<a href="fig19.html">Figure 19.  Evaluation order</a>
+<p>
+
+<h2>
+<a name="sec-10.2">10.2 Problematic Control Structures</A></a></a></a>
+</a></h2>
+
+A number of control structures that are syntactically legal may indicate
+likely bugs in programs.  LCLint can detect errors involving likely
+infinite loops (<a href="sec10.html#sec-10.2.1">Section 10.2.1</a>),
+fall through cases and missing cases in switch statements (<a
+href="sec10.html#sec-10.2.2">Section 10.2.2</a>), break statements
+within deeply nested loops or switches (<a
+href="sec10.html#sec-10.2.3">Section 10.2.3</a>), clauses of if, while
+or for statements that are empty statements or unblocked single
+statements (<a href="sec10.html#sec-10.2.4">Section 10.2.4</a>) and
+incomplete if-else logic (<a href="sec10.html#sec-10.2.5">Section
+10.2.5</a>).  Although any of these may appear in a correct program,
+depending on the programming style used they may indicate likely bugs or
+style violations that should be detected and eliminated.
+
+<h4>
+<a name="sec-10.2.1">10.2.1 Likely Infinite Loops
+</a>
+</h4>
+
+LCLint reports an error if it detects a loop that appears to be
+infinite.  An error is reported for a loop which does not modify any
+value used in its condition test inside the body of the loop or in the
+condition test itself.  This checking is enhanced by modifies clauses
+and globals lists since they provide more information about what global
+variable may be used in the condition test and what values may be
+modified by function calls in the loop body.<p> <p>
+
+<a href="fig20.html">Figure 20</a> shows examples of infinite loops
+detected by LCLint. An error is reported for the loop in line 14, since
+neither of the values used in the loop condition (x directly and glob1
+through the call to f) is modified by the body of the loop.  If the
+declaration of g is changed to include glob1 in the modifies clause no
+error is reported.  (In this example, if we assume the annotations are
+correct, then the programmer has probably called the wrong function in
+the loop body.  This isn't surprising, given the horrible choices of
+function and variable names!)<p>
+
+<p>
+If an unconstrained function is called within the loop body, LCLint will assume
+that it modifies a value used in the condition test and not report an infinite
+loop error, unless infloopsuncon is on.  If infloopsuncon is on, LCLint will
+report infinite loop errors for loops where there is no explicit modification
+of a value used in the condition test, but where they may be an undetected
+modification through a call to an unconstrained function (e.g., line 15 in
+<a href="fig20.html">Figure 20</a>).  <p>
+<h4>
+<a name="sec-10.2.2">10.2.2 Switches
+</a></h4>
+The automatic fall-through of C switch statements is almost never the intended
+behavior.<a href="guide_fn.html#fn25">[25]</a>  LCLint detects case statements
+with code that may fall through to the next case.  The casebreak flag controls
+reporting of fall through cases.  A single fall through case may be marked by
+preceding the case keyword with <tt>/&#42;@fallthrough@&#42;/</tt> to indicate explicitly that
+execution falls through to this case.<p>
+<p>
+For switches on enum types, LCLint reports an error if a member of the
+enumerator does not appear as a case in the switch body (and there is no
+default case).  (Controlled by <a href="appC.html#flag-misscase"><tt>misscase</tt></a>.)<p>
+<p>
+An example of switch checking is shown in <a href="fig21.html">Figure 21</a>.
+<h4>
+<a name="sec-10.2.3">10.2.3 Deep Breaks
+</a></h4>
+There is no syntax provided by C (other than goto) for breaking out of a nested
+loop.  All break and continue statements act only on the innermost surrounding
+loop or switch.  This often leads to serious problems<a
+href="guide_fn.html#fn26">[26]</a> when a programmer intends to break the outer loop
+or switch instead.  LCLint optionally reports errors for break and
+continue statements in nested contexts.<p>
+<ul>
+<li>	break inside a loop (while or for) that is inside a loop.  Controlled by
+looploopbreak.  To indicate that a break is inside an inner loop, precede the
+break by <tt>/&#42;@innerbreak@&#42;/</tt>.
+<li>	break inside a loop that is inside a switch statement.  Controlled by
+switchloopbreak.  To mark the break as a loop break, precede the break by
+<tt>/&#42;@loopbreak@&#42;/</tt>.
+<li>	break inside a switch statement that is inside a loop.  Controlled by
+loopswitchbreak.  To mark the break as a switch break, precede the break by
+<tt>/&#42;@switchbreak@&#42;/</tt>.
+<li>	break inside a switch inside another switch.  Controlled by
+switchswitchbreak.  To indicate that the break is for the inner switch, use
+<tt>/&#42;@innerbreak@&#42;/</tt>.
+</Ul>
+
+Since continue only makes sense within loops, errors are only reported for
+continue statements within nested loops.  (Controlled by <a href="appC.html#flag-looploopcontinue"><tt>looploopcontinue</tt></a>.)  A
+safe inner continue may be precede by <tt>/&#42;@innercontinue@&#42;/</tt> to suppress error
+messages locally. The deepbreak flag sets all nested break and continue
+checking flags.<p>
+<p>
+LCLint reports an error if the marker preceding a break is not consistent with
+its effect.  An error is reported if innerbreak precedes a break that is not
+breaking an inner loop, switchbreak precedes a break that is not breaking a
+switch, or loopbreak precedes a break that is not breaking a loop.
+<h4>
+<a name="sec-10.2.4">10.2.4 Loop and If Bodies
+</a></h4>
+An empty statement after an if, while or for often indicates a potential bug.
+A single statement (i.e., not a compound block) after an if, while or for is
+not likely to indicate a bug, but make the code harder to read and edit.
+LCLint can report errors for if or loop statements with empty bodies or bodies
+that are not compound statements.  Separate flags control checking for
+statements following an  if, while or for:<p>
+<ul>
+<li>	[<tt>if</tt>, <tt>while</tt>, <tt>for</tt>]<tt>empty</tt> --
+report errors for empty bodies (e.g., <tt>if (x &gt; 3) ;</tt>)
+<li>	[<tt>if</tt>, <tt>while</tt>, <tt>for</tt>]<tt>block</tt> --
+report errors for non-block bodies (e.g., <tt>if (x &gt; 3) x++;</tt>)
+</ul>
+
+The if statement checks also apply to the body of the else clause.  An ifblock
+error is not reported if the body of the else clause is an if statement, to
+allow else if chains.  
+<h4>
+<a name="sec-10.2.5">10.2.5 Complete if-else Logic
+</a></h4>
+Although it may be perfectly reasonable in many contexts, an if-else chain with
+no final else may indicate missing logic or forgetting to check error cases.
+If <a href="appC.html#flag-elseifcomplete"><tt>elseifcomplete</tt></a>
+is on, LCLint reports errors when an if statement that is the body of an
+else clause does not have a matching else clause.  For example, the code,
+<pre>
+   if (x == 0) { return "nil"; }
+   else if (x == 1) { return "many"; }
+</pre>
+produces an error message since the second if has no matching else branch.
+<h2>
+<a name="sec-10.3">10.3 Suspicious Statements
+</a></h2>
+
+LCLint detects errors involving statements with no apparent effects (<a
+href="sec10.html#sec-10.3.1">Section 10.3.1</a>) and statements that
+ignore the result of a called function (<A
+href="sec10.html#sec-10.3.2">Section 10.3.2</a>).
+
+<h4>
+<a name="sec-10.3.1">10.3.1 Statements with No Effects
+</a></h4>
+
+LCLint can report errors for statements that have no effect.  (Controlled by
+noeffect.)   Because of modifies clauses, LCLint can detect more errors than
+traditional checkers.  Unless the noeffectuncon flag is on, errors are not
+reported for statements that involve calls to unconstrained functions since the
+unconstrained function may cause a modification.<p>
+<p>
+<a href="fig22.html">Figure 22.  Statements with no effect.</a>
+<p>
+<h4>
+<a name="RTFToC83">
+<a name="sec-10.3.2">10.3.2 Ignored Return Values</A></a></a></a>
+</a></h4>
+LCLint reports an error when a return value is ignored.  Checking may be
+controlled based on the type of the return value: retvalint controls reporting
+of ignored return values of type int, and retvalbool for return values of type
+bool, and retvalothers for all other types.  A function statement may be cast
+to void to prevent this error from being reported. <p>
+<p>
+Alternate types (<a href="sec8.html#sec-8.2.2">Section 8.2.2</a>) can be used to declare functions that return
+values that may safely be ignored by declaring the result type to alternately
+by void.  Several functions in the standard library are specified to
+alternately return void to prevent ignored return value errors for standard
+library functions (e.g., strcpy) where the result may be safely ignored (see
+<a href="appF.html">Apppendix F</a>).  <p>
+<p>
+<A href="fig23.html">Figure 23</a> shows example of ignored return value
+errors reported by LCLint.<p>
+
+<h2>
+<a name="sec-10.4">10.4 Unused Declarations
+</a></h2>
+LCLint detects constants, functions, parameters, variables, types, enumerator
+members, and structure or union fields that are declared but never used.  The
+flags 
+<a href="appC.html#flag-constuse"><tt>constuse</tt></a>, 
+<a href="appC.html#flag-fcnuse"><tt>fcnuse</tt></a>, 
+<a href="appC.html#flag-paramuse"><tt>paramuse</tt></a>,
+<a href="appC.html#flag-varuse"><tt>varuse</tt></a>, 
+<a href="appC.html#flag-typeuse"><tt>typeuse</tt></a>, 
+<a href="appC.html#flag-enummemuse"><tt>enummemuse</tt></a> and
+<a href="appC.html#flag-fielduse"><tt>fielduse</tt></a> control whether
+unused declaration errors are reported for each kind of declaration.
+Errors for exported declarations are reported only if 
+<a href="appC.html#flag-topuse"><tt>topuse</tt></a> is on (see <a
+href="sec10.html#sec-10.5">Section 10.5</a>).<p> 
+<p>
+The <tt>/&#42;@unused@&#42;/</tt> annotation can be used before a declaration to indicate that
+the item declared need not be used.  Unused declaration errors are not reported
+for identifiers declared with unused.
+<a name="_Ref343110504"><a name="_Toc344355433"><a name="_Toc349905923">
+<h2>
+<a name="RTFToC85">
+<a name="sec-10.5">10.5 Complete </A></a></a></a>Programs</a></a></a>
+</a></h2>
+LCLint can be used on both complete and partial programs.  When checking
+complete programs, additional checks can be done to ensure that every
+identifier declared by the program is defined and used, and that functions that
+do not need to be exported are declared static.<p>
+<p>
+LCLint checks that all declared variables and functions are defined (controlled
+by <a href="appC.html#flag-compdef"><tt>compdef</tt></a>).
+Declarations of functions and variables that are defined in an external
+library, may be preceded by <tt>/&#42;@external@&#42;/</tt> to suppress
+undefined declaration errors.<p> 
+<p>
+LCLint reports external declarations which are unused (Controlled by <a href="appC.html#flag-topuse"><tt>topuse</tt></a>).
+Which declarations are reported also depends on the declaration use flags (see
+<a href="sec10.html#sec-10.4">Section 10.4</a>).  <p>
+<p>
+The <a href="appC.html#flag-partial"><tt>partial</tt></a> flag sets
+flags for checking a partial system.  Top-level unused declarations,
+undefined declarations, and unnecessary external names are not reported
+if <tt>partial</tt> is set.
+<a name="_Toc349905924">
+<h4>
+<a name="RTFToC86">
+<a name="sec-10.5.1">10.5.1 Unnecessary External Names</A></a>
+</a></h4>
+LCLint can report variables and functions that are declared with global scope
+(i.e., without using static), that are not used outside the file in which they
+are defined.  In a stand-alone system, these identifiers should usually be
+declared using static to limit their scope.  If the exportstatic flag is on,
+LCLint will report declarations that could have file scope.  It should only be
+used when all relevant source files are listed on the LCLint command line;
+otherwise, variables and functions may be incorrectly identified as only used
+in the file scope since LCLint did not process the other file in which they are
+used.
+<a name="_Toc349905925">
+<h4>
+<a name="RTFToC87">
+<a name="sec-10.5.2">10.5.2 Declarations Missing from Headers</a></a>
+</a></h4>
+A common practice in C programming styles, is that every function or variable
+exported by <i>M</i><tt>.c</tt> is declared in <i>M</i><tt>.h</tt>.  If
+the <a href="appC.html#flag-exportheader"><tt>exportheader</tt></a> flag is on, LCLint will report exported declarations in <i>M</i><tt>.c</tt> that are not declared in <i>M</i><tt>.h</tt>.
+<a name="_Ref348079997"><p>
+<a name="_Ref349497354"><a name="_Toc349905926"></i>
+<h2>
+<a name="RTFToC88">
+<a name="sec-10.6">10.6 Compiler Limits</A></a></a></a>
+</a></h2>
+The ANSI Standard includes limits on minimum numbers that a conforming compiler
+must support.  Whether of not a particular compiler exceeds these limits, it is
+worth checking that a program does not exceed them so that it may be safely
+compiled by other compilers.  In addition, exceeding a limit may indicate a
+problem in the code (e.g., it is too complex if the control nest depth limit is
+exceeded) that should be fixed regardless of the compiler.  The following
+limits are checked by LCLint.  For each  limit, the maximum value may be set
+from the command line (or locally using a stylized comment).  If the 
+<a href="appC.html#flag-ansilimits"><tt>ansilimits</tt></a>
+flag is on, all limits are checked with the minimum values of a conforming
+compiler.<p>
+<a href="appC.html#flag-includenest"><tt>includenest</tt></a>
+<blockquote>
+Maximum nesting depth of file inclusion (#include).  (ANSI minimum is 8)
+</blockquote>
+<a href="appC.html#flag-controlnestdepth"><tt>controlnestdepth</tt></a>
+<blockquote>
+Maximum nesting of compound statements, control structures.  (ANSI
+minimum is 15)	
+</blockquote>
+<a href="appC.html#flag-numenummembers"><tt>numenummembers</tt></a>
+<blockquote>
+Number of members in an enum declaration. (ANSI minimum is 127)
+</blockquote>
+<a href="appC.html#flag-numstructfields"><tt>numstructfields</tt></a>
+<blockquote>
+Number of fields in a struct or union declaration. (ANSI minimum is 127)
+</blockquote>
+<pre>
+
+
+
+
+
+
+</pre>
+<blockquote>
+<em>
+Since human beings themselves are not fully debugged yet, there will be bugs in
+your code no matter what you do.</em><br>
+- Chris Mason, Zero-defects  memo (<i>Microsoft Secrets</i>, Cusumano
+and Selby)
+</blockquote>
+<p>
+<b>Next: <A HREF="appA.html">Appendix A: Availability</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+</blockquote>
+
+<table border="0" rules="none" bgcolor="#FFFFBD" width=100% cellpadding=6 cellspacing=2>
+<tr>
+<td valign=top align=center width=5%>
+<a href="http://lclint.cs.virginia.edu/"><img border=0 align=center width=129 height=86 src="lclint-logo1.gif"></a><br>
+</td>
+<td valign=top>
+<b><a href="index.html">Guide Contents</a></b><br>
+<a href="sec1.html">1. Overview</a><br>
+<a href="sec2.html">2. Operation</a><br>
+<a href="sec3.html">3. Abstract Types</a><br>
+</td>
+<td valign=top>
+<a href="sec4.html">4. Function Interfaces</a><br>
+<a href="sec5.html">5. Memory Management</a><br>
+<a href="sec6.html">6. Sharing</a><br>
+<a href="sec7.html">7. Value Constraints</a><br>
+</td>
+<td valign=top>
+<a href="sec8.html">8. Macros</a><br>
+<a href="sec9.html">9. Naming Conventions</a><br>
+<a href="sec10.html">10. Other Checks</a><br>
+Contact: <a href="mailto:lclint@cs.virginia.edu"><em>lclint@cs.virginia.edu</em></a>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+

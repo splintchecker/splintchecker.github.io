@@ -1,0 +1,86 @@
+<A NAME="line3"></A><html><head>
+<title>rstring.c</title>
+</head><body>
+<h3>rstring.c</h3>
+<PRE>
+<A NAME="line1"></A>#include "<A HREF="rstring.h.html">rstring.h</A>"
+<A NAME="line2"></A> 
+<A NAME="line3"></A>static rstring rstring_ref (rstring r)
+<A NAME="line4"></A>{  
+<A NAME="line5"></A>  r-&gtrefs++;
+<A NAME="line6"></A>  return r;
+<A NAME="line7"></A>}
+<A NAME="line8"></A> 
+<A NAME="line9"></A>rstring rstring_first (rstring r1, rstring r2)
+<A NAME="line10"></A>{
+<A NAME="line11"></A>  if (strcmp (r1-&gtcontents, r2-&gtcontents) &lt 0)    
+<A NAME="line12"></A>    { 
+<A NAME="line13"></A>      return r1;    
+<A NAME="line14"></A>    }
+<A NAME="line15"></A>  else 
+<A NAME="line16"></A>    { 
+<A NAME="line17"></A>      return rstring_ref (r2);    
+<A NAME="line18"></A>    }
+<A NAME="line19"></A>}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

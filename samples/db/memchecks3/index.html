@@ -1,0 +1,118 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint Sample - Memory Checks 3</title>
+</head>
+<body>
+<!--#include virtual="../../../header.html"-->
+
+<center><h1>
+Memory Checks 3
+</h1></center>
+
+
+<H3> Changes from <A HREF="../memchecks2/index.html">Memory Checks 2</A> </H3>
+
+<A HREF="diffs.html">Differences</A>
+<P>
+Fixed all messages reported in second run using memory checks.  
+<P>
+
+<H3> Modules </H3>
+
+<UL>
+<LI>employee - employee datatype (<A HREF="employee.lcl.html">LCL</A>,
+<A HREF="employee.c.html">Code</A>,  <A HREF="employee.h.html">Header</A>)
+<LI>empset - sets of employees (<A HREF="empset.lcl.html">LCL</A>,
+<A HREF="empset.c.html">Code</A>,  <A HREF="empset.h.html">Header</A>)
+<LI>dbase - database of employees (<A HREF="dbase.lcl.html">LCL</A>, 
+<A HREF="dbase.c.html">Code</A>,  <A HREF="dbase.h.html">Header</A>)
+<LI>eref - reference to an employee (<A HREF="eref.lcl.html">LCL</A>,
+<A HREF="eref.c.html">Code</A>,  <A HREF="eref.h.html">Header</A>)
+<LI>erc - collection of erefs (<A HREF="erc.lcl.html">LCL</A>, <A
+HREF="erc.c.html">Code</A>,  <A HREF="erc.h.html">Header</A>)
+<LI>ereftab - table of employees and erefs (<A
+HREF="ereftab.lcl.html">LCL</A>, <A HREF="ereftab.c.html">Code</A>, <A HREF="ereftab.h.html">Header</A>)
+</UL>
+
+<H3> Memory Checking </h3>
+
+Now, the annotations we added propagate to detect new anomalies.
+<P>
+LCLint reports <A HREF="lclint.out.html">8 anomalies</A>.
+
+<H4> <A href="../../../guide/sec7.html#sec-7.1">Undefined Fields</a></h4>
+
+The first error reports undefined fields:
+
+<PRE>
+eref.c: (in function eref_initMod)
+<A HREF="eref.c.html#line56">eref.c:56,14</A>: Global storage eref_Pool contains 2 undefined fields when call
+                 returns: status, size
+  Storage derivable from a parameter, return value or global is not defined. 
+  Use /*@out@*/ to denote passed or returned storage which need not be defined.
+   Use -compdef to suppress message.
+</PRE>
+
+Since we added the <tt>undef eref_Pool</tt> to the globals list for
+<tt>eref_initMod</tt>, LCLint assumes <tt>eref_Pool</tt> is undefined
+when the function is entered, and reports an error when there is a
+return path that does not defined all the fields of <tt>eref_Pool</tt>.
+In fact, this path is only taken if <tt>needsInit</tt> is false.  If
+<tt>needsInit</tt> is false, <tt>eref_Pool</tt> is already defined.  So,
+we use the <tt>/*@-compdef@*/</tt> stylized comment to suppress the
+message.
+
+<h4> <A href="../../../guide/sec7.html#sec-7.2">Null Pointers</a></h4>
+
+The second message reports a possibly null pointer:
+<PRE>
+erc.c: (in function erc_delete)
+<A HREF="erc.c.html#line112">erc.c:112,5</A>: Arrow access from possibly null pointer prev: prev->next
+  A possibly null pointer is dereferenced or misused.  Value is either the
+  result of a function which may return null (in which case, code should check
+  it is not null), or a global, parameter or structure field declared with the
+  null qualifier.  Use -null to suppress message.
+   <A HREF="erc.c.html#line108">erc.c:108,29</A>: Storage prev may become null
+</PRE>
+
+This is a spurious message, since we can tell from the loop structure
+that <tt>prev</tt> must not be null.  To make sure (and to suppress the
+message), an assertion is added.
+
+<h4> <A href="../../../guide/sec5.html#sec-5.2">Memory Leaks</a></h4>
+
+The remaining six messages report memory leaks in <tt>drive.c</tt>:
+<PRE>
+drive.c: (in function main)
+<A HREF="drive.c.html#line140">drive.c:140,16</A>: Fresh storage em1 not released before assignment:
+                   em1 = empset_create()
+  A memory leak has been detected.  Newly-allocated or only-qualified storage
+  is not released before the last reference to is it lost.  Use -mustfree to
+  suppress message.
+   <A HREF="drive.c.html#line35">drive.c:35,3</A>: Fresh storage em1 allocated
+<A HREF="drive.c.html#line146">drive.c:146,16</A>: Fresh storage em2 not released before assignment:
+                   em2 = empset_create()
+   <A HREF="drive.c.html#line74">drive.c:74,3</A>: Fresh storage em2 allocated
+<A HREF="drive.c.html#line147">drive.c:147,3</A>: Fresh storage em3 not released before assignment:
+                  em3 = empset_disjointUnion(em2, em1)
+   <A HREF="drive.c.html#line87">drive.c:87,3</A>: Fresh storage em3 allocated
+<A HREF="drive.c.html#line163">drive.c:163,12</A>: Fresh storage em1 not released before return
+   <A HREF="drive.c.html#line140">drive.c:140,16</A>: Fresh storage em1 allocated
+<A HREF="drive.c.html#line163">drive.c:163,12</A>: Fresh storage em2 not released before return
+   <A HREF="drive.c.html#line146">drive.c:146,16</A>: Fresh storage em2 allocated
+<A HREF="drive.c.html#line163">drive.c:163,12</A>: Fresh storage em3 not released before return
+   <A HREF="drive.c.html#line147">drive.c:147,3</A>: Fresh storage em3 allocated
+</PRE>
+
+All involve failures to free storage before assigning a reference to a
+new value, or exiting from the function.  We add calls to
+<tt>empset_final</tt> (which takes an <tt>empset</tt> as an
+<tt>only</tt> parameter) to fix the problems.
+<P>
+
+
+<b><A HREF="../allmacros/index.html">Next: Continue to Macros</a></b><br>
+<A HREF="../index.html">Return to Summary</A>
+
+<!--#include virtual="../../../footer.html"-->

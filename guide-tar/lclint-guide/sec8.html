@@ -1,0 +1,360 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="lclint-guide.css" title="style1">
+<title>LCLint User's Guide - Section 8: Macros</title>
+</head>
+<body>
+<table border="0" rules="none" bgcolor="#FFFFBD" width=100% cellpadding=6 cellspacing=2>
+<tr>
+<td valign=top align=center width=5%>
+<a href="http://lclint.cs.virginia.edu/"><img border=0 align=center width=129 height=86 src="lclint-logo1.gif"></a><br>
+</td>
+<td valign=top>
+<b><a href="index.html">Guide Contents</a></b><br>
+<a href="sec1.html">1. Overview</a><br>
+<a href="sec2.html">2. Operation</a><br>
+<a href="sec3.html">3. Abstract Types</a><br>
+</td>
+<td valign=top>
+<a href="sec4.html">4. Function Interfaces</a><br>
+<a href="sec5.html">5. Memory Management</a><br>
+<a href="sec6.html">6. Sharing</a><br>
+<a href="sec7.html">7. Value Constraints</a><br>
+</td>
+<td valign=top>
+<a href="sec8.html">8. Macros</a><br>
+<a href="sec9.html">9. Naming Conventions</a><br>
+<a href="sec10.html">10. Other Checks</a><br>
+Contact: <a href="mailto:lclint@cs.virginia.edu"><em>lclint@cs.virginia.edu</em></a>
+</td>
+</tr>
+</table>
+<blockquote>
+
+<h2>
+<a name="sec-8">
+8. Macros
+</a></h2>
+Macros are commonly used in C programs to implement constants or to mimic
+functions without the overhead of a function call.  Macros that are used to
+implement functions are a persistent source of bugs in C programs, since they
+may not behave like the intended function when they are invoked with certain
+parameters or used in certain syntactic contexts.  <p>
+<p>
+LCLint eliminates most of the potential problems by detecting macros with
+dangerous implementations and dangerous macro invocations.  Whether or not a
+macro definition is checked or expanded normally depends on flag settings and
+control comments (see <a href="sec8.html#sec-8.3">Section 8.3</a>).  Stylized macros can also be used to define
+control structures for iterating through many values (see <a href="sec8.html#sec-8.4">Section 8.4</a>).
+<a name="_Toc344355419"><a name="_Ref344908437"><a name="_Ref344916524"><a name="_Toc349905896">
+<h2>
+<a name="RTFToC56">
+<a name="sec-8.1">8.1 Constant Macros</A></a></a></a></a>
+</a></h2>
+Macros may be used to implement constants.  To get type-checking for constant
+macros, use the  constant syntactic comment:
+<pre>
+/&#42;@constant null char &#42;mstring_undefined@&#42;/
+</pre>
+Declared constants are not expanded and are checked according to the
+declaration.  A constant with a null annotation may be used as only storage.
+<a name="_Ref343363760"><a name="_Toc344355420"><a name="_Toc349905897">
+<h2>
+<a name="RTFToC57">
+<a name="sec-8.2">8.2 Function-like Macros</a></a></a></a>
+</a></h2>
+Using macros to imitate functions is notoriously dangerous.  Consider this
+broken macro for squaring a number:<p>
+<pre>
+   # define square(x) x &#42; x
+</pre>
+This works fine for a simple invocation like square(i).  It behaves
+unexpectedly, though, if it is invoked with a parameter that has a side
+effect.<p>
+<p>
+For example, <tt>square(i++)</tt> expands to <tt>i++ &#42; i++</tt>.  Not
+only does this give the incorrect result, it has undefined behavior
+since the order in which the operands are evaluated is not defined.  (See <a href="sec10.html#sec-10.1">Section 10.1</a> for more information
+on how expressions exhibiting undefined evaluation order behavior are detected
+by LCLint.)  To correct the problem we either need to rewrite the macro so that
+its parameter is evaluated exactly once, or prevent clients from invoking the
+macro with a parameter that has a side-effect.  <p>
+<p>
+Another possible problem with macros is that they may produce unexpected
+results because of operator precedence rules.  The invocation, <tt>square(i+1)</tt>
+expands to <tt>i+1&#42;i+1</tt>, which evaluates to <tt>i+i+1</tt> instead
+of the square of <tt>i+1</tt>.  To
+ensure the expected behavior, the macro parameter should be enclosed in
+parentheses where it is used in the macro body.<p>
+<p>
+Macros may also behave unexpectedly if they are not syntactically equivalent to
+an expression.  Consider the macro definition,
+<pre>
+  # define incCounts()  ntotal++; ncurrent++;
+</pre>
+This works fine, unless it is used as a statement.  For example,
+<pre>
+if (x &lt; 3) incCounts();
+</pre>
+increments ntotal if <tt>x &lt; 3</tt> but always increments ncurrent.<p>
+<p>
+One solution is to use the comma operator to define the macro:
+<pre>
+  # define incCounts()  (ntotal++, ncurrent++)
+</pre>
+More complicated macros can be written using a do &#133; while construction:<p>
+<pre>
+  # define incCounts() \
+     do { ntotal++; ncurrent++; } while (FALSE)
+</pre>
+LCLint detects these pitfalls in macro definitions, and checks that a macro
+behaves as much like a function as possible.  A client should only be able to
+tell that a function was implemented by a macro if it attempts to use the macro
+as a pointer to a function.<p>
+<p>
+These checks are done by LCLint on a macro definition corresponding to a
+function:<p>
+<ul>
+<li>	Each parameter to a macro (except those declared to be side-effect free,
+see <a href="sec8.html#sec-8.2.1">Section 8.2.1</a>) must be used exactly once in all possible executions of the
+macro, so  side-effecting arguments behave as expected.<a
+href="guide_fn.html#fn21">[21]</a>  (Controlled by <a href="appC.html#flag-macroparams"><tt>macroparams</tt></a>.)
+<li>	A parameter to a macro may not be used as the left hand side of an
+assignment expression or as the operand of an increment or decrement operator
+in the macro text, since this produces non-functional behavior.  (Controlled by
+<a href="appC.html#flag-macroassign"><tt>macroassign</tt></a>.)
+<li>	Macro parameters must be enclosed in parentheses when they are used in
+potentially dangerous contexts.  (Controlled by <a href="appC.html#flag-macroparens"><tt>macroparens</tt></a>.)
+<li>	A macro definition must be syntactically equivalent to a statement when
+it is invoked followed by a semicolon. (Controlled by <a href="appC.html#flag-macrostmt"><tt>macrostmt</tt></a>.)
+<li>	The type of the macro body must match the return type of the
+corresponding function.  If the macro is declared with type void, its body may
+have any type but the macro value may not be used.
+<li>	All variables declared in the body of a macro definition must be in the
+macro variable namespace, so they do not conflict with variables in the scope
+where the macro is invoked (which may be used in the macro parameters).  By
+default, the macro namespace is all names prefixed by m_.  (See <a href="sec9.html#sec-9.2">Section 9.2</a> for
+information on controlling namespaces.)
+</ul>       
+At the call site, a macro is checked like any other function call.
+<a name="_Ref343109609"><a name="_Toc344355421"><a name="_Toc349905898">
+<h4>
+<a name="RTFToC58">
+<a name="sec-8.2.1">8.2.1 Side-Effect Free Parameters</A></a></a></a>
+</a></h4>
+Suppose we really do want to implement square as a macro, but want do so in a
+safe way.  One way to do this is to require that it is never invoked with a
+parameter that has a side-effect.  LCLint will check that this constraint
+holds, if the parameter is annotated to be <i>side-effect free</i>.  That is,
+the expression corresponding to this parameter must not modify any state, so it
+does not matter how many times it is evaluated.  The sef annotation is used to
+denote a parameter that may not have any side-effects:
+<pre>
+   extern int square (/&#42;@sef@&#42;/ int x);
+   # define square(x) ((x) &#42;(x))
+</pre>
+Now, LCLint will not report an error checking the definition of square even
+though x is used more than once.<p>
+<p>
+A message will be reported, however, if square is invoked with a parameter that
+has a side-effect.<p>
+For the code fragment,
+<pre>
+square (i++)
+</pre>
+LCLint produces the message:
+<pre>
+   Parameter 1 to square is declared sef, but the argument may modify i: i++
+</pre>
+It is also an error to pass a non-sef macro parameter as a sef macro parameter
+in the body of a macro definition.  For example,
+<pre>
+   extern int sumsquares (int x, int y);
+   # define sumsquares(x,y) (square(x) + square(y))
+</pre>
+Although x only appears once in the definition of sumsquares it will be
+evaluated twice since square is expanded. LCLint reports an error when a
+non-sef macro parameter is passed as a sef parameter.<p>
+<p>
+A parameter may be passed as a sef parameter without an error being reported,
+if LCLint can determine that evaluating the parameter has no side-effects.  For
+function calls, the modifies clause is used to determine if a side-effect is
+possible.<a href="guide_fn.html#fn22">[22]</a>   To prevent many spurious
+errors, if the called function has no modifies clause, LCLint will report an
+error only if sefuncon is on.  Justifiably paranoid programmers will insist on
+setting sefuncon on, and will add modifies clauses to unconstrained functions
+that are used in sef macro arguments.
+<a name="_Ref343109614"><a name="_Toc344355422"><a name="_Toc349905899">
+<h4>
+<a name="RTFToC59">
+<a name="sec-8.2.2">8.2.2 Polymorphism</A></a></a></a>
+</a></h4>
+One problem with our new definition of square is that while the original macro
+would work for parameters of any numeric type, LCLint will now report an error
+is the new version is used with a non-integer parameter.<p>
+<p>
+We can use the <tt>/&#42;@alt </tt><em>type</em><tt>;,</tt>+<tt>@&#42;&gt;</tt>
+syntax to indicate that an alternate type may be used.  For example,
+<pre>
+  extern int /&#42;@alt float@&#42;/ square (/&#42;@sef@&#42;/ int /&#42;@alt float@&#42;/ x);
+  # define square(x) ((x) &#42;(x))
+</pre>
+declares square for both ints and floats. <p>
+Alternate types are also useful for declaring functions for which the return
+value may be safely ignored (see <a href="sec10.html#sec-10.3.2">Section 10.3.2</a>).
+<a name="_Ref347227227"><a name="_Toc349905900">
+<h2>
+<a name="RTFToC60">
+<a name="sec-8.3">8.3 Controlling Macro Checking</A></a></a>
+</a></h2>
+By default, LCLint expands macros normally and checks the resulting code after
+macros have been expanded.  Flags and control comments may be used to control
+which macros are expanded and which are checked as functions or constants.<p>
+<p>
+If  the fcnmacros flag is on, LCLint assumes all macros defined with parameter
+lists implement functions and checks them accordingly.  Parameterized macros
+are not expanded and are checked as functions with unknown result and parameter
+types (or using the types in the prototype, if one is given).  The analogous
+flag for macros that define constants is constmacros.  If it is on, macros with
+no parameter lists are assumed to be constants, and checked accordingly.  The
+allmacros flag sets both fcnmacros and constmacros.  If the macrofcndecl flag
+is set, a message reports parameterized macros with no corresponding function
+prototype.  If the macroconstdecl flag is set, a similar message reports macros
+with no parameters with no corresponding constant declaration.<p>
+<p>
+The macro checks described in the previous sections make sense only for macros
+that are intended to replace functions or constants.  When fcnmacros or
+constmacros is on, more general macros need to be marked so they will not be
+checked as functions or constants, and will be expanded normally.  Macros which
+are not meant to behave like functions should be preceded by the
+<tt>/&#42;@notfunction@&#42;/</tt> comment.  For example,
+<pre>
+   /&#42;@notfunction@&#42;/
+   # define forever for(;;)
+</pre>
+Macros preceded by notfunction are expanded normally before regular checking is
+done.  If a macro that is not syntactically equivalent to a statement without a
+semi-colon (e.g., a macro which enters a new scope) is not preceded by
+notfunction, parse errors may result when fcnmacros or constmacros is on.
+<a name="_Toc344355424"><a name="_Ref344908410"><a name="_Ref344916532"><a name="_Toc344355423"><a name="_Ref345489124"><a name="_Ref345771875"><a name="_Ref349897909"><a name="_Toc349905901">
+<h2>
+<a name="RTFToC61">
+<a name="sec-8.4">8.4 Iterators</A></a></a></a></a></a>
+</a></h2>
+It is often useful to be able to execute the same code for many different
+values.  For example, we may want to sum all elements in an intSet that
+represents a set of integers.  If intSet is an abstract type, there is no easy
+way of doing this in a client module without depending on the concrete
+representation of the type.  Instead, we could provide such a mechanism as part
+of the type's implementation.  We call a mechanism for looping through many
+values an <i>iterator</i>.<p>
+ <p>
+The C language provides no mechanism for creating user-defined iterators.
+LCLint supports a stylized form of iterators declared using syntactic comments
+and defined using macros.<p>
+<p>
+Iterator declarations are similar to function declarations except instead of
+returning a value, they assign values to their yield parameters in each
+iteration.  For example, we could add this iterator declaration to
+<tt>intSet.h</tt>:
+<pre>
+/&#42;@iter intSet_elements (intSet s, yield int el);@&#42;/
+</pre>
+The yield annotation means that the variable passed as the second actual
+argument is declared as a local variable of type int and assigned a value in
+each loop iteration.
+<h4>
+<a name="RTFToC62">Defining
+Iterators
+</a></h4>
+An iterator is defined using a macro.  Here's one (not particularly efficient)
+way of defining intSet_elements:
+<pre>
+   typedef /&#42;@abstract@&#42;/ struct {
+      int nelements;
+      int &#42;elements;
+   } intSet;
+   ...
+   # define intSet_elements(s,m_el) \
+     { int m_i; \ 
+       for (m_i = (0); m_i &lt;= ((s)-&gt;nelements); m_i++) { \
+           int m_el = (s)-&gt;elements[(m_i)];
+
+   # define end_intSet_elements }}
+</pre>
+Each time through the loop, the yield parameter m_el is assigned to the next
+value.  After all values have been assigned to m_el for one iteration, the loop
+terminates.  Variables declared by the iterator macro (including the yield
+parameter) are preceded by the macro variable namespace prefix m_ (see Section
+8.2) to avoid conflicts with variables defined in the scope where the iterator
+is used.
+<h4>
+<a name="RTFToC63">Using
+Iterators
+</a></h4>
+The general structure for using an iterator is,<p>
+<i>iter</i> (<i>&lt;params&gt;</i>) stmt; end_<i>iter</i><p>
+For example, a client could use intSet_elements to sum the elements of an
+intSet:
+<pre>
+   intSet s;
+   int sum = 0;
+   ...
+   intSet_elements (s, el) { 
+      sum += el; 
+   } end_intSet_elements;
+</pre>
+The actual parameter corresponding to a yield parameter, el, is not declared in
+the function scope.  Instead, it is declared by the iterator and assigned to an
+appropriate value for each iteration.<p>
+<p>
+LCLint will do the following checks for uses of stylized iterators:<p>
+<ul>
+<li>	An invocation of the iterator <i>iter</i> must be balanced by a
+corresponding end, named end_<i>iter</i>.
+<li>	All actual parameters must be defined, except those corresponding to
+yield parameters.
+<li>	Yield parameters must be new identifiers, not declared in the current
+scope or any enclosing scope.
+</ul>
+Iterators are a bit awkward to implement, but they enable compact, easily
+understood client code.  For abstract collection types, an iterator can be used
+to enable clients to operate on elements of the collection without breaking
+data abstraction.
+<a name="_Ref343247905"><a name="_Toc344355425"><a name="_Ref348845281"><a name="_Toc349905902"></a></a></a><a name="_Ref350065611">
+<p>
+<b>Next: <A HREF="sec9.html">Naming Conventions</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+</blockquote>
+
+<table border="0" rules="none" bgcolor="#FFFFBD" width=100% cellpadding=6 cellspacing=2>
+<tr>
+<td valign=top align=center width=5%>
+<a href="http://lclint.cs.virginia.edu/"><img border=0 align=center width=129 height=86 src="lclint-logo1.gif"></a><br>
+</td>
+<td valign=top>
+<b><a href="index.html">Guide Contents</a></b><br>
+<a href="sec1.html">1. Overview</a><br>
+<a href="sec2.html">2. Operation</a><br>
+<a href="sec3.html">3. Abstract Types</a><br>
+</td>
+<td valign=top>
+<a href="sec4.html">4. Function Interfaces</a><br>
+<a href="sec5.html">5. Memory Management</a><br>
+<a href="sec6.html">6. Sharing</a><br>
+<a href="sec7.html">7. Value Constraints</a><br>
+</td>
+<td valign=top>
+<a href="sec8.html">8. Macros</a><br>
+<a href="sec9.html">9. Naming Conventions</a><br>
+<a href="sec10.html">10. Other Checks</a><br>
+Contact: <a href="mailto:lclint@cs.virginia.edu"><em>lclint@cs.virginia.edu</em></a>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+

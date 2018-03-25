@@ -1,0 +1,84 @@
+<A NAME="line15"></A><html><head>
+<title>order.c</title>
+</head><body>
+<h3>order.c</h3>
+<PRE>
+<A NAME="line1"></A>extern int glob;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>extern int mystery (void);
+<A NAME="line4"></A> 
+<A NAME="line5"></A>extern int modglob (void)
+<A NAME="line6"></A>   /*@globals glob@*/
+<A NAME="line7"></A>   /*@modifies glob@*/ ;
+<A NAME="line8"></A> 
+<A NAME="line9"></A>int f (int x, int y[])
+<A NAME="line10"></A>{
+<A NAME="line11"></A>  int i = x++ * x;
+<A NAME="line12"></A> 
+<A NAME="line13"></A>  y[i] = i++;
+<A NAME="line14"></A>  i += modglob() * glob;
+<A NAME="line15"></A>  i += mystery() * glob;
+<A NAME="line16"></A>  return i;
+<A NAME="line17"></A>}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/final'
+lclint +lh +strict +showsummary -exportconstant -exportlocal +strictlib +showscan +stats employee eref empset ereftab erc dbase drive.c bool.lcl check.lcl
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< reading spec <A HREF="bool.lcl.html" target="source">bool.lcl</A> >
+< reading spec <A HREF="check.lcl.html" target="source">check.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+dbase.c: (in function db_initMod)
+<A HREF="dbase.c.html#line45" target="source">dbase.c:45,7</A>: Only storage assigned to unqualified: db[(int)ek] = erc_create()
+  The only reference to this storage is transferred to another reference that
+  does not have an aliasing annotation. This may lead to a memory leak, since
+  the new reference is not necessarily released. Use -onlyunqglobaltrans to
+  suppress message.
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+< cleaning .......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+usedef                       0           1
+exporttype                   0           3
+compdef                      0           1
+onlyunqglobaltrans           1           0
+                          ========  =========
+Total:                       1           5
+
+Finished LCLint checking --- 1 code error found
+410 spec, 3124 source (1370 before pre-processing) lines in 6.08 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/final'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

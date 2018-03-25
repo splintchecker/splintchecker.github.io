@@ -1,0 +1,166 @@
+<A NAME="line54"></A><html><head>
+<title>empset.lcl</title>
+</head><body>
+<h1>empset.lcl</h1>
+<PRE>
+<A NAME="line1"></A>imports <A HREF="employee.lcl.html">employee</A>;
+<A NAME="line2"></A>mutable type empset;
+<A NAME="line3"></A> 
+<A NAME="line4"></A>only empset empset_create(void) 
+<A NAME="line5"></A>{
+<A NAME="line6"></A>  /* ensures fresh(result) /\ result' = { }; */
+<A NAME="line7"></A>}
+<A NAME="line8"></A> 
+<A NAME="line9"></A>void empset_final (only empset s) 
+<A NAME="line10"></A>{
+<A NAME="line11"></A>  modifies s;
+<A NAME="line12"></A>  /* ensures trashed(s); */
+<A NAME="line13"></A>}
+<A NAME="line14"></A> 
+<A NAME="line15"></A>void empset_clear(empset s) 
+<A NAME="line16"></A>{
+<A NAME="line17"></A>  modifies s;
+<A NAME="line18"></A>  /* ensures s' = { }; */
+<A NAME="line19"></A>}
+<A NAME="line20"></A> 
+<A NAME="line21"></A>| bool : void | empset_insert (empset s, employee e) internalState; 
+<A NAME="line22"></A>{
+<A NAME="line23"></A>  modifies s, internalState;
+<A NAME="line24"></A>  /* ensures result = ~(e \in s^) /\ s' = insert(e, s^); */
+<A NAME="line25"></A>}
+<A NAME="line26"></A> 
+<A NAME="line27"></A>void empset_insertUnique (empset s, employee e) internalState;
+<A NAME="line28"></A>{
+<A NAME="line29"></A>  /* requires ~(e \in s^); */
+<A NAME="line30"></A>  modifies s, internalState;
+<A NAME="line31"></A>  /* ensures s' = insert(e, s^); */
+<A NAME="line32"></A>}
+<A NAME="line33"></A> 
+<A NAME="line34"></A>| bool : void | empset_delete(empset s, employee e) 
+<A NAME="line35"></A>{
+<A NAME="line36"></A>  modifies s;
+<A NAME="line37"></A>  /* ensures result = e \in s^ /\ s' = delete(e, s^); */
+<A NAME="line38"></A>}
+<A NAME="line39"></A> 
+<A NAME="line40"></A>only empset empset_union(empset s1, empset s2) internalState;
+<A NAME="line41"></A>{
+<A NAME="line42"></A>  modifies internalState;
+<A NAME="line43"></A>  /* ensures result' = s1^ \U s2^ /\ fresh(result); */
+<A NAME="line44"></A>}
+<A NAME="line45"></A> 
+<A NAME="line46"></A>only empset empset_disjointUnion (empset s1, empset s2) internalState;
+<A NAME="line47"></A>{
+<A NAME="line48"></A>  modifies internalState;
+<A NAME="line49"></A>  /* requires s1^ \I s2^ = { }; */
+<A NAME="line50"></A>  /* ensures result' = s1^ \U s2^ /\ fresh(result); */
+<A NAME="line51"></A>}
+<A NAME="line52"></A> 
+<A NAME="line53"></A>void empset_intersect (empset s1, empset s2) internalState;
+<A NAME="line54"></A>{
+<A NAME="line55"></A>  modifies s1, internalState;
+<A NAME="line56"></A>  /* ensures s1' = s1^ \I s2^; */
+<A NAME="line57"></A>}
+<A NAME="line58"></A> 
+<A NAME="line59"></A>int empset_size(empset s) 
+<A NAME="line60"></A>{
+<A NAME="line61"></A>  /* ensures result = size(s^); */
+<A NAME="line62"></A>}
+<A NAME="line63"></A> 
+<A NAME="line64"></A>bool empset_member(employee e, empset s) 
+<A NAME="line65"></A>{
+<A NAME="line66"></A>  /* ensures result = e \in s^; */
+<A NAME="line67"></A>}
+<A NAME="line68"></A> 
+<A NAME="line69"></A>bool empset_subset(empset s1, empset s2) 
+<A NAME="line70"></A>{
+<A NAME="line71"></A>  /* ensures result = s1^ \subseteq s2^; */
+<A NAME="line72"></A>}
+<A NAME="line73"></A> 
+<A NAME="line74"></A>employee empset_choose(empset s) 
+<A NAME="line75"></A>{
+<A NAME="line76"></A>  /* requires s^ \neq { }; */
+<A NAME="line77"></A>  /* ensures result \in s^; */
+<A NAME="line78"></A>}
+<A NAME="line79"></A> 
+<A NAME="line80"></A>only char *empset_sprint(empset s) 
+<A NAME="line81"></A>{
+<A NAME="line82"></A>  /* ensures isSprint(result[]', s^) /\ fresh(result[]); */
+<A NAME="line83"></A>}
+<A NAME="line84"></A> 
+<A NAME="line85"></A>void empset_initMod (void) internalState;
+<A NAME="line86"></A>{
+<A NAME="line87"></A>  modifies internalState;
+<A NAME="line88"></A>  ensures true;
+<A NAME="line89"></A>}
+<A NAME="line90"></A> 
+<A NAME="line91"></A>iter empset_elements (empset s, yield employee x);
+</pre>
+<P>
+<HR>
+<A HREF="index.html">Return to Index</A> | <A HREF="http://lclint.cs.virginia.edu/index.html">LCLint Home Page</A> <BR> <BR>
+<author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+<pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

@@ -1,0 +1,1462 @@
+<p><h4>Changes in <A HREF="bool.h.html">bool.h</A> (<A HREF="../original/bool.h.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/bool.h.html#line1">line 1</A> with <A HREF="bool.h.html#line1">line 1</A><pre>
+&lt; #if !defined(BOOL_H)
+---
+&gt; #ifndef BOOL_H
+</pre><br>Added <A HREF="bool.h.html#line3">line 3</A> to <A HREF="bool.h.html#line4">line 4</A> (was <A HREF="../original/bool.h.html#line2">line 2</A>)<pre>
+&gt; 
+&gt; #ifndef FALSE
+</pre><br>Added <A HREF="bool.h.html#line6">line 6</A> to <A HREF="bool.h.html#line8">line 8</A> (was <A HREF="../original/bool.h.html#line3">line 3</A>)<pre>
+&gt; #endif
+&gt; 
+&gt; #ifndef TRUE
+</pre><br>Added <A HREF="bool.h.html#line10">line 10</A> to <A HREF="bool.h.html#line11">line 11</A> (was <A HREF="../original/bool.h.html#line4">line 4</A>)<pre>
+&gt; #endif
+&gt; 
+</pre><br>Added <A HREF="bool.h.html#line13">line 13</A> to <A HREF="bool.h.html#line21">line 21</A> (was <A HREF="../original/bool.h.html#line5">line 5</A>)<pre>
+&gt; 
+&gt; /*
+&gt; ** bool_initMod has no real effect
+&gt; ** Declared with modifies internalState, so no noeffect errors are 
+&gt; ** reported when it is called.)
+&gt; */
+&gt; 
+&gt; extern /*@unused@*/ void bool_initMod (void) /*@modifies internalState@*/ ;
+&gt; /*@-mustmod@*/
+</pre><br>Added <A HREF="bool.h.html#line23">line 23</A> to <A HREF="bool.h.html#line33">line 33</A> (was <A HREF="../original/bool.h.html#line6">line 6</A>)<pre>
+&gt; /*@=mustmod@*/
+&gt; 
+&gt; extern /*@unused@*/ /*@observer@*/ char *bool_unparse (bool b) /*@*/ ;
+&gt; # define bool_unparse(b) ((b) ? "true" : "false" )
+&gt; 
+&gt; extern /*@unused@*/ bool bool_not (bool b) /*@*/ ;
+&gt; # define bool_not(b) ((b) ? FALSE : TRUE)
+&gt; 
+&gt; extern /*@unused@*/ bool bool_equal (bool b1, bool b2) /*@*/ ;
+&gt; # define bool_equal(a,b) ((a) ? (b) : !(b))
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="dbase.c.html">dbase.c</A> (<A HREF="../original/dbase.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line8">line 8</A> with <A HREF="dbase.c.html#line8">line 8</A> to <A HREF="dbase.c.html#line11">line 11</A><pre>
+&lt; typedef enum {mMGRS, fMGRS, mNON, fNON} employeeKinds;
+---
+&gt; typedef enum
+&gt; {
+&gt;   mMGRS, fMGRS, mNON, fNON
+&gt; } employeeKinds;
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line14">line 14</A> with <A HREF="dbase.c.html#line17">line 17</A> to <A HREF="dbase.c.html#line18">line 18</A><pre>
+&lt; void db_initMod(void) {
+---
+&gt; void db_initMod (void)
+&gt; {
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line16">line 16</A> with <A HREF="dbase.c.html#line20">line 20</A> to <A HREF="dbase.c.html#line25">line 25</A><pre>
+&lt;   if (initDone) return;
+---
+&gt;   
+&gt;   if (initDone)
+&gt;     {
+&gt;       return;
+&gt;     }
+&gt;   
+</pre><br>Added <A HREF="dbase.c.html#line31">line 31</A> (was <A HREF="../original/dbase.c.html#line21">line 21</A>)<pre>
+&gt;   
+</pre><br>Added <A HREF="dbase.c.html#line33">line 33</A> (was <A HREF="../original/dbase.c.html#line22">line 22</A>)<pre>
+&gt;     {
+</pre><br>Added <A HREF="dbase.c.html#line35">line 35</A> to <A HREF="dbase.c.html#line36">line 36</A> (was <A HREF="../original/dbase.c.html#line23">line 23</A>)<pre>
+&gt;     }
+&gt;   
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line27">line 27</A> with <A HREF="dbase.c.html#line40">line 40</A> to <A HREF="dbase.c.html#line41">line 41</A><pre>
+&lt; eref _db_ercKeyGet(erc c, int key) {
+---
+&gt; eref _db_ercKeyGet (erc c, int key) 
+&gt; {
+</pre><br>Added <A HREF="dbase.c.html#line44">line 44</A> (was <A HREF="../original/dbase.c.html#line29">line 29</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line31">line 31</A> with <A HREF="dbase.c.html#line46">line 46</A> to <A HREF="dbase.c.html#line52">line 52</A><pre>
+&lt;      if (eref_get(er).ssNum == key) erc_iterReturn(it, er);
+---
+&gt;     {
+&gt;       if (eref_get (er).ssNum == key)
+&gt;         {
+&gt;           erc_iterReturn (it, er);
+&gt;         }
+&gt;     }
+&gt;   
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line35">line 35</A> to <A HREF="../original/dbase.c.html#line36">line 36</A> with <A HREF="dbase.c.html#line56">line 56</A> to <A HREF="dbase.c.html#line57">line 57</A><pre>
+&lt; 
+&lt; eref _db_keyGet(int key) {
+---
+&gt; eref _db_keyGet (int key)
+&gt; {
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line39">line 39</A> with <A HREF="dbase.c.html#line60">line 60</A> to <A HREF="dbase.c.html#line62">line 62</A><pre>
+&lt;   for (i = firstERC; i &lt;= lastERC; i++) {
+---
+&gt;   
+&gt;   for (i = firstERC; i &lt;= lastERC; i++)
+&gt;     {
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line41">line 41</A> with <A HREF="dbase.c.html#line64">line 64</A> to <A HREF="dbase.c.html#line66">line 66</A><pre>
+&lt;      if (!eref_equal(er, erefNIL)) return er;
+---
+&gt;       if (!eref_equal (er, erefNIL))
+&gt;         {
+&gt;           return er;
+</pre><br>Added <A HREF="dbase.c.html#line68">line 68</A> to <A HREF="dbase.c.html#line69">line 69</A> (was <A HREF="../original/dbase.c.html#line42">line 42</A>)<pre>
+&gt;     }
+&gt;   
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line46">line 46</A> with <A HREF="dbase.c.html#line73">line 73</A> to <A HREF="dbase.c.html#line74">line 74</A><pre>
+&lt; int _db_addEmpls(erc c, int l, int h, empset s) {
+---
+&gt; int _db_addEmpls (erc c, int l, int h, empset s)
+&gt; {
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line52">line 52</A> with <A HREF="dbase.c.html#line80">line 80</A> to <A HREF="dbase.c.html#line82">line 82</A><pre>
+&lt;   for_ercElems (er, it, c) {
+---
+&gt;   
+&gt;   for_ercElems (er, it, c)
+&gt;     {
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line54">line 54</A> with <A HREF="dbase.c.html#line84">line 84</A> to <A HREF="dbase.c.html#line85">line 85</A><pre>
+&lt;     if ((e.salary &gt;= l) && (e.salary &lt;= h)) {
+---
+&gt;       if ((e.salary &gt;= l) && (e.salary &lt;= h))
+&gt;         {
+</pre><br>Added <A HREF="dbase.c.html#line90">line 90</A> (was <A HREF="../original/dbase.c.html#line58">line 58</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line62">line 62</A> to <A HREF="../original/dbase.c.html#line65">line 65</A> with <A HREF="dbase.c.html#line94">line 94</A> to <A HREF="dbase.c.html#line104">line 104</A><pre>
+&lt; db_status hire(employee e) {
+&lt;   if (e.gen == gender_ANY) return genderERR;
+&lt;   if (e.j == job_ANY) return jobERR;
+&lt;   if (e.salary &lt; 0) return salERR;
+---
+&gt; db_status hire (employee e)
+&gt; {
+&gt;   if (e.gen == gender_ANY)
+&gt;     return genderERR;
+&gt; 
+&gt;   if (e.j == job_ANY)
+&gt;     return jobERR;
+&gt; 
+&gt;   if (e.salary &lt; 0)
+&gt;     return salERR;
+&gt; 
+</pre><br>Added <A HREF="dbase.c.html#line107">line 107</A> (was <A HREF="../original/dbase.c.html#line67">line 67</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line72">line 72</A> with <A HREF="dbase.c.html#line112">line 112</A> to <A HREF="dbase.c.html#line113">line 113</A><pre>
+&lt; void uncheckedHire(employee e) {
+---
+&gt; void uncheckedHire (employee e)
+&gt; {
+</pre><br>Added <A HREF="dbase.c.html#line115">line 115</A> (was <A HREF="../original/dbase.c.html#line73">line 73</A>)<pre>
+&gt;   
+</pre><br>Added <A HREF="dbase.c.html#line118">line 118</A> (was <A HREF="../original/dbase.c.html#line75">line 75</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line79">line 79</A> to <A HREF="../original/dbase.c.html#line80">line 80</A> with <A HREF="dbase.c.html#line122">line 122</A> to <A HREF="dbase.c.html#line125">line 125</A><pre>
+&lt;        else erc_insert(db[mNON], er);
+&lt;     else if (e.j == MGR)
+---
+&gt;     else
+&gt;       erc_insert (db[mNON], er);
+&gt;   else
+&gt;     if (e.j == MGR)
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line82">line 82</A> with <A HREF="dbase.c.html#line127">line 127</A> to <A HREF="dbase.c.html#line128">line 128</A><pre>
+&lt;        else erc_insert(db[fNON], er);
+---
+&gt;     else
+&gt;       erc_insert (db[fNON], er);
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line85">line 85</A> with <A HREF="dbase.c.html#line131">line 131</A> to <A HREF="dbase.c.html#line132">line 132</A><pre>
+&lt; bool fire(int ssNum) {
+---
+&gt; bool fire (int ssNum)
+&gt; {
+</pre><br>Added <A HREF="dbase.c.html#line136">line 136</A> (was <A HREF="../original/dbase.c.html#line88">line 88</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line91">line 91</A> with <A HREF="dbase.c.html#line139">line 139</A> to <A HREF="dbase.c.html#line140">line 140</A><pre>
+&lt;       if (eref_get(er).ssNum == ssNum) {
+---
+&gt;       if (eref_get (er).ssNum == ssNum)
+&gt;         {
+</pre><br>Added <A HREF="dbase.c.html#line145">line 145</A> (was <A HREF="../original/dbase.c.html#line95">line 95</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line99">line 99</A> with <A HREF="dbase.c.html#line149">line 149</A> to <A HREF="dbase.c.html#line150">line 150</A><pre>
+&lt; bool promote(int ssNum) {
+---
+&gt; bool promote (int ssNum)
+&gt; {
+</pre><br>Added <A HREF="dbase.c.html#line154">line 154</A> (was <A HREF="../original/dbase.c.html#line102">line 102</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line105">line 105</A> with <A HREF="dbase.c.html#line157">line 157</A> to <A HREF="dbase.c.html#line159">line 159</A><pre>
+&lt;   if (eref_equal(er, erefNIL)) {
+---
+&gt;   
+&gt;   if (eref_equal (er, erefNIL))
+&gt;     {
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line107">line 107</A> with <A HREF="dbase.c.html#line161">line 161</A> to <A HREF="dbase.c.html#line162">line 162</A><pre>
+&lt;     if (eref_equal(er, erefNIL)) return FALSE;
+---
+&gt;       if (eref_equal (er, erefNIL))
+&gt;         return FALSE;
+</pre><br>Added <A HREF="dbase.c.html#line165">line 165</A> (was <A HREF="../original/dbase.c.html#line109">line 109</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line113">line 113</A> with <A HREF="dbase.c.html#line169">line 169</A> to <A HREF="dbase.c.html#line171">line 171</A><pre>
+&lt;   if (g == MALE) {
+---
+&gt;   
+&gt;   if (g == MALE)
+&gt;     {
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line117">line 117</A> with <A HREF="dbase.c.html#line175">line 175</A> to <A HREF="dbase.c.html#line176">line 176</A><pre>
+&lt;   else {
+---
+&gt;   else
+&gt;     {
+</pre><br>Added <A HREF="dbase.c.html#line180">line 180</A> (was <A HREF="../original/dbase.c.html#line120">line 120</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line124">line 124</A> with <A HREF="dbase.c.html#line184">line 184</A> to <A HREF="dbase.c.html#line185">line 185</A><pre>
+&lt; db_status setSalary(int ssNum, int sal) {
+---
+&gt; db_status setSalary (int ssNum, int sal)
+&gt; {
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line127">line 127</A> with <A HREF="dbase.c.html#line188">line 188</A> to <A HREF="dbase.c.html#line193">line 193</A><pre>
+&lt;   if (sal &lt; 0) return salERR;
+---
+&gt;   
+&gt;   if (sal &lt; 0)
+&gt;     {
+&gt;       return salERR;
+&gt;     }
+&gt; 
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line129">line 129</A> with <A HREF="dbase.c.html#line195">line 195</A> to <A HREF="dbase.c.html#line200">line 200</A><pre>
+&lt;   if (eref_equal(er, erefNIL)) return missERR;
+---
+&gt; 
+&gt;   if (eref_equal (er, erefNIL))
+&gt;     {
+&gt;       return missERR;
+&gt;     }
+&gt; 
+</pre><br>Added <A HREF="dbase.c.html#line204">line 204</A> (was <A HREF="../original/dbase.c.html#line132">line 132</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line136">line 136</A> with <A HREF="dbase.c.html#line208">line 208</A> to <A HREF="dbase.c.html#line209">line 209</A><pre>
+&lt; int query(db_q q, empset s) {
+---
+&gt; int query (db_q q, empset s)
+&gt; {
+</pre><br>Added <A HREF="dbase.c.html#line215">line 215</A> (was <A HREF="../original/dbase.c.html#line141">line 141</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line144">line 144</A> with <A HREF="dbase.c.html#line218">line 218</A> to <A HREF="dbase.c.html#line220">line 220</A><pre>
+&lt;   switch(q.g) {
+---
+&gt; 
+&gt;   switch (q.g)
+&gt;     {
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line146">line 146</A> with <A HREF="dbase.c.html#line222">line 222</A> to <A HREF="dbase.c.html#line223">line 223</A><pre>
+&lt;       switch(q.j) {
+---
+&gt;       switch (q.j)
+&gt;         {
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line162">line 162</A> with <A HREF="dbase.c.html#line239">line 239</A> to <A HREF="dbase.c.html#line240">line 240</A><pre>
+&lt;       switch(q.j) {
+---
+&gt;       switch (q.j)
+&gt;         {
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line173">line 173</A> with <A HREF="dbase.c.html#line251">line 251</A> to <A HREF="dbase.c.html#line252">line 252</A><pre>
+&lt;       switch(q.j) {
+---
+&gt;       switch (q.j)
+&gt;         {
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line186">line 186</A> with <A HREF="dbase.c.html#line265">line 265</A> to <A HREF="dbase.c.html#line266">line 266</A><pre>
+&lt; void db_print(void) {
+---
+&gt; void db_print (void)
+&gt; {
+</pre><br>Added <A HREF="dbase.c.html#line269">line 269</A> (was <A HREF="../original/dbase.c.html#line188">line 188</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/dbase.c.html#line190">line 190</A> with <A HREF="dbase.c.html#line271">line 271</A> to <A HREF="dbase.c.html#line273">line 273</A><pre>
+&lt;   for (i = firstERC; i &lt;= lastERC; i++) {
+---
+&gt; 
+&gt;   for (i = firstERC; i &lt;= lastERC; i++)
+&gt;     {
+</pre><p><p>
+<p><h4>Changes in <A HREF="dbase.h.html">dbase.h</A> (<A HREF="../original/dbase.h.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/dbase.h.html#line1">line 1</A> with <A HREF="dbase.h.html#line1">line 1</A><pre>
+&lt; #if !defined(DBASE_H)
+---
+&gt; # ifndef DBASE_H
+</pre><p><p>
+<p><h4>Changes in <A HREF="dbase.lcl.html">dbase.lcl</A> (<A HREF="../original/dbase.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line1">line 1</A> with <A HREF="dbase.lcl.html#line1">line 1</A><pre>
+&lt; imports employee, empset, stdio;
+---
+&gt; imports employee, empset, &lt;stdio&gt;;
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line9">line 9</A> to <A HREF="../original/dbase.lcl.html#line12">line 12</A> with <A HREF="dbase.lcl.html#line9">line 9</A> to <A HREF="dbase.lcl.html#line11">line 11</A><pre>
+&lt; uses dbase, sprint(ioStream, db);
+&lt; 
+&lt; claims UniqueKeys(employee e1, employee e2) db d; {
+&lt;    ensures
+---
+&gt; claims UniqueKeys (employee e1, employee e2) db d; 
+&gt; {       
+&gt;  /* ensures
+</pre><br>Added <A HREF="dbase.lcl.html#line14">line 14</A> (was <A HREF="../original/dbase.lcl.html#line14">line 14</A>)<pre>
+&gt;  */
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line17">line 17</A> with <A HREF="dbase.lcl.html#line17">line 17</A> to <A HREF="dbase.lcl.html#line18">line 18</A><pre>
+&lt; db_status hire(employee e) db d; {
+---
+&gt; db_status hire(employee e) db d; 
+&gt; {
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line19">line 19</A> with <A HREF="dbase.lcl.html#line20">line 20</A><pre>
+&lt;    ensures
+---
+&gt;   /* ensures
+</pre><br>Added <A HREF="dbase.lcl.html#line29">line 29</A> (was <A HREF="../original/dbase.lcl.html#line27">line 27</A>)<pre>
+&gt;   */
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line29">line 29</A> to <A HREF="../original/dbase.lcl.html#line30">line 30</A> with <A HREF="dbase.lcl.html#line31">line 31</A> to <A HREF="dbase.lcl.html#line34">line 34</A><pre>
+&lt; void uncheckedHire(employee e) db d; {
+&lt;    requires e.gen \neq gender_ANY /\ e.j \neq job_ANY
+---
+&gt; 
+&gt; void uncheckedHire(employee e) db d; 
+&gt; {
+&gt;   /* requires e.gen \neq gender_ANY /\ e.j \neq job_ANY
+</pre><br>Added <A HREF="dbase.lcl.html#line36">line 36</A> (was <A HREF="../original/dbase.lcl.html#line31">line 31</A>)<pre>
+&gt;   */
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line33">line 33</A> with <A HREF="dbase.lcl.html#line38">line 38</A><pre>
+&lt;    ensures d' = hire(e, d^);
+---
+&gt;   /* ensures d' = hire(e, d^); */
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line35">line 35</A> with <A HREF="dbase.lcl.html#line40">line 40</A> to <A HREF="dbase.lcl.html#line42">line 42</A><pre>
+&lt; bool fire(int ssNum) db d; {
+---
+&gt; 
+&gt; bool fire(int ssNum) db d; 
+&gt; {
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line37">line 37</A> with <A HREF="dbase.lcl.html#line44">line 44</A><pre>
+&lt;    ensures result = employed(d^, ssNum)
+---
+&gt;   /* ensures result = employed(d^, ssNum)
+</pre><br>Added <A HREF="dbase.lcl.html#line46">line 46</A> (was <A HREF="../original/dbase.lcl.html#line38">line 38</A>)<pre>
+&gt;   */
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line40">line 40</A> with <A HREF="dbase.lcl.html#line48">line 48</A> to <A HREF="dbase.lcl.html#line50">line 50</A><pre>
+&lt; int query(db_q q, empset s) db d; {
+---
+&gt; 
+&gt; int query(db_q q, empset s) db d; 
+&gt; {
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line42">line 42</A> with <A HREF="dbase.lcl.html#line52">line 52</A><pre>
+&lt;    ensures s' = s^ \U query(d^, q)
+---
+&gt;   /* ensures s' = s^ \U query(d^, q)
+</pre><br>Added <A HREF="dbase.lcl.html#line54">line 54</A> (was <A HREF="../original/dbase.lcl.html#line43">line 43</A>)<pre>
+&gt;   */
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line45">line 45</A> with <A HREF="dbase.lcl.html#line56">line 56</A> to <A HREF="dbase.lcl.html#line58">line 58</A><pre>
+&lt; bool promote(int ssNum) db d; {
+---
+&gt; 
+&gt; bool promote(int ssNum) db d; 
+&gt; {
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line47">line 47</A> with <A HREF="dbase.lcl.html#line60">line 60</A><pre>
+&lt;    ensures
+---
+&gt;   /* ensures
+</pre><br>Added <A HREF="dbase.lcl.html#line65">line 65</A> (was <A HREF="../original/dbase.lcl.html#line51">line 51</A>)<pre>
+&gt;   */
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line53">line 53</A> with <A HREF="dbase.lcl.html#line67">line 67</A> to <A HREF="dbase.lcl.html#line69">line 69</A><pre>
+&lt; db_status setSalary(int ssNum, int sal) db d; {
+---
+&gt; 
+&gt; db_status setSalary(int ssNum, int sal) db d; 
+&gt; {
+</pre><br>Added <A HREF="dbase.lcl.html#line71">line 71</A> (was <A HREF="../original/dbase.lcl.html#line54">line 54</A>)<pre>
+&gt;   /* 
+</pre><br>Added <A HREF="dbase.lcl.html#line80">line 80</A> (was <A HREF="../original/dbase.lcl.html#line62">line 62</A>)<pre>
+&gt;   */
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line64">line 64</A> with <A HREF="dbase.lcl.html#line82">line 82</A> to <A HREF="dbase.lcl.html#line84">line 84</A><pre>
+&lt; void db_print(void) db d; FILE *stdout; {
+---
+&gt; 
+&gt; void db_print(void) db d; FILE *stdout; 
+&gt; {
+</pre><br>Added <A HREF="dbase.lcl.html#line86">line 86</A> (was <A HREF="../original/dbase.lcl.html#line65">line 65</A>)<pre>
+&gt;   /*
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line68">line 68</A> with <A HREF="dbase.lcl.html#line89">line 89</A><pre>
+&lt; 
+---
+&gt;   */
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line70">line 70</A> with <A HREF="dbase.lcl.html#line91">line 91</A> to <A HREF="dbase.lcl.html#line93">line 93</A><pre>
+&lt; void db_initMod(void) db d; {
+---
+&gt; 
+&gt; void db_initMod(void) db d; 
+&gt; {
+</pre><br>Replaced <A HREF="../original/dbase.lcl.html#line72">line 72</A> with <A HREF="dbase.lcl.html#line95">line 95</A><pre>
+&lt;    ensures d' = new;
+---
+&gt;   /* ensures d' = new; */
+</pre><p><p>
+<p><h4>Changes in <A HREF="drive.c.html">drive.c</A> (<A HREF="../original/drive.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/drive.c.html#line11">line 11</A> to <A HREF="../original/drive.c.html#line12">line 12</A> with <A HREF="drive.c.html#line11">line 11</A> to <A HREF="drive.c.html#line12">line 12</A><pre>
+&lt; int main(int argc, char *argv[]) {
+&lt; 
+---
+&gt; int main(int argc, char *argv[]) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/drive.c.html#line26">line 26</A> with <A HREF="drive.c.html#line26">line 26</A> to <A HREF="drive.c.html#line27">line 27</A><pre>
+&lt;   if (argc != 1) {
+---
+&gt;   if (argc != 1) 
+&gt;     {
+</pre><br>Replaced <A HREF="../original/drive.c.html#line34">line 34</A> to <A HREF="../original/drive.c.html#line35">line 35</A> with <A HREF="drive.c.html#line35">line 35</A> to <A HREF="drive.c.html#line42">line 42</A><pre>
+&lt;    if (!(empset_size(em1) == 0)) printf("Size should be 0.\n");
+&lt;    for (i = 0; i &lt; 500; i++) {
+---
+&gt; 
+&gt;   if (!(empset_size(em1) == 0))
+&gt;     {
+&gt;       printf("Size should be 0.\n");
+&gt;     }
+&gt; 
+&gt;   for (i = 0; i &lt; 500; i++) 
+&gt;     {
+</pre><br>Replaced <A HREF="../original/drive.c.html#line44">line 44</A> to <A HREF="../original/drive.c.html#line45">line 45</A> with <A HREF="drive.c.html#line51">line 51</A> to <A HREF="drive.c.html#line58">line 58</A><pre>
+&lt;    if (!(empset_size(em1) == 500)) printf("Size should be 500.\n");
+&lt;    for (i = 0; i &lt; 250; i++) {
+---
+&gt; 
+&gt;   if (!(empset_size(em1) == 500)) 
+&gt;     {
+&gt;       printf("Size should be 500.\n");
+&gt;     }
+&gt; 
+&gt;   for (i = 0; i &lt; 250; i++) 
+&gt;     {
+</pre><br>Replaced <A HREF="../original/drive.c.html#line54">line 54</A> with <A HREF="drive.c.html#line67">line 67</A> to <A HREF="drive.c.html#line72">line 72</A><pre>
+&lt;    if (!(empset_size(em1) == 250)) printf("Size should be 250.\n");
+---
+&gt; 
+&gt;   if (!(empset_size(em1) == 250)) 
+&gt;     {
+&gt;       printf("Size should be 250.\n");
+&gt;     }
+&gt; 
+</pre><br>Replaced <A HREF="../original/drive.c.html#line56">line 56</A> with <A HREF="drive.c.html#line74">line 74</A> to <A HREF="drive.c.html#line76">line 76</A><pre>
+&lt;    for (i = 0; i &lt; 100; i++) {
+---
+&gt; 
+&gt;   for (i = 0; i &lt; 100; i++) 
+&gt;     {
+</pre><br>Added <A HREF="drive.c.html#line85">line 85</A> (was <A HREF="../original/drive.c.html#line64">line 64</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/drive.c.html#line66">line 66</A> with <A HREF="drive.c.html#line87">line 87</A> to <A HREF="drive.c.html#line92">line 92</A><pre>
+&lt;    if (!(empset_size(em3) == 350)) printf("Size should be 350.\n");
+---
+&gt; 
+&gt;   if (!(empset_size(em3) == 350))
+&gt;     {
+&gt;       printf("Size should be 350.\n");
+&gt;     }
+&gt; 
+</pre><br>Replaced <A HREF="../original/drive.c.html#line68">line 68</A> with <A HREF="drive.c.html#line94">line 94</A> to <A HREF="drive.c.html#line99">line 99</A><pre>
+&lt;    if (!(empset_size(em3) == 350)) printf("Size should be 350.\n");
+---
+&gt; 
+&gt;   if (!(empset_size(em3) == 350))
+&gt;     {
+&gt;       printf("Size should be 350.\n");
+&gt;     }
+&gt; 
+</pre><br>Replaced <A HREF="../original/drive.c.html#line70">line 70</A> with <A HREF="drive.c.html#line101">line 101</A> to <A HREF="drive.c.html#line103">line 103</A><pre>
+&lt;    for (i = 0; i &lt; 2; i++) {
+---
+&gt; 
+&gt;   for (i = 0; i &lt; 2; i++) 
+&gt;     {
+</pre><br>Deleted <A HREF="../original/drive.c.html#line77">line 77</A> to <A HREF="../original/drive.c.html#line78">line 78</A> (matches <A HREF="drive.c.html#line109">line 109</A>)<pre>
+&lt; 
+&lt;   
+</pre><br>Replaced <A HREF="../original/drive.c.html#line80">line 80</A> with <A HREF="drive.c.html#line111">line 111</A> to <A HREF="drive.c.html#line113">line 113</A><pre>
+&lt;    for (i = 0; i &lt; 20; i++) {
+---
+&gt; 
+&gt;   for (i = 0; i &lt; 20; i++) 
+&gt;     {
+</pre><br>Replaced <A HREF="../original/drive.c.html#line87">line 87</A> to <A HREF="../original/drive.c.html#line88">line 88</A> with <A HREF="drive.c.html#line120">line 120</A> to <A HREF="drive.c.html#line123">line 123</A><pre>
+&lt;      if ( (i/2)*2 == i) hire(e);
+&lt;         else {uncheckedHire(e); j = hire(e);}
+---
+&gt; 
+&gt;       if ((i/2)*2 == i) 
+&gt;         {
+&gt;           hire(e); 
+</pre><br>Added <A HREF="drive.c.html#line125">line 125</A> to <A HREF="drive.c.html#line130">line 130</A> (was <A HREF="../original/drive.c.html#line89">line 89</A>)<pre>
+&gt;       else 
+&gt;         {
+&gt;           uncheckedHire(e); j = hire(e);
+&gt;         }
+&gt;     }
+&gt;   
+</pre><br>Added <A HREF="drive.c.html#line138">line 138</A> (was <A HREF="../original/drive.c.html#line96">line 96</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="drive.c.html#line143">line 143</A> (was <A HREF="../original/drive.c.html#line100">line 100</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="drive.c.html#line151">line 151</A> (was <A HREF="../original/drive.c.html#line107">line 107</A>)<pre>
+&gt;   
+</pre><br>Added <A HREF="drive.c.html#line157">line 157</A> (was <A HREF="../original/drive.c.html#line112">line 112</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="drive.c.html#line161">line 161</A> (was <A HREF="../original/drive.c.html#line115">line 115</A>)<pre>
+&gt;   
+</pre><p><p>
+<p><h4>Changes in <A HREF="employee.c.html">employee.c</A> (<A HREF="../original/employee.c.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="employee.c.html#line2">line 2</A> (was <A HREF="../original/employee.c.html#line1">line 1</A>)<pre>
+&gt; # include &lt;string.h&gt;
+</pre><br>Replaced <A HREF="../original/employee.c.html#line4">line 4</A> with <A HREF="employee.c.html#line5">line 5</A> to <A HREF="employee.c.html#line6">line 6</A><pre>
+&lt; bool employee_setName(employee *e, char na []) {
+---
+&gt; bool employee_setName (employee *e, char na []) 
+&gt; {
+</pre><br>Added <A HREF="employee.c.html#line10">line 10</A> (was <A HREF="../original/employee.c.html#line7">line 7</A>)<pre>
+&gt;     {
+</pre><br>Added <A HREF="employee.c.html#line12">line 12</A> to <A HREF="employee.c.html#line13">line 13</A> (was <A HREF="../original/employee.c.html#line8">line 8</A>)<pre>
+&gt;     }
+&gt; 
+</pre><br>Replaced <A HREF="../original/employee.c.html#line12">line 12</A> with <A HREF="employee.c.html#line17">line 17</A> to <A HREF="employee.c.html#line19">line 19</A><pre>
+&lt; bool employee_equal(employee * e1, employee * e2) {
+---
+&gt; 
+&gt; bool employee_equal (employee * e1, employee * e2) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/employee.c.html#line17">line 17</A> to <A HREF="../original/employee.c.html#line18">line 18</A> with <A HREF="employee.c.html#line24">line 24</A><pre>
+&lt;             && (strncmp(e1-&gt;name, e2-&gt;name, 
+&lt;                 maxEmployeeName) == 0));
+---
+&gt;           && (strncmp (e1-&gt;name, e2-&gt;name, maxEmployeeName) == 0));
+</pre><br>Replaced <A HREF="../original/employee.c.html#line20">line 20</A> with <A HREF="employee.c.html#line26">line 26</A> to <A HREF="employee.c.html#line28">line 28</A><pre>
+&lt; void employee_sprint(char s[], employee e) {
+---
+&gt; 
+&gt; void employee_sprint (char s[], employee e) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/employee.c.html#line24">line 24</A> to <A HREF="../original/employee.c.html#line30">line 30</A> with <A HREF="employee.c.html#line32">line 32</A> to <A HREF="employee.c.html#line33">line 33</A><pre>
+&lt;    (void) sprintf(s,
+&lt;                   employeeFormat,
+&lt;                   e.ssNum,
+&lt;                   e.name,
+&lt;                   gender[e.gen],
+&lt;                   jobs[e.j],
+&lt;                   e.salary);
+---
+&gt;   (void) sprintf (s, employeeFormat, e.ssNum, e.name,
+&gt;                   gender[e.gen], jobs[e.j], e.salary);
+</pre><p><p>
+<p><h4>Changes in <A HREF="employee.h.html">employee.h</A> (<A HREF="../original/employee.h.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/employee.h.html#line1">line 1</A> with <A HREF="employee.h.html#line1">line 1</A><pre>
+&lt; #if !defined(EMPLOYEE_H)
+---
+&gt; # ifndef EMPLOYEE_H
+</pre><p><p>
+<p><h4>Changes in <A HREF="employee.lcl.html">employee.lcl</A> (<A HREF="../original/employee.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/employee.lcl.html#line6">line 6</A> with <A HREF="employee.lcl.html#line6">line 6</A> to <A HREF="employee.lcl.html#line9">line 9</A><pre>
+&lt; typedef struct {int ssNum;
+---
+&gt; 
+&gt; typedef struct 
+&gt; {
+&gt;   int ssNum;
+</pre><br>Replaced <A HREF="../original/employee.lcl.html#line10">line 10</A> with <A HREF="employee.lcl.html#line13">line 13</A> to <A HREF="employee.lcl.html#line14">line 14</A><pre>
+&lt;                 job j;} employee;
+---
+&gt;   job j;
+&gt; } employee;
+</pre><br>Replaced <A HREF="../original/employee.lcl.html#line12">line 12</A> to <A HREF="../original/employee.lcl.html#line15">line 15</A> with <A HREF="employee.lcl.html#line16">line 16</A> to <A HREF="employee.lcl.html#line18">line 18</A><pre>
+&lt; uses employeeConstants, sprint(employee, char[]);
+&lt; 
+&lt; void employee_sprint(char s[], employee e) {
+&lt;     requires maxIndex(s) &gt;= employeePrintSize;
+---
+&gt; void employee_sprint (out char s[], employee e) 
+&gt; {
+&gt;   /* requires maxIndex(s) &gt;= employeePrintSize; */
+</pre><br>Replaced <A HREF="../original/employee.lcl.html#line17">line 17</A> with <A HREF="employee.lcl.html#line20">line 20</A><pre>
+&lt;     ensures isSprint(s', e)
+---
+&gt;   /* ensures isSprint(s', e)
+</pre><br>Added <A HREF="employee.lcl.html#line22">line 22</A> (was <A HREF="../original/employee.lcl.html#line18">line 18</A>)<pre>
+&gt;   */
+</pre><br>Replaced <A HREF="../original/employee.lcl.html#line20">line 20</A> to <A HREF="../original/employee.lcl.html#line21">line 21</A> with <A HREF="employee.lcl.html#line24">line 24</A> to <A HREF="employee.lcl.html#line27">line 27</A><pre>
+&lt; bool employee_equal(employee *e1, employee *e2) {
+&lt;    ensures result = sameStr(e1-&gt;name^, e2-&gt;name^)
+---
+&gt; 
+&gt; bool employee_equal (employee *e1, employee *e2) 
+&gt; {
+&gt;   /* ensures result = sameStr(e1-&gt;name^, e2-&gt;name^)
+</pre><br>Added <A HREF="employee.lcl.html#line32">line 32</A> (was <A HREF="../original/employee.lcl.html#line25">line 25</A>)<pre>
+&gt;   */
+</pre><br>Replaced <A HREF="../original/employee.lcl.html#line27">line 27</A> to <A HREF="../original/employee.lcl.html#line28">line 28</A> with <A HREF="employee.lcl.html#line34">line 34</A> to <A HREF="employee.lcl.html#line37">line 37</A><pre>
+&lt; bool employee_setName(employee *e, char na[]) {
+&lt;    requires nullTerminated(na^);
+---
+&gt; 
+&gt; bool employee_setName(employee *e, char na[]) 
+&gt; {
+&gt;   /* requires nullTerminated(na^); */
+</pre><br>Replaced <A HREF="../original/employee.lcl.html#line30">line 30</A> with <A HREF="employee.lcl.html#line39">line 39</A><pre>
+&lt;    ensures result = lenStr(na^) &lt; maxEmployeeName
+---
+&gt;   /* ensures result = lenStr(na^) &lt; maxEmployeeName
+</pre><br>Added <A HREF="employee.lcl.html#line44">line 44</A> (was <A HREF="../original/employee.lcl.html#line34">line 34</A>)<pre>
+&gt;   */
+</pre><br>Replaced <A HREF="../original/employee.lcl.html#line36">line 36</A> with <A HREF="employee.lcl.html#line46">line 46</A> to <A HREF="employee.lcl.html#line48">line 48</A><pre>
+&lt; void employee_initMod(void) {
+---
+&gt; 
+&gt; void employee_initMod(void) 
+&gt; {
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset.c.html">empset.c</A> (<A HREF="../original/empset.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/empset.c.html#line5">line 5</A> with <A HREF="empset.c.html#line5">line 5</A> to <A HREF="empset.c.html#line6">line 6</A><pre>
+&lt; eref _empset_get(employee e, erc s) {
+---
+&gt; eref _empset_get (employee e, erc s) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/empset.c.html#line9">line 9</A> with <A HREF="empset.c.html#line10">line 10</A> to <A HREF="empset.c.html#line12">line 12</A><pre>
+&lt;   for_ercElems(er, it, s) {
+---
+&gt; 
+&gt;   for_ercElems (er, it, s) 
+&gt;     {
+</pre><br>Added <A HREF="empset.c.html#line17">line 17</A> (was <A HREF="../original/empset.c.html#line13">line 13</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/empset.c.html#line17">line 17</A> with <A HREF="empset.c.html#line21">line 21</A> to <A HREF="empset.c.html#line22">line 22</A><pre>
+&lt; void empset_clear(empset s) {
+---
+&gt; void empset_clear (empset s) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/empset.c.html#line21">line 21</A> with <A HREF="empset.c.html#line26">line 26</A> to <A HREF="empset.c.html#line27">line 27</A><pre>
+&lt; bool empset_insert(empset s, employee e) {
+---
+&gt; bool empset_insert (empset s, employee e) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/empset.c.html#line23">line 23</A> with <A HREF="empset.c.html#line29">line 29</A> to <A HREF="empset.c.html#line34">line 34</A><pre>
+&lt;   if (!eref_equal(_empset_get(e, s), erefNIL)) return FALSE;
+---
+&gt;   
+&gt;   if (!eref_equal (_empset_get (e, s), erefNIL)) 
+&gt;     {
+&gt;       return FALSE;
+&gt;     }
+&gt;   
+</pre><br>Replaced <A HREF="../original/empset.c.html#line28">line 28</A> with <A HREF="empset.c.html#line39">line 39</A> to <A HREF="empset.c.html#line40">line 40</A><pre>
+&lt; void empset_insertUnique(empset s, employee e) {
+---
+&gt; void empset_insertUnique (empset s, employee e) 
+&gt; {
+</pre><br>Added <A HREF="empset.c.html#line42">line 42</A> (was <A HREF="../original/empset.c.html#line29">line 29</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/empset.c.html#line31">line 31</A> with <A HREF="empset.c.html#line44">line 44</A> to <A HREF="empset.c.html#line46">line 46</A><pre>
+&lt;   if (eref_equal(er, erefNIL)) {
+---
+&gt; 
+&gt;   if (eref_equal (er, erefNIL)) 
+&gt;     {
+</pre><br>Added <A HREF="empset.c.html#line51">line 51</A> (was <A HREF="../original/empset.c.html#line35">line 35</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/empset.c.html#line39">line 39</A> with <A HREF="empset.c.html#line55">line 55</A> to <A HREF="empset.c.html#line56">line 56</A><pre>
+&lt; bool empset_delete(empset s, employee e) {
+---
+&gt; bool empset_delete (empset s, employee e) 
+&gt; {
+</pre><br>Added <A HREF="empset.c.html#line58">line 58</A> (was <A HREF="../original/empset.c.html#line40">line 40</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/empset.c.html#line42">line 42</A> with <A HREF="empset.c.html#line60">line 60</A> to <A HREF="empset.c.html#line64">line 64</A><pre>
+&lt;   if (eref_equal(er, erefNIL)) return FALSE;
+---
+&gt; 
+&gt;   if (eref_equal (er, erefNIL)) 
+&gt;     {
+&gt;       return FALSE;
+&gt;     }
+</pre><br>Replaced <A HREF="../original/empset.c.html#line46">line 46</A> with <A HREF="empset.c.html#line68">line 68</A> to <A HREF="empset.c.html#line69">line 69</A><pre>
+&lt; empset empset_disjointUnion(empset s1, empset s2) {
+---
+&gt; empset empset_disjointUnion (empset s1, empset s2) 
+&gt; {
+</pre><br>Added <A HREF="empset.c.html#line74">line 74</A> (was <A HREF="../original/empset.c.html#line50">line 50</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/empset.c.html#line52">line 52</A> with <A HREF="empset.c.html#line76">line 76</A> to <A HREF="empset.c.html#line78">line 78</A><pre>
+&lt;   if (erc_size(s1) &gt; erc_size(s2)) {
+---
+&gt; 
+&gt;   if (erc_size (s1) &gt; erc_size (s2)) 
+&gt;     {
+</pre><br>Added <A HREF="empset.c.html#line83">line 83</A> (was <A HREF="../original/empset.c.html#line56">line 56</A>)<pre>
+&gt;   
+</pre><br>Added <A HREF="empset.c.html#line87">line 87</A> (was <A HREF="../original/empset.c.html#line59">line 59</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/empset.c.html#line63">line 63</A> with <A HREF="empset.c.html#line91">line 91</A> to <A HREF="empset.c.html#line92">line 92</A><pre>
+&lt; empset empset_union(empset s1, empset s2) {
+---
+&gt; empset empset_union (empset s1, empset s2) 
+&gt; {
+</pre><br>Added <A HREF="empset.c.html#line97">line 97</A> (was <A HREF="../original/empset.c.html#line67">line 67</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/empset.c.html#line69">line 69</A> with <A HREF="empset.c.html#line99">line 99</A> to <A HREF="empset.c.html#line101">line 101</A><pre>
+&lt;   if (erc_size(s1) &gt; erc_size(s2)) {
+---
+&gt; 
+&gt;   if (erc_size (s1) &gt; erc_size (s2)) 
+&gt;     {
+</pre><br>Added <A HREF="empset.c.html#line107">line 107</A> (was <A HREF="../original/empset.c.html#line74">line 74</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="empset.c.html#line111">line 111</A> (was <A HREF="../original/empset.c.html#line77">line 77</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/empset.c.html#line81">line 81</A> with <A HREF="empset.c.html#line115">line 115</A> to <A HREF="empset.c.html#line116">line 116</A><pre>
+&lt; void empset_intersect(empset s1, empset s2) {
+---
+&gt; void empset_intersect (empset s1, empset s2) 
+&gt; {
+</pre><br>Added <A HREF="empset.c.html#line120">line 120</A> (was <A HREF="../original/empset.c.html#line84">line 84</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="empset.c.html#line122">line 122</A> (was <A HREF="../original/empset.c.html#line85">line 85</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="empset.c.html#line126">line 126</A> (was <A HREF="../original/empset.c.html#line88">line 88</A>)<pre>
+&gt;   
+</pre><br>Added <A HREF="empset.c.html#line129">line 129</A> (was <A HREF="../original/empset.c.html#line90">line 90</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/empset.c.html#line94">line 94</A> with <A HREF="empset.c.html#line133">line 133</A> to <A HREF="empset.c.html#line134">line 134</A><pre>
+&lt; bool empset_subset(empset s1, empset s2) {
+---
+&gt; bool empset_subset (empset s1, empset s2) 
+&gt; {
+</pre><br>Added <A HREF="empset.c.html#line142">line 142</A> (was <A HREF="../original/empset.c.html#line101">line 101</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/empset.c.html#line105">line 105</A> with <A HREF="empset.c.html#line146">line 146</A> to <A HREF="empset.c.html#line147">line 147</A><pre>
+&lt; void empset_initMod(void) {
+---
+&gt; void empset_initMod (void) 
+&gt; {
+</pre><br>Added <A HREF="empset.c.html#line149">line 149</A> (was <A HREF="../original/empset.c.html#line106">line 106</A>)<pre>
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset.h.html">empset.h</A> (<A HREF="../original/empset.h.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/empset.h.html#line1">line 1</A> with <A HREF="empset.h.html#line1">line 1</A><pre>
+&lt; #if !defined(EMPSET_H)
+---
+&gt; # ifndef EMPSET_H
+</pre><br>Added <A HREF="empset.h.html#line35">line 35</A> (was <A HREF="../original/empset.h.html#line34">line 34</A>)<pre>
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset.lcl.html">empset.lcl</A> (<A HREF="../original/empset.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Deleted <A HREF="../original/empset.lcl.html#line3">line 3</A> to <A HREF="../original/empset.lcl.html#line4">line 4</A> (matches <A HREF="empset.lcl.html#line2">line 2</A>)<pre>
+&lt; uses Set(employee, empset),
+&lt;      sprint(empset, char[]);
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line6">line 6</A> to <A HREF="../original/empset.lcl.html#line7">line 7</A> with <A HREF="empset.lcl.html#line4">line 4</A> to <A HREF="empset.lcl.html#line6">line 6</A><pre>
+&lt; empset empset_create(void) {
+&lt;    ensures fresh(result) /\ result' = { };
+---
+&gt; empset empset_create(void) 
+&gt; {
+&gt;   /* ensures fresh(result) /\ result' = { }; */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line9">line 9</A> with <A HREF="empset.lcl.html#line8">line 8</A> to <A HREF="empset.lcl.html#line10">line 10</A><pre>
+&lt; void empset_final(empset s) {
+---
+&gt; 
+&gt; void empset_final(empset s) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line11">line 11</A> with <A HREF="empset.lcl.html#line12">line 12</A><pre>
+&lt;    ensures trashed(s);
+---
+&gt;   /* ensures trashed(s); */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line13">line 13</A> with <A HREF="empset.lcl.html#line14">line 14</A> to <A HREF="empset.lcl.html#line16">line 16</A><pre>
+&lt; void empset_clear(empset s) {
+---
+&gt; 
+&gt; void empset_clear(empset s) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line15">line 15</A> with <A HREF="empset.lcl.html#line18">line 18</A><pre>
+&lt;    ensures s' = { };
+---
+&gt;   /* ensures s' = { }; */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line17">line 17</A> with <A HREF="empset.lcl.html#line20">line 20</A> to <A HREF="empset.lcl.html#line22">line 22</A><pre>
+&lt; bool empset_insert(empset s, employee e) {
+---
+&gt; 
+&gt; bool empset_insert(empset s, employee e) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line19">line 19</A> with <A HREF="empset.lcl.html#line24">line 24</A><pre>
+&lt;    ensures result = ~(e \in s^) /\ s' = insert(e, s^);
+---
+&gt;   /* ensures result = ~(e \in s^) /\ s' = insert(e, s^); */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line21">line 21</A> to <A HREF="../original/empset.lcl.html#line22">line 22</A> with <A HREF="empset.lcl.html#line26">line 26</A> to <A HREF="empset.lcl.html#line29">line 29</A><pre>
+&lt; void empset_insertUnique(empset s, employee e) {
+&lt;    requires ~(e \in s^);
+---
+&gt; 
+&gt; void empset_insertUnique(empset s, employee e) 
+&gt; {
+&gt;   /* requires ~(e \in s^); */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line24">line 24</A> with <A HREF="empset.lcl.html#line31">line 31</A><pre>
+&lt;    ensures s' = insert(e, s^);
+---
+&gt;   /* ensures s' = insert(e, s^); */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line26">line 26</A> with <A HREF="empset.lcl.html#line33">line 33</A> to <A HREF="empset.lcl.html#line35">line 35</A><pre>
+&lt; bool empset_delete(empset s, employee e) {
+---
+&gt; 
+&gt; bool empset_delete(empset s, employee e) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line28">line 28</A> with <A HREF="empset.lcl.html#line37">line 37</A><pre>
+&lt;    ensures result = e \in s^ /\ s' = delete(e, s^);
+---
+&gt;   /* ensures result = e \in s^ /\ s' = delete(e, s^); */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line30">line 30</A> to <A HREF="../original/empset.lcl.html#line31">line 31</A> with <A HREF="empset.lcl.html#line39">line 39</A> to <A HREF="empset.lcl.html#line42">line 42</A><pre>
+&lt; empset empset_union(empset s1, empset s2) {
+&lt;    ensures result' = s1^ \U s2^ /\ fresh(result);
+---
+&gt; 
+&gt; empset empset_union(empset s1, empset s2) 
+&gt; {
+&gt;   /* ensures result' = s1^ \U s2^ /\ fresh(result); */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line33">line 33</A> to <A HREF="../original/empset.lcl.html#line35">line 35</A> with <A HREF="empset.lcl.html#line44">line 44</A> to <A HREF="empset.lcl.html#line48">line 48</A><pre>
+&lt; empset empset_disjointUnion(empset s1, empset s2) {
+&lt;    requires s1^ \I s2^ = { };
+&lt;    ensures result' = s1^ \U s2^ /\ fresh(result);
+---
+&gt; 
+&gt; empset empset_disjointUnion(empset s1, empset s2) 
+&gt; {
+&gt;   /* requires s1^ \I s2^ = { }; */
+&gt;   /* ensures result' = s1^ \U s2^ /\ fresh(result); */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line37">line 37</A> with <A HREF="empset.lcl.html#line50">line 50</A> to <A HREF="empset.lcl.html#line52">line 52</A><pre>
+&lt; void empset_intersect(empset s1, empset s2) {
+---
+&gt; 
+&gt; void empset_intersect(empset s1, empset s2) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line39">line 39</A> with <A HREF="empset.lcl.html#line54">line 54</A><pre>
+&lt;    ensures s1' = s1^ \I s2^;
+---
+&gt;   /* ensures s1' = s1^ \I s2^; */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line41">line 41</A> to <A HREF="../original/empset.lcl.html#line42">line 42</A> with <A HREF="empset.lcl.html#line56">line 56</A> to <A HREF="empset.lcl.html#line59">line 59</A><pre>
+&lt; int empset_size(empset s) {
+&lt;    ensures result = size(s^);
+---
+&gt; 
+&gt; int empset_size(empset s) 
+&gt; {
+&gt;   /* ensures result = size(s^); */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line44">line 44</A> to <A HREF="../original/empset.lcl.html#line45">line 45</A> with <A HREF="empset.lcl.html#line61">line 61</A> to <A HREF="empset.lcl.html#line64">line 64</A><pre>
+&lt; bool empset_member(employee e, empset s) {
+&lt;    ensures result = e \in s^;
+---
+&gt; 
+&gt; bool empset_member(employee e, empset s) 
+&gt; {
+&gt;   /* ensures result = e \in s^; */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line47">line 47</A> to <A HREF="../original/empset.lcl.html#line48">line 48</A> with <A HREF="empset.lcl.html#line66">line 66</A> to <A HREF="empset.lcl.html#line69">line 69</A><pre>
+&lt; bool empset_subset(empset s1, empset s2) {
+&lt;    ensures result = s1^ \subseteq s2^;
+---
+&gt; 
+&gt; bool empset_subset(empset s1, empset s2) 
+&gt; {
+&gt;   /* ensures result = s1^ \subseteq s2^; */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line50">line 50</A> to <A HREF="../original/empset.lcl.html#line52">line 52</A> with <A HREF="empset.lcl.html#line71">line 71</A> to <A HREF="empset.lcl.html#line75">line 75</A><pre>
+&lt; employee empset_choose(empset s) {
+&lt;    requires s^ \neq { };
+&lt;    ensures result \in s^;
+---
+&gt; 
+&gt; employee empset_choose(empset s) 
+&gt; {
+&gt;   /* requires s^ \neq { }; */
+&gt;   /* ensures result \in s^; */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line54">line 54</A> to <A HREF="../original/empset.lcl.html#line55">line 55</A> with <A HREF="empset.lcl.html#line77">line 77</A> to <A HREF="empset.lcl.html#line80">line 80</A><pre>
+&lt; char *empset_sprint(empset s) {
+&lt;     ensures isSprint(result[]', s^) /\ fresh(result[]);
+---
+&gt; 
+&gt; char *empset_sprint(empset s) 
+&gt; {
+&gt;   /* ensures isSprint(result[]', s^) /\ fresh(result[]); */
+</pre><br>Replaced <A HREF="../original/empset.lcl.html#line57">line 57</A> with <A HREF="empset.lcl.html#line82">line 82</A> to <A HREF="empset.lcl.html#line84">line 84</A><pre>
+&lt; void empset_initMod(void) {
+---
+&gt; 
+&gt; void empset_initMod(void) 
+&gt; {
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.c.html">erc.c</A> (<A HREF="../original/erc.c.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="erc.c.html#line1">line 1</A> (was <A HREF="../original/erc.c.html#line0">line 0</A>)<pre>
+&gt; # include &lt;stdlib.h&gt;
+</pre><br>Replaced <A HREF="../original/erc.c.html#line3">line 3</A> with <A HREF="erc.c.html#line4">line 4</A> to <A HREF="erc.c.html#line5">line 5</A><pre>
+&lt; erc erc_create(void) {
+---
+&gt; erc erc_create (void) 
+&gt; {
+</pre><br>Added <A HREF="erc.c.html#line7">line 7</A> (was <A HREF="../original/erc.c.html#line4">line 4</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/erc.c.html#line6">line 6</A> with <A HREF="erc.c.html#line9">line 9</A> to <A HREF="erc.c.html#line11">line 11</A><pre>
+&lt;   if (c == 0) {
+---
+&gt; 
+&gt;   if (c == 0) 
+&gt;     {
+</pre><br>Added <A HREF="erc.c.html#line15">line 15</A> (was <A HREF="../original/erc.c.html#line9">line 9</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/erc.c.html#line15">line 15</A> with <A HREF="erc.c.html#line21">line 21</A> to <A HREF="erc.c.html#line22">line 22</A><pre>
+&lt; void erc_clear(erc c) {
+---
+&gt; void erc_clear (erc c) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/erc.c.html#line18">line 18</A> with <A HREF="erc.c.html#line25">line 25</A> to <A HREF="erc.c.html#line27">line 27</A><pre>
+&lt;   for (elem = c-&gt;vals; elem != 0; elem = next) {
+---
+&gt; 
+&gt;   for (elem = c-&gt;vals; elem != 0; elem = next) 
+&gt;     {
+</pre><br>Added <A HREF="erc.c.html#line31">line 31</A> (was <A HREF="../original/erc.c.html#line21">line 21</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/erc.c.html#line26">line 26</A> with <A HREF="erc.c.html#line36">line 36</A> to <A HREF="erc.c.html#line37">line 37</A><pre>
+&lt; void erc_final(erc c) {
+---
+&gt; void erc_final (erc c) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/erc.c.html#line31">line 31</A> with <A HREF="erc.c.html#line42">line 42</A> to <A HREF="erc.c.html#line43">line 43</A><pre>
+&lt; bool erc_member(eref er, erc c) {
+---
+&gt; bool erc_member (eref er, erc c) 
+&gt; {
+</pre><br>Added <A HREF="erc.c.html#line45">line 45</A> (was <A HREF="../original/erc.c.html#line32">line 32</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="erc.c.html#line48">line 48</A> (was <A HREF="../original/erc.c.html#line34">line 34</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/erc.c.html#line38">line 38</A> with <A HREF="erc.c.html#line52">line 52</A> to <A HREF="erc.c.html#line53">line 53</A><pre>
+&lt; void erc_insert(erc c, eref er) {
+---
+&gt; void erc_insert (erc c, eref er) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/erc.c.html#line41">line 41</A> with <A HREF="erc.c.html#line56">line 56</A> to <A HREF="erc.c.html#line58">line 58</A><pre>
+&lt;   if (newElem == 0) {
+---
+&gt; 
+&gt;   if (newElem == 0) 
+&gt;     {
+</pre><br>Added <A HREF="erc.c.html#line62">line 62</A> (was <A HREF="../original/erc.c.html#line44">line 44</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/erc.c.html#line51">line 51</A> with <A HREF="erc.c.html#line69">line 69</A> to <A HREF="erc.c.html#line70">line 70</A><pre>
+&lt; bool erc_delete(erc c, eref er) {
+---
+&gt; bool erc_delete (erc c, eref er) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/erc.c.html#line57">line 57</A> to <A HREF="../original/erc.c.html#line58">line 58</A> with <A HREF="erc.c.html#line76">line 76</A> to <A HREF="erc.c.html#line79">line 79</A><pre>
+&lt;        prev = elem, elem = elem-&gt;next) {
+&lt;     if (elem-&gt;val == er) {
+---
+&gt;        prev = elem, elem = elem-&gt;next) 
+&gt;     {
+&gt;       if (elem-&gt;val == er) 
+&gt;         { 
+</pre><br>Replaced <A HREF="../original/erc.c.html#line61">line 61</A> with <A HREF="erc.c.html#line82">line 82</A> to <A HREF="erc.c.html#line84">line 84</A><pre>
+&lt;         else {prev-&gt;next = elem-&gt;next;}
+---
+&gt;           else 
+&gt;             prev-&gt;next = elem-&gt;next;
+&gt;           
+</pre><br>Added <A HREF="erc.c.html#line90">line 90</A> (was <A HREF="../original/erc.c.html#line66">line 66</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/erc.c.html#line70">line 70</A> with <A HREF="erc.c.html#line94">line 94</A> to <A HREF="erc.c.html#line95">line 95</A><pre>
+&lt; ercIter erc_iterStart(erc c) {
+---
+&gt; ercIter erc_iterStart (erc c) 
+&gt; {
+</pre><br>Added <A HREF="erc.c.html#line97">line 97</A> (was <A HREF="../original/erc.c.html#line71">line 71</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/erc.c.html#line73">line 73</A> with <A HREF="erc.c.html#line99">line 99</A> to <A HREF="erc.c.html#line101">line 101</A><pre>
+&lt;   if (result == 0) {
+---
+&gt; 
+&gt;   if (result == 0) 
+&gt;     {
+</pre><br>Added <A HREF="erc.c.html#line105">line 105</A> (was <A HREF="../original/erc.c.html#line76">line 76</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/erc.c.html#line81">line 81</A> with <A HREF="erc.c.html#line110">line 110</A> to <A HREF="erc.c.html#line111">line 111</A><pre>
+&lt; eref erc_yield(ercIter it) {
+---
+&gt; eref erc_yield (ercIter it) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/erc.c.html#line83">line 83</A> with <A HREF="erc.c.html#line113">line 113</A> to <A HREF="erc.c.html#line115">line 115</A><pre>
+&lt;   if (*it == 0) {
+---
+&gt; 
+&gt;   if (*it == 0) 
+&gt;     {
+</pre><br>Added <A HREF="erc.c.html#line119">line 119</A> (was <A HREF="../original/erc.c.html#line86">line 86</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/erc.c.html#line92">line 92</A> with <A HREF="erc.c.html#line125">line 125</A> to <A HREF="erc.c.html#line126">line 126</A><pre>
+&lt; void erc_join(erc c1, erc c2) {
+---
+&gt; void erc_join (erc c1, erc c2) 
+&gt; {
+</pre><br>Added <A HREF="erc.c.html#line128">line 128</A> (was <A HREF="../original/erc.c.html#line93">line 93</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/erc.c.html#line98">line 98</A> with <A HREF="erc.c.html#line133">line 133</A> to <A HREF="erc.c.html#line134">line 134</A><pre>
+&lt; char * erc_sprint(erc c) {
+---
+&gt; char *erc_sprint (erc c)
+&gt; {
+</pre><br>Replaced <A HREF="../original/erc.c.html#line103">line 103</A> to <A HREF="../original/erc.c.html#line105">line 105</A> with <A HREF="erc.c.html#line139">line 139</A> to <A HREF="erc.c.html#line144">line 144</A><pre>
+&lt;   result = (char*)malloc(erc_size(c)
+&lt;                          *(employeePrintSize+1)+1);
+&lt;   if (result == 0) {
+---
+&gt; 
+&gt;   result = (char *) 
+&gt;     malloc (erc_size (c) * (employeePrintSize + 1) + 1);
+&gt; 
+&gt;   if (result == 0) 
+&gt;     {
+</pre><br>Added <A HREF="erc.c.html#line148">line 148</A> (was <A HREF="../original/erc.c.html#line108">line 108</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/erc.c.html#line110">line 110</A> with <A HREF="erc.c.html#line150">line 150</A> to <A HREF="erc.c.html#line152">line 152</A><pre>
+&lt;   for_ercElems (er, it, c) {
+---
+&gt; 
+&gt;   for_ercElems (er, it, c) 
+&gt;     { 
+</pre><br>Added <A HREF="erc.c.html#line157">line 157</A> (was <A HREF="../original/erc.c.html#line114">line 114</A>)<pre>
+&gt;   
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.h.html">erc.h</A> (<A HREF="../original/erc.h.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/erc.h.html#line1">line 1</A> with <A HREF="erc.h.html#line1">line 1</A><pre>
+&lt; #if !defined(ERC_H)
+---
+&gt; # ifndef ERC_H
+</pre><br>Added <A HREF="erc.h.html#line19">line 19</A> (was <A HREF="../original/erc.h.html#line18">line 18</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="erc.h.html#line21">line 21</A> (was <A HREF="../original/erc.h.html#line19">line 19</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="erc.h.html#line24">line 24</A> (was <A HREF="../original/erc.h.html#line21">line 21</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="erc.h.html#line29">line 29</A> (was <A HREF="../original/erc.h.html#line25">line 25</A>)<pre>
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.lcl.html">erc.lcl</A> (<A HREF="../original/erc.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line6">line 6</A> to <A HREF="../original/erc.lcl.html#line9">line 9</A> with <A HREF="erc.lcl.html#line6">line 6</A> to <A HREF="erc.lcl.html#line8">line 8</A><pre>
+&lt; uses erc(obj erc for ercObj), sprint(erc, char[]);
+&lt; 
+&lt; erc erc_create(void) {
+&lt;    ensures fresh(result) /\ result' = { };
+---
+&gt; erc erc_create(void) 
+&gt; {
+&gt;   /* ensures fresh(result) /\ result' = { }; */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line11">line 11</A> to <A HREF="../original/erc.lcl.html#line12">line 12</A> with <A HREF="erc.lcl.html#line10">line 10</A> to <A HREF="erc.lcl.html#line13">line 13</A><pre>
+&lt; void erc_clear(erc c) {
+&lt;    requires c^.activeIters = 0;
+---
+&gt; 
+&gt; void erc_clear(erc c) 
+&gt; {
+&gt;   /* requires c^.activeIters = 0; */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line14">line 14</A> with <A HREF="erc.lcl.html#line15">line 15</A><pre>
+&lt;    ensures c' = { };
+---
+&gt;   /* ensures c' = { }; */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line16">line 16</A> to <A HREF="../original/erc.lcl.html#line17">line 17</A> with <A HREF="erc.lcl.html#line17">line 17</A> to <A HREF="erc.lcl.html#line20">line 20</A><pre>
+&lt; void erc_insert(erc c, eref er) {
+&lt;    requires c^.activeIters = 0 /\ er \neq erefNIL;
+---
+&gt; 
+&gt; void erc_insert(erc c, eref er) 
+&gt; {
+&gt;   /* requires c^.activeIters = 0 /\ er \neq erefNIL; */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line19">line 19</A> with <A HREF="erc.lcl.html#line22">line 22</A><pre>
+&lt;    ensures c' = [insert(er, c^.val), 0];
+---
+&gt;   /* ensures c' = [insert(er, c^.val), 0]; */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line21">line 21</A> to <A HREF="../original/erc.lcl.html#line22">line 22</A> with <A HREF="erc.lcl.html#line24">line 24</A> to <A HREF="erc.lcl.html#line27">line 27</A><pre>
+&lt; bool erc_delete(erc c, eref er) {
+&lt;    requires c^.activeIters = 0;
+---
+&gt; 
+&gt; bool erc_delete(erc c, eref er) 
+&gt; {
+&gt;   /* requires c^.activeIters = 0; */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line24">line 24</A> to <A HREF="../original/erc.lcl.html#line25">line 25</A> with <A HREF="erc.lcl.html#line29">line 29</A> to <A HREF="erc.lcl.html#line30">line 30</A><pre>
+&lt;    ensures result = er \in c^.val
+&lt;      /\ c' = [delete(er, c^.val), 0];
+---
+&gt;   /* ensures result = er \in c^.val
+&gt;      /\ c' = [delete(er, c^.val), 0]; */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line27">line 27</A> to <A HREF="../original/erc.lcl.html#line28">line 28</A> with <A HREF="erc.lcl.html#line32">line 32</A> to <A HREF="erc.lcl.html#line35">line 35</A><pre>
+&lt; bool erc_member(eref er, erc c) {
+&lt;    ensures result = er \in c^.val;
+---
+&gt; 
+&gt; bool erc_member(eref er, erc c) 
+&gt; {
+&gt;   /* ensures result = er \in c^.val; */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line30">line 30</A> to <A HREF="../original/erc.lcl.html#line32">line 32</A> with <A HREF="erc.lcl.html#line37">line 37</A> to <A HREF="erc.lcl.html#line41">line 41</A><pre>
+&lt; eref erc_choose(erc c) {
+&lt;    requires size(c^.val) \neq 0;
+&lt;    ensures result \in c^.val;
+---
+&gt; 
+&gt; eref erc_choose(erc c) 
+&gt; {
+&gt;   /* requires size(c^.val) \neq 0; */
+&gt;   /* ensures result \in c^.val; */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line34">line 34</A> to <A HREF="../original/erc.lcl.html#line35">line 35</A> with <A HREF="erc.lcl.html#line43">line 43</A> to <A HREF="erc.lcl.html#line46">line 46</A><pre>
+&lt; int erc_size(erc c) {
+&lt;    ensures result = size(c^.val);
+---
+&gt; 
+&gt; int erc_size(erc c) 
+&gt; {
+&gt;   /* ensures result = size(c^.val); */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line37">line 37</A> with <A HREF="erc.lcl.html#line48">line 48</A> to <A HREF="erc.lcl.html#line50">line 50</A><pre>
+&lt; ercIter erc_iterStart(erc c) {
+---
+&gt; 
+&gt; ercIter erc_iterStart(erc c) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line39">line 39</A> with <A HREF="erc.lcl.html#line52">line 52</A><pre>
+&lt;    ensures fresh(result) /\ result' = [c^.val, c]
+---
+&gt;   /* ensures fresh(result) /\ result' = [c^.val, c]
+</pre><br>Added <A HREF="erc.lcl.html#line54">line 54</A> (was <A HREF="../original/erc.lcl.html#line40">line 40</A>)<pre>
+&gt;   */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line42">line 42</A> to <A HREF="../original/erc.lcl.html#line44">line 44</A> with <A HREF="erc.lcl.html#line56">line 56</A> to <A HREF="erc.lcl.html#line60">line 60</A><pre>
+&lt; eref erc_yield(ercIter it) {
+&lt;    modifies it, it^.eObj;
+&lt;    ensures if it^.toYield \neq { }
+---
+&gt; 
+&gt; eref erc_yield(ercIter it) 
+&gt; {
+&gt;   modifies it; /* , it^.eObj */ 
+&gt;   /* ensures if it^.toYield \neq { }
+</pre><br>Added <A HREF="erc.lcl.html#line65">line 65</A> (was <A HREF="../original/erc.lcl.html#line48">line 48</A>)<pre>
+&gt;  */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line50">line 50</A> to <A HREF="../original/erc.lcl.html#line52">line 52</A> with <A HREF="erc.lcl.html#line67">line 67</A> to <A HREF="erc.lcl.html#line71">line 71</A><pre>
+&lt; void erc_iterFinal(ercIter it) {
+&lt;    modifies it, it^.eObj;
+&lt;    ensures trashed(it)
+---
+&gt; 
+&gt; void erc_iterFinal(ercIter it) 
+&gt; {
+&gt;   modifies it; /* , it^.eObj; */
+&gt;   /* ensures trashed(it)
+</pre><br>Added <A HREF="erc.lcl.html#line73">line 73</A> (was <A HREF="../original/erc.lcl.html#line53">line 53</A>)<pre>
+&gt;   */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line55">line 55</A> to <A HREF="../original/erc.lcl.html#line56">line 56</A> with <A HREF="erc.lcl.html#line75">line 75</A> to <A HREF="erc.lcl.html#line78">line 78</A><pre>
+&lt; void erc_join(erc c1, erc c2) {
+&lt;    requires c1^.activeIters = 0;
+---
+&gt; 
+&gt; void erc_join(erc c1, erc c2) 
+&gt; {
+&gt;   /* requires c1^.activeIters = 0; */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line58">line 58</A> with <A HREF="erc.lcl.html#line80">line 80</A><pre>
+&lt;    ensures c1' = [c1^.val \U c2^.val, 0];
+---
+&gt;   /* ensures c1' = [c1^.val \U c2^.val, 0]; */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line60">line 60</A> to <A HREF="../original/erc.lcl.html#line61">line 61</A> with <A HREF="erc.lcl.html#line82">line 82</A> to <A HREF="erc.lcl.html#line85">line 85</A><pre>
+&lt; char *erc_sprint(erc c) {
+&lt;    ensures isSprint(result[]', c^) /\ fresh(result[]);
+---
+&gt; 
+&gt; char *erc_sprint(erc c) 
+&gt; {
+&gt;   /* ensures isSprint(result[]', c^) /\ fresh(result[]); */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line63">line 63</A> with <A HREF="erc.lcl.html#line87">line 87</A> to <A HREF="erc.lcl.html#line89">line 89</A><pre>
+&lt; void erc_final(erc c) {
+---
+&gt; 
+&gt; void erc_final(erc c) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line65">line 65</A> with <A HREF="erc.lcl.html#line91">line 91</A><pre>
+&lt;    ensures trashed(c);
+---
+&gt;   /* ensures trashed(c); */
+</pre><br>Replaced <A HREF="../original/erc.lcl.html#line67">line 67</A> with <A HREF="erc.lcl.html#line93">line 93</A> to <A HREF="erc.lcl.html#line95">line 95</A><pre>
+&lt; void erc_initMod(void) {
+---
+&gt; 
+&gt; void erc_initMod(void) 
+&gt; {
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.c.html">eref.c</A> (<A HREF="../original/eref.c.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="eref.c.html#line2">line 2</A> (was <A HREF="../original/eref.c.html#line1">line 1</A>)<pre>
+&gt; # include &lt;stdlib.h&gt;
+</pre><br>Replaced <A HREF="../original/eref.c.html#line7">line 7</A> with <A HREF="eref.c.html#line8">line 8</A> to <A HREF="eref.c.html#line9">line 9</A><pre>
+&lt; eref eref_alloc(void) {
+---
+&gt; eref eref_alloc (void) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/eref.c.html#line10">line 10</A> to <A HREF="../original/eref.c.html#line13">line 13</A> with <A HREF="eref.c.html#line12">line 12</A> to <A HREF="eref.c.html#line13">line 13</A><pre>
+&lt;   for (i=0;
+&lt;        (eref_Pool.status[i] == used)
+&lt;          && (i &lt; eref_Pool.size);
+&lt;        i++);
+---
+&gt;   for (i=0; (eref_Pool.status[i] == used) && (i &lt; eref_Pool.size); i++);
+&gt;   
+</pre><br>Replaced <A HREF="../original/eref.c.html#line15">line 15</A> with <A HREF="eref.c.html#line15">line 15</A> to <A HREF="eref.c.html#line17">line 17</A><pre>
+&lt;   if (res == eref_Pool.size) {
+---
+&gt; 
+&gt;   if (res == eref_Pool.size) 
+&gt;     {
+</pre><br>Replaced <A HREF="../original/eref.c.html#line20">line 20</A> with <A HREF="eref.c.html#line22">line 22</A> to <A HREF="eref.c.html#line23">line 23</A><pre>
+&lt;     if (eref_Pool.conts == 0) {
+---
+&gt;       if (eref_Pool.conts == 0) 
+&gt;         {
+</pre><br>Added <A HREF="eref.c.html#line27">line 27</A> (was <A HREF="../original/eref.c.html#line23">line 23</A>)<pre>
+&gt;       
+</pre><br>Replaced <A HREF="../original/eref.c.html#line27">line 27</A> with <A HREF="eref.c.html#line31">line 31</A> to <A HREF="eref.c.html#line33">line 33</A><pre>
+&lt;     if (eref_Pool.status == 0) {
+---
+&gt; 
+&gt;       if (eref_Pool.status == 0) 
+&gt;         {
+</pre><br>Added <A HREF="eref.c.html#line37">line 37</A> (was <A HREF="../original/eref.c.html#line30">line 30</A>)<pre>
+&gt;       
+</pre><br>Added <A HREF="eref.c.html#line39">line 39</A> (was <A HREF="../original/eref.c.html#line31">line 31</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="eref.c.html#line43">line 43</A> (was <A HREF="../original/eref.c.html#line34">line 34</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/eref.c.html#line38">line 38</A> with <A HREF="eref.c.html#line47">line 47</A> to <A HREF="eref.c.html#line49">line 49</A><pre>
+&lt; void eref_initMod(void) {
+---
+&gt; 
+&gt; void eref_initMod (void) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/eref.c.html#line42">line 42</A> with <A HREF="eref.c.html#line53">line 53</A> to <A HREF="eref.c.html#line57">line 57</A><pre>
+&lt;   if (needsInit == FALSE) return;
+---
+&gt;   if (needsInit == FALSE) 
+&gt;     {
+&gt;       return;
+&gt;     }
+&gt; 
+</pre><br>Replaced <A HREF="../original/eref.c.html#line46">line 46</A> to <A HREF="../original/eref.c.html#line48">line 48</A> with <A HREF="eref.c.html#line61">line 61</A> to <A HREF="eref.c.html#line65">line 65</A><pre>
+&lt;   eref_Pool.conts =
+&lt;       (employee *) malloc(size*sizeof(employee));
+&lt;   if (eref_Pool.conts == 0) {
+---
+&gt; 
+&gt;   eref_Pool.conts = (employee *) malloc (size * sizeof (employee));
+&gt; 
+&gt;   if (eref_Pool.conts == 0) 
+&gt;     {
+</pre><br>Replaced <A HREF="../original/eref.c.html#line52">line 52</A> to <A HREF="../original/eref.c.html#line54">line 54</A> with <A HREF="eref.c.html#line69">line 69</A> to <A HREF="eref.c.html#line73">line 73</A><pre>
+&lt;   eref_Pool.status =
+&lt;       (eref_status *) malloc(size*sizeof(eref_status));
+&lt;   if (eref_Pool.status == 0) {
+---
+&gt;   
+&gt;   eref_Pool.status = (eref_status *) malloc (size * sizeof (eref_status));
+&gt; 
+&gt;   if (eref_Pool.status == 0) 
+&gt;     {
+</pre><br>Added <A HREF="eref.c.html#line77">line 77</A> (was <A HREF="../original/eref.c.html#line57">line 57</A>)<pre>
+&gt;   
+</pre><br>Replaced <A HREF="../original/eref.c.html#line59">line 59</A> with <A HREF="eref.c.html#line79">line 79</A> to <A HREF="eref.c.html#line83">line 83</A><pre>
+&lt;   for (i = 0; i &lt; size; i++) eref_Pool.status[i] = avail;
+---
+&gt; 
+&gt;   for (i = 0; i &lt; size; i++)
+&gt;     {
+&gt;       eref_Pool.status[i] = avail;
+&gt;     }
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.h.html">eref.h</A> (<A HREF="../original/eref.h.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/eref.h.html#line1">line 1</A> with <A HREF="eref.h.html#line1">line 1</A><pre>
+&lt; #if !defined(EREF_H)
+---
+&gt; # ifndef EREF_H
+</pre><br>Replaced <A HREF="../original/eref.h.html#line10">line 10</A> with <A HREF="eref.h.html#line10">line 10</A> to <A HREF="eref.h.html#line11">line 11</A><pre>
+&lt; typedef struct {employee *conts;
+---
+&gt; typedef struct {
+&gt;   employee *conts;
+</pre><br>Replaced <A HREF="../original/eref.h.html#line12">line 12</A> with <A HREF="eref.h.html#line13">line 13</A> to <A HREF="eref.h.html#line14">line 14</A><pre>
+&lt;                 int size;} eref_ERP;
+---
+&gt;   int size;
+&gt; } eref_ERP;
+</pre><br>Added <A HREF="eref.h.html#line22">line 22</A> (was <A HREF="../original/eref.h.html#line19">line 19</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="eref.h.html#line27">line 27</A> (was <A HREF="../original/eref.h.html#line23">line 23</A>)<pre>
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.lcl.html">eref.lcl</A> (<A HREF="../original/eref.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Deleted <A HREF="../original/eref.lcl.html#line6">line 6</A> to <A HREF="../original/eref.lcl.html#line7">line 7</A> (matches <A HREF="eref.lcl.html#line5">line 5</A>)<pre>
+&lt; uses refTable(eref, employee, map);
+&lt; 
+</pre><br>Replaced <A HREF="../original/eref.lcl.html#line9">line 9</A> with <A HREF="eref.lcl.html#line7">line 7</A><pre>
+&lt; constant eref erefNIL = nil;
+---
+&gt; constant eref erefNIL;
+</pre><br>Replaced <A HREF="../original/eref.lcl.html#line11">line 11</A> with <A HREF="eref.lcl.html#line9">line 9</A> to <A HREF="eref.lcl.html#line10">line 10</A><pre>
+&lt; eref eref_alloc(void) map m; {
+---
+&gt; eref eref_alloc(void) map m; 
+&gt; {
+</pre><br>Replaced <A HREF="../original/eref.lcl.html#line13">line 13</A> with <A HREF="eref.lcl.html#line12">line 12</A><pre>
+&lt;    ensures newInd(result, m^, m');
+---
+&gt;   /* ensures newInd(result, m^, m'); */
+</pre><br>Replaced <A HREF="../original/eref.lcl.html#line15">line 15</A> to <A HREF="../original/eref.lcl.html#line16">line 16</A> with <A HREF="eref.lcl.html#line14">line 14</A> to <A HREF="eref.lcl.html#line17">line 17</A><pre>
+&lt; void eref_free(eref er) map m; {
+&lt;    requires er \in domain(m^);
+---
+&gt; 
+&gt; void eref_free(eref er) map m; 
+&gt; {
+&gt;   /* requires er \in domain(m^); */
+</pre><br>Replaced <A HREF="../original/eref.lcl.html#line18">line 18</A> with <A HREF="eref.lcl.html#line19">line 19</A><pre>
+&lt;    ensures m' = delete(m^, er);
+---
+&gt;   /* ensures m' = delete(m^, er); */
+</pre><br>Replaced <A HREF="../original/eref.lcl.html#line20">line 20</A> to <A HREF="../original/eref.lcl.html#line21">line 21</A> with <A HREF="eref.lcl.html#line21">line 21</A> to <A HREF="eref.lcl.html#line24">line 24</A><pre>
+&lt; void eref_assign(eref er, employee e) map m; {
+&lt;    requires er \in domain(m^);
+---
+&gt; 
+&gt; void eref_assign(eref er, employee e) map m; 
+&gt; {
+&gt;   /* requires er \in domain(m^); */
+</pre><br>Replaced <A HREF="../original/eref.lcl.html#line23">line 23</A> with <A HREF="eref.lcl.html#line26">line 26</A><pre>
+&lt;    ensures m' = assign(m^, er, e);
+---
+&gt;   /* ensures m' = assign(m^, er, e); */
+</pre><br>Replaced <A HREF="../original/eref.lcl.html#line25">line 25</A> to <A HREF="../original/eref.lcl.html#line27">line 27</A> with <A HREF="eref.lcl.html#line28">line 28</A> to <A HREF="eref.lcl.html#line32">line 32</A><pre>
+&lt; employee eref_get(eref er) map m; {
+&lt;    requires er \in domain(m^);
+&lt;    ensures result = m^[er];
+---
+&gt; 
+&gt; employee eref_get(eref er) map m; 
+&gt; {
+&gt;   /* requires er \in domain(m^); */
+&gt;   /* ensures result = m^[er]; */
+</pre><br>Replaced <A HREF="../original/eref.lcl.html#line29">line 29</A> to <A HREF="../original/eref.lcl.html#line30">line 30</A> with <A HREF="eref.lcl.html#line34">line 34</A> to <A HREF="eref.lcl.html#line37">line 37</A><pre>
+&lt; bool eref_equal(eref er1, eref er2) {
+&lt;    ensures result = (er1 = er2);
+---
+&gt; 
+&gt; bool eref_equal(eref er1, eref er2) 
+&gt; {
+&gt;   /* ensures result = (er1 = er2); */
+</pre><br>Replaced <A HREF="../original/eref.lcl.html#line32">line 32</A> with <A HREF="eref.lcl.html#line39">line 39</A> to <A HREF="eref.lcl.html#line41">line 41</A><pre>
+&lt; void eref_initMod(void) map m; {
+---
+&gt; 
+&gt; void eref_initMod(void) map m; 
+&gt; {
+</pre><br>Replaced <A HREF="../original/eref.lcl.html#line34">line 34</A> with <A HREF="eref.lcl.html#line43">line 43</A><pre>
+&lt;    ensures m' = new;
+---
+&gt;   /* ensures m' = new; */
+</pre><p><p>
+<p><h4>Changes in <A HREF="ereftab.c.html">ereftab.c</A> (<A HREF="../original/ereftab.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/ereftab.c.html#line1">line 1</A> with <A HREF="ereftab.c.html#line1">line 1</A> to <A HREF="ereftab.c.html#line4">line 4</A><pre>
+&lt; /* ereftab.c */
+---
+&gt; /*
+&gt; ** This is not a good implementation.  I should probably replace
+&gt; ** the erc with a hash table.  
+&gt; */
+</pre><br>Deleted <A HREF="../original/ereftab.c.html#line3">line 3</A> to <A HREF="../original/ereftab.c.html#line5">line 5</A> (matches <A HREF="ereftab.c.html#line5">line 5</A>)<pre>
+&lt; /* This is not a good implementation.  I should probably replace
+&lt; the erc with a hash table.  */
+&lt; 
+</pre><br>Replaced <A HREF="../original/ereftab.c.html#line8">line 8</A> with <A HREF="ereftab.c.html#line8">line 8</A> to <A HREF="ereftab.c.html#line9">line 9</A><pre>
+&lt; ereftab ereftab_create(void) {
+---
+&gt; ereftab ereftab_create (void) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/ereftab.c.html#line12">line 12</A> with <A HREF="ereftab.c.html#line13">line 13</A> to <A HREF="ereftab.c.html#line14">line 14</A><pre>
+&lt; void ereftab_insert(ereftab t, employee e, eref er) {
+---
+&gt; void ereftab_insert (ereftab t, employee e, eref er) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/ereftab.c.html#line17">line 17</A> with <A HREF="ereftab.c.html#line19">line 19</A> to <A HREF="ereftab.c.html#line20">line 20</A><pre>
+&lt; bool ereftab_delete(ereftab t, eref er) {
+---
+&gt; bool ereftab_delete (ereftab t, eref er) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/ereftab.c.html#line25">line 25</A> with <A HREF="ereftab.c.html#line28">line 28</A> to <A HREF="ereftab.c.html#line29">line 29</A><pre>
+&lt; eref ereftab_lookup(employee e, ereftab t) {
+---
+&gt; eref ereftab_lookup (employee e, ereftab t) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/ereftab.c.html#line30">line 30</A> with <A HREF="ereftab.c.html#line34">line 34</A> to <A HREF="ereftab.c.html#line35">line 35</A><pre>
+&lt;   for_ercElems(er, it, t) { 
+---
+&gt;   for_ercElems (er, it, t) 
+&gt;     { 
+</pre><br>Added <A HREF="ereftab.c.html#line39">line 39</A> (was <A HREF="../original/ereftab.c.html#line33">line 33</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../original/ereftab.c.html#line37">line 37</A> with <A HREF="ereftab.c.html#line43">line 43</A> to <A HREF="ereftab.c.html#line44">line 44</A><pre>
+&lt; void ereftab_initMod(void) {
+---
+&gt; void ereftab_initMod (void) 
+&gt; {
+</pre><p><p>
+<p><h4>Changes in <A HREF="ereftab.h.html">ereftab.h</A> (<A HREF="../original/ereftab.h.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/ereftab.h.html#line3">line 3</A> with <A HREF="ereftab.h.html#line3">line 3</A><pre>
+&lt; #if !defined(EREFTAB_H)
+---
+&gt; # ifndef EREFTAB_H
+</pre><p><p>
+<p><h4>Changes in <A HREF="ereftab.lcl.html">ereftab.lcl</A> (<A HREF="../original/ereftab.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../original/ereftab.lcl.html#line5">line 5</A> to <A HREF="../original/ereftab.lcl.html#line8">line 8</A> with <A HREF="ereftab.lcl.html#line5">line 5</A> to <A HREF="ereftab.lcl.html#line7">line 7</A><pre>
+&lt; uses ereftab;
+&lt; 
+&lt; ereftab ereftab_create(void) {
+&lt;    ensures result' = empty;
+---
+&gt; ereftab ereftab_create(void) 
+&gt; {
+&gt;   /* ensures result' = empty; */
+</pre><br>Replaced <A HREF="../original/ereftab.lcl.html#line10">line 10</A> to <A HREF="../original/ereftab.lcl.html#line11">line 11</A> with <A HREF="ereftab.lcl.html#line9">line 9</A> to <A HREF="ereftab.lcl.html#line12">line 12</A><pre>
+&lt; void ereftab_insert(ereftab t, employee e, eref er) {
+&lt;    requires getERef(t^, e) = erefNIL;
+---
+&gt; 
+&gt; void ereftab_insert(ereftab t, employee e, eref er) 
+&gt; {
+&gt;   /* requires getERef(t^, e) = erefNIL; */
+</pre><br>Replaced <A HREF="../original/ereftab.lcl.html#line13">line 13</A> with <A HREF="ereftab.lcl.html#line14">line 14</A><pre>
+&lt;    ensures t' = add(t^, e, er);
+---
+&gt;   /* ensures t' = add(t^, e, er); */
+</pre><br>Replaced <A HREF="../original/ereftab.lcl.html#line15">line 15</A> with <A HREF="ereftab.lcl.html#line16">line 16</A> to <A HREF="ereftab.lcl.html#line18">line 18</A><pre>
+&lt; bool ereftab_delete(ereftab t, eref er) {
+---
+&gt; 
+&gt; bool ereftab_delete(ereftab t, eref er) 
+&gt; {
+</pre><br>Replaced <A HREF="../original/ereftab.lcl.html#line17">line 17</A> with <A HREF="ereftab.lcl.html#line20">line 20</A><pre>
+&lt;    ensures result = in(t^, er) /\ t' = delete(t^, er);
+---
+&gt;   /* ensures result = in(t^, er) /\ t' = delete(t^, er); */
+</pre><br>Replaced <A HREF="../original/ereftab.lcl.html#line19">line 19</A> to <A HREF="../original/ereftab.lcl.html#line20">line 20</A> with <A HREF="ereftab.lcl.html#line22">line 22</A> to <A HREF="ereftab.lcl.html#line25">line 25</A><pre>
+&lt; eref ereftab_lookup(employee e, ereftab t) {
+&lt;    ensures result = getERef(t^, e);
+---
+&gt; 
+&gt; eref ereftab_lookup(employee e, ereftab t) 
+&gt; {
+&gt;   /* ensures result = getERef(t^, e); */
+</pre><br>Replaced <A HREF="../original/ereftab.lcl.html#line22">line 22</A> with <A HREF="ereftab.lcl.html#line27">line 27</A> to <A HREF="ereftab.lcl.html#line29">line 29</A><pre>
+&lt; void ereftab_initMod(void) {
+---
+&gt; 
+&gt; void ereftab_initMod(void) 
+&gt; {
+</pre><p><p>

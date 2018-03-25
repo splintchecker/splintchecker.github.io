@@ -1,0 +1,66 @@
+Plain Differences between current directory and memchecks1
+37c37
+< bool employee_setName(employee *e, char na[]) 
+---
+> bool employee_setName (employee *e, unique char na[]) 
+92,93c92
+<   ercList elem;
+<   ercList prev;
+---
+>   ercList elem = c->vals;
+95,97c94
+<   for (prev = 0, elem = c->vals;
+<        elem != 0;
+<        prev = elem, elem = elem->next) 
+---
+>   if (elem != NULL)
+101d97
+<           if (prev == 0)
+102a99,102
+>           free (elem);
+>           c->size--;
+>           return TRUE;
+>         }
+104c104,106
+<             prev->next = elem->next;
+---
+>         {
+>           ercList prev = elem;
+>           elem = elem->next;
+105a108,112
+>           for (; elem != 0; prev = elem, elem = elem->next) 
+>             {
+>               if (eref_equal (elem->val, er))
+>                 { 
+>                   prev->next = elem->next;
+108a116,117
+>                 }
+>             }
+3a4
+> # include <assert.h>
+8c9
+< typedef struct { ercList vals; int size; } ercInfo;
+---
+> typedef struct { /*@null@*/ ercList vals; int size; } ercInfo;
+5c5
+< erc erc_create(void) 
+---
+> only erc erc_create(void) 
+55c55
+< char *erc_sprint(erc c) 
+---
+> only char *erc_sprint(erc c) 
+60c60
+< void erc_final(erc c) 
+---
+> void erc_final (only erc c) 
+79a80
+>   /*@+loopexec@*/
+83a85
+>   /*@=loopexec@*/
+11,12c11,12
+<   employee *conts;
+<   eref_status *status;
+---
+>   /*@reldef@*/ /*@only@*/ employee *conts;
+>   /*@only@*/ eref_status *status;

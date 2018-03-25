@@ -1,0 +1,43 @@
+<h3>lclint-interest message 115</h3>
+<pre>
+From evans@cs.virginia.edu Fri Oct 18 12:12:44 1996
+Date: Fri, 18 Oct 96 11:45:24 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: lbr@mjolner.dk
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Lars Balker Rasmussen's message of 18 Oct 1996 12:36:25 +0200 <0fn2xko8ye.fsf@fraxinus.daimi.aau.dk>
+Subject: Hi and problem
+
+
+So, what we want to say if f is an array of possibly-null f_t's.  We can
+do this with a typedef:
+
+#include <stdio.h>
+
+typedef void (*f_t)(void);
+typedef /*@null@*/ f_t nf_t;
+
+nf_t f[] = {
+        NULL
+};
+
+
+--- Dave
+
+
+</pre>
+<A HREF="114.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="116.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

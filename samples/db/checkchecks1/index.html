@@ -1,0 +1,371 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint Sample - Checks Mode 1</title>
+</head>
+<body>
+<!--#include virtual="../../../header.html"-->
+
+<center><h1>
+Checks Mode 1
+</h1></center>
+
+<H3> Changes from <A HREF="../allmacros/index.html">All Macros</A> </H3>
+
+<A HREF="diffs.html">Differences</A>
+<p>
+Added declarations for all macros.
+<P>
+Now, running in standard more reports <A HREF="lclint-standard.out.html">no anomalies</A>.
+<P>
+
+<H3> Modules </H3>
+
+<UL>
+<LI>employee - employee datatype (<A HREF="employee.lcl.html">LCL</A>,
+<A HREF="employee.c.html">Code</A>,  <A HREF="employee.h.html">Header</A>)
+<LI>empset - sets of employees (<A HREF="empset.lcl.html">LCL</A>,
+<A HREF="empset.c.html">Code</A>,  <A HREF="empset.h.html">Header</A>)
+<LI>dbase - database of employees (<A HREF="dbase.lcl.html">LCL</A>, 
+<A HREF="dbase.c.html">Code</A>,  <A HREF="dbase.h.html">Header</A>)
+<LI>eref - reference to an employee (<A HREF="eref.lcl.html">LCL</A>,
+<A HREF="eref.c.html">Code</A>,  <A HREF="eref.h.html">Header</A>)
+<LI>erc - collection of erefs (<A HREF="erc.lcl.html">LCL</A>, <A
+HREF="erc.c.html">Code</A>,  <A HREF="erc.h.html">Header</A>)
+<LI>ereftab - table of employees and erefs (<A
+HREF="ereftab.lcl.html">LCL</A>, <A HREF="ereftab.c.html">Code</A>, <A HREF="ereftab.h.html">Header</A>)
+</UL>
+
+<H3> Checks Mode 1</h3>
+
+Using <tt>+checks</tt> selects the checks mode.  This turns on many more
+checks then are done in standard mode.  Using <tt>+checks</tt>, LCLint
+detects <A HREF="lclint.out.html">133 anomalies</A>.   
+
+This is a large number of messages, so we have added the
+<tt>+showsummary</tt> flag to see a summary of what kind of errors are
+reported:
+<PRE>
+Error Type                Reported  Suppressed
+===================       ========  =========
+usedef                       0           1
+exporttype                   0           5
+globs                       57           1
+macroempty                   0           1
+compdef                      0           1
+onlyunqglobaltrans           2           0
+readonlytrans                6           0
+mods                        16           0
+mustmod                      1           0
+ansireserved                 4           0
+sizeoftype                   0           6
+type                        17           5
+enumindex                   24           0
+exportheader                 4           0
+exportheadervar              2           0
+                          ========  =========
+Total:                     133          20
+</PRE>
+
+The error types correspond to flag names (e.g., 57 errors were reported
+involving uses of global variables).
+
+<h4><A href="../../../guide/sec3.html#sec-3.4.2">Enumerator Indexes</a></h4>
+
+There are <A HREF="lclint-enumindex.out.html">24 messages</A> reporting
+instances where an enumerator type is used to index an array.  This is probably
+okay (we could just use <tt>+enumindex</tt> to allow enum types to be
+used as array indexes), but we don't know what equivalent type the
+compiler will use to implement enums, so it safer to cast the enums to
+<tt>int</tt> before using them to index arrays.
+
+<h4><A href="../../../guide/sec3.html#sec-3.4.2">Enumerator Type Mismatches</a></h4>
+
+There are <A HREF="lclint-enumtype.out.html">17 messages reporting
+instances there is a type mismatch involving and enum.  These errors
+were not reported before, since in standard more <tt>+enumint</tt> is
+set to make <tt>enum</tt> and <tt>int</tt> types interchangeable.
+
+<p>
+Fifteen of the errors involve loops that use an <tt>int</tt> to index
+through the elements of the <tt>employeeKinds</tt> enumerator:
+<pre>
+dbase.c: (in function db_initMod)
+<A HREF="dbase.c.html#line37">dbase.c:37,8</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line37">dbase.c:37,22</A>: Operands of <= have incompatible types (int, employeeKinds):
+                  i <= lastERC
+<A HREF="dbase.c.html#line37">dbase.c:37,22</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                  test): i <= lastERC
+dbase.c: (in function _db_keyGet)
+<A HREF="dbase.c.html#line60">dbase.c:60,8</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line60">dbase.c:60,22</A>: Operands of <= have incompatible types (int, employeeKinds):
+                  i <= lastERC
+<A HREF="dbase.c.html#line60">dbase.c:60,22</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                  test): i <= lastERC
+dbase.c: (in function fire)
+<A HREF="dbase.c.html#line132">dbase.c:132,8</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line132">dbase.c:132,22</A>: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+<A HREF="dbase.c.html#line132">dbase.c:132,22</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+dbase.c: (in function query)
+<A HREF="dbase.c.html#line222">dbase.c:222,9</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line222">dbase.c:222,23</A>: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+<A HREF="dbase.c.html#line222">dbase.c:222,23</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+dbase.c: (in function db_print)
+<A HREF="dbase.c.html#line268">dbase.c:268,8</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line268">dbase.c:268,22</A>: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+<A HREF="dbase.c.html#line268">dbase.c:268,22</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+< checking <A HREF="drive.c.html">drive.c</A> >
+</pre>
+
+The simplest way of fixing this would be to change the type of the index
+variable to the <tt>enum</tt> type.  Instead, we add an <A
+HREF="../../../guide/sec8.html#sec-8.4">iterator</a> for cycling through
+the elements of the enumerator:
+<pre>
+/*@iter employeeKinds_all (yield employeeKinds ek); @*/
+# define employeeKinds_all(m_ek) \
+  { employeeKinds m_ek; for (m_ek = firstERC; m_ek <= lastERC; m_ek++) {
+
+# define end_employeeKinds_all }}
+</PRE>
+and rewrite the loops to use the iterator.
+<p>
+There are two more enumerator type errors.  One is:
+<PRE>
+dbase.c: (in macro numERCS)
+<A HREF="dbase.c.html#line16">dbase.c:16,20</A>: Incompatible types for + (enum { mMGRS, fMGRS, mNON, fNON },
+                  int): lastERC - firstERC + 1
+</PRE>
+
+The addition is safe, so we use the <tt>+enumint</tt> flag to suppress
+the message: 
+<pre>
+# define numERCS (/*@+enumint@*/ (lastERC - firstERC + 1) /*@=enumint@*/)
+</pre>
+
+<p>
+The final enumerator type anomaly is:
+<pre>
+drive.c: (in function main)
+<A HREF="drive.c.html#line128">drive.c:128,22</A>: Assignment of db_status to int: j = hire(e)
+</pre>
+
+Here, the local variable <tt>j</tt> was declared with the wrong type.
+We change the declaration to be <tt>db_status</tt> (and the name to <tt>status</tt>).
+
+After this change, a new error is reported:
+<pre>
+<A HREF="drive.c.html#line132">drive.c:132,48</A>: Format argument 1 to printf (%d) expects int gets db_status:
+                   status
+</pre>
+for the line,
+<pre>
+  printf("Should print 4: %d\n", /*@-usedef@*/ status /*@=usedef@*/); 
+</pre>
+
+The code should not rely on the value assigned to enumerator members, so
+it makes more sense to change this to:
+<pre>
+  printf("Should print true: %s\n", 
+	 bool_unparse (/*@-usedef@*/ status == duplERR /*@=usedef@*/)); 
+</pre>
+
+<a name="addglobs">
+<h4> <A href="../../../guide/sec4.html#sec-4.2">Use and Modification of Global Variables</a></h4>
+
+Fifty-seven message report undocumented uses of global variables, and 16
+concern undocumented modifications.  Of these, 21 concern uses of
+<tt>eref_Pool</tt> in <tt>eref.c</tt>: 
+
+<pre>
+eref.c: (in function eref_alloc)
+<A HREF="eref.c.html#line12">eref.c:12,14</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line12">eref.c:12,51</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line12">eref.c:12,73</A>: Undocumented use of global eref_Pool (in post loop test)
+<A HREF="eref.c.html#line16">eref.c:16,14</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line18">eref.c:18,7</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line19">eref.c:19,24</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line20">eref.c:20,14</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line22">eref.c:22,11</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line28">eref.c:28,7</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line29">eref.c:29,27</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line30">eref.c:30,10</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line32">eref.c:32,11</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line38">eref.c:38,7</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line38">eref.c:38,26</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line40">eref.c:40,27</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line41">eref.c:41,9</A>: Undocumented use of global eref_Pool
+<A HREF="eref.c.html#line41">eref.c:41,37</A>: Undocumented use of global eref_Pool (in post loop test)
+<A HREF="eref.c.html#line44">eref.c:44,3</A>: Undocumented use of global eref_Pool
+eref.c: (in function eref_free)
+<A HREF="eref.c.html#line91">eref.c:91,3</A>: Undocumented use of global eref_Pool
+eref.c: (in function eref_assign)
+<A HREF="eref.c.html#line96">eref.c:96,3</A>: Undocumented use of global eref_Pool
+eref.c: (in function eref_get)
+<A HREF="eref.c.html#line101">eref.c:101,10</A>: Undocumented use of global eref_Pool
+</pre>
+
+These errors are reported now, since checks mode turns on
+<tt>allglobs</tt> to report undocumented uses of all global and file
+scope variables that are not annotated with <tt>unchecked</tt>.
+
+We add globals lists (and modifies clauses) to the functions that use
+<tt>eref_Pool</tt>.  For example, <tt>eref_alloc</tt> is declared:
+<pre>
+eref eref_alloc (void) 
+   /*@globals eref_Pool@*/
+   /*@modifies eref_Pool@*/
+</pre>
+
+(In <A HREF="../checkchecks2/index.html#inconglobs">Check Mode Checks 2</A>,
+inconsistencies between the new clauses and the original
+specifications are reported.)
+
+Similar errors reported for <tt>known</tt> and <tt>initDone</tt> in
+<tt>empset.c</tt>, <tt>initDone</tt> and <tt>db</tt> in
+<tt>dbase.c</tt> are also fixed by adding globals and modifies clauses.
+
+<h4> <A href="../../../guide/sec6.html#sec-6.2.1">Read-Only Strings</a></h4>
+
+Checks mode sets <tt>readonlytrans</tt> on, so transfer errors involving
+read-only string literals are reported.  Six anomalies were detected:
+<pre>
+employee.c: (in function employee_sprint)
+<A HREF="employee.c.html#line29">employee.c:29,28</A>: Read-only string literal storage used as initial value for
+                     unqualified storage: gender[0] = "male"
+  A read-only string literal is assigned to a non-observer reference.  Use
+  -readonlytrans to suppress message.
+<A HREF="employee.c.html#line29">employee.c:29,36</A>: Read-only string literal storage used as initial value for
+                     unqualified storage: gender[1] = "female"
+<A HREF="employee.c.html#line29">employee.c:29,46</A>: Read-only string literal storage used as initial value for
+                     unqualified storage: gender[2] = "?"
+<A HREF="employee.c.html#line30">employee.c:30,27</A>: Read-only string literal storage used as initial value for
+                     unqualified storage: jobs[0] = "manager"
+<A HREF="employee.c.html#line30">employee.c:30,38</A>: Read-only string literal storage used as initial value for
+                     unqualified storage: jobs[1] = "non-manager"
+<A HREF="employee.c.html#line30">employee.c:30,53</A>: Read-only string literal storage used as initial value for
+                     unqualified storage: jobs[2] = "?"
+</pre>
+An error is reported since the initializer assigns a read-only string
+literal to an unqualified array element.  We need to use the
+<tt>/*@observer@*/</tt> annotation in the array declaration to indicate
+that the elements may not be modified.  Since annotations only apply to
+the outermost declaration, a type definition is necessary:
+<pre>
+typedef /*@observer@*/ char *obscharp;
+
+void employee_sprint (char s[], employee e) 
+{
+  static obscharp gender[] = { "male", "female", "?" };
+  static obscharp jobs[] = { "manager", "non-manager", "?" };
+</pre>
+Now, an error will be reported if any code may modify an element of the array.
+
+<h4><A href="../../../guide/sec9.html#sec-9.3.1">Reserved Names</a></h4>
+
+In checks mode, LCLint reports identifiers that may conflict with names
+reserved for the system.  Four messages report naming conflicts:
+<pre>
+<A HREF="empset.c.html#line5">empset.c:5,6</A>: Name _empset_get is in the implementation name space (any
+                 identifier beginning with underscore)
+<A HREF="dbase.c.html#line45">dbase.c:45,6</A>: Name _db_ercKeyGet is in the implementation name space (any
+                 identifier beginning with underscore)
+<A HREF="dbase.c.html#line55">dbase.c:55,6</A>: Name _db_keyGet is in the implementation name space (any
+                 identifier beginning with underscore)
+<A HREF="dbase.c.html#line72">dbase.c:72,5</A>: Name _db_addEmpls is in the implementation name space (any
+                 identifier beginning with underscore)
+</PRE>
+
+Names beginning with <tt>_</tt> are reserved for the compiler.  We change these
+names to avoid the naming conflicts.
+
+<h4><A href="../../../guide/sec4.html#sec-4.1">Must Modify</a></h4>
+
+In checks mode, an error is reported is something listed in the modifies
+clause for a function is not modified by the function body.  One
+message reports an undetected modification:
+
+<pre>
+dbase.c: (in function query)
+<A HREF="dbase.c.html#line259">dbase.c:259,1</A>: Suspect object listed in modifies of query not modified: s
+  An object listed in the modifies clause is not modified by the implementation
+  of the function.  The modification may not be detected if it is done through
+  a call to an unspecified function.  Use -mustmod to suppress message.
+   <A HREF="dbase.lcl.html#line49">dbase.lcl:49</A>: Specification of query
+</pre>
+
+In fact, <tt>query</tt> does modify <tt>s</tt>, but the modification is
+through calls to file static functions declared with not modifies
+clause.  If we had set <tt>+moduncon</tt>, these calls would produce
+errors.  Without it, no error is reported, but the modification is not
+detected.  We add a modifies clause to 
+<A HREF="dbase-next.c.html#line77">db_addEmpls</a>. 
+
+<h4>Only/Unqualified Global Transfers</h4>
+
+Two errors report transfers of only storage to unqualified globals:
+
+<pre>
+<A HREF="empset.c.html#line147" target="source">empset.c:147,3</A>: Only storage assigned to unqualified: known = ereftab_create()
+  The only reference to this storage is transferred to another reference that
+  does not have an aliasing annotation. This may lead to a memory leak, since
+  the new reference is not necessarily released. Use -onlyunqglobaltrans to
+  suppress message.
+<A HREF="dbase.c.html#line39" target="source">dbase.c:39,7</A>: Only storage assigned to unqualified: db[i] = erc_create()
+</pre>
+
+Here, only storage is assigned to a global (file static) variable with
+no annotation.  These were not reported in the memory checking
+iterations, since <tt>onlyunqglobaltrans</tt> is not on.  If we used
+implicit annotations, the <tt>only</tt> annotations would be assumed.
+Since we didn't, we add the explict <tt>only</tt> annotations to
+<tt>known</tt> and the elements of <tt>db</tt>.  For <tt>db</tt> we need
+to use a <tt>typedef</tt> to apply the annotation to inner storage:
+<pre>
+typedef /*@only@*/ erc o_erc;
+static o_erc db[numERCS];
+</pre>
+
+<H4><A href="../../../guide/sec10.html#sec-10.5.1">Exported Declarations</a></h4>
+
+Six message report unnecessarily exported declarations missing from
+header files:
+
+<pre>
+<A HREF="dbase.c.html#line18">dbase.c:18,17</A>: Variable db exported but not declared in header file
+  A variable declaration is exported, but does not appear in a header file. 
+  (Used with exportheader.)  Use -exportheadervar to suppress message.
+<A HREF="empset.c.html#line5">empset.c:5,6</A>: Function _empset_get exported but not declared in header file
+  A declaration is exported, but does not appear in a header file.  Use
+  -exportheader to suppress message.
+   <A HREF="empset.c.html#line15">empset.c:15,1</A>: Definition of _empset_get
+<A HREF="dbase.c.html#line20">dbase.c:20,6</A>: Variable initDone exported but not declared in header file
+<A HREF="dbase.c.html#line45">dbase.c:45,6</A>: Function _db_ercKeyGet exported but not declared in header file
+   <A HREF="dbase.c.html#line53">dbase.c:53,1</A>: Definition of _db_ercKeyGet
+<A HREF="dbase.c.html#line55">dbase.c:55,6</A>: Function _db_keyGet exported but not declared in header file
+   <A HREF="dbase.c.html#line70">dbase.c:70,1</A>: Definition of _db_keyGet
+<A HREF="dbase.c.html#line72">dbase.c:72,5</A>: Function _db_addEmpls exported but not declared in header file
+   <A HREF="dbase.c.html#line89">dbase.c:89,1</A>: Definition of _db_addEmpls
+</pre>
+
+Two variables and four functions are not declared in header files.  All
+of these should have been declared using <tt>static</tt> to limit their
+scope.   
+
+This produces a new error, since the <A
+HREF="empset.h.html#line30"><tt>empset_member</tt></a> macro in
+<tt>empset.h</tt> used <tt>_empset_get</tt>.  We replace the macro with
+a real function, so the file state function can be called.
+
+<P>
+<b><A HREF="../checkchecks2/index.html">Next: Continue to Check Checks 2</a></b><br>
+<A HREF="../index.html">Return to Summary</A>
+
+<!--#include virtual="../../../footer.html"-->
+

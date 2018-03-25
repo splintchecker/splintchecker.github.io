@@ -1,0 +1,132 @@
+<h3>lclint-interest message 109</h3>
+<pre>
+From evans@cs.virginia.edu Fri Sep 27 10:45:51 1996
+Date: Fri, 27 Sep 96 10:34:18 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: erik@it.et.tudelft.nl
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Erik Mouw's message of Thu, 26 Sep 96 17:07:25 MET DST <9609261507.AA22482@it.et.tudelft.nl>
+Subject: Introduction/double-linked lists
+
+
+Hi Erik,
+
+> I'm currently fighting with the right annotations for a double linked
+> list. This is what I currently use:
+>
+> typedef /*@abstract@*/ struct node
+> {
+>   /*@null@*/ /*@shared@*/ struct node * next;
+>   /*@null@*/ /*@shared@*/ struct node * prev;
+>   int val;
+> } node;
+>
+>
+> /* start of the list */
+> /*@null@*/ /*@shared@*/ static node * start=NULL;
+>
+> /* the current node */
+> /*@null@*/ static node * cur=NULL;
+>
+> /* end of the list */
+> /*@null@*/ /*@shared@*/ static node * end=NULL;
+> 
+> Is this OK or should I use other annotations?
+
+This is okay, but using "shared" means there won't be much checking and
+it doesn't say much about host the list should be used (i.e., how should
+I deallocate a list?).
+
+This is a good example of where the owned and dependent annotations are
+useful.  Owned means that this declarator is responsible for the storage
+it points to (even though other dependent-annotated pointers may also
+point to the same storage).  Either the next or the prev pointers could
+be the owners --- here we view the list looking forward and make next
+the owner:
+
+===========
+typedef /*@abstract@*/ struct node
+{
+  /*@null@*/ /*@owned@*/ struct node * next;
+  /*@null@*/ /*@dependent@*/ struct node * prev;
+  int val;
+} node;
+
+/* start of the list */
+/*@null@*/ /*@owned@*/ static node * start=NULL;
+
+/* the current node */
+/*@null@*/ /*@dependent@*/ static node * cur=NULL;
+
+/* end of the list */
+/*@null@*/ /*@dependent@*/ static node * end=NULL;
+
+void dll_insert (int x) /*@modifies *cur@*/
+{
+  if (cur != NULL) {
+    struct node *nn = (struct node *) malloc (sizeof (*nn));
+    assert (nn != NULL);
+    nn->next = cur->next;
+    nn->prev = cur;
+    nn->val = x;
+    if (cur->next != NULL) {
+      cur->next->prev = nn;
+    }
+
+    cur->next = nn; /* note: I forgot this line when coding this...but, because
+		       of the owned/dependent annotation lclint detected
+		       the bug! */
+    if (end == cur) end = nn; /* not sure if this is the right thing? */
+    cur = nn;
+  }
+  else {
+    ; /* initialize start, etc. */
+  }
+}
+
+void dll_free (void) /*@modifies start, cur, end@*/
+{
+  /* because of the owned/dependent annotations, its clear
+     what we need to free */
+
+  while (end != NULL) {
+    end = end->prev;
+    if (end != NULL) { free (end->next); }
+  }
+
+  start = NULL; /* <<< lclint reports a memory leak here, since it can't tell 
+		       that the loop deallocated start eventually. If the double
+		       linked-list is maintained correctly, it must do this, but
+		       a more careful programmer would check this in the loop. */
+  end = NULL;
+  cur = NULL;
+}
+
+============
+
+Because owned and dependent have more meaning that shared, the code is a
+bit clearer to understand, and more importantly (as I found out when
+constructing this example), its more likely that lclint will detect bugs
+in the code because many of the likely errors one could make are
+inconsistent with the owned/dependent annotations.
+
+--- Dave
+
+
+
+</pre>
+<A HREF="108.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="110.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

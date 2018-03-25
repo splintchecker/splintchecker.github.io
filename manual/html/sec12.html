@@ -1,0 +1,754 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 12. Naming Conventions</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+
+<h1 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975014"></a><a name="_Ref483663681"></a><a name=
+"_Ref350065611">12<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a id="naming" name="naming">
+Naming Conventions</a></a></h1>
+<p class="TextFontCX">Naming conventions tend to be a religious
+issue. Generally, it doesn't matter too much what naming convention
+is followed as long as one is chosen and followed
+religiously.&nbsp; There are two kinds of naming conventions
+supported by Splint.&nbsp; Type-based naming conventions (Section
+12.1) constrain identifier names according to the abstract
+types&nbsp;that are accessible where the identifier is
+defined.&nbsp; Prefix naming conventions (Section 12.2) constrain
+the initial characters of identifier names according to what is
+being declared and its scope.&nbsp; Naming conventions may be
+combined or different conventions may be selected for different
+kinds of identifiers.&nbsp; In addition, Splint supports checking
+that names do not conflict with names reserved for the standard
+library or implementation (Section 12.3) and are sufficiently
+distinguishable from other names.</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975015"></a><a name="_Ref348079373"></a><a name=
+"_Ref347240654"></a><a name="_Toc344355426">12.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Type-Based Naming Conventions</a></h2>
+<p class="TextFontCX">Generic naming conventions constrain valid
+names of identifiers.&nbsp; By limiting valid names, namespaces may
+be preserved and programs may be more easily understood since the
+name gives clues as to how and where the name is defined and how it
+should be used.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Names may be constrained by the scope of the
+name (external, file static, internal), the file in which the
+identifier is defined, the type of the identifier, and global
+constraints.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975016"></a><a name=
+      "_Ref347994687">12.1.1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;</span>
+      Czech Names</a></h3>
+<p class="TextFontCX">Czech<a href="appNotes.html#_ftn7" name="_ftnref17"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:11.0pt;font-family:"Times New Roman"'>[17]</span></span></span></a>
+   names denote operations and variables of abstract types by
+   preceding the names by <span class="CodeText"><i><span style=
+   'font-size:10.0pt'>&lt;type&gt;</span></i></span><span class=
+   "CodeText"><span style='font-size:10.0pt'>_</span></span>.&nbsp;
+   The remainder of the name should begin with a lowercase
+   character, but may use any other character besides the
+   underscore.&nbsp; Types may be named using any non-underscore
+   characters.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX" style='margin-bottom:6.0pt'>The Czech naming
+convention is selected by the <span class="Flag"><span style=
+'font-size:10.0pt'>czech</span></span>&nbsp;flag.&nbsp; If
+<span class="Flag"><span style=
+'font-size:10.0pt'>access-czech</span></span> is on, a function,
+variable, constant or iterator named <span class=
+"CodeText"><i><span style=
+'font-size:10.0pt'>&lt;type&gt;</span></i></span><span class=
+"CodeText"><span style=
+'font-size:10.0pt'>_<i>&lt;name&gt;</i></span></span> has access to
+the abstract type <span class="CodeText"><i><span style=
+'font-size:10.0pt'>&lt;type&gt;</span></i></span>.&nbsp; Reporting
+of violations of the Czech naming convention is controlled by
+different flags depending on what is being declared:</p>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>czech-fcns</span></span></p>
+<p class="TextFontCX" style='margin-left:13.5pt'>Functions and
+iterators.&nbsp; An error is reported for a function name of the
+form <span class="CodeText"><i><span style=
+'font-size:10.0pt'>&lt;prefix&gt;</span></i></span><span class="CodeText">
+<span style='font-size:10.0pt'>_<i>&lt;name&gt;</i></span></span>
+where <span class="CodeText"><i><span style=
+'font-size:10.0pt'>&lt;prefix&gt;</span></i></span> is not the name
+of an accessible type.&nbsp; Note that if <span class=
+"Flag"><span style='font-size:10.0pt'>accessczech</span></span> is
+on, a type named <span class="CodeText"><i><span style=
+'font-size:10.0pt'>&lt;prefix&gt;</span></i></span> would be
+accessible in a function beginning with <span class=
+"CodeText"><i><span style=
+'font-size:10.0pt'>&lt;prefix&gt;</span></i></span><span class="CodeText">
+<span style='font-size:10.0pt'>_</span></span>.&nbsp; If
+<span class="Flag"><span style=
+'font-size:10.0pt'>access-czech</span></span> is off, an error is
+reported instead.&nbsp; An error is reported for a function name
+that does not have an underscore if any abstract types&nbsp;are
+accessible where the function is defined.</p>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>czech-vars</span></span></p>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>czech-constants</span></span></p>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>czech-macros</span></span></p>
+<p class="IndentText">Variables, constants and expanded macros.
+&nbsp;An error is reported if the identifier name starts with
+<span class="CodeText"><i><span style=
+'font-size:10.0pt'>&lt;prefix&gt;</span></i></span><span class="CodeText">
+<span style='font-size:10.0pt'>_</span></span>and
+      <span class="CodeText"><i><span style=
+      'font-size:10.0pt'>prefix</span></i></span> is not the name
+      of an accessible abstract type, or if an abstract type is
+      accessible and the identifier name does not begin with
+      <span class="CodeText"><i><span style=
+      'font-size:10.0pt'>&lt;type&gt;</span></i></span><span class=
+      "CodeText"><span style='font-size:10.0pt'>_</span></span>
+      where <span class="CodeText"><i><span style=
+      'font-size:10.0pt'>type</span></i></span> is the name of an
+      accessible abstract type.&nbsp; If <span class=
+      "Flag"><span style=
+      'font-size:10.0pt'>access-czech</span></span>&nbsp;is on, the
+      representation of the type is visible in the constant or
+      variable definition.</p>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>czech-types</span></span></p>
+<p class="TextFontCX" style='margin-left:13.5pt'>User-defined
+types.&nbsp; An error is reported if a type name includes an
+underscore character.</p>
+<p class="Sidebar" align="right">Of course, this is a complete
+jumble to the uninitiated, and that&#8217;s the joke.</p>
+<p class="Sidebar" align="right" style='text-align:right'>
+<i>Charles Simonyi, on the Hungarian naming convention</i></p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975017"></a><a name=
+      "_Ref344878566">12.1.2<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;</span>
+      Slovak Names</a></h3>
+<p class="TextFontCX">Slovak names are similar to Czech names,
+except they are spelled differently.&nbsp; A Slovak name is of the
+form <span class="CodeText"><i><span style=
+'font-size:10.0pt'>&lt;type&gt;&lt;Name&gt;</span></i></span>.&nbsp;
+The type prefix may not use uppercase characters.&nbsp; The
+remainder of the name starts with the first uppercase
+character.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The <span class="Flag"><span style=
+'font-size:10.0pt'>slovak</span></span>&nbsp;flag selects the
+Slovak naming convention.&nbsp; Like Czech names, it may be used
+with <span class="Flag"><span style=
+'font-size:10.0pt'>access-slovak</span></span>&nbsp;to control
+access to abstract representations. The <span class=
+"Flag"><span style='font-size:10.0pt'>slovak-fcns</span></span>,
+<span class="Flag"><span style=
+'font-size:10.0pt'>slovak-vars</span></span>, <span class=
+"Flag"><span style=
+'font-size:10.0pt'>slovak-constants</span></span>, and
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>slovak-macros</span></span>&nbsp;flags are
+      analogous to the similar Czech flags.&nbsp; If <span class=
+      "Flag"><span style=
+      'font-size:10.0pt'>slovak-type</span></span> is on, an error
+      is reported if a type name includes an uppercase letter.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975018"></a><a name=
+      "_Ref347994743">12.1.3<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;</span>
+      Czechoslovak Names</a></h3>
+<p class="TextFontCX">Czechoslovak names are a combination of Czech
+names and Slovak names.&nbsp; Operations may be named either
+<span class="CodeText"><i><span style=
+'font-size:10.0pt'>&lt;type&gt;</span></i></span><span class=
+"CodeText"><span style='font-size:10.0pt'>_</span></span> followed
+by any sequence of non-underscore characters, or <span class=
+"CodeText"><i><span style=
+'font-size:10.0pt'>&lt;type&gt;</span></i></span> followed by an
+uppercase letter and any sequence of characters.&nbsp; Czechoslovak
+names have been out of favor since 1993, but may be necessary for
+checking legacy code. The <span class="Flag"><span style=
+'font-size:10.0pt'>czechoslovak-fcns</span></span>,
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>czechoslovak-vars</span></span>,
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>czechoslovak-macros</span></span>, and
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>czechoslovak-constants</span></span>
+      flags&nbsp;are analogous to the similar Czech flags.&nbsp; If
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>czechoslovak-type</span></span>&nbsp;is
+      on, an error is reported if a type name contains either an
+      uppercase letter or an underscore character.</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975019"></a><a name="_Ref347240687"></a><a name=
+"_Ref347222192">12.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Namespace Prefixes</a></h2>
+<p class="TextFontCX">Another way to restrict names is to constrain
+the leading character sequences of various kinds of
+identifiers.&nbsp; For example, the names of all user-defined types
+might begin with <span class="CodeText"><span style=
+'font-size:10.0pt'>T</span></span> followed by an uppercase letter
+and all file static names begin with an uppercase letter.&nbsp;
+This may be useful for enforcing a namespace (e.g., all names
+exported by the X-windows library should begin with
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>X</span></span>) or just making programs
+      easier to understand by establishing an enforced
+      convention.&nbsp; Splint can be used to constrain identifiers
+      in this way to detect identifiers inconsistent with
+      prefixes.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">All namespace flags are of the form,
+<span class="Flag"><span style=
+'font-size:10.0pt'>-<i>&lt;context&gt;</i>prefix
+<i>&lt;string&gt;</i></span></span>.&nbsp; For example, the macro
+variable namespace restricting identifiers declared in macro bodies
+to be preceded by <span class="CodeText"><span style=
+'font-size:10.0pt'>m_</span></span> would be selected by
+<span class="Flag"><span style=
+'font-size:10.0pt'>-macrovarprefix</span></span> <span class=
+"Flag"><span style='font-size:10.0pt'>"m_"</span></span>.&nbsp; The
+string may contain regular characters that may appear in a C
+identifier.&nbsp; These must match the initial characters of the
+identifier name.&nbsp; In addition, special characters (shown in
+Figure 23) can be used to denote a class of characters.<a href=
+"#_ftn18" name="_ftnref18" title=""><span class=
+"MsoFootnoteReference"><span class=
+"MsoFootnoteReference"><span style=
+'font-size:11.0pt;font-family:"Times New Roman"'>[18]</span></span></span></a>&nbsp;
+The <span class="CodeText"><span style=
+'font-size:10.0pt'>*</span></span> character may be used at the end
+of a prefix string to specify the rest of the identifier is zero or
+more characters matching the character immediately before the
+<span class="CodeText"><span style=
+'font-size:10.0pt'>*</span></span>.&nbsp; For example, the prefix
+string <span class="CodeText"><span style=
+'font-size:10.0pt'>T&amp;*</span></span> matches <span class=
+"CodeText"><span style='font-size:10.0pt'>T</span></span> or
+<span class="CodeText"><span style=
+'font-size:10.0pt'>TWINDOW</span></span> but not <span class=
+"CodeText"><span style='font-size:10.0pt'>Twin</span></span>.</p>
+<p class="beforelist">&nbsp;</p>
+<p class="beforelist">Different prefixes can be selected for the
+following identifier contexts:</p>
+<table class="MsoNormalTable" border="0" cellspacing="0"
+cellpadding="0" style='margin-left:.45in;border-collapse:collapse'>
+<tr>
+<td valign="top" style='width:2.0in;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>macro-var-prefix</span></span></p></td>
+<td valign="top" style='width:247.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Any variable declared inside a macro
+body</p></td></tr>
+<tr>
+<td valign="top" style='width:2.0in;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>unchecked-macro-prefix</span></span></p></td>
+<td valign="top" style='width:247.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Any macro that is not checked as a function
+or constant (see Section 11.4)</p></td></tr>
+<tr>
+<td valign="top" style='width:2.0in;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>tag-prefix</span></span></p></td>
+<td valign="top" style='width:247.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Tags for <span class=
+      "CodeText"><span style='font-size:10.0pt'>struct</span></span>,
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>union</span></span> and <span class=
+      "CodeText"><span style='font-size:10.0pt'>enum</span></span>
+      declarations</p></td></tr>
+<tr>
+<td valign="top" style='width:2.0in;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>enum-prefix</span></span></p></td>
+<td valign="top" style='width:247.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Members of <span class=
+      "CodeText"><span style='font-size:10.0pt'>enum</span></span>
+      types</p></td></tr>
+<tr>
+<td valign="top" style='width:2.0in;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>type-prefix</span></span></p></td>
+<td valign="top" style='width:247.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Name of a user-defined type</p></td></tr>
+<tr>
+<td valign="top" style='width:2.0in;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>file-static-prefix</span></span></p></td>
+<td valign="top" style='width:247.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Any identifier with file static
+scope</p></td></tr>
+<tr>
+<td valign="top" style='width:2.0in;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>glob-var-prefix</span></span></p></td>
+<td valign="top" style='width:247.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Any variable (not of function type) with
+global scope</p></td></tr>
+<tr>
+<td valign="top" style='width:2.0in;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>const-prefix</span></span></p></td>
+<td valign="top" style='width:247.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Any constant (see Section 11.1)</p></td></tr>
+<tr>
+<td valign="top" style='width:2.0in;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>iter-prefix</span></span></p></td>
+<td valign="top" style='width:247.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">An iterator (see Section 11.4)</p></td></tr>
+<tr>
+<td valign="top" style='width:2.0in;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>proto-param-prefix</span></span></p></td>
+<td valign="top" style='width:247.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">A parameter in a function declaration
+prototype</p></td></tr>
+<tr>
+<td valign="top" style='width:2.0in;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>external-prefix</span></span></p></td>
+<td valign="top" style='width:247.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Any exported identifier</p></td></tr></table>
+<p class="afterlist">If an identifier is in more than one of the
+namespace contexts, the most specific defined namespace prefix is
+used (e.g., a global&nbsp;variable is also an exported identifier,
+so if <span class="Flag"><span style=
+'font-size:10.0pt'>global-var-prefix</span></span> is set, it is
+checked against the variable name; if not, the identifier is
+checked against the <span class="Flag"><span style=
+'font-size:10.0pt'>external-prefix</span></span>.)</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">For each prefix flag, a corresponding flag
+named <span class="Flag"><i><span style=
+'font-size:10.0pt'>&lt;prefixname&gt;</span></i></span><span class="Flag">
+<span style='font-size:10.0pt'>exclude</span></span> controls
+whether errors are reported if identifiers in a different namespace
+match the namespace prefix.&nbsp; For example, if
+      <span class="Flag"><span style=
+      'font-size: 10.0pt'>macro-var-prefix-exclude</span></span> is
+      on, Splint checks that no identifier that is not a variable
+      declared inside a macro body uses the macro variable
+      prefix.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="beforelist">Here is a (somewhat draconian) sample naming
+convention:</p>
+<table class="MsoNormalTable" border="0" cellspacing="0"
+cellpadding="0" style='margin-left:5.4pt;border-collapse:collapse'>
+<tr>
+<td valign="top" style=
+'width:189.35pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>-unchecked-macro-prefix</span></span>
+<span class="Flag"><span style=
+'font-size:10.0pt'>"~*"</span></span></p></td>
+<td valign="top" style=
+'width:238.15pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Unchecked macros have no lowercase
+letters.</p></td></tr>
+<tr>
+<td valign="top" style=
+'width:189.35pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>-type-prefix</span></span> <span class=
+"Flag"><span style=
+'font-size:10.0pt'>"T^&amp;*"</span></span></p></td>
+<td valign="top" style=
+'width:238.15pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">All type names begin with <span class=
+"CodeText"><span style='font-size:10.0pt'>T</span></span> followed
+by an uppercase letter.&nbsp; The rest of the name is all lowercase
+letters.</p></td></tr>
+<tr>
+<td valign="top" style=
+'width:189.35pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>+type-prefix-exclude</span></span></p></td>
+<td valign="top" style=
+'width:238.15pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">No identifier that does not name a
+user-defined type name begins with the type name
+prefix.</p></td></tr>
+<tr>
+<td valign="top" style=
+'width:189.35pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>-file-static-prefix</span></span>
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>"^&amp;&amp;&amp;"</span></span></p></td>
+<td valign="top" style=
+'width:238.15pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">File static scope variables begin with an
+uppercase letter and three lowercase letters.</p></td></tr>
+<tr>
+<td valign="top" style=
+'width:189.35pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>-proto-param-prefix "p_"</span></span></p></td>
+<td valign="top" style=
+'width:238.15pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">All parameters in prototypes must begin with
+<span class="CodeText"><span style=
+'font-size:10.0pt'>p_</span></span>.</p></td></tr>
+<tr>
+<td valign="top" style=
+'width:189.35pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>-glob-var-prefix "G"</span></span></p></td>
+<td valign="top" style=
+'width:238.15pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">All global variables start with
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>G</span></span>.</p></td></tr>
+<tr>
+<td valign="top" style=
+'width:189.35pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>+glob-var-prefix-exclude</span></span></p></td>
+<td valign="top" style=
+'width:238.15pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">No identifier that is not a
+global&nbsp;variable starts with <span class=
+      "CodeText"><span style='font-size:10.0pt'>G</span></span>.</p></td></tr></table>
+<p class="beforelist">&nbsp;</p>
+<p class="beforelist">The prefix for parameters in function
+prototypes is useful for making sure parameter names are not in
+conflict with macros defined before the function prototype.&nbsp;
+In most cases, it may be preferable to not name prototype
+parameters.&nbsp; If the <span class="Flag"><span style=
+'font-size:10.0pt'>proto-param-name</span></span>&nbsp;flag is set,
+an error is reported for any named parameter in a prototype
+declaration.&nbsp; If a <span class="Flag"><span style=
+'font-size:10.0pt'>proto-param-prefix</span></span>&nbsp;is set, no
+error is reported for unnamed parameters.</p>
+<p class="TextFontCX">It may also be useful to check the names of
+prototype parameters correspond to the names in definitions.&nbsp;
+While using header files as documentation is not generally
+recommended, it is common enough practice that it makes sense to
+check that parameter names are consistent.&nbsp; A discrepancy may
+indicate an error in the parameter order in the function
+prototype.&nbsp; If <span class="Flag"><span style=
+'font-size:10.0pt'>proto-param-match</span></span>&nbsp;is set,
+Splint will report an error if the name of a definition parameter
+does not match the corresponding prototype parameter (after
+removing the <span class="Flag"><span style=
+'font-size:10.0pt'>protoparamprefix</span></span>).</p>
+<center>
+<table class="MsoNormalTable" border="0" cellspacing="0"
+cellpadding="0" style=
+'margin-left:9.9pt;border-collapse:collapse;margin-left:-2.25pt; margin-right:-2.25pt'>
+<tr>
+<td valign="top" style=
+'width:22.0pt;border-top:solid black 1.5pt; border-left:solid black 1.5pt;border-bottom:none;border-right:none; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="CodeText"><span style=
+'font-size:10.0pt'>^</span></span></p></td>
+<td valign="top" style=
+'width:401.55pt;border-top:solid black 1.5pt; border-left:none;border-bottom:none;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Any uppercase letter, <span class=
+"CodeText"><span style=
+'font-size:10.0pt'>A</span></span>-<span class=
+"CodeText"><span style=
+'font-size:10.0pt'>Z</span></span></p></td></tr>
+<tr>
+<td valign="top" style=
+'width:22.0pt;border:none;border-left:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="CodeText"><span style=
+'font-size:10.0pt'>&amp;</span></span></p></td>
+<td valign="top" style=
+'width:401.55pt;border:none;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Any lowercase letter, <span class=
+"CodeText"><span style=
+'font-size:10.0pt'>a</span></span>-<span class=
+"CodeText"><span style=
+'font-size:10.0pt'>z</span></span></p></td></tr>
+<tr>
+<td valign="top" style=
+'width:22.0pt;border:none;border-left:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="CodeText"><span style=
+'font-size:10.0pt'>%</span></span></p></td>
+<td valign="top" style=
+'width:401.55pt;border:none;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Any character that is not an uppercase letter
+(allows lowercase letters, digits and underscore)</p></td></tr>
+<tr>
+<td valign="top" style=
+'width:22.0pt;border:none;border-left:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="CodeText"><span style=
+'font-size:10.0pt'>~</span></span></p></td>
+<td valign="top" style=
+'width:401.55pt;border:none;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Any character that is not a lowercase letter
+(allows uppercase letters, digits and underscore)</p></td></tr>
+<tr>
+<td valign="top" style=
+'width:22.0pt;border:none;border-left:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="CodeText"><span style=
+'font-size:10.0pt'>$</span></span></p></td>
+<td valign="top" style=
+'width:401.55pt;border:none;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Any letter (<span class=
+"CodeText"><span style=
+'font-size:10.0pt'>a</span></span>-<span class=
+"CodeText"><span style='font-size:10.0pt'>z</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>A</span></span>-<span class=
+"CodeText"><span style=
+'font-size:10.0pt'>Z</span></span>)</p></td></tr>
+<tr>
+<td valign="top" style=
+'width:22.0pt;border:none;border-left:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="CodeText"><span style=
+'font-size:10.0pt'>/</span></span></p></td>
+<td valign="top" style=
+'width:401.55pt;border:none;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Any letter or digit (<span class=
+"CodeText"><span style=
+'font-size:10.0pt'>A</span></span>-<span class=
+"CodeText"><span style='font-size:10.0pt'>Z</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>a</span></span>-<span class=
+"CodeText"><span style='font-size:10.0pt'>z</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>0</span></span>-<span class=
+"CodeText"><span style=
+'font-size:10.0pt'>9</span></span>)</p></td></tr>
+<tr>
+<td valign="top" style=
+'width:22.0pt;border:none;border-left:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="CodeText"><span style=
+'font-size:10.0pt'>?</span></span></p></td>
+<td valign="top" style=
+'width:401.55pt;border:none;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">Any character valid in a C
+identifier</p></td></tr>
+<tr>
+<td valign="top" style=
+'width:22.0pt;border-top:none;border-left:solid black 1.5pt; border-bottom:solid black 1.5pt;border-right:none;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX"><span class="CodeText"><span style=
+'font-size:10.0pt'>#</span></span></p></td>
+<td valign="top" style=
+'width:401.55pt;border-top:none;border-left: none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" style='page-break-after: avoid'>Any digit,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>0</span></span>-<span class=
+"CodeText"><span style=
+'font-size:10.0pt'>9</span></span></p></td></tr></table>
+<table cellspacing="0" cellpadding="0" hspace="0" vspace="0">
+<tr>
+<td valign="top" style=
+'padding-top:0in;padding-right: 9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+<p class="MsoCaption"><a name="_Toc534824625"></a><a name=
+"_Ref347220245"></a><a name="_Ref347220226"></a><a name=
+"_Toc347255399"></a><a name="_Ref347222037"></a><a name=
+"_Ref347222045"></a><a name="_Ref534824531">Figure 23</a>.&nbsp;
+Prefix Character Codes</p></td></tr></table></center>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975020"></a><a name="_Ref348079479"></a><a name=
+"_Ref347240790"></a><a name="_Toc344355427">12.3<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Naming Restrictions</a></h2>
+<p class="TextFontCX">Additional naming restrictions can be used to
+check that names do no conflict with names reserved for the
+standard library, and that identifier are sufficiently distinct
+(either for the compiler and linker, or for the programmer.)&nbsp;
+Restrictions may be different for names that are needed by the
+linker (<i>external</i> names) and names that are only needed
+during compilations (<i>internal</i> names).&nbsp; Names of
+non-<span class="CodeText"><span style=
+'font-size:10.0pt'>static</span></span> functions and global
+variables are external; all other names are internal.</p>
+<p class="Sidebar" align="right"><a name=
+"_Ref350062822"></a><a name="_Ref348845288"></a><a name=
+"_Toc344355429"></a><a name="_Ref343248602">&nbsp;</a></p>
+<p class="Sidebar" align="right">The decision to retain the old
+six-character case-insensitive restriction on significance was most
+painful.</p>
+<p class="Sidebar" align="right" style='text-align:right'><i>ANSI C
+Rationale</i></p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975021">12.3.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;</span> Reserved
+Names</a></h3>
+<p class="TextFontCX">Many names are reserved for the
+implementation and standard library.&nbsp; A complete list of
+reserved names can be found in [vdL, p. 126-128].&nbsp; Some name
+prefixes such as <span class="CodeText"><span style=
+'font-size:10.0pt'>str</span></span> followed by a lowercase
+character are reserved for future library extensions.&nbsp; Most C
+compilers do not detect naming conflicts, and they can lead to
+unpredictable program behavior.&nbsp; If <span class=
+"Flag"><span style='font-size:10.0pt'>ansi-reserved</span></span>
+is on, Splint warns about external names that conflict with
+reserved names.&nbsp; If <span class="Flag"><span style=
+'font-size:10.0pt'>ansi-reserved-internal</span></span>&nbsp;is on,
+warnings are also produced for internal names.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">If <span class="Flag"><span style=
+'font-size:10.0pt'>+cpp-names</span></span> is set, Splint warns
+about identifier names that are keywords or reserved words in
+C++.&nbsp; This is useful if the code may later be compiled with a
+C++ compiler (of course, this is not enough to ensure the meaning
+of the code is not changed when it is compiled as C++.)</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975022">12.3.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;</span> Distinct
+Names</a></h3>
+<p class="TextFontCX">Splint can check that names differ within a
+given number of characters, optionally ignoring alphabetic case and
+differences between characters that look similar.&nbsp; The number
+of significant characters may be different for external and
+internal names.&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Using <span class="Flag"><span style=
+'font-size:10.0pt'>+distinct-external-names</span></span>&nbsp;sets
+the number of significant characters for external names to six and
+makes alphabetical case insignificant for external names.&nbsp;
+This is the minimum significance acceptable in an ANSI-conforming
+compiler.&nbsp; Most modern compilers exceed these minimums (which
+are particularly hard to follow if one uses the Czech or Slovak
+naming convention).&nbsp; The number of significant characters can
+be changed using the <span class="Flag"><span style=
+'font-size:10.0pt'>external-name-length
+<i>&lt;number&gt;</i></span></span> flag.&nbsp; If
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>external-name-case-insensitive</span></span>
+      is on, alphabetical case is ignored in comparing external
+      names. Splint reports identifiers that differ only in
+      alphabetic case.</p>
+<p class="TextFontCX">For internal identifiers, a conforming
+compiler must recognize at least 31 characters and treat
+alphabetical cases distinctly.&nbsp; Nevertheless, it may still be
+useful to check that internal names are more distinct then required
+by the compiler to minimize the likelihood that identifiers are
+confused in the program.&nbsp; Analogously to external names, the
+<span class="Flag"><span style=
+'font-size:10.0pt'>internal-name-length</span></span><span class="Flag">
+<span style=
+'font-size:10.0pt'>&nbsp;<i>&lt;number&gt;</i></span></span> flag
+sets the number of significant characters in an internal name and
+<span class="Flag"><span style=
+'font-size:10.0pt'>internal-name-case-insensitive</span></span>
+sets the case sensitivity.&nbsp; The <span class=
+      "Flag"><span style='font-size:10.0pt'>internal-name-look-alike</span></span>
+      flag further restricts distinctions between
+      identifiers.&nbsp; When set, similar-looking characters match
+      &#8212; the lowercase letter <span class=
+      "CodeText"><span style='font-size:10.0pt'>l</span></span>
+      matches the uppercase letter <span class=
+      "CodeText"><span style='font-size:10.0pt'>I</span></span> and
+      the number <span class="CodeText"><span style=
+      'font-size:10.0pt'>1</span></span>; the letter <span class=
+      "CodeText"><span style='font-size:10.0pt'>O</span></span> or
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>o</span></span> matches the number
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>0</span></span>; <span class=
+      "CodeText"><span style='font-size:10.0pt'>5</span></span>
+      matches <span class="CodeText"><span style=
+      'font-size:10.0pt'>S</span></span>; and <span class=
+      "CodeText"><span style='font-size:10.0pt'>2</span></span>
+      matches <span class="CodeText"><span style=
+      'font-size:10.0pt'>Z</span></span>.&nbsp; Identifiers that
+      are not distinct except for look-alike characters will
+      produce an error message.&nbsp; External names are also
+      internal names, so they must satisfy both the external and
+      internal distinct identifier checks.&nbsp; Figure 24 provides
+      some examples of distinct name checking.</p>
+<center>
+<table class="MsoNormalTable" border="0" cellspacing="0"
+cellpadding="0" style=
+'margin-left:9.9pt;border-collapse:collapse;margin-left:-2.25pt; margin-right:-2.25pt'>
+<tr>
+<td valign="top" style=
+'width:166.5pt;border:solid black 1.5pt; border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<span class="Keyword"><b><span style=
+'font-size:10.0pt; color:white'>names.c</span></b></span></p></td>
+<td valign="top" style=
+'width:256.5pt;border-top:solid black 1.5pt; border-left:none;border-bottom:none;border-right:solid black 1.5pt; background:black;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<b><span style='color:white'>Running
+Splint</span></b></p></td></tr>
+<tr>
+<td valign="top" style=
+'width:166.5pt;border:solid black 1.5pt; border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>&nbsp;</span></span>char *stringrev (char
+*s);</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>3</span></span> int f (int x)</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>&nbsp;</span></span>&nbsp;{</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>5</span></span> int lookalike = 1;</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>6</span></span> int looka1ike = 2;</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">&nbsp; if (x &gt; 3)</p>
+<p class="Verbatim">&nbsp;&nbsp;&nbsp; {</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>10</span></span>&nbsp;&nbsp;&nbsp; int x =
+lookalike;</p>
+<p class="Verbatim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x +=
+looka1ike;</p>
+<p class="Verbatim">&nbsp;&nbsp;&nbsp; }</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">&nbsp; return x;</p>
+<p class="Verbatim">}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></td>
+<td valign="top" style=
+'width:256.5pt;border-top:none;border-left: none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="lclintrun">&gt; splint names.c
++distinctinternalnames&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p class="lclintrun">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
++internalnamelookalike&nbsp; +isoreserved</p>
+<p class="lclintrun">&nbsp;</p>
+<p class="lclintrun">names.c:1: Name stringreverse is reserved for
+future</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; library extensions.&nbsp;
+Functions that begin with</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; "str" and a lowercase
+letter may be added to</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; &lt;stdlib.h&gt; or
+&lt;string.h&gt;. (ISO99:7.26.9)</p>
+<p class="lclintrun">names.c:6: Internal identifier looka1ike is
+not</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; distinguishable from
+lookalike except by lookalike</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; characters</p>
+<p class="lclintrun">&nbsp;&nbsp; names.c:5: Declaration of
+lookalike</p>
+<p class="lclintrun">names.c:10: Variable x shadows outer
+declaration</p>
+<p class="lclintrun" style='page-break-after:avoid'>&nbsp;&nbsp;
+names.c:3: Previous declaration of x: int</p></td></tr></table>
+<table cellspacing="0" cellpadding="0" hspace="0" vspace="0">
+<tr>
+<td valign="top" style=
+'padding-top:5.05pt;padding-right: 9.35pt;padding-bottom:5.05pt;padding-left:9.35pt'>
+<p class="MsoCaption"><a name="_Ref343085825"></a><a name=
+"_Ref343085797"></a><a name="_Ref343065542"></a><a name=
+"_Ref349992283"></a><a name="_Ref534642902"></a><a name=
+"_Ref534642319"></a><a name="_Toc534824626"></a><a name=
+"_Ref534823650">Figure 24</a>.&nbsp; Distinct
+Names</p></td></tr></table></center>
+
+<p>
+<a href="sec13.html"><b>Next:</b> 13. Completeness</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

@@ -1,0 +1,61 @@
+<h3>lclint-interest message 201</h3>
+<pre>
+From 100566.1506@csi.com Mon Mar  2 11:10:16 1998
+X-Authentication-Warning: opto4l.default.com: 100566.1506 owned process doing -bs
+Date: Mon, 2 Mar 1998 10:28:07 +0100 (CET)
+From: Hermann Kleier <100566.1506@csi.com>
+X-Sender: 100566.1506@opto4l.default.com
+Reply-To: Hermann Kleier <100566.1506@csi.com>
+To: David Evans <evans@cs.virginia.edu>
+Cc: lclint-interest@larch.lcs.mit.edu, HermannK@compuserve.com, weco@csi.com
+Subject: Re: signal function interface
+In-Reply-To: <9802271911.AA28409@larch.lcs.mit.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Dave,
+
+On Fri, 27 Feb 1998, David Evans wrote:
+
+> Thanks for the explanation.  I'll make sure the next release of lclint
+> handles this correctly.
+
+If you are going to rework the stuff I would like you to include messages like
+those in the examples below. Of course, like all the others, these messages
+should be selectively turned on/off.  I feel that using the implicit casts is a 
+traditional (sloppy, confusing, ...) programming style, which I want to avoid in
+my programs.  Warnings should be given for the following lines (I refer to the
+example of my last E-mail):
+
+ sayptr = say;            // Implicit conversion of `function' to `function ptr'
+
+ sayptr ("sayptr\n");     // Implicit conversion of `function ptr' to `function'
+                          // due to function invocation
+
+ (*say) ("(*say)\n");     // Implicit conversion of `function' to `function ptr'
+                          // due to unary operator
+
+Especially the last example is confusing for the average non-guru.
+
+Hermann
+
+
+
+
+
+</pre>
+<A HREF="200.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="202.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,71 @@
+1,3c1,2
+< gmake[1]: Entering directory `/u/evs/lclint/web/sample/standardchecks'
+< lclint +lh -memchecks +showscan +stats +showscan +stats employee eref empset ereftab erc dbase drive.c
+< LCLint 2.0+ --- Thu Feb 15 13:54:24 EST 1996
+---
+> lclint +lh -memchecks +showscan +showfunc +stats employee eref empset ereftab erc dbase drive.c
+> LCLint 2.0 --- 04 Feb 96
+5,6d3
+< Warning: setting +showscan redundant with current value
+< Warning: setting +stats redundant with current value
+15,21d11
+< employee.h: (in macro employee_initMod)
+< employee.h:11,1: Macro definition for employee_initMod is empty (not
+<                     syntactically equivalent to a statement)
+<   A macro is defined in a way that may cause syntactic problems.  If the macro
+<   returns a value, use commas to separate expressions;
+<    otherwise, use do { <macro body> } while (0) construct.  Use -macrostmt to
+<   suppress message.
+32,35c22,25
+<   unexpected results since all non-zero values are considered TRUE, so
+<   different TRUE values may not be equal.  The file bool.h (included in
+<   lclint/lib) provides bool_equal for safe bool comparisons.  Use -boolcompare
+<   to suppress message.
+---
+>   unexpected results since all non-zero values are considered TRUE, so different
+>   TRUE values may not be equal.  The file bool.h (included in lclint/lib)
+>   provides bool_equal for safe bool comparisons.  Use -boolcompare to suppress
+>   message.
+43,46c33,35
+<   A macro parameter is used without parentheses.  This could be dangerous if
+<   the macro is invoked with a complex expression and precedence rules will
+<   change the evaluation inside the macro.  Use -macroparens to suppress
+<   message.
+---
+>   A macro parameter is used without parentheses.  This could be dangerous if the
+>   macro is invoked with a complex expression and precedence rules will change
+>   the evaluation inside the macro.  Use -macroparens to suppress message.
+71a61,66
+> erc.c: (in function erc_iterStart)
+> erc.c:117,13: Argument to exit has implementation defined behavior: 1
+> erc.c: (in function erc_yield)
+> erc.c:131,7: Unreachable code: free(it)
+>   This code will never be reached on any possible execution.  Use -unreachable
+>   to suppress message.
+73c68
+< erc.c:127,13: Argument to exit has implementation defined behavior: 1
+---
+> erc.c:158,13: Argument to exit has implementation defined behavior: 1
+75c70
+< erc.h:14,26: Macro parameter used without parentheses: c
+---
+> erc.h:15,26: Macro parameter used without parentheses: c
+77c72
+< erc.h:15,36: Statement has no effect: employee_initMod()
+---
+> erc.h:16,36: Statement has no effect: employee_initMod()
+108,110c103,105
+<   A function parameter is not used in the body of the function.  If the
+<   argument is needed for type compatibility or future plans, use /*@unused@*/
+<   in the argument declaration.  Use -paramuse to suppress message.
+---
+>   A function parameter is not used in the body of the function.  If the argument
+>   is needed for type compatibility or future plans, use /*@unused@*/ in the
+>   argument declaration.  Use -paramuse to suppress message.
+115,117c110,111
+< Finished LCLint checking --- 44 code errors found
+< 387 spec, 2853 source (1196 before pre-processing) lines in 6.27 s.
+< gmake[1]: Leaving directory `/u/evs/lclint/web/sample/standardchecks'
+---
+> Finished LCLint checking --- 45 code errors found
+> 415 spec, 2939 source (1236 before pre-processing) lines in 7.02 s.

@@ -1,0 +1,93 @@
+<h3>lclint-interest message 126</h3>
+<pre>
+From espie@clipper.ens.fr Fri Dec 20 13:08:31 1996
+From: espie@clipper.ens.fr (Marc Espie)
+Subject: Re: FILE object resource leaks
+To: tgm@netcom.com (Thomas G. McWilliams)
+Date: Fri, 20 Dec 1996 14:06:28 +0100 (MET)
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: <199612200851.DAA20612@netcom4.netcom.com> from "Thomas G. McWilliams" at Dec 20, 96 03:51:17 am
+X-Remark: from the ENS, use finger espie@lotus.ens.fr to know if I'm here.
+Organisation: None
+X-Mailer: ELM [version 2.4 PL24 ME8a]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+En reponse a Thomas G. McWilliams:
+> 
+> 
+> LCLINT AND THE C LIBRARY STREAM I/O INTERFACE.
+> 
+> How should LCLint deal with file handles allocated by the standard C
+> library stream i/o functions? What is the the proper way to annotate
+> pointers to FILE?. How can LCLint be used to detect resource leaks
+> in FILE objects?
+> 
+> The problem is that stream pointers are similar to pointers returned
+> by malloc functions. The main difference is that FILE handles are
+> abstract. The implementation of FILE objects is hidden from us.
+> However, like malloced pointers, they must be properly deallocated
+> through the proper function calls (usually fclose()). If we fail to
+> properly deallocate FILE handles we will create system memory leaks and
+> we could actually run out of file handles (they are usually a finite
+> system resource).
+> 
+> As things presently stand with LCLint, annotating FILE pointers, fopen(),
+> and fclose() with /*@only@*/ provides the best way for detecting these
+> sorts of FILE handle leaks. However, this has the danger of allowing
+> the error of passing a FILE pointer to free().  Such an error would go
+> undetected by this scheme.
+> 
+> Perhaps LCLint needs a way to register abstract allocator/deallocator
+> functions.  Consider an abstract object FOO. Suppose the only way to
+> create a FOO object is through open_foo(). Now suppose that in order to
+> release resources owned by a FOO object, it must be passed to close_foo().
+> It would be useful if there were a way for LCLint to check this at the
+> interface level. The standard C stream i/o library is a good example
+> of how LCLint as presently implemented can not properly detect certain
+> resource leaks.
+ 
+I had a very similar problem (but hairier) that I reported to David.
+I still haven't seen any comment about it.
+
+The base problem is mixing abstract types with null pointers. What fails
+is that `abstract types' is a well-defined version, whereas null-checking
+is ad-hoc linting, and they don't mix well.
+
+Briefly, try to define a type with a distinguished value used to denote 
+errors. Then implement it. A reasonable implementation may use pointers, with
+the NULL pointer to denote that value.
+Since this is an abstract type, we want to name that NULL as a constant of
+the required abstract type, and test against it.
+
+Then try to get the abstract type working, considering it should NOT have
+any annotations concerning the NULL pointer, then the implementation,
+concerning it DOES need annotations concerning the NULL pointer.
+
+IMHO, lclint is missing an `abstract NULL pointer' (well, distinguished 
+value), with the corresponding mechanisms to handle it, a generalized 
+version of the /*@null@*/ et al annotations.
+
+-- 
+microsoft network is EXPLICITLY forbidden to redistribute this message.
+`Seiza no matataki kazoe, uranau koi no yuku e.'
+	Marc Espie (Marc.Espie@ens.fr)
+
+
+</pre>
+<A HREF="125.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="127.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<A NAME="line39"></A><html><head>
+<title>empset.lcl</title>
+</head><body>
+<h3>empset.lcl</h3>
+<PRE>
+<A NAME="line1"></A>imports <A HREF="employee.lcl.html">employee</A>;
+<A NAME="line2"></A>mutable type empset;
+<A NAME="line3"></A>uses Set(employee, empset),
+<A NAME="line4"></A>     sprint(empset, char[]);
+<A NAME="line5"></A> 
+<A NAME="line6"></A>empset empset_create(void) {
+<A NAME="line7"></A>   ensures fresh(result) /\ result' = { };
+<A NAME="line8"></A>   }
+<A NAME="line9"></A>void empset_final(empset s) {
+<A NAME="line10"></A>   modifies s;
+<A NAME="line11"></A>   ensures trashed(s);
+<A NAME="line12"></A>   }
+<A NAME="line13"></A>void empset_clear(empset s) {
+<A NAME="line14"></A>   modifies s;
+<A NAME="line15"></A>   ensures s' = { };
+<A NAME="line16"></A>   }
+<A NAME="line17"></A>bool empset_insert(empset s, employee e) {
+<A NAME="line18"></A>   modifies s;
+<A NAME="line19"></A>   ensures result = ~(e \in s^) /\ s' = insert(e, s^);
+<A NAME="line20"></A>   }
+<A NAME="line21"></A>void empset_insertUnique(empset s, employee e) {
+<A NAME="line22"></A>   requires ~(e \in s^);
+<A NAME="line23"></A>   modifies s;
+<A NAME="line24"></A>   ensures s' = insert(e, s^);
+<A NAME="line25"></A>   }
+<A NAME="line26"></A>bool empset_delete(empset s, employee e) {
+<A NAME="line27"></A>   modifies s;
+<A NAME="line28"></A>   ensures result = e \in s^ /\ s' = delete(e, s^);
+<A NAME="line29"></A>   }
+<A NAME="line30"></A>empset empset_union(empset s1, empset s2) {
+<A NAME="line31"></A>   ensures result' = s1^ \U s2^ /\ fresh(result);
+<A NAME="line32"></A>   }
+<A NAME="line33"></A>empset empset_disjointUnion(empset s1, empset s2) {
+<A NAME="line34"></A>   requires s1^ \I s2^ = { };
+<A NAME="line35"></A>   ensures result' = s1^ \U s2^ /\ fresh(result);
+<A NAME="line36"></A>   }
+<A NAME="line37"></A>void empset_intersect(empset s1, empset s2) {
+<A NAME="line38"></A>   modifies s1;
+<A NAME="line39"></A>   ensures s1' = s1^ \I s2^;
+<A NAME="line40"></A>   }
+<A NAME="line41"></A>int empset_size(empset s) {
+<A NAME="line42"></A>   ensures result = size(s^);
+<A NAME="line43"></A>   }
+<A NAME="line44"></A>bool empset_member(employee e, empset s) {
+<A NAME="line45"></A>   ensures result = e \in s^;
+<A NAME="line46"></A>   }
+<A NAME="line47"></A>bool empset_subset(empset s1, empset s2) {
+<A NAME="line48"></A>   ensures result = s1^ \subseteq s2^;
+<A NAME="line49"></A>   }
+<A NAME="line50"></A>employee empset_choose(empset s) {
+<A NAME="line51"></A>   requires s^ \neq { };
+<A NAME="line52"></A>   ensures result \in s^;
+<A NAME="line53"></A>   }
+<A NAME="line54"></A>char *empset_sprint(empset s) {
+<A NAME="line55"></A>    ensures isSprint(result[]', s^) /\ fresh(result[]);
+<A NAME="line56"></A>    }
+<A NAME="line57"></A>void empset_initMod(void) {
+<A NAME="line58"></A>    ensures true;
+<A NAME="line59"></A>    }
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

@@ -1,0 +1,52 @@
+<h3>lclint-interest message 148</h3>
+<pre>
+From evans@cs.virginia.edu Wed Sep 10 12:45:19 1997
+Date: Wed, 10 Sep 97 10:52:38 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: kir@iitb.fhg.de
+In-Reply-To: Harald Kirsch's message of Wed, 10 Sep 1997 11:50:36 +0200 <199709100950.LAA27492@bsilx1.iitb.fhg.de>
+Subject: proper annotation of arrays
+
+
+The problem is that lclint cannot deep structures well enough to analyze
+arrays of pointers correctly.  There are a couple possible ways to prevent
+the warning in this case, although none is really satisfactory.  
+
+The simplest thing to do is to put loopexec around the first loop:
+	
+	/*@+loopexec@*/
+	for(i=0; i<N; i++) {
+	  lines[i] = malloc(100);
+	}
+	/*@=loopexec@*/
+
+loopexec means lclint assumes a loop body executes at least once.
+
+Note however that the analysis for pointer arrays like this is
+embassassingly weak.  For example, if the allocation loop were replaced
+by lines[0] = malloc(100), LCLint would not detect an error for the
+deallocation loop.  The problem is lclint cannot identify arbitrary
+elements of an array, unless they are selected using literals (e.g.,
+lclint would detect an error for lines[0] = malloc(100);
+free(lines[1])).
+
+--- Dave
+
+
+</pre>
+<A HREF="147.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="149.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

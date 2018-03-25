@@ -1,0 +1,107 @@
+<A NAME="line49"></A><html><head>
+<title>bool.h</title>
+</head><body>
+<h3>bool.h</h3>
+<PRE>
+<A NAME="line1"></A>#ifndef BOOL_H
+<A NAME="line2"></A>#define BOOL_H
+<A NAME="line3"></A> 
+<A NAME="line4"></A>#ifndef FALSE
+<A NAME="line5"></A>#define FALSE 0
+<A NAME="line6"></A>#endif
+<A NAME="line7"></A> 
+<A NAME="line8"></A>#ifndef TRUE
+<A NAME="line9"></A>#define TRUE (!FALSE)
+<A NAME="line10"></A>#endif
+<A NAME="line11"></A> 
+<A NAME="line12"></A>typedef int bool;
+<A NAME="line13"></A> 
+<A NAME="line14"></A>/*
+<A NAME="line15"></A>** bool_initMod has no real effect
+<A NAME="line16"></A>** Declared with modifies internalState, so no noeffect errors are 
+<A NAME="line17"></A>** reported when it is called.)
+<A NAME="line18"></A>*/
+<A NAME="line19"></A> 
+<A NAME="line20"></A>extern /*@unused@*/ void bool_initMod (void) /*@modifies internalState@*/ ;
+<A NAME="line21"></A>/*@-mustmod@*/
+<A NAME="line22"></A># define bool_initMod()
+<A NAME="line23"></A>/*@=mustmod@*/
+<A NAME="line24"></A> 
+<A NAME="line25"></A>extern /*@unused@*/ /*@observer@*/ char *bool_unparse (bool b) /*@*/ ;
+<A NAME="line26"></A># define bool_unparse(b) ((b) ? "true" : "false" )
+<A NAME="line27"></A> 
+<A NAME="line28"></A>extern /*@unused@*/ bool bool_not (bool b) /*@*/ ;
+<A NAME="line29"></A># define bool_not(b) ((b) ? FALSE : TRUE)
+<A NAME="line30"></A> 
+<A NAME="line31"></A>extern /*@unused@*/ bool bool_equal (bool b1, bool b2) /*@*/ ;
+<A NAME="line32"></A># define bool_equal(a,b) ((a) ? (b) : !(b))
+<A NAME="line33"></A> 
+<A NAME="line34"></A># endif
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

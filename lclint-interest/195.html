@@ -1,0 +1,84 @@
+<h3>lclint-interest message 195</h3>
+<pre>
+From 100566.1506@csi.com Wed Feb 25 12:24:02 1998
+X-Authentication-Warning: opto4l.default.com: 100566.1506 owned process doing -bs
+Date: Tue, 24 Feb 1998 15:01:03 +0100 (CET)
+From: Hermann Kleier <100566.1506@csi.com>
+X-Sender: 100566.1506@opto4l.default.com
+Reply-To: Hermann Kleier <100566.1506@csi.com>
+To: David Evans <evans@cs.virginia.edu>
+Cc: Hermann Kleier <HermannK@compuserve.com>,
+        lclint-interest <lclint-interest@larch.lcs.mit.edu>,
+        Hermann Kleier <weco@csi.com>
+Subject: re: signal function interface
+In-Reply-To: <9802212331.AA10981@larch.lcs.mit.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Dave,
+
+On Sat, 21 Feb 1998, David Evans wrote:
+
+  1 > typedef int func1 (int);
+  2 > typedef int (*func2) (int);
+  3 > 
+  4 > int tf (int (p1)(int), int (*p2) (int), func1, func1 *, func2);
+  5 > 
+  6 > int f1 (int);
+  7 > 
+  8 > int f (void)
+  9 > {
+ 10 >   func1 fa;
+ 11 >   func2 fb;
+ 12 >   func1 *fap;
+ 13 > 
+ 14 >   fa (2);
+ 15 >   fb (3);
+ 16 >   fap (3);
+ 17 > 
+ 18 >   return tf (f1, f1, f1, f1, f1);
+ 19 > }
+
+Why not? I dislike the C-standard which makes no difference between VARIABLES 
+OF THE TYPES `func1' `func1 *', and `func2'.  This applies to the variables
+`fa', `fb', and `fap' as well as for the parameters in the function prototype of
+`tf'.  This makes it even possible to rewrite line 14 as `(*fa) (2);'.
+
+IMHO compilers must compile the code.  I feel that the message of LcLint 2.3i
+
+>   h.c:16,3: Call to non-function (type func1 *): fap
+>      Types are incompatible. (-type will suppress message)
+
+is pedantic (and misleading), but I feel that rewriting line 16 to read
+
+  (*fap) (3);
+
+improves the readability.  The message should read `Implicit function
+pointer conversion supplied'.  LcLint should report the same problem on line 15
+too.
+
+In contradiction to LcLint, Flexelint 7.5 did not report that `fa' in line 13
+has not been initialized. I feel that `fa' is an undefined variable there and
+NOT an external function.  Is this a bug in FlexeLint?
+
+Hermann
+
+
+
+
+</pre>
+<A HREF="194.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="196.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

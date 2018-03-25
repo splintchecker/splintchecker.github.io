@@ -1,0 +1,215 @@
+<html><head>
+<title>FixFgets.c</title>
+</head>
+
+<body>
+<PRE><CODE>
+/*1*/	#include "stddef.h"
+/*2*/	#include "stdlib.h"
+/*3*/	#include "stdio.h"
+/*4*/	#include "assert.h"
+/*5*/	
+/*6*/	#define MAX_LENGTH 20
+/*7*/	
+/*8*/	
+/*9*/	/*!Begin Typedefs!*/
+/*10*/	typedef struct emp_rec
+/*11*/	{
+/*12*/	  char LastName[MAX_LENGTH];
+/*13*/	  char FirstName[MAX_LENGTH];
+/*14*/	  double Salary;
+/*15*/	  struct emp_rec *next;
+/*16*/	}  emp_record;
+/*17*/	
+/*18*/	
+/*19*/	typedef emp_record *emp_list;
+/*20*/	/*!End Typedefs!*/
+/*21*/	
+/*22*/	
+/*23*/	
+/*24*/	/*!Begin copy_record!*/
+/*25*/	void copy_record(/*@out@*/ emp_record *a, emp_record *b)
+/*26*/	{
+/*27*/	  strncpy(a->LastName, b->LastName, MAX_LENGTH);
+/*28*/	  strncpy(a->FirstName, b->FirstName, MAX_LENGTH);
+/*29*/	  a->Salary = b->Salary;
+/*30*/	  a->next = b->next;
+/*31*/	}
+/*32*/	/*!End copy_record!*/
+/*33*/	
+/*34*/	
+/*35*/	void print_record(emp_record *e)
+/*36*/	{
+/*37*/	  printf("Last Name: %s\n", e->LastName);
+/*38*/	  printf("First Name: %s\n", e->FirstName);
+/*39*/	  printf("Salary: %.2f\n", e->Salary);
+/*40*/	}
+/*41*/	  
+/*42*/	
+/*43*/	/*!Begin emp_list_create!*/
+/*44*/	/*@null@*/ emp_list emp_list_create()
+/*45*/	{
+/*46*/	  return NULL;
+/*47*/	}
+/*48*/	/*!End emp_list_create!*/
+/*49*/	
+/*50*/	/*!Begin insert_record!*/
+/*51*/	emp_list insert_record(emp_list lst, emp_record *e)
+/*52*/	{
+/*53*/	  emp_record *new_record;
+/*54*/	  emp_record *curr = lst;
+/*55*/	  emp_record *prev = NULL;
+/*56*/	
+/*57*/	  for(; curr != NULL; prev=curr, curr=curr->next)
+/*58*/	    {
+/*59*/	      if (strcmp(e->LastName, curr->LastName) <= 0)
+/*60*/		break;
+/*61*/	    }
+/*62*/	  new_record = malloc(sizeof(*new_record));
+/*63*/	  assert(new_record != NULL);  
+/*64*/	  copy_record(new_record, e); 
+/*65*/	  new_record->next = curr; 
+/*66*/	  if (prev == NULL)  /* inserting at the beginning */
+/*67*/	      lst = new_record;
+/*68*/	  else               /* inserting at the middle or end*/
+/*69*/	    prev->next = new_record;
+/*70*/	  return lst;
+/*71*/	}
+/*72*/	/*!End insert_record!*/
+/*73*/	
+/*74*/	emp_list delete_record(emp_list lst, char* lastname)
+/*75*/	{
+/*76*/	 
+/*77*/	  emp_record *curr = lst;
+/*78*/	  emp_record *prev = NULL;
+/*79*/	
+/*80*/	  for(; curr != NULL; prev=curr, curr=curr->next)
+/*81*/	    {
+/*82*/	      if (strcmp(curr->LastName, lastname) == 0)
+/*83*/		break;
+/*84*/	    }
+/*85*/	
+/*86*/	  if (curr == NULL)
+/*87*/	    {
+/*88*/	      printf("delete_record: Employee named %s not found\n", lastname);
+/*89*/	      return lst;
+/*90*/	    }
+/*91*/	
+/*92*/	  if (prev == NULL) 
+/*93*/	      lst = lst->next;   
+/*94*/	  else
+/*95*/	      prev->next = prev->next->next;
+/*96*/	  free(curr);
+/*97*/	  return lst;
+/*98*/	}    
+/*99*/	  
+/*100*/	
+/*101*/	
+/*102*/	emp_record* find_record(emp_list lst, char* lastname)
+/*103*/	{
+/*104*/	  
+/*105*/	  emp_record *curr = lst;
+/*106*/	  emp_record *prev = NULL;
+/*107*/	
+/*108*/	  for(; curr != NULL; prev=curr, curr=curr->next)
+/*109*/	    {
+/*110*/	      if (strcmp(curr->LastName, lastname) == 0)
+/*111*/		return curr;
+/*112*/	    }
+/*113*/	  
+/*114*/	  printf("find_record: Employee named %s not found\n", lastname);
+/*115*/	  return NULL;  
+/*116*/	}
+/*117*/	
+/*118*/	
+/*119*/	void print_list(emp_list lst)
+/*120*/	{
+/*121*/	  
+/*122*/	  emp_record *curr = lst;
+/*123*/	  emp_record *prev = NULL;
+/*124*/	
+/*125*/	  for(; curr != NULL; prev=curr, curr=curr->next)
+/*126*/	    {    
+/*127*/	      print_record(curr); 
+/*128*/	      printf("\n");
+/*129*/	    }
+/*130*/	}
+/*131*/	
+/*132*/	
+/*133*/	/*!Begin test_bench!*/
+/*134*/	emp_list add_employees(emp_list lst);
+/*135*/	
+/*136*/	int main()
+/*137*/	{
+/*138*/	  emp_record *zim = malloc(sizeof(*zim));
+/*139*/	  emp_list test_list = emp_list_create();
+/*140*/	  assert(zim != NULL);
+/*141*/	
+/*142*/	  printf("Adding employees...\n\n"); 
+/*143*/	  test_list = add_employees(test_list);
+/*144*/	  printf("Employee list:\n");
+/*145*/	  print_list(test_list);  
+/*146*/	
+/*147*/	  printf("Removing from the middle...\n\n");
+/*148*/	  test_list = delete_record(test_list, "Hatton");
+/*149*/	  printf("Employee list:\n");
+/*150*/	  print_list(test_list);
+/*151*/	
+/*152*/	  printf("Removing the first...\n\n");
+/*153*/	  test_list = delete_record(test_list, "Bodycombe");
+/*154*/	  printf("Employee list:\n");
+/*155*/	  print_list(test_list);
+/*156*/	
+/*157*/	  printf("Inserting an employee at the end...\n\n");
+/*158*/	  strncpy(zim->LastName,"Zimmerman", MAX_LENGTH);
+/*159*/	  strncpy(zim->FirstName, "Phillip", MAX_LENGTH);
+/*160*/	  zim->Salary = 8000.50;
+/*161*/	  zim->next = NULL;
+/*162*/	  test_list = insert_record(test_list, zim);
+/*163*/	  printf("Employee list:\n");
+/*164*/	  print_list(test_list);
+/*165*/	  
+/*166*/	  printf("Finding salary of employee Smullyan...\n\n");
+/*167*/	  free(zim);
+/*168*/	  zim = find_record(test_list, "Smullyan");
+/*169*/	  printf("Salary of Smullyan is: %.2f\n", zim->Salary);
+/*170*/	
+/*171*/	
+/*172*/	  printf("Revmoing the last employee(Zimmerman)...\n\n");
+/*173*/	  test_list = delete_record(test_list, "Zimmerman");
+/*174*/	  printf("Employee list:\n");
+/*175*/	  print_list(test_list);
+/*176*/	  
+/*177*/	
+/*178*/	  return 0;
+/*179*/	
+/*180*/	}
+/*181*/	
+/*182*/	
+/*183*/	emp_list add_employees(emp_list lst)
+/*184*/	{
+/*185*/	  emp_record *e = malloc(sizeof(*e));
+/*186*/	
+/*187*/	  FILE *fp = fopen("emp_data.txt", "r");
+/*188*/	  char ln[MAX_LENGTH];
+/*189*/	  char fn[MAX_LENGTH];
+/*190*/	  float sal;
+/*191*/	
+/*192*/	  char Line[3*MAX_LENGTH];
+/*193*/	  assert (e != NULL);
+/*194*/	  assert (fp != NULL);
+/*195*/	  while(fgets(Line, 3*MAX_LENGTH+1, fp))
+/*196*/	    {
+/*197*/	      sscanf(Line, "%s%s%f", ln, fn, &sal);  
+/*198*/	      strncpy(e->LastName, ln, MAX_LENGTH);
+/*199*/	      strncpy(e->FirstName, fn, MAX_LENGTH);
+/*200*/	      e->Salary=sal;
+/*201*/	      lst = insert_record(lst, e);
+/*202*/	    }
+/*203*/	  return lst;
+/*204*/	}
+/*205*/	/*!End test_bench!*/
+/*206*/	
+/*207*/	
+</PRE></CODE>
+</body></html>

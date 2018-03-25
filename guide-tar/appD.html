@@ -1,0 +1,246 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="lclint-guide.css" title="style1">
+<title>LCLint User's Guide - Appendix D: Annotations</title>
+</head>
+<body>
+#include "header.html"
+
+<a name="app-D">
+<h2>Appendix D  Annotations</h2></a></a><p>
+The
+grammar below is the C syntax from [<a href="references.html#ref-KR88">K&amp;R</a>,A13] modified to show
+the syntax of syntactic comments.  Only productions effected by LCLint
+annotations are shown.  In the annotations, the <tt>@</tt> represents the comment marker
+char, set by <tt>-commentchar</tt> (default is <tt>@</tt>).
+<a name="_Toc349905954"><p>
+<b><i>Functions</a></i></b><p>
+<b><i></i></b><i>direct-declarator:</i><p>
+<pre>
+	  direct-declarator (parameter-type-list_opt) globals_opt modifies_opt
+	| direct-declarator (identifier-list_opt) globals_opt modifies_opt
+</pre>
+<i></i><p>
+<i>globals</i><i>: </i>(<a href="sec4.html#sec-4.2">Section
+4.2</a>)<i></i><p>
+<pre>
+	  /&#42;@globals globitem,+ ;_opt @*/
+	| /&#42;@globals declaration-list_opt ;_opt @*/
+</pre>
+<i>globitem: </i><p>
+<pre>
+	   globannot* identifier
+        |  internalState
+	|  systemState
+</pre>
+<i></i><p>
+<i>globannot: </i><tt>undef | killed</tt><p>
+<i></i><p>
+<i>modifies: </i>(<a href="sec4.html#sec-4.1">Section 4.1</a>)<i></i><p>
+<pre>
+           /&#42;@modifies moditem,+;_opt @*/	
+         | /&#42;@modifies nothing ;_opt @*/
+         | /&#42;@*/  (Abbreviation for no globals and modifies nothing.)
+</pre>
+<i></i><p>
+<i>moditem: </i><p>
+<pre>
+	   expression	
+         | internalState
+         | systemState
+</pre>
+<a name="_Toc349905955"><p>
+<b><i>Iterators </i></b>(<a href="sec8.html#sec-8.4">Section 8.4</a></a>)<b><i></i></b><p>
+<b><i></i></b>The globals and modifies clauses for an iterator are the same as
+those for a function, except they are not enclosed by a comment, since the
+iterator is already a comment.<i></i><p>
+<i>direct-declarator: </i><p>
+<pre>
+       /&#42;@iter identifier (parameter-type-list_opt) globals_opt
+modifies_opt @*/
+</pre>
+<a name="_Toc349905956"><p>
+<b><i>Constants </i></b>(<a href="sec8.html#sec-8.1">Section 8.1</a></a>)<b><i></i></b><p>
+<b><i></i></b><i>external-declaration:</i><p>
+<pre>
+       /&#42;@constant declaration ;_opt @*/
+</pre>
+<a name="_Ref344807420"><a name="_Toc349905957"></i><p>
+<i><b>Alternate Types</a> </b></i>(<a href="sec8.html#sec-8.2.2">Section 8.2.2</a></a>)<i></i><p>
+<i></i>Alternate types may be used in the type specification of parameters and
+return values.<p>
+<i>extended-type</i><i>: </i><p>
+<pre>
+        type-specifier alt-type_opt
+</pre>
+<i></i><p>
+<i>alt-type</i><i>: </i><p>
+<pre>
+        /&#42;@alt basic-type,+ @*/
+</pre>
+<a name="_Toc349905958"><p>
+<b><i>Declarator Annotations</a></i></b><p>
+<b><i></i></b>General annotations appear after <i>storage-class-specifier</i>s
+and before <i>type</i><i>-specifier</i>s.  Multiple annotations may be used in
+any order.  Here, annotations are without the surrounding comment.  In a
+declaration, the annotation would be surrounded by <tt>/&#42;@</tt> and
+<tt>@*/</tt>.  In a globals or modifies clause or iterator or constant
+declaration, no surrounding comment would be used since they are within
+a comment.
+<p>
+<b>Type Definitions  </b>(<a href="sec3.html">Section 3</a>)<b></b><p>
+<b></b>A type definition may use any either abstract or concrete, either
+mutable or immutable, and refcounted.  Only a pointer to a struct may be
+declared with refcounted.  Mutability annotations may not be used with concrete
+types since concrete types inherit their mutability from the actual type.<p>
+<a name="flag-abstract"><tt>abstract</tt><p>
+Type is abstract (representation is hidden from clients).<p>
+<a name="flag-concrete"><tt>concrete</tt><p>
+Type is concrete (representation is visible to clients).<p>
+<a name="flag-immutable"><tt>immutable</tt><p>
+Instances of the type cannot change value.  (<a href="sec3.html#sec-3.2">Section 3.2</a>)<p>
+<a name="flag-mutable"><tt>mutable</tt><p>
+Instances of the type can change value.  (<a href="sec3.html#sec-3.2">Section 3.2</a>)<p>
+<a name="flag-refcounted"><tt>refcounted</tt><p>
+Reference counted type.  (<a href="sec5.html#sec-5.4">Section 5.4</a>)<p>
+<b>Global Variables  </b>(<a href="sec4.html#sec-4.2.1">Section 4.2.1</a>)<b></b><p>
+<b></b>One check annotation may be used on a global or file-static variable
+declaration.<p>
+<a name="flag-unchecked"><tt>unchecked</tt><p>
+Weakest checking for global use.<p>
+<a name="flag-checkmod"><tt>checkmod</tt><p>
+Check modification by not use of global. <p>
+<a name="flag-checked"><tt>checked</tt><p>
+Check use and modification of global. <p>
+<a name="flag-checkedstrict"><tt>checkedstrict</tt><p>
+Check use of global, even in functions with no global list. <p>
+<b>Memory Management  </b>(<a href="sec5.html">Section 5</a>)<i></i><p>
+<i></i><a name="flag-dependent"><tt>dependent</tt><p>
+A reference to externally-owned storage.  (<a href="sec5.html#sec-5.2.2">Section 5.2.2</a>)<p>
+<a name="flag-keep"><tt>keep</tt><p>
+A parameter that is kept by the called function.  The caller may use the
+storage after the call, but the called function is responsible for making sure
+it is deallocated.  (<a href="sec5.html#sec-5.2.4">Section 5.2.4</a>)<p>
+<a name="flag-killref"><tt>killref</tt><p>
+A refcounted parameter.  This reference is killed by the call. (<a href="sec5.html#sec-5.4">Section 5.4</a>)<p>
+<a name="flag-only"><tt>only</tt><p>
+A unshared reference.  Associated memory must be released before reference is
+lost.  (<a href="sec5.html#sec-5.2">Section 5.2</a>)<p>
+<a name="flag-owned"><tt>owned</tt><p>
+Storage may be shared by dependent references, but associated memory must be
+released before this reference is lost.  (<a href="sec5.html#sec-5.2.2">Section 5.2.2</a>)<p>
+<a name="flag-shared"><tt>shared</tt><p>
+Shared reference that is never deallocated.  (<a href="sec5.html#sec-5.2.5">Section 5.2.5</a>)<p>
+<a name="flag-temp"><tt>temp</tt><p>
+A temporary parameter.  May not be released, and new aliases to it may not be
+created.  (<a href="sec5.html#sec-5.2.2">Section 5.2.2</a>)<p>
+<b>Aliasing  </b>(<a href="sec6.html">Section 6</a>)<b><i></i></b><p>
+<b><i></i></b>Both alias annotations may be used on a parameter
+declaration.<i></i><p>
+<i></i><a name="flag-unique"><tt>unique</tt><p>
+Parameter that may not be aliased by any other reference visible to the
+function. (Section&nbsp;6.1.1)<p>
+<a name="flag-returned"><tt>returned</tt><p>
+Parameter that may be aliased by the return value.  (<a href="sec6.html#sec-6.1.2">Section 6.1.2</a>)<p>
+<b>Exposure  </b>(<a href="sec6.html#sec-6.2">Section 6.2</a>)<b></b><p>
+<b></b><a name="flag-observer"><tt>observer</tt><p>
+Reference that cannot be modified.  (<a href="sec6.html#sec-6.2.1">Section 6.2.1</a>)<p>
+<a name="flag-exposed"><tt>exposed</tt><p>
+Exposed reference to storage in another object. (<a href="sec6.html#sec-6.2.1">Section 6.2.1</a>)<p>
+<b>Definition State  </b>(<a href="sec7.html#sec-7.1">Section 7.1</a>)<p>
+<a name="flag-out"><tt>out</tt><p>
+Storage reachable from reference need not be defined.<p>
+<a name="flag-in"><tt>in</tt><p>
+All storage reachable from reference must be defined.<p>
+<a name="flag-partial"><tt>partial</tt><p>
+Partially defined.  A structure may have undefined fields.  No errors reported
+when fields are used.<p>
+<a name="flag-reldef"><tt>reldef</tt><p>
+Relax definition checking.  No errors when reference is not defined, or when it
+is used.<p>
+<b>Global State  </b>(<a href="sec7.html#sec-7.1.4">Section 7.1.4</a>)<i></i><p>
+<i></i>These annotations may only be used in globals lists.  Both annotations
+may be used for the same variable, to mean the variable is undefined before and
+after the call.<p>
+<p>
+<a name="flag-undef"><tt>undef</tt><p>
+Variable is undefined before the call.<p>
+<a name="flag-killed"><tt>killed</tt><p>
+Variable is undefined after the call.<p>
+<b>Null State  </b>(<a href="sec7.html#sec-7.2">Section 7.2</a>)<i></i><p>
+<i></i><a name="flag-null"><tt>null</tt><p>
+Possibly null pointer.<p>
+notnull	<p>
+Non-null pointer.<p>
+<a name="flag-relnull"><tt>relnull</tt><p>
+Relax null checking.  No errors when NULL is assigned to it, or when it is used
+as a non-null pointer.<p>
+<b>Null Predicates  </b>(<a href="sec7.html#sec-7.2.1">Section 7.2.1</a>)<b></b><p>
+<b></b>A null predicate annotation may be used of the return value of a
+function returning a boolean type, taking a possibly-null pointer for its first
+argument.<p>
+<a name="flag-truenull"><tt>truenull</tt><p>
+If result is TRUE, first parameter is NULL.<p>
+<a name="flag-falsenull"><tt>falsenull</tt><p>
+If result is TRUE, first parameter is not NULL.<p>
+<b>Execution  </b>(<a href="sec7.html#sec-7.3">Section 7.3</a>)<b></b><p>
+<b></b>The <tt>exits</tt>, <tt>mayexit</tt> and <tt>neverexits</tt>
+annotations may be used on any function.  The <tt>trueexit</tt> and
+<tt>falseexit</tt> annotations may only be used on functions whose first
+argument is a boolean.	<p> 
+<tt>exits</tt>		<p>
+Function never returns.<p>
+<tt>mayexit</tt>		<p>
+Function may or may not return.<p>
+<tt>trueexit</tt>	<p>
+Function does not return if first parameter is TRUE.<p>
+<tt>falseexit</tt>	<p>
+Function does not return if first parameter if FALSE.<p>
+<tt>neverexit</tt><p>
+Function always returns.<p>
+<b>Side-Effects  </b>(<a href="sec8.html#sec-8.2.1">Section 8.2.1</a>)<b></b><p>
+<b></b><a name="flag-sef"><tt>sef</tt><p>
+Corresponding actual parameter has no side effects.<p>
+<b>Declaration</b><p>
+<b></b>These annotations can be used on a declaration to control unused or
+undefined error reporting.<i></i><p>
+<i></i><a name="flag-unused"><tt>unused</tt><p>
+Identifier need not be used (no unused errors reported.)  (<a href="sec10.html#sec-10.4">Section 10.4</a>)<p>
+<a name="flag-external"><tt>external</tt><p>
+Identifier is defined externally (no undefined error reported.) (<a href="sec10.html#sec-10.5">Section 10.5</a>)
+<p>
+<b>Case</b><p>
+<b></b><a name="flag-fallthrough"><tt>fallthrough</tt><p>
+Fall-through case.  No message is reported if the previous case may
+fall-through into the one immediately after the fallthrough.<p>
+<b>Break  </b>(<a href="sec10.html#sec-10.2.3">Section 10.2.3</a>)<b></b><p>
+<b></b>These annotations are used before a break or continue statement.<p>
+<a name="flag-innerbreak"><tt>innerbreak</tt><p>
+Break is breaking an inner loop or switch.<p>
+<a name="flag-loopbreak"><tt>loopbreak</tt><p>
+Break is breaking a loop.<p>
+<a name="flag-switchbreak"><tt>switchbreak</tt><p>
+Break is breaking a switch.<p>
+<tt>innercontinue</tt><p>
+<i></i>Continue is continuing an inner loop.<p>
+<b>Unreachable Code</b><p>
+<b></b>This annotation is used before a statement to prevent unreachable code
+errors.<p>
+<a name="flag-notreached"><tt>notreached</tt><p>
+Statement may be unreachable.<p>
+<b>Special Functions </b>(<a href="appE.html">Apppendix E</a>)<p>
+These annotations are used immediately before a function declaration.<p>
+<a name="flag-printflike"><tt>printflike</tt><p>
+Check variable arguments like printf library function.   <p>
+<a name="flag-scanflike"><tt>scanflike</tt><p>
+Check variable arguments like scanf library function.
+<a name="_Ref343065628"><a name="_Ref343091002"><a
+name="_Toc344355453"><a name="_Ref348789839"><a name="_Toc349905959"></a></a></a>
+
+<p>
+<b>Next: <A HREF="appE.html">Appendix E. Control Comments</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+#include "footer.html"
+

@@ -1,0 +1,16 @@
+Splint 3.0.1.4 --- 19 Jan 2002
+
+EqualMistake.c: (in function main)
+EqualMistake.c:17:7: Test expression for if is assignment expression:
+                        AccountValue = 0
+  The condition test is an assignment expression. Probably, you mean to use ==
+  instead of =. If an assignment is intended, add an extra parentheses nesting
+  (e.g., if ((a = b)) ...) to suppress this message. (Use -predassign to
+  inhibit warning)
+EqualMistake.c:17:7: Test expression for if not boolean, type int:
+                        AccountValue = 0
+  Test expression type is not boolean or int. (Use -predboolint to inhibit
+  warning)
+
+Finished checking --- 2 code warnings
+27 source lines in 0.01 s.

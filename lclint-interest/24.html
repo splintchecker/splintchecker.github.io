@@ -1,0 +1,83 @@
+<h3>lclint-interest message 24</h3>
+<pre>
+Date: 14 Nov 94 16:38:00 EST
+From: "JR (John Rogers)" <72634.2402@compuserve.com>
+To: LCLint interest list <lclint-interest@larch.lcs.mit.edu>
+Subject: Re: /*NOTREACHED*/ vs. /*@ -unreachable */ ?
+
+Hi Dave!  I'm afraid I didn't make the effect of /*NOTREACHED*/
+clear.  It doesn't turn off a check; it flags code which may affect
+other checks.  Ian Darwin's book ("Checking C Programs with lint")
+has a good 2-page explanation of this.  UNIX lint does not know about
+exit() and other functions which never return.
+
+Here's an updated version of your sample:
+
+extern int something;
+
+int f()
+{
+   if (something)
+      exit(3);
+   else
+      return (2);
+}
+/* UNIX lint will say something like "found return(expr); and return;" */
+
+Since f() is declared as returning int, UNIX lint will attempt to
+detect whether or not all paths through the code actually return an
+int value.  Since UNIX lint doesn't know that exit() never returns, it
+thinks there is a path in f() might return without returning a value.
+(That's the path where 'something' is true.)
+
+int f()
+{
+   if (something) {
+      exit(3);
+      /* NOTREACHED */
+   }
+   else
+      return (2);
+}
+/* UNIX lint should not complain about anything here */
+
+The /*NOTREACHED*/ comment advises lint that the previous function call
+(in this case, exit()) never returns.  Therefore, the rest of this code
+path (presumably up to the next brace?) will not execute.  Therefore, it
+need not complain that f() may return without returning a value.
+
+PC-lint supports the /*NOTREACHED*/ comment for this reason.  PC-lint
+knows about exit() not returning.  PC-lint also supports "function
+mimicry", where just one "declaration" of a routine can be done.  For
+instance:
+
+In myheader.h:
+
+   void MyDieRoutine( void );
+   /*lint -function(exit,MyDieRoutine) */
+
+Using this with PC-lint avoids having to flag every call to MyDieRoutine()
+as /*NOTREACHED*/.
+
+Anyway, to re-ask the question:  Does LCLint provide a way to handle
+this situation at the point of call to a function which never returns?
+How about when declaring a function which never returns?
+
+Hope this helps...
+--JR,
+</pre>
+<A HREF="23.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="25.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

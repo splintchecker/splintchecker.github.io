@@ -1,0 +1,1423 @@
+Plain Differences between current directory and original
+1c1
+< #if !defined(BOOL_H)
+---
+> #ifndef BOOL_H
+2a3,4
+> 
+> #ifndef FALSE
+3a6,8
+> #endif
+> 
+> #ifndef TRUE
+4a10,11
+> #endif
+> 
+5a13,21
+> 
+> /*
+> ** bool_initMod has no real effect
+> ** Declared with modifies internalState, so no noeffect errors are 
+> ** reported when it is called.)
+> */
+> 
+> extern /*@unused@*/ void bool_initMod (void) /*@modifies internalState@*/ ;
+> /*@-mustmod@*/
+6a23,33
+> /*@=mustmod@*/
+> 
+> extern /*@unused@*/ /*@observer@*/ char *bool_unparse (bool b) /*@*/ ;
+> # define bool_unparse(b) ((b) ? "true" : "false" )
+> 
+> extern /*@unused@*/ bool bool_not (bool b) /*@*/ ;
+> # define bool_not(b) ((b) ? FALSE : TRUE)
+> 
+> extern /*@unused@*/ bool bool_equal (bool b1, bool b2) /*@*/ ;
+> # define bool_equal(a,b) ((a) ? (b) : !(b))
+> 
+8c8,11
+< typedef enum {mMGRS, fMGRS, mNON, fNON} employeeKinds;
+---
+> typedef enum
+> {
+>   mMGRS, fMGRS, mNON, fNON
+> } employeeKinds;
+14c17,18
+< void db_initMod(void) {
+---
+> void db_initMod (void)
+> {
+16c20,25
+<   if (initDone) return;
+---
+>   
+>   if (initDone)
+>     {
+>       return;
+>     }
+>   
+21a31
+>   
+22a33
+>     {
+23a35,36
+>     }
+>   
+27c40,41
+< eref _db_ercKeyGet(erc c, int key) {
+---
+> eref _db_ercKeyGet (erc c, int key) 
+> {
+29a44
+>   
+31c46,52
+<      if (eref_get(er).ssNum == key) erc_iterReturn(it, er);
+---
+>     {
+>       if (eref_get (er).ssNum == key)
+>         {
+>           erc_iterReturn (it, er);
+>         }
+>     }
+>   
+35,36c56,57
+< 
+< eref _db_keyGet(int key) {
+---
+> eref _db_keyGet (int key)
+> {
+39c60,62
+<   for (i = firstERC; i <= lastERC; i++) {
+---
+>   
+>   for (i = firstERC; i <= lastERC; i++)
+>     {
+41c64,66
+<      if (!eref_equal(er, erefNIL)) return er;
+---
+>       if (!eref_equal (er, erefNIL))
+>         {
+>           return er;
+42a68,69
+>     }
+>   
+46c73,74
+< int _db_addEmpls(erc c, int l, int h, empset s) {
+---
+> int _db_addEmpls (erc c, int l, int h, empset s)
+> {
+52c80,82
+<   for_ercElems (er, it, c) {
+---
+>   
+>   for_ercElems (er, it, c)
+>     {
+54c84,85
+<     if ((e.salary >= l) && (e.salary <= h)) {
+---
+>       if ((e.salary >= l) && (e.salary <= h))
+>         {
+58a90
+>   
+62,65c94,104
+< db_status hire(employee e) {
+<   if (e.gen == gender_ANY) return genderERR;
+<   if (e.j == job_ANY) return jobERR;
+<   if (e.salary < 0) return salERR;
+---
+> db_status hire (employee e)
+> {
+>   if (e.gen == gender_ANY)
+>     return genderERR;
+> 
+>   if (e.j == job_ANY)
+>     return jobERR;
+> 
+>   if (e.salary < 0)
+>     return salERR;
+> 
+67a107
+> 
+72c112,113
+< void uncheckedHire(employee e) {
+---
+> void uncheckedHire (employee e)
+> {
+73a115
+>   
+75a118
+>   
+79,80c122,125
+<        else erc_insert(db[mNON], er);
+<     else if (e.j == MGR)
+---
+>     else
+>       erc_insert (db[mNON], er);
+>   else
+>     if (e.j == MGR)
+82c127,128
+<        else erc_insert(db[fNON], er);
+---
+>     else
+>       erc_insert (db[fNON], er);
+85c131,132
+< bool fire(int ssNum) {
+---
+> bool fire (int ssNum)
+> {
+88a136
+>   
+91c139,140
+<       if (eref_get(er).ssNum == ssNum) {
+---
+>       if (eref_get (er).ssNum == ssNum)
+>         {
+95a145
+>   
+99c149,150
+< bool promote(int ssNum) {
+---
+> bool promote (int ssNum)
+> {
+102a154
+>   
+105c157,159
+<   if (eref_equal(er, erefNIL)) {
+---
+>   
+>   if (eref_equal (er, erefNIL))
+>     {
+107c161,162
+<     if (eref_equal(er, erefNIL)) return FALSE;
+---
+>       if (eref_equal (er, erefNIL))
+>         return FALSE;
+109a165
+>   
+113c169,171
+<   if (g == MALE) {
+---
+>   
+>   if (g == MALE)
+>     {
+117c175,176
+<   else {
+---
+>   else
+>     {
+120a180
+>   
+124c184,185
+< db_status setSalary(int ssNum, int sal) {
+---
+> db_status setSalary (int ssNum, int sal)
+> {
+127c188,193
+<   if (sal < 0) return salERR;
+---
+>   
+>   if (sal < 0)
+>     {
+>       return salERR;
+>     }
+> 
+129c195,200
+<   if (eref_equal(er, erefNIL)) return missERR;
+---
+> 
+>   if (eref_equal (er, erefNIL))
+>     {
+>       return missERR;
+>     }
+> 
+132a204
+> 
+136c208,209
+< int query(db_q q, empset s) {
+---
+> int query (db_q q, empset s)
+> {
+141a215
+> 
+144c218,220
+<   switch(q.g) {
+---
+> 
+>   switch (q.g)
+>     {
+146c222,223
+<       switch(q.j) {
+---
+>       switch (q.j)
+>         {
+162c239,240
+<       switch(q.j) {
+---
+>       switch (q.j)
+>         {
+173c251,252
+<       switch(q.j) {
+---
+>       switch (q.j)
+>         {
+186c265,266
+< void db_print(void) {
+---
+> void db_print (void)
+> {
+188a269
+>   
+190c271,273
+<   for (i = firstERC; i <= lastERC; i++) {
+---
+> 
+>   for (i = firstERC; i <= lastERC; i++)
+>     {
+1c1
+< #if !defined(DBASE_H)
+---
+> # ifndef DBASE_H
+1c1
+< imports employee, empset, stdio;
+---
+> imports employee, empset, <stdio>;
+9,12c9,11
+< uses dbase, sprint(ioStream, db);
+< 
+< claims UniqueKeys(employee e1, employee e2) db d; {
+<    ensures
+---
+> claims UniqueKeys (employee e1, employee e2) db d; 
+> {       
+>  /* ensures
+14a14
+>  */
+17c17,18
+< db_status hire(employee e) db d; {
+---
+> db_status hire(employee e) db d; 
+> {
+19c20
+<    ensures
+---
+>   /* ensures
+27a29
+>   */
+29,30c31,34
+< void uncheckedHire(employee e) db d; {
+<    requires e.gen \neq gender_ANY /\ e.j \neq job_ANY
+---
+> 
+> void uncheckedHire(employee e) db d; 
+> {
+>   /* requires e.gen \neq gender_ANY /\ e.j \neq job_ANY
+31a36
+>   */
+33c38
+<    ensures d' = hire(e, d^);
+---
+>   /* ensures d' = hire(e, d^); */
+35c40,42
+< bool fire(int ssNum) db d; {
+---
+> 
+> bool fire(int ssNum) db d; 
+> {
+37c44
+<    ensures result = employed(d^, ssNum)
+---
+>   /* ensures result = employed(d^, ssNum)
+38a46
+>   */
+40c48,50
+< int query(db_q q, empset s) db d; {
+---
+> 
+> int query(db_q q, empset s) db d; 
+> {
+42c52
+<    ensures s' = s^ \U query(d^, q)
+---
+>   /* ensures s' = s^ \U query(d^, q)
+43a54
+>   */
+45c56,58
+< bool promote(int ssNum) db d; {
+---
+> 
+> bool promote(int ssNum) db d; 
+> {
+47c60
+<    ensures
+---
+>   /* ensures
+51a65
+>   */
+53c67,69
+< db_status setSalary(int ssNum, int sal) db d; {
+---
+> 
+> db_status setSalary(int ssNum, int sal) db d; 
+> {
+54a71
+>   /* 
+62a80
+>   */
+64c82,84
+< void db_print(void) db d; FILE *stdout; {
+---
+> 
+> void db_print(void) db d; FILE *stdout; 
+> {
+65a86
+>   /*
+68c89
+< 
+---
+>   */
+70c91,93
+< void db_initMod(void) db d; {
+---
+> 
+> void db_initMod(void) db d; 
+> {
+72c95
+<    ensures d' = new;
+---
+>   /* ensures d' = new; */
+11,12c11,12
+< int main(int argc, char *argv[]) {
+< 
+---
+> int main(int argc, char *argv[]) 
+> {
+26c26,27
+<   if (argc != 1) {
+---
+>   if (argc != 1) 
+>     {
+34,35c35,42
+<    if (!(empset_size(em1) == 0)) printf("Size should be 0.\n");
+<    for (i = 0; i < 500; i++) {
+---
+> 
+>   if (!(empset_size(em1) == 0))
+>     {
+>       printf("Size should be 0.\n");
+>     }
+> 
+>   for (i = 0; i < 500; i++) 
+>     {
+44,45c51,58
+<    if (!(empset_size(em1) == 500)) printf("Size should be 500.\n");
+<    for (i = 0; i < 250; i++) {
+---
+> 
+>   if (!(empset_size(em1) == 500)) 
+>     {
+>       printf("Size should be 500.\n");
+>     }
+> 
+>   for (i = 0; i < 250; i++) 
+>     {
+54c67,72
+<    if (!(empset_size(em1) == 250)) printf("Size should be 250.\n");
+---
+> 
+>   if (!(empset_size(em1) == 250)) 
+>     {
+>       printf("Size should be 250.\n");
+>     }
+> 
+56c74,76
+<    for (i = 0; i < 100; i++) {
+---
+> 
+>   for (i = 0; i < 100; i++) 
+>     {
+64a85
+> 
+66c87,92
+<    if (!(empset_size(em3) == 350)) printf("Size should be 350.\n");
+---
+> 
+>   if (!(empset_size(em3) == 350))
+>     {
+>       printf("Size should be 350.\n");
+>     }
+> 
+68c94,99
+<    if (!(empset_size(em3) == 350)) printf("Size should be 350.\n");
+---
+> 
+>   if (!(empset_size(em3) == 350))
+>     {
+>       printf("Size should be 350.\n");
+>     }
+> 
+70c101,103
+<    for (i = 0; i < 2; i++) {
+---
+> 
+>   for (i = 0; i < 2; i++) 
+>     {
+77,78d109
+< 
+<   
+80c111,113
+<    for (i = 0; i < 20; i++) {
+---
+> 
+>   for (i = 0; i < 20; i++) 
+>     {
+87,88c120,123
+<      if ( (i/2)*2 == i) hire(e);
+<         else {uncheckedHire(e); j = hire(e);}
+---
+> 
+>       if ((i/2)*2 == i) 
+>         {
+>           hire(e); 
+89a125,130
+>       else 
+>         {
+>           uncheckedHire(e); j = hire(e);
+>         }
+>     }
+>   
+96a138
+> 
+100a143
+> 
+107a151
+>   
+112a157
+> 
+115a161
+>   
+1a2
+> # include <string.h>
+4c5,6
+< bool employee_setName(employee *e, char na []) {
+---
+> bool employee_setName (employee *e, char na []) 
+> {
+7a10
+>     {
+8a12,13
+>     }
+> 
+12c17,19
+< bool employee_equal(employee * e1, employee * e2) {
+---
+> 
+> bool employee_equal (employee * e1, employee * e2) 
+> {
+17,18c24
+<             && (strncmp(e1->name, e2->name, 
+<                 maxEmployeeName) == 0));
+---
+>           && (strncmp (e1->name, e2->name, maxEmployeeName) == 0));
+20c26,28
+< void employee_sprint(char s[], employee e) {
+---
+> 
+> void employee_sprint (char s[], employee e) 
+> {
+24,30c32,33
+<    (void) sprintf(s,
+<                   employeeFormat,
+<                   e.ssNum,
+<                   e.name,
+<                   gender[e.gen],
+<                   jobs[e.j],
+<                   e.salary);
+---
+>   (void) sprintf (s, employeeFormat, e.ssNum, e.name,
+>                   gender[e.gen], jobs[e.j], e.salary);
+1c1
+< #if !defined(EMPLOYEE_H)
+---
+> # ifndef EMPLOYEE_H
+6c6,9
+< typedef struct {int ssNum;
+---
+> 
+> typedef struct 
+> {
+>   int ssNum;
+10c13,14
+<                 job j;} employee;
+---
+>   job j;
+> } employee;
+12,15c16,18
+< uses employeeConstants, sprint(employee, char[]);
+< 
+< void employee_sprint(char s[], employee e) {
+<     requires maxIndex(s) >= employeePrintSize;
+---
+> void employee_sprint (out char s[], employee e) 
+> {
+>   /* requires maxIndex(s) >= employeePrintSize; */
+17c20
+<     ensures isSprint(s', e)
+---
+>   /* ensures isSprint(s', e)
+18a22
+>   */
+20,21c24,27
+< bool employee_equal(employee *e1, employee *e2) {
+<    ensures result = sameStr(e1->name^, e2->name^)
+---
+> 
+> bool employee_equal (employee *e1, employee *e2) 
+> {
+>   /* ensures result = sameStr(e1->name^, e2->name^)
+25a32
+>   */
+27,28c34,37
+< bool employee_setName(employee *e, char na[]) {
+<    requires nullTerminated(na^);
+---
+> 
+> bool employee_setName(employee *e, char na[]) 
+> {
+>   /* requires nullTerminated(na^); */
+30c39
+<    ensures result = lenStr(na^) < maxEmployeeName
+---
+>   /* ensures result = lenStr(na^) < maxEmployeeName
+34a44
+>   */
+36c46,48
+< void employee_initMod(void) {
+---
+> 
+> void employee_initMod(void) 
+> {
+5c5,6
+< eref _empset_get(employee e, erc s) {
+---
+> eref _empset_get (employee e, erc s) 
+> {
+9c10,12
+<   for_ercElems(er, it, s) {
+---
+> 
+>   for_ercElems (er, it, s) 
+>     {
+13a17
+>   
+17c21,22
+< void empset_clear(empset s) {
+---
+> void empset_clear (empset s) 
+> {
+21c26,27
+< bool empset_insert(empset s, employee e) {
+---
+> bool empset_insert (empset s, employee e) 
+> {
+23c29,34
+<   if (!eref_equal(_empset_get(e, s), erefNIL)) return FALSE;
+---
+>   
+>   if (!eref_equal (_empset_get (e, s), erefNIL)) 
+>     {
+>       return FALSE;
+>     }
+>   
+28c39,40
+< void empset_insertUnique(empset s, employee e) {
+---
+> void empset_insertUnique (empset s, employee e) 
+> {
+29a42
+> 
+31c44,46
+<   if (eref_equal(er, erefNIL)) {
+---
+> 
+>   if (eref_equal (er, erefNIL)) 
+>     {
+35a51
+>   
+39c55,56
+< bool empset_delete(empset s, employee e) {
+---
+> bool empset_delete (empset s, employee e) 
+> {
+40a58
+> 
+42c60,64
+<   if (eref_equal(er, erefNIL)) return FALSE;
+---
+> 
+>   if (eref_equal (er, erefNIL)) 
+>     {
+>       return FALSE;
+>     }
+46c68,69
+< empset empset_disjointUnion(empset s1, empset s2) {
+---
+> empset empset_disjointUnion (empset s1, empset s2) 
+> {
+50a74
+>   
+52c76,78
+<   if (erc_size(s1) > erc_size(s2)) {
+---
+> 
+>   if (erc_size (s1) > erc_size (s2)) 
+>     {
+56a83
+>   
+59a87
+> 
+63c91,92
+< empset empset_union(empset s1, empset s2) {
+---
+> empset empset_union (empset s1, empset s2) 
+> {
+67a97
+> 
+69c99,101
+<   if (erc_size(s1) > erc_size(s2)) {
+---
+> 
+>   if (erc_size (s1) > erc_size (s2)) 
+>     {
+74a107
+> 
+77a111
+> 
+81c115,116
+< void empset_intersect(empset s1, empset s2) {
+---
+> void empset_intersect (empset s1, empset s2) 
+> {
+84a120
+> 
+85a122
+> 
+88a126
+>   
+90a129
+> 
+94c133,134
+< bool empset_subset(empset s1, empset s2) {
+---
+> bool empset_subset (empset s1, empset s2) 
+> {
+101a142
+>   
+105c146,147
+< void empset_initMod(void) {
+---
+> void empset_initMod (void) 
+> {
+106a149
+> 
+1c1
+< #if !defined(EMPSET_H)
+---
+> # ifndef EMPSET_H
+34a35
+> 
+3,4d2
+< uses Set(employee, empset),
+<      sprint(empset, char[]);
+6,7c4,6
+< empset empset_create(void) {
+<    ensures fresh(result) /\ result' = { };
+---
+> empset empset_create(void) 
+> {
+>   /* ensures fresh(result) /\ result' = { }; */
+9c8,10
+< void empset_final(empset s) {
+---
+> 
+> void empset_final(empset s) 
+> {
+11c12
+<    ensures trashed(s);
+---
+>   /* ensures trashed(s); */
+13c14,16
+< void empset_clear(empset s) {
+---
+> 
+> void empset_clear(empset s) 
+> {
+15c18
+<    ensures s' = { };
+---
+>   /* ensures s' = { }; */
+17c20,22
+< bool empset_insert(empset s, employee e) {
+---
+> 
+> bool empset_insert(empset s, employee e) 
+> {
+19c24
+<    ensures result = ~(e \in s^) /\ s' = insert(e, s^);
+---
+>   /* ensures result = ~(e \in s^) /\ s' = insert(e, s^); */
+21,22c26,29
+< void empset_insertUnique(empset s, employee e) {
+<    requires ~(e \in s^);
+---
+> 
+> void empset_insertUnique(empset s, employee e) 
+> {
+>   /* requires ~(e \in s^); */
+24c31
+<    ensures s' = insert(e, s^);
+---
+>   /* ensures s' = insert(e, s^); */
+26c33,35
+< bool empset_delete(empset s, employee e) {
+---
+> 
+> bool empset_delete(empset s, employee e) 
+> {
+28c37
+<    ensures result = e \in s^ /\ s' = delete(e, s^);
+---
+>   /* ensures result = e \in s^ /\ s' = delete(e, s^); */
+30,31c39,42
+< empset empset_union(empset s1, empset s2) {
+<    ensures result' = s1^ \U s2^ /\ fresh(result);
+---
+> 
+> empset empset_union(empset s1, empset s2) 
+> {
+>   /* ensures result' = s1^ \U s2^ /\ fresh(result); */
+33,35c44,48
+< empset empset_disjointUnion(empset s1, empset s2) {
+<    requires s1^ \I s2^ = { };
+<    ensures result' = s1^ \U s2^ /\ fresh(result);
+---
+> 
+> empset empset_disjointUnion(empset s1, empset s2) 
+> {
+>   /* requires s1^ \I s2^ = { }; */
+>   /* ensures result' = s1^ \U s2^ /\ fresh(result); */
+37c50,52
+< void empset_intersect(empset s1, empset s2) {
+---
+> 
+> void empset_intersect(empset s1, empset s2) 
+> {
+39c54
+<    ensures s1' = s1^ \I s2^;
+---
+>   /* ensures s1' = s1^ \I s2^; */
+41,42c56,59
+< int empset_size(empset s) {
+<    ensures result = size(s^);
+---
+> 
+> int empset_size(empset s) 
+> {
+>   /* ensures result = size(s^); */
+44,45c61,64
+< bool empset_member(employee e, empset s) {
+<    ensures result = e \in s^;
+---
+> 
+> bool empset_member(employee e, empset s) 
+> {
+>   /* ensures result = e \in s^; */
+47,48c66,69
+< bool empset_subset(empset s1, empset s2) {
+<    ensures result = s1^ \subseteq s2^;
+---
+> 
+> bool empset_subset(empset s1, empset s2) 
+> {
+>   /* ensures result = s1^ \subseteq s2^; */
+50,52c71,75
+< employee empset_choose(empset s) {
+<    requires s^ \neq { };
+<    ensures result \in s^;
+---
+> 
+> employee empset_choose(empset s) 
+> {
+>   /* requires s^ \neq { }; */
+>   /* ensures result \in s^; */
+54,55c77,80
+< char *empset_sprint(empset s) {
+<     ensures isSprint(result[]', s^) /\ fresh(result[]);
+---
+> 
+> char *empset_sprint(empset s) 
+> {
+>   /* ensures isSprint(result[]', s^) /\ fresh(result[]); */
+57c82,84
+< void empset_initMod(void) {
+---
+> 
+> void empset_initMod(void) 
+> {
+0a1
+> # include <stdlib.h>
+3c4,5
+< erc erc_create(void) {
+---
+> erc erc_create (void) 
+> {
+4a7
+> 
+6c9,11
+<   if (c == 0) {
+---
+> 
+>   if (c == 0) 
+>     {
+9a15
+>   
+15c21,22
+< void erc_clear(erc c) {
+---
+> void erc_clear (erc c) 
+> {
+18c25,27
+<   for (elem = c->vals; elem != 0; elem = next) {
+---
+> 
+>   for (elem = c->vals; elem != 0; elem = next) 
+>     {
+21a31
+>   
+26c36,37
+< void erc_final(erc c) {
+---
+> void erc_final (erc c) 
+> {
+31c42,43
+< bool erc_member(eref er, erc c) {
+---
+> bool erc_member (eref er, erc c) 
+> {
+32a45
+> 
+34a48
+> 
+38c52,53
+< void erc_insert(erc c, eref er) {
+---
+> void erc_insert (erc c, eref er) 
+> {
+41c56,58
+<   if (newElem == 0) {
+---
+> 
+>   if (newElem == 0) 
+>     {
+44a62
+> 
+51c69,70
+< bool erc_delete(erc c, eref er) {
+---
+> bool erc_delete (erc c, eref er) 
+> {
+57,58c76,79
+<        prev = elem, elem = elem->next) {
+<     if (elem->val == er) {
+---
+>        prev = elem, elem = elem->next) 
+>     {
+>       if (elem->val == er) 
+>         { 
+61c82,84
+<         else {prev->next = elem->next;}
+---
+>           else 
+>             prev->next = elem->next;
+>           
+66a90
+>   
+70c94,95
+< ercIter erc_iterStart(erc c) {
+---
+> ercIter erc_iterStart (erc c) 
+> {
+71a97
+> 
+73c99,101
+<   if (result == 0) {
+---
+> 
+>   if (result == 0) 
+>     {
+76a105
+>   
+81c110,111
+< eref erc_yield(ercIter it) {
+---
+> eref erc_yield (ercIter it) 
+> {
+83c113,115
+<   if (*it == 0) {
+---
+> 
+>   if (*it == 0) 
+>     {
+86a119
+>   
+92c125,126
+< void erc_join(erc c1, erc c2) {
+---
+> void erc_join (erc c1, erc c2) 
+> {
+93a128
+> 
+98c133,134
+< char * erc_sprint(erc c) {
+---
+> char *erc_sprint (erc c)
+> {
+103,105c139,144
+<   result = (char*)malloc(erc_size(c)
+<                          *(employeePrintSize+1)+1);
+<   if (result == 0) {
+---
+> 
+>   result = (char *) 
+>     malloc (erc_size (c) * (employeePrintSize + 1) + 1);
+> 
+>   if (result == 0) 
+>     {
+108a148
+> 
+110c150,152
+<   for_ercElems (er, it, c) {
+---
+> 
+>   for_ercElems (er, it, c) 
+>     { 
+114a157
+>   
+1c1
+< #if !defined(ERC_H)
+---
+> # ifndef ERC_H
+18a19
+> 
+19a21
+> 
+21a24
+> 
+25a29
+> 
+6,9c6,8
+< uses erc(obj erc for ercObj), sprint(erc, char[]);
+< 
+< erc erc_create(void) {
+<    ensures fresh(result) /\ result' = { };
+---
+> erc erc_create(void) 
+> {
+>   /* ensures fresh(result) /\ result' = { }; */
+11,12c10,13
+< void erc_clear(erc c) {
+<    requires c^.activeIters = 0;
+---
+> 
+> void erc_clear(erc c) 
+> {
+>   /* requires c^.activeIters = 0; */
+14c15
+<    ensures c' = { };
+---
+>   /* ensures c' = { }; */
+16,17c17,20
+< void erc_insert(erc c, eref er) {
+<    requires c^.activeIters = 0 /\ er \neq erefNIL;
+---
+> 
+> void erc_insert(erc c, eref er) 
+> {
+>   /* requires c^.activeIters = 0 /\ er \neq erefNIL; */
+19c22
+<    ensures c' = [insert(er, c^.val), 0];
+---
+>   /* ensures c' = [insert(er, c^.val), 0]; */
+21,22c24,27
+< bool erc_delete(erc c, eref er) {
+<    requires c^.activeIters = 0;
+---
+> 
+> bool erc_delete(erc c, eref er) 
+> {
+>   /* requires c^.activeIters = 0; */
+24,25c29,30
+<    ensures result = er \in c^.val
+<      /\ c' = [delete(er, c^.val), 0];
+---
+>   /* ensures result = er \in c^.val
+>      /\ c' = [delete(er, c^.val), 0]; */
+27,28c32,35
+< bool erc_member(eref er, erc c) {
+<    ensures result = er \in c^.val;
+---
+> 
+> bool erc_member(eref er, erc c) 
+> {
+>   /* ensures result = er \in c^.val; */
+30,32c37,41
+< eref erc_choose(erc c) {
+<    requires size(c^.val) \neq 0;
+<    ensures result \in c^.val;
+---
+> 
+> eref erc_choose(erc c) 
+> {
+>   /* requires size(c^.val) \neq 0; */
+>   /* ensures result \in c^.val; */
+34,35c43,46
+< int erc_size(erc c) {
+<    ensures result = size(c^.val);
+---
+> 
+> int erc_size(erc c) 
+> {
+>   /* ensures result = size(c^.val); */
+37c48,50
+< ercIter erc_iterStart(erc c) {
+---
+> 
+> ercIter erc_iterStart(erc c) 
+> {
+39c52
+<    ensures fresh(result) /\ result' = [c^.val, c]
+---
+>   /* ensures fresh(result) /\ result' = [c^.val, c]
+40a54
+>   */
+42,44c56,60
+< eref erc_yield(ercIter it) {
+<    modifies it, it^.eObj;
+<    ensures if it^.toYield \neq { }
+---
+> 
+> eref erc_yield(ercIter it) 
+> {
+>   modifies it; /* , it^.eObj */ 
+>   /* ensures if it^.toYield \neq { }
+48a65
+>  */
+50,52c67,71
+< void erc_iterFinal(ercIter it) {
+<    modifies it, it^.eObj;
+<    ensures trashed(it)
+---
+> 
+> void erc_iterFinal(ercIter it) 
+> {
+>   modifies it; /* , it^.eObj; */
+>   /* ensures trashed(it)
+53a73
+>   */
+55,56c75,78
+< void erc_join(erc c1, erc c2) {
+<    requires c1^.activeIters = 0;
+---
+> 
+> void erc_join(erc c1, erc c2) 
+> {
+>   /* requires c1^.activeIters = 0; */
+58c80
+<    ensures c1' = [c1^.val \U c2^.val, 0];
+---
+>   /* ensures c1' = [c1^.val \U c2^.val, 0]; */
+60,61c82,85
+< char *erc_sprint(erc c) {
+<    ensures isSprint(result[]', c^) /\ fresh(result[]);
+---
+> 
+> char *erc_sprint(erc c) 
+> {
+>   /* ensures isSprint(result[]', c^) /\ fresh(result[]); */
+63c87,89
+< void erc_final(erc c) {
+---
+> 
+> void erc_final(erc c) 
+> {
+65c91
+<    ensures trashed(c);
+---
+>   /* ensures trashed(c); */
+67c93,95
+< void erc_initMod(void) {
+---
+> 
+> void erc_initMod(void) 
+> {
+1a2
+> # include <stdlib.h>
+7c8,9
+< eref eref_alloc(void) {
+---
+> eref eref_alloc (void) 
+> {
+10,13c12,13
+<   for (i=0;
+<        (eref_Pool.status[i] == used)
+<          && (i < eref_Pool.size);
+<        i++);
+---
+>   for (i=0; (eref_Pool.status[i] == used) && (i < eref_Pool.size); i++);
+>   
+15c15,17
+<   if (res == eref_Pool.size) {
+---
+> 
+>   if (res == eref_Pool.size) 
+>     {
+20c22,23
+<     if (eref_Pool.conts == 0) {
+---
+>       if (eref_Pool.conts == 0) 
+>         {
+23a27
+>       
+27c31,33
+<     if (eref_Pool.status == 0) {
+---
+> 
+>       if (eref_Pool.status == 0) 
+>         {
+30a37
+>       
+31a39
+> 
+34a43
+>   
+38c47,49
+< void eref_initMod(void) {
+---
+> 
+> void eref_initMod (void) 
+> {
+42c53,57
+<   if (needsInit == FALSE) return;
+---
+>   if (needsInit == FALSE) 
+>     {
+>       return;
+>     }
+> 
+46,48c61,65
+<   eref_Pool.conts =
+<       (employee *) malloc(size*sizeof(employee));
+<   if (eref_Pool.conts == 0) {
+---
+> 
+>   eref_Pool.conts = (employee *) malloc (size * sizeof (employee));
+> 
+>   if (eref_Pool.conts == 0) 
+>     {
+52,54c69,73
+<   eref_Pool.status =
+<       (eref_status *) malloc(size*sizeof(eref_status));
+<   if (eref_Pool.status == 0) {
+---
+>   
+>   eref_Pool.status = (eref_status *) malloc (size * sizeof (eref_status));
+> 
+>   if (eref_Pool.status == 0) 
+>     {
+57a77
+>   
+59c79,83
+<   for (i = 0; i < size; i++) eref_Pool.status[i] = avail;
+---
+> 
+>   for (i = 0; i < size; i++)
+>     {
+>       eref_Pool.status[i] = avail;
+>     }
+1c1
+< #if !defined(EREF_H)
+---
+> # ifndef EREF_H
+10c10,11
+< typedef struct {employee *conts;
+---
+> typedef struct {
+>   employee *conts;
+12c13,14
+<                 int size;} eref_ERP;
+---
+>   int size;
+> } eref_ERP;
+19a22
+> 
+23a27
+> 
+6,7d5
+< uses refTable(eref, employee, map);
+< 
+9c7
+< constant eref erefNIL = nil;
+---
+> constant eref erefNIL;
+11c9,10
+< eref eref_alloc(void) map m; {
+---
+> eref eref_alloc(void) map m; 
+> {
+13c12
+<    ensures newInd(result, m^, m');
+---
+>   /* ensures newInd(result, m^, m'); */
+15,16c14,17
+< void eref_free(eref er) map m; {
+<    requires er \in domain(m^);
+---
+> 
+> void eref_free(eref er) map m; 
+> {
+>   /* requires er \in domain(m^); */
+18c19
+<    ensures m' = delete(m^, er);
+---
+>   /* ensures m' = delete(m^, er); */
+20,21c21,24
+< void eref_assign(eref er, employee e) map m; {
+<    requires er \in domain(m^);
+---
+> 
+> void eref_assign(eref er, employee e) map m; 
+> {
+>   /* requires er \in domain(m^); */
+23c26
+<    ensures m' = assign(m^, er, e);
+---
+>   /* ensures m' = assign(m^, er, e); */
+25,27c28,32
+< employee eref_get(eref er) map m; {
+<    requires er \in domain(m^);
+<    ensures result = m^[er];
+---
+> 
+> employee eref_get(eref er) map m; 
+> {
+>   /* requires er \in domain(m^); */
+>   /* ensures result = m^[er]; */
+29,30c34,37
+< bool eref_equal(eref er1, eref er2) {
+<    ensures result = (er1 = er2);
+---
+> 
+> bool eref_equal(eref er1, eref er2) 
+> {
+>   /* ensures result = (er1 = er2); */
+32c39,41
+< void eref_initMod(void) map m; {
+---
+> 
+> void eref_initMod(void) map m; 
+> {
+34c43
+<    ensures m' = new;
+---
+>   /* ensures m' = new; */
+1c1,4
+< /* ereftab.c */
+---
+> /*
+> ** This is not a good implementation.  I should probably replace
+> ** the erc with a hash table.  
+> */
+3,5d5
+< /* This is not a good implementation.  I should probably replace
+< the erc with a hash table.  */
+< 
+8c8,9
+< ereftab ereftab_create(void) {
+---
+> ereftab ereftab_create (void) 
+> {
+12c13,14
+< void ereftab_insert(ereftab t, employee e, eref er) {
+---
+> void ereftab_insert (ereftab t, employee e, eref er) 
+> {
+17c19,20
+< bool ereftab_delete(ereftab t, eref er) {
+---
+> bool ereftab_delete (ereftab t, eref er) 
+> {
+25c28,29
+< eref ereftab_lookup(employee e, ereftab t) {
+---
+> eref ereftab_lookup (employee e, ereftab t) 
+> {
+30c34,35
+<   for_ercElems(er, it, t) { 
+---
+>   for_ercElems (er, it, t) 
+>     { 
+33a39
+> 
+37c43,44
+< void ereftab_initMod(void) {
+---
+> void ereftab_initMod (void) 
+> {
+3c3
+< #if !defined(EREFTAB_H)
+---
+> # ifndef EREFTAB_H
+5,8c5,7
+< uses ereftab;
+< 
+< ereftab ereftab_create(void) {
+<    ensures result' = empty;
+---
+> ereftab ereftab_create(void) 
+> {
+>   /* ensures result' = empty; */
+10,11c9,12
+< void ereftab_insert(ereftab t, employee e, eref er) {
+<    requires getERef(t^, e) = erefNIL;
+---
+> 
+> void ereftab_insert(ereftab t, employee e, eref er) 
+> {
+>   /* requires getERef(t^, e) = erefNIL; */
+13c14
+<    ensures t' = add(t^, e, er);
+---
+>   /* ensures t' = add(t^, e, er); */
+15c16,18
+< bool ereftab_delete(ereftab t, eref er) {
+---
+> 
+> bool ereftab_delete(ereftab t, eref er) 
+> {
+17c20
+<    ensures result = in(t^, er) /\ t' = delete(t^, er);
+---
+>   /* ensures result = in(t^, er) /\ t' = delete(t^, er); */
+19,20c22,25
+< eref ereftab_lookup(employee e, ereftab t) {
+<    ensures result = getERef(t^, e);
+---
+> 
+> eref ereftab_lookup(employee e, ereftab t) 
+> {
+>   /* ensures result = getERef(t^, e); */
+22c27,29
+< void ereftab_initMod(void) {
+---
+> 
+> void ereftab_initMod(void) 
+> {

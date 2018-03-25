@@ -1,0 +1,55 @@
+<h3>lclint-interest message 14</h3>
+<pre>
+To: wilma@deis65.cineca.it (Wilma Penzo)
+Cc: lclint-interest@larch.lcs.mit.edu, larch-interest@pa.dec.com
+Subject: Re: ``imports'' clause
+In-Reply-To: Message of Mon, 7 Nov 1994 21:18:02 +0100 (MET)
+    from wilma@deis65.cineca.it (Wilma Penzo)
+Date: Mon, 07 Nov 94 15:30:29 -0800
+From: horning@pa.dec.com
+X-Mts: smtp
+
+Wilma,
+
+    So, this means that LCL operators cannot be used in
+    other LCL modules? 
+
+Yes.
+
+    Is there a reason for this?
+
+Yes, there is.  C "functions" are actually procedures, and can have side
+effects, encounter runtime errors, etc.  In our predicates, we want true
+mathematical functions.  This is one of the principal motivations for
+Larch's two-tiered approach.
+
+We expect much of the "structured" modularity to result from LSL traits
+using other traits.  Operators defined in this way can be used both to give
+almost trivial specification of the LCL operators you wanted to use and to
+specify the other LCL modules in which you wanted to use them.
+
+We consider it an advantage that each LCL module can be specified and
+studied, (and perhaps verified) separately, just as it is an advantage to
+give a specification for each C function that allows it to be specified and
+studied, (and perhaps verified) separately.  Do not confuse the "uses"
+hierarchy of module implementations with the structure of their
+specifications.
+
+Jim H.
+
+</pre>
+<A HREF="13.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="15.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

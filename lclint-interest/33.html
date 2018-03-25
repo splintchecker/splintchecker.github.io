@@ -1,0 +1,101 @@
+<h3>lclint-interest message 33</h3>
+<pre>
+Date: Wed, 14 Jun 95 14:01:10 -0400
+From: evs (David Evans)
+To: evs
+In-Reply-To: Jon Freeman's message of Wed, 14 Jun 1995 13:16:27 -0400 <199506141716.NAA26279@nygd-devc143.ny.jpmorgan.com>
+Subject: Introduction
+
+
+> 1.  We have a routine for logging error messages that has exactly the
+> same arguments as printf and fprintf.  On two occasions, we've gotten
+> burned by calling this routine with the wrong number of arguments
+> vis-a-vis the format string.  This was my primary motivation for looking
+> around for a better version of lint.  If it's at all possible to get
+> lclint to check these arguments as it does with printf, I would be
+> extremely grateful.
+
+Unfortunately, there is no way of doing this currently.  I ran into 
+similar problems in checking the lclint source code and ended up
+hard-coding the checks for one particular routine with variable
+arguments.  (Of course, this isn't a satisfying general solution!)
+
+If the argument format is exactly like printf, then you could perhaps
+"trick" lclint into checking them like this by using a preprocessor
+define on the command line.  For example, if your format routine is
+called "format", you could add "-Dformat=printf" to the lclint command
+line to get printf argument checking.  
+
+If anyone knows of common enough general idioms for handling multiple
+arguments that would be using in lclint, I'd be interested in hearing
+about them.
+
+> 2.  lclint is giving me false used-before-set warnings in the following
+> way:  A lot of our routines have a local uninitialized char buffer that
+> gets filled by passing it to a second, lower-level routine.  What's the
+> best way to indicate to lclint that these buffers ARE getting initialized
+> by the lower-level routines?
+
+If I understand you correctly, what you need to do is specify that the
+parameter to the second routine is an "out" parameter.  
+
+Here's a small example:
+
+char f()
+{
+  char **s;
+
+  init_buf(s); /* use before definition? */
+  return **s;
+}
+
+If init_buf is specified,
+
+   void init_buf (char **buf);	
+
+there is a use before definition error.  But, if it is specified,
+
+   void init_buf (out char **buf);	
+
+the parameter is not necessarily defined before the call and there is no
+use before definition error.  (There would be, however, if buf is used
+in the body of init_buf before it is defined.)
+
+(For now, you need to write specifications to indicate out parameters.
+In the next release you would be able to just put syntactic comments in
+the code.)
+
+> 3.  I've already gotten lclint to die painfully on a couple of occasions.
+> I'll send transcripts later when it's convenient.  My question:  Have any
+> of the lclint developers tried using a tool like Purify to catch memory-
+> corruption problems?  It works like a charm for us, and it could greatly
+> improve lclint's robustness.
+
+Okay, thanks for the transcripts.  [Haven't looked at them yet, but I'll
+get back to you when I do.]
+
+We haven't tried using Purify on lclint, but do use the debugging
+provided by the garbage collector.  I am currently working on adding
+annotations and checks relating to dynamic memory usage to LCLint (and
+finding lots of real errors in the process) so many of these errors can
+be detected statically instead.  After this is done, it would be a good
+idea to try something like Purify too, so see what errors the static
+checking doesn't detect.
+
+--- Dave
+</pre>
+<A HREF="32.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="34.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

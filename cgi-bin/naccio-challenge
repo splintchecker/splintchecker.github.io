@@ -1,0 +1,20 @@
+#!/usr/local/bin/perl
+require "formlib.pl";
+
+$timestamp = gmtime;
+
+&GetFormArgs;
+
+print "Content-Type: text/html\n\n";
+
+print "<TITLE>Naccio Challenge</TITLE>\n";
+print "<H1>Result</H1>\n";
+
+print "Results of running ";
+print "<em>$in{url}</em> with policy <em>$in{policy}</em>:<p>\n";   
+print "<p></br>\n";
+print "Thanks for playing.";
+print "<p><p><hr>\n";
+print "<a href=\"http://www.sds.lcs.mit.edu/naccio/challenge/\">Return</a>\n";
+
+

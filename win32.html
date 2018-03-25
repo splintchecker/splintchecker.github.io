@@ -1,0 +1,120 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>Splint - Win32 Installation</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<center><h2>
+Win32 Installation
+</h2></center>
+
+<p>
+Instructions for installing the Win32 version of LCLint:
+<ol>
+
+<P>
+<li> Download <a
+href="downloads/binaries/splint-3.1.1.win32.zip"><em>http://lclint.cs.virginia.edu/downloads/binaries/splint-3.1.1.win32.zip</em></a>.
+
+     <p>
+
+<li> Unzip the package.  This can be done using any unzip utility, such
+as <a href="http://www.winzip.com">WinZip</a>.  The zip file contains
+several directories.  
+<p>
+If you extract then to <tt>C:\splint-3.1.1</tt> you will not need to set
+the environment variables.  The splint binary is in <tt>bin\splint.exe</tt>.
+<p>
+If you extract it to some other directory, you will need to set the
+envrionment variables shown below.  In Windows 2000, you can set
+environment variables by selecting <tt>Settings -> Control Panel ->
+System</tt> from the <tt>Start</tt> button.  On the <tt>System</tt>
+panel, select the <tt>Advanced</tt> tab and then the <tt>Environment
+Variables</tt> button.  This produces a dialog box.  In the <tt>User
+Variables</tt> box, select <tt>New...</tt> to add a new environment
+variable.
+<p>
+Then add environment variables:
+<blockquote>
+<tt>LARCH_PATH</tt> - path to search for splint libraries and
+initializations files. Typically, this
+should be: <tt>.;<em>&lt;directory where you installed splint&gt;</em>\lib</tt>
+<p>
+<tt>LCLIMPORTDIR</tt> - directory containing lcl imports files. 
+Typically, this
+should be: <tt><em>&lt;directory where you installed splint&gt;</em>\imports</tt>
+
+<p>
+<tt>include</tt> - the pathname used to find system include files (e.g.,
+<tt>stdio.h</tt> should be found on this path).  If you have installed a
+compiler, it probably sets this already.
+</blockquote>
+
+Different versions of Windows set environment variables in different
+ways.  If you can't figure out how to set envirnoment variables in
+Windows, you can instead use the flags <tt>-larchpath</tt> and
+<tt>-lclimportdir</tt> in your <tt>splint.rc</tt> file.  
+<p>
+Set up your command <tt>PATH</tt> to include the directory containing
+<tt>splint.exe</tt>, or move the binary to a directory on
+your command path.
+<p>
+     
+<li> Subscribe to the Splint <a href="lists.html">mailing lists</a> by
+visiting <a
+href="http://www.splint.org/lists.html"><em>http://www.splint.org/lists.html</em></a>.
+
+</ol>
+
+<h3>Microsoft Developer Studio</h3>
+
+<b>Running in Output Window</b>
+<blockquote>
+You can add custom tools to Developer Studio to run Splint within the
+IDE.  Select <tt>Tools | Customize</tt>.  Add a new command to the command
+list.  In the command edit box, enter
+the command to run Splint (e.g., <tt>splint</tt>).  In the arguments
+edit box, enter the command line arguments (e.g., <tt>*.c</tt>).  Check
+the &#147;Use Output Window&#148; box. 
+</blockquote>
+<p>
+<b>Initializations</b>
+<blockquote>
+The VC++ header files use some non-standard types.  Arjan van Vught
+suggests using this <a href="vc.splintrc">.splintrc</a> file to solve
+parsing problems on those files.
+</blockquote>
+<p>
+
+<b>Message format</b>
+<blockquote>
+
+You can configure Splint to produce messages that can be parsed by
+DevStudio by using the <tt><a
+href="guide/appC.html#flag-parenfileformat">+parenfileformat</a></tt>
+flag.  (This is set by default in the Win32 binary.)  Since DevStudio
+wraps message text automatically, you may also wish to use <tt><a
+href="guide/appC.html#flag-linelen">-linelen 999</a></tt> to set the
+line length high enough so lclint will not split lines.  
+</blockquote>
+
+<!--
+<h3>Using Cygwin</h3>
+
+The Win32 executable can be used with 
+<a href="http://sources.redhat.com/cygwin/">Cygwin</a>, a UNIX
+environment for Windows.
+<p>
+Follow the installation procedure as above, except set the environment
+variables for Cygwin as follows:
+<ul>
+<li>.;//
+<li>
+</ul>
+-->
+
+<p>
+
+<!--#include virtual="footer.html"-->

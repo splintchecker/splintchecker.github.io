@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/strictchecks'
+lclint +lh +checks +moduncon +modunconnomods +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+empset.c: (in function empset_member)
+<A HREF="empset.c.html#line20" target="source">empset.c:20,27</A>: Undetected modification possible from call to unconstrained
+                   function empset_get: empset_get
+  An unconstrained function is called in a function body where modifications
+  are checked. Since the unconstrained function may modify anything, there may
+  be undetected modifications in the checked function. Use -moduncon to
+  suppress message.
+empset.c: (in function empset_insert)
+<A HREF="empset.c.html#line30" target="source">empset.c:30,23</A>: Undetected modification possible from call to unconstrained
+                   function empset_get: empset_get
+empset.c: (in function empset_delete)
+<A HREF="empset.c.html#line61" target="source">empset.c:61,8</A>: Undetected modification possible from call to unconstrained
+                  function empset_get: empset_get
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+erc.c: (in function erc_sprint)
+<A HREF="erc.c.html#line131" target="source">erc.c:131,13</A>: Undetected modification possible from call to unconstrained
+                 function int_toSize: int_toSize
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+dbase.c: (in function db_keyGet)
+<A HREF="dbase.c.html#line68" target="source">dbase.c:68,12</A>: Undetected modification possible from call to unconstrained
+                  function db_ercKeyGet: db_ercKeyGet
+  An unconstrained function is called in a function body where modifications
+  are checked. Since the unconstrained function may modify anything, there may
+  be undetected modifications in the checked function. Use -modunconnomods to
+  suppress message.
+dbase.c: (in function db_hire)
+<A HREF="dbase.c.html#line110" target="source">dbase.c:110,23</A>: Undetected modification possible from call to unconstrained
+                   function db_keyGet: db_keyGet
+dbase.c: (in function db_promote)
+<A HREF="dbase.c.html#line163" target="source">dbase.c:163,8</A>: Undetected modification possible from call to unconstrained
+                  function db_ercKeyGet: db_ercKeyGet
+<A HREF="dbase.c.html#line167" target="source">dbase.c:167,12</A>: Undetected modification possible from call to unconstrained
+                   function db_ercKeyGet: db_ercKeyGet
+dbase.c: (in function db_setSalary)
+<A HREF="dbase.c.html#line201" target="source">dbase.c:201,8</A>: Undetected modification possible from call to unconstrained
+                  function db_keyGet: db_keyGet
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+drive.c: (in function main)
+<A HREF="drive.c.html#line50" target="source">drive.c:50,7</A>: Undetected modification possible from call to unconstrained
+                 function check: check
+<A HREF="drive.c.html#line66" target="source">drive.c:66,7</A>: Undetected modification possible from call to unconstrained
+                 function check: check
+<A HREF="drive.c.html#line84" target="source">drive.c:84,7</A>: Undetected modification possible from call to unconstrained
+                 function check: check
+<A HREF="drive.c.html#line121" target="source">drive.c:121,7</A>: Undetected modification possible from call to unconstrained
+                  function check: check
+<A HREF="drive.c.html#line125" target="source">drive.c:125,4</A>: Undetected modification possible from call to unconstrained
+                  function check: check
+<A HREF="drive.c.html#line138" target="source">drive.c:138,3</A>: Undetected modification possible from call to unconstrained
+                  function check: check
+<A HREF="drive.c.html#line165" target="source">drive.c:165,3</A>: Undetected modification possible from call to unconstrained
+                  function check: check
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+< cleaning .......... >
+
+Finished LCLint checking --- 16 code errors found
+396 spec, 3040 source (1283 before pre-processing) lines in 5.18 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/strictchecks'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

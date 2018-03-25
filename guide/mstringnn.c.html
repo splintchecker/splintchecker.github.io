@@ -1,0 +1,90 @@
+<A NAME="line0"></A><html><head>
+<title>mstringnn.c</title>
+</head><body>
+<h3>mstringnn.c</h3>
+<PRE>
+<A NAME="line1"></A>typedef /*@abstract@*/ /*@null@*/ char *mstring;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>static mstring mstring_createNew (int x) ;
+<A NAME="line4"></A> 
+<A NAME="line5"></A>mstring mstring_space1 (void)
+<A NAME="line6"></A>{
+<A NAME="line7"></A>  mstring m = mstring_createNew (1);
+<A NAME="line8"></A> 
+<A NAME="line9"></A>  /* error, since m could be NULL */
+<A NAME="line10"></A>  *m = ' '; *(m + 1) = '\0';
+<A NAME="line11"></A>  return m;
+<A NAME="line12"></A>}
+<A NAME="line13"></A> 
+<A NAME="line14"></A>static /*@notnull@*/ mstring mstring_createNewNN (int x) ;
+<A NAME="line15"></A> 
+<A NAME="line16"></A>mstring mstring_space2 (void)
+<A NAME="line17"></A>{
+<A NAME="line18"></A>  mstring m = mstring_createNewNN (1);
+<A NAME="line19"></A> 
+<A NAME="line20"></A>  /* no error, because of notnull annotation */
+<A NAME="line21"></A>  *m = ' '; *(m + 1) = '\0';
+<A NAME="line22"></A>  return m;
+<A NAME="line23"></A>}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

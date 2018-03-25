@@ -1,0 +1,163 @@
+gmake[1]: Entering directory `/u/evs/lclint/web/sample/strictlib'
+lclint +lh +strict +showsummary -exportconstant -exportlocal +strictlib +whichlib +showscan +stats employee eref empset ereftab erc dbase drive.c bool.lcl check.lcl
+LCLint 2.0+ --- Wed Feb 21 19:07:11 EST 1996
+
+Standard library: /u/evs/lclint/lib/strict.lcd
+   (created using LCLint 2.0 --- 21 Feb 96)
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< reading spec bool.lcl >
+< reading spec check.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+eref.c: (in function eref_alloc)
+eref.c:36,4: Called procedure printf may access global stdout
+  A checked global variable is used in the function, but not listed in its
+  globals clause.  By default, only globals specified in .lcl files are
+  checked.  To check all globals, use +allglobals.  To check globals
+  selectively use /*@checked@*/ in the global declaration.  Use -globs to
+  suppress message.
+eref.c:36,4: Undocumented modification of *stdout possible from call to printf:
+                printf("Malloc returned null in eref_alloc\n")
+  An externally-visible object is modified by a function, but not listed in its
+  modifies clause.  Use -mods to suppress message.
+eref.c:36,4: Return value (type int) ignored: printf("Malloc r...
+  Result returned by function call is not used.  If this is intended, can cast
+  result to (void) to eliminate message.  Use -retvalint to suppress message.
+eref.c:46,4: Called procedure printf may access global stdout
+eref.c:46,4: Undocumented modification of *stdout possible from call to printf:
+                printf("Malloc returned null in eref_alloc\n")
+eref.c:46,4: Return value (type int) ignored: printf("Malloc r...
+eref.c: (in function eref_initMod)
+eref.c:82,7: Called procedure printf may access global stdout
+eref.c:82,7: Undocumented modification of *stdout possible from call to printf:
+                printf("Malloc returned null in eref_initMod\n")
+eref.c:82,7: Return value (type int) ignored: printf("Malloc r...
+eref.c:90,7: Called procedure printf may access global stdout
+eref.c:90,7: Undocumented modification of *stdout possible from call to printf:
+                printf("Malloc returned null in eref_initMod\n")
+eref.c:90,7: Return value (type int) ignored: printf("Malloc r...
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+erc.c: (in function int_toSize)
+erc.c:9,16: Undocumented use of global stderr
+erc.c:9,7: Undocumented modification of *stderr possible from call to fprintf:
+              fprintf(stderr, "Error: int_toSize is negative: %d", x)
+erc.c:9,7: Return value (type int) ignored: fprintf(stderr, ...
+erc.c: (in function erc_create)
+erc.c:26,7: Called procedure printf may access global stdout
+erc.c:26,7: Undocumented modification of *stdout possible from call to printf:
+               printf("Malloc returned null in erc_create\n")
+erc.c:26,7: Return value (type int) ignored: printf("Malloc r...
+erc.c: (in function erc_insert)
+erc.c:78,7: Called procedure printf may access global stdout
+erc.c:78,7: Undocumented modification of *stdout possible from call to printf:
+               printf("Malloc returned null in erc_insert\n")
+erc.c:78,7: Return value (type int) ignored: printf("Malloc r...
+erc.c: (in function erc_sprint)
+erc.c:143,7: Called procedure printf may access global stdout
+erc.c:143,7: Undocumented modification of *stdout possible from call to printf:
+                printf("Malloc returned null in erc_sprint\n")
+erc.c:143,7: Return value (type int) ignored: printf("Malloc r...
+< checking dbase.c >
+dbase.c: (in function db_print)
+dbase.c:306,3: Return value (type int) ignored: printf("Employee...
+dbase.c:311,7: Return value (type int) ignored: printf("%s", pri...
+< checking drive.c >
+drive.c: (in function main)
+drive.c:31,7: Called procedure printf may access global stdout
+drive.c:31,7: Undocumented modification of *stdout possible from call to
+    printf: printf("FormatPos: Wrong number of arguments. Given %d needs 0.\n",
+    argc - 1)
+drive.c:31,7: Return value (type int) ignored: printf("FormatPo...
+drive.c:41,7: Called procedure printf may access global stdout
+drive.c:41,7: Undocumented modification of *stdout possible from call to
+                 printf: printf("Size should be 0.\n")
+drive.c:41,7: Return value (type int) ignored: printf("Size sho...
+drive.c:57,7: Called procedure printf may access global stdout
+drive.c:57,7: Undocumented modification of *stdout possible from call to
+                 printf: printf("Size should be 500.\n")
+drive.c:57,7: Return value (type int) ignored: printf("Size sho...
+drive.c:73,7: Called procedure printf may access global stdout
+drive.c:73,7: Undocumented modification of *stdout possible from call to
+                 printf: printf("Size should be 250.\n")
+drive.c:73,7: Return value (type int) ignored: printf("Size sho...
+drive.c:93,7: Called procedure printf may access global stdout
+drive.c:93,7: Undocumented modification of *stdout possible from call to
+                 printf: printf("Size should be 350.\n")
+drive.c:93,7: Return value (type int) ignored: printf("Size sho...
+drive.c:100,7: Called procedure printf may access global stdout
+drive.c:100,7: Undocumented modification of *stdout possible from call to
+                  printf: printf("Size should be 350.\n")
+drive.c:100,7: Return value (type int) ignored: printf("Size sho...
+drive.c:103,3: Called procedure printf may access global stdout
+drive.c:103,3: Undocumented modification of *stdout possible from call to
+                  printf: printf("Print two different employees:\n")
+drive.c:103,3: Return value (type int) ignored: printf("Print tw...
+drive.c:109,7: Called procedure printf may access global stdout
+drive.c:109,7: Undocumented modification of *stdout possible from call to
+                  printf: printf("%s\n", &(na[0]))
+drive.c:109,7: Return value (type int) ignored: printf("%s\n", &...
+drive.c:151,3: Called procedure printf may access global stdout
+drive.c:151,3: Undocumented modification of *stdout possible from call to
+    printf: printf("Should print true: %s\n", bool_unparse(status ==
+    DBS_DUPLERR))
+drive.c:151,3: Return value (type int) ignored: printf("Should p...
+drive.c:154,3: Called procedure printf may access global stdout
+drive.c:154,3: Undocumented modification of *stdout possible from call to
+                  printf: printf("Employees 0 - 19\n")
+drive.c:154,3: Return value (type int) ignored: printf("Employee...
+drive.c:155,3: Called procedure db_print may access global stdout
+drive.c:155,3: Undocumented modification of *stdout possible from call to
+                  db_print: db_print()
+drive.c:158,3: Called procedure printf may access global stdout
+drive.c:158,3: Undocumented modification of *stdout possible from call to
+                  printf: printf("Employees 0 - 16, 18 - 19\n")
+drive.c:158,3: Return value (type int) ignored: printf("Employee...
+drive.c:159,3: Called procedure db_print may access global stdout
+drive.c:159,3: Undocumented modification of *stdout possible from call to
+                  db_print: db_print()
+drive.c:164,3: Called procedure printf may access global stdout
+drive.c:164,3: Undocumented modification of *stdout possible from call to
+    printf: printf("Should get two females: %d\n%s\n", i, sprintResult)
+drive.c:164,3: Return value (type int) ignored: printf("Should g...
+drive.c:174,3: Called procedure printf may access global stdout
+drive.c:174,3: Undocumented modification of *stdout possible from call to
+    printf: printf("Should get two females and ten males:
+    %d\n%s\n", i, sprintResult)
+drive.c:174,3: Return value (type int) ignored: printf("Should g...
+drive.c:180,3: Called procedure printf may access global stdout
+drive.c:180,3: Undocumented modification of *stdout possible from call to
+    printf: printf("Should get two females: %d\n%s\n", i, sprintResult)
+drive.c:180,3: Return value (type int) ignored: printf("Should g...
+drive.c:184,3: Called procedure printf may access global stdout
+drive.c:184,3: Undocumented modification of *stdout possible from call to
+                  printf: printf("Should get 18 employees\n")
+drive.c:184,3: Return value (type int) ignored: printf("Should g...
+drive.c:185,3: Called procedure db_print may access global stdout
+drive.c:185,3: Undocumented modification of *stdout possible from call to
+                  db_print: db_print()
+< checking macros bool.h >
+< global checks >
+< cleaning .......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+usedef                       0           1
+exporttype                   0           3
+globs                       26           0
+retvalint                   25           0
+compdef                      0           1
+mods                        26           0
+                          ========  =========
+Total:                      77           5
+
+Finished LCLint checking --- 77 code errors found
+402 spec, 2984 source (1363 before pre-processing) lines in 6.25 s.
+gmake[1]: Leaving directory `/u/evs/lclint/web/sample/strictlib'

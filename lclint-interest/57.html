@@ -1,0 +1,58 @@
+<h3>lclint-interest message 57</h3>
+<pre>
+From eric@rrinc.com Fri Mar 22 12:57:36 1996
+Sender: eric@access.rrinc.com
+Date: Fri, 22 Mar 1996 12:06:08 -0500
+From: Eric Bloodworth <eric@rrinc.com>
+Organization: Recognition Research, Inc
+X-Mailer: Mozilla 2.0 (X11; I; AIX 2)
+Mime-Version: 1.0
+To: lclint_sig <lclint-interest@larch.lcs.mit.edu>
+Subject: problems with lclint, gcc, unixware
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+I've had a couple problems with lclint 2.0 under unixware 1.12 with 
+gcc 2.6.3.  I've 
+come up with work-arounds, so this is more of a is there a better 
+way posting...
+
+1. lclint seems to look in /usr/include for its headers files.  
+Since gcc supplies its own system header files elsewhere, this 
+leads to parsing errors and other troubles.  I frankly don't 
+understand why lclint doesn't use gcc to do its preprocessing, but
+I dutifully set BASEPATH and DEFAULT_SYSTEMDIR in constants.h and
+SYSTEM_LIBDIR in Makefile to the location of gcc's header files.  
+This seems to cure the problem, but it will require the update of a symlink 
+for every new release of gcc we install (small maintenance headache).  
+My questions are,  
+why doesn't lclint use gcc to do the preprocessing and was this 
+the "right" way to handle this problem? 
+
+2. lclint barfs (unrecoverable parse error) on gcc's __asm__ statement.  
+Unfortunately, this is used in an inline function in one of 
+gcc's header files (sys/byteorder.h).  I'm loath to 
+change gcc's header files because of the maintenance headache, 
+so we managed to keep that file from being included for now.  
+Is there a way to get lclint to understand __asm__?  If not, 
+I hereby request this feature for the next release. :-)
+
+-- Eric
+
+
+</pre>
+<A HREF="56.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="58.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

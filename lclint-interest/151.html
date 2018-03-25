@@ -1,0 +1,90 @@
+<h3>lclint-interest message 151</h3>
+<pre>
+From evans@cs.virginia.edu Wed Sep 17 16:38:43 1997
+Date: Wed, 17 Sep 97 13:35:45 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: kir@iitb.fhg.de
+In-Reply-To: Harald Kirsch's message of Tue, 16 Sep 1997 07:46:12 +0200 <341E1D24.75C7D61C@iitb.fhg.de>
+Subject: How do I annotate ...?
+
+
+Harald writes,
+
+> a few days ago someone remarked that there is not much traffic on
+> this mailing list. May I speculate that the reason is that everybody
+> knows that (s)he needs something like lclint, but finds out soon,
+> that it is almost impossible to annotate non-trivial programs such
+> that lclint does not complain? (This is no flame against lclint,
+> it only my observation.)
+
+I'd claim there is a fair bit of experience to the contrary --- for
+example, the lclint source code is annotated fairly completely (and I
+would claim this as a non-trivial program).  
+
+In general, though, a design goal of lclint is that it is flexible
+enough that a programmer can choose a level of annotations best suited
+to a particular program, and control checking accordingly.  The goal of
+adding annotations to a program is to enable better checking and
+detection of errors that otherwise would not be found (as well as to
+provide clearer documentation to make maintainence easier).
+
+> However, it seems to be impossible to annotate it such that programs
+> using the library/macro-package are not totally on error according
+> to lclint.
+
+This is quite likely true --- many of the problems lclint attempts to
+detect are undecidable (e.g., it is impossible to analyze aliases
+completely).  When lclint is reporting an error for something, but you
+are convinced there is no problem in the code, use a syntactic comment
+to suppress the warning (and document the problem).
+
+> It would be nice if someone who knows lclint better than me has a
+> look at the header file presented below and tells me if it is at
+> all possible to add good annotations. The whole library can be found
+> in http://www.iitb.fhg.de/~kir/software/
+
+By itself, you can't really tell what annotations in the header file.
+Annotations in the header file would help a programmer know how to use
+the interface you are providing, and enable lclint to check that the
+implementation code is consistent with this interface.  
+
+For an example, you probably want:
+
+typedef struct s_Dyla {
+  size_t size;		     /* currently allocated elems in v */
+  unsigned short minAddSize; /* min num of elems to add on realloc */
+  unsigned short sizof;      /* size of the elements in v */
+  size_t ff;                 /* first free entry in v */
+  /*@only@*/ void *v;
+} *Dyla;
+
+The /*@only@*/ annotion on v mean it is the only pointer to that
+storage, and the storage must be deallocated before this reference is
+lost.
+
+I tried downloading the code, but it depends on some header files that
+are not available on my system.  Perhaps what would be more instructive,
+is if you post a stylized fragment of the program that illustrates the
+kind of problems you mean.
+
+--- Dave
+
+
+
+</pre>
+<A HREF="150.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="152.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

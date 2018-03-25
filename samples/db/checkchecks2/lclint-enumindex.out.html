@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body>
+<pre>
+gmake[1]: Entering directory `/u/evs/lclint/web/sample/checkchecks2'
+lclint +lh -enumint -type -allimponly +allmacros +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.0 --- 20 Feb 96
+
+< reading spec <A HREF="employee.lcl.html">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html">dbase.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html">employee.c</A> >
+< checking <A HREF="eref.c.html">eref.c</A> >
+< checking <A HREF="empset.c.html">empset.c</A> >
+<A HREF="empset.c.html#line38">empset.c:38,6</A>: Function empset_insertUnique inconsistently redeclared with
+                  known in globals list
+  A function, variable or constant is redefined with a different type.  Use
+  -incondefs to suppress message.
+   <A HREF="empset.lcl.html#line27">empset.lcl:27</A>: Specification of empset_insertUnique
+<A HREF="empset.c.html#line144">empset.c:144,6</A>: Function empset_initMod inconsistently redeclared with known in
+                   globals list
+   <A HREF="empset.lcl.html#line83">empset.lcl:83</A>: Specification of empset_initMod
+empset.c: (in function empset_initMod)
+<A HREF="empset.c.html#line148">empset.c:148,24</A>: Function returns with global known undefined
+  A global variable does not satisfy its annotations when control is
+  transferred.  Use -globstate to suppress message.
+   <A HREF="empset.lcl.html#line83">empset.lcl:83</A>: Storage known becomes undefined
+< checking <A HREF="ereftab.c.html">ereftab.c</A> >
+< checking <A HREF="erc.c.html">erc.c</A> >
+< checking <A HREF="dbase.c.html">dbase.c</A> >
+< checking <A HREF="drive.c.html">drive.c</A> >
+< checking macros <A HREF="bool.h.html">bool.h</A> >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 3 code errors found
+391 spec, 2868 source (1269 before pre-processing) lines in 4.38 s.
+gmake[1]: Leaving directory `/u/evs/lclint/web/sample/checkchecks2'
+</pre>
+
+<P>
+<HR>
+<A HREF="index.html"> Return </A> | <A
+HREF="http://www.sds.lcs.mit.edu/lclint.html"> LCLint Home
+Page </A> <BR> <BR>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<h3>lclint-interest message 99</h3>
+<pre>
+From evans@cs.virginia.edu Wed Sep  4 19:16:09 1996
+Date: Wed, 4 Sep 96 16:58:33 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: ralhv@aals17.alcatel.com.au
+In-Reply-To: Vinod Ralh's message of Wed, 04 Sep 1996 08:34:10 -0500 (EST) <9609032234.AA27937@aals7.alcatel.com.au>
+Subject: Subscription request - introducing myself!
+
+
+Hi Vin,
+
+> We're going to initially use lclint as a decent lint tool. After that,
+> we'll see how it goes.... We're going to use Purify to catch dynamic
+> memory problems and we'll be evaluating Cantata (from IPL) as a testing
+> tool.
+
+If you do employ lclint's memory checking also, it'll be interesting to
+see what kinds of errors are more effectively detected at run-time vs.
+compile-time.  
+
+> As for lclint - how about doing something like Meyers book for Code Wizard
+> but for C. There's a classic book about the Traps and Pitfalls of C by
+> Koenig - I'm sure it would be very difficult to implement but a great
+> challenge!
+
+Some of the checks done by LCLint are indirectly inspired by the "Traps
+and Pitfalls" book (in particular the macro checking), and some others
+are from Van der Linden, "Expert C Programming: Deep C Secrets" book.  I
+don't have a copy of "Traps and Pitfalls" handy, but my recollection is
+that some of the problems are things that were corrected by the ANSI
+standard.
+
+> Also, what about introducing metrics such as code complexity measurements
+> into lclint. I realise that they must be taken with a pinch of salt but
+> can be good indicators of dodgey practices.
+
+Yes, adding metrics to lclint has been suggested by a number of people.
+I presume some of the standard metrics could be added quite easily
+(although I have no plans to do this --- but the source code is
+available if anyone wants to give it a try).  More interesting would be
+to consider devising new kinds of metrics that exploit the extra
+information available to lclint (e.g., abstraction barriers, shared
+pointers, clean interfaces), although I don't have any specific ideas as
+to what would be useful here in a metric.
+
+--- Dave
+
+
+</pre>
+<A HREF="98.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="100.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

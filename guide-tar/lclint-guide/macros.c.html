@@ -1,0 +1,81 @@
+<A NAME="line16"></A><html><head>
+<title>macros.c</title>
+</head><body>
+<h3>macros.c</h3>
+<PRE>
+<A NAME="line1"></A>/*@notfunction@*/
+<A NAME="line2"></A># define NUMTYPES int /*@alt unsigned int, char, float, double@*/
+<A NAME="line3"></A>extern NUMTYPES square (NUMTYPES x);
+<A NAME="line4"></A> 
+<A NAME="line5"></A>int f (int x, char c, float f, double d, char *s)
+<A NAME="line6"></A>{
+<A NAME="line7"></A>  x = square (x);
+<A NAME="line8"></A>  c = square (c);
+<A NAME="line9"></A>  square (f);
+<A NAME="line10"></A>  square (d);
+<A NAME="line11"></A>  square (s);
+<A NAME="line12"></A> 
+<A NAME="line13"></A>  return (square (d));
+<A NAME="line14"></A>}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

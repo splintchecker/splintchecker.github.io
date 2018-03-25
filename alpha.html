@@ -1,0 +1,93 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>Building LCLint</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<body>
+<center><h2>
+Source Code Installation
+</h2></center>
+<p>
+
+LCLint should compile effortlessly on standard Unix systems, and with
+a bit of effort on non-Unix platforms.  If you produce a port for a
+non-Unix platform, please let <a
+href="mailto:lclint@cs.virginia.edu">us</a>
+(<em>lclint@cs.virginia.edu</em>) know.  <p>
+<p>
+<a href="changes.html">Development Change Log Notes</a>
+<p>
+To build LCLint you need:
+<ul>
+<li> a (hopefully ANSI-conforming) C compiler.  GNU <tt>gcc</tt> is recommended,
+but most modern C compilers should work.
+<li> <tt>make</tt>, the GNU make utility. If you don't have <tt>make</tt> installed on your system, download it from <tt>ftp.gnu.org</tt>.
+<li> standard Unix tools: <tt>gzip</tt>, <tt>tar</tt>
+</ul>
+<p>
+Instructions:
+<ol>
+  
+<li> 
+Download
+<a
+href="downloads/lclint-3.0.0.19.src.tgz"><em>http://lclint.cs.virginia.edu/downloads/lclint-3.0.0.19.src.tgz</em></a>.
+</a>
+
+<p>
+Copy this package to the directory where you want to build LCLint.  When
+the tar file is extracted, it will create an lclint-3.0.0.19 subdirectory. 
+<p>
+<li>Extract files from the tar archive: <tt>tar xzf lclint-3.0.0.19.src.tgz</tt>
+<p>
+<li>Enter the extracted directory: <tt>cd lclint-3.0.0.19</tt>.
+<p>
+<li>Run: <tt>configure --prefix=<em>directory</em></tt>
+  <blockquote>
+   This will create a Makefile with settings for your system.  Use <tt>--prefix=<em>directory</em></tt> if you want to install LCLint in prefix directory <em>directory</em>.
+     
+</blockquote>
+<p>
+<li>Run: <tt>make</tt> (GNU's make utility - this may be named something else on your system, often <tt>gmake</tt>)
+<blockquote>
+   It is best to do this in an emacs shell or a buffered terminal,
+   so you can scroll through the output.
+</blockquote>
+<li>Set environment variables:
+<blockquote>
+<b>LARCH_PATH</b> - path to search for lclint libraries and
+initializations files. If you are using the standard directories, this
+should be <tt>.:<em>base-directory</em>/lclint-3.0.0.19/lib</tt>.
+<p>
+<b>LCLIMPORTDIR</b> - directory containing lcl imports files. If you are using
+the standard directories, this is <tt><em>base-directory</em>/lclint-3.0.0.19/imports</tt>.
+</blockquote>
+Put the commands to set these variables (the actual commands will depend
+on the shell you are using) in one of your initialization dotfiles
+(usually <tt>~/.environment</tt>). 
+<p>
+Set up your <b>PATH</b> to include the directory containing
+<tt>lclint-3.0.0.19/bin/lclint</tt>, or move the binary to a directory on
+your command path.
+<p>
+<li>Run: <tt>make test</tt>
+<blockquote>
+   Examine the test output. If there are errors, send a bug
+   report to <a href="mailto:lclint-bug@cs.virginia.edu"><em>lclint-bug@cs.virginia.edu</em></a>
+</blockquote>
+<li>If you want to install the LCLint binary and libraries in a different directory (set when you ran configure), run: <tt>make install</tt>
+
+<li>Subscribe to the lclint-announce mailing list by sending a message
+to <a
+href="mailto:majordomo@virginia.edu"><em>majordomo@virginia.edu</em></a>
+containing the body:
+<pre>
+     subscribe lclint-announce
+     </pre>
+     
+</ol>
+<p>
+<!--#include virtual="footer.html"-->

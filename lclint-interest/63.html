@@ -1,0 +1,96 @@
+<h3>lclint-interest message 63</h3>
+<pre>
+From eric@rrinc.com Mon Mar 25 10:59:58 1996
+Sender: eric@access.rrinc.com
+Date: Sun, 24 Mar 1996 20:08:27 -0500
+From: Eric Bloodworth <eric@rrinc.com>
+Organization: Recognition Research, Inc
+X-Mailer: Mozilla 2.01 (X11; I; AIX 2)
+Mime-Version: 1.0
+To: David Evans <evans@cs.virginia.edu>
+Cc: lclint-interest@larch.lcs.mit.edu
+Subject: Re: can lclint detect this leak? 
+References: <9603241833.AA20390@larch.lcs.mit.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+David Evans wrote:
+> 
+> Eric,
+> 
+> 
+> The free_booga_s reveals a limitation of what can be expressed with
+> lclint annotations.  If I understand correctly, the intent of this
+> function is to deallocate all storage in fields from a struct pointer,
+> but not the structure itself.  If the structure were deallocated also,
+> you would use /*@only@*/ annotation on the parameter (and an error would
+> be reported for the existing implementation since it does not free the
+> storage the parameter points to).
+> 
+> For the storage leak, lclint is unable to detect this since it doesn't
+> check storage contained in fields of local structures.  This should
+> probably be considered a bug, that will be fixed in an update to lclint
+> soon.
+> 
+> In general, lclint will not be able to correctly analyze code that
+> depends on functions that deallocate some pointer-to-structure fields
+> without deallocating the structure since there is no way to express this
+> with the annotations.  So, short of restructuring the code to avoid
+> this, the only thing I can recommend is to use syntactic comments to
+> suppress the relevant messages.
+> 
+> --- Dave
+
+The code sample was an example of the kind of leaks which it would be
+useful for us to be able to detect with lclint.  Essentially, the programmer
+allocates a structure on the stack and then calls a function to
+allocate storage associated with the structure.  There is usually other 
+fields in the structure that the caller has access to. If the programmer 
+doesn't call the corresponding deallocation function on the structure 
+before returning from the function in which it was allocated on the 
+stack, it is usually a leak.  
+
+This technique is mainly used to reduce
+the number of heap allocations needed for a software object.  Instead of 
+allocating the booga_s structure and then the variable sized data, 
+only the variable sized data need be allocated on the heap.  
+In the example, I should have made "bar" variable sized to be clearer.  
+
+These kinds of allocations are rampant throughout our code-base, 
+and it probably wouldn't make as much sense to use lclint
+if it can't help with them.  Are there any plans to add the kind 
+of annotations that would allow the detection of this leak?  
+Something like: 
+
+extern int alloc_booga_s(booga_s *stuff, <other params>) /*@creates *stuff@*/;
+extern void free_booga_s(booga_s *stuff)  /*@destroys *stuff@*/;
+
+A more general solution (I'm guessing) would be a minor(?) extension 
+of the annotation syntax to the fields of structures:
+
+extern int alloc_booga_s(booga_s *stuff /*@out stuff->bar@*/); 
+extern int free_booga_s(booga_s *stuff /*@in stuff->bar@*/); 
+
+>From the messages lclint produces, it seems like it already 
+keeps track of the state of structure fields, there's just no way 
+to express the above with the current annotation syntax. 
+
+ -- Eric
+
+
+</pre>
+<A HREF="62.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="64.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

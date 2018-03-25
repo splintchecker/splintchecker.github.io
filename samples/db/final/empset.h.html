@@ -1,0 +1,109 @@
+<A NAME="line14"></A><html><head>
+<title>empset.h</title>
+</head><body>
+<h3>empset.h</h3>
+<PRE>
+<A NAME="line1"></A># ifndef EMPSET_H
+<A NAME="line2"></A># define EMPSET_H
+<A NAME="line3"></A> 
+<A NAME="line4"></A>#include "<A HREF="eref.h.html">eref.h</A>"
+<A NAME="line5"></A>#include "<A HREF="erc.h.html">erc.h</A>"
+<A NAME="line6"></A>#include "<A HREF="ereftab.h.html">ereftab.h</A>"
+<A NAME="line7"></A> 
+<A NAME="line8"></A>typedef erc empset;
+<A NAME="line9"></A> 
+<A NAME="line10"></A>/*
+<A NAME="line11"></A>  Abstraction function, toEmpSet:
+<A NAME="line12"></A>    e \in toEmpSet(s) == 
+<A NAME="line13"></A>      exists er (count(er, s.val) = 1
+<A NAME="line14"></A>        /\ getERef(known, e) = er)
+<A NAME="line15"></A> 
+<A NAME="line16"></A>  Rep invariant:
+<A NAME="line17"></A>    forall s: empset
+<A NAME="line18"></A>      (forall er: eref (count(er, s.val) &lt;= 1)
+<A NAME="line19"></A>      /\ s.activeIters = 0
+<A NAME="line20"></A>      /\ forall er: eref (count(er, s.val) = 1
+<A NAME="line21"></A>        =&gt; in(known, er)))
+<A NAME="line22"></A>*/
+<A NAME="line23"></A> 
+<A NAME="line24"></A>#include "<A HREF="empset.lh.html">empset.lh</A>"
+<A NAME="line25"></A> 
+<A NAME="line26"></A># define empset_create()  (erc_create())
+<A NAME="line27"></A># define empset_final(s) (erc_final(s))
+<A NAME="line28"></A># define empset_size(es) (erc_size(es))
+<A NAME="line29"></A># define empset_choose(es) (eref_get(erc_choose(es)))
+<A NAME="line30"></A># define empset_sprint(es) (erc_sprint(es))
+<A NAME="line31"></A> 
+<A NAME="line32"></A>#define empset_elements(e, m_x) \
+<A NAME="line33"></A>   erc_elements(e, m_y) { employee m_x = eref_get(m_y);
+<A NAME="line34"></A>#define end_empset_elements        } end_erc_elements
+<A NAME="line35"></A> 
+<A NAME="line36"></A># endif
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

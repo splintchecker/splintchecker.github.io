@@ -1,0 +1,57 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/memchecks3'
+lclint +lh -allimponly -macrovarprefixexclude +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+eref.c: (in function eref_initMod)
+eref.c:56,14: Global storage eref_Pool contains 2 undefined fields when call
+                 returns: status, size
+  Storage derivable from a parameter, return value or global is not defined.
+  Use /*@out@*/ to denote passed or returned storage which need not be defined.
+  Use -compdef to suppress message.
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+erc.c: (in function erc_delete)
+erc.c:112,5: Arrow access from possibly null pointer prev: prev->next
+  A possibly null pointer is dereferenced or misused. Value is either the
+  result of a function which may return null (in which case, code should check
+  it is not null), or a global, parameter or structure field declared with the
+  null qualifier. Use -null to suppress message.
+   erc.c:108,29: Storage prev may become null
+< checking dbase.c >
+< checking drive.c >
+drive.c: (in function main)
+drive.c:140,16: Fresh storage em1 not released before assignment:
+                   em1 = empset_create()
+  A memory leak has been detected. Newly-allocated or only-qualified storage is
+  not released before the last reference to is it lost. Use -mustfree to
+  suppress message.
+   drive.c:35,3: Fresh storage em1 allocated
+drive.c:146,16: Fresh storage em2 not released before assignment:
+                   em2 = empset_create()
+   drive.c:74,3: Fresh storage em2 allocated
+drive.c:147,3: Fresh storage em3 not released before assignment:
+                  em3 = empset_disjointUnion(em2, em1)
+   drive.c:87,3: Fresh storage em3 allocated
+drive.c:163,12: Fresh storage em1 not released before return
+   drive.c:140,16: Fresh storage em1 allocated
+drive.c:163,12: Fresh storage em2 not released before return
+   drive.c:146,16: Fresh storage em2 allocated
+drive.c:163,12: Fresh storage em3 not released before return
+   drive.c:147,3: Fresh storage em3 allocated
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 8 code errors found
+391 spec, 3001 source (1232 before pre-processing) lines in 4.52 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/memchecks3'

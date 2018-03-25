@@ -1,0 +1,28 @@
+LCLint 2.2 --- 25 Aug 96
+
+annotglobs.c: (in function initialize)
+<A HREF="annotglobs.c.html#line14" target="source">annotglobs.c:14,17</A>: Undef global globnum used before
+                       definition
+  An rvalue is used that may not be initialized to a
+  value on some execution path. (-usedef will suppress
+  message)
+<A HREF="annotglobs.c.html#line16" target="source">annotglobs.c:16,2</A>: Global storage globname contains 1
+    undefined field when call returns: firstname
+  Storage derivable from a parameter, return value or
+  global is not defined. Use /*@out@*/ to denote
+  passed or returned storage which need not be
+  defined. (-compdef will suppress message)
+annotglobs.c: (in function finalize)
+<A HREF="annotglobs.c.html#line22" target="source">annotglobs.c:22,2</A>: Only storage globname.firstname
+    (type char *) derived from killed global is not
+    released (memory leak)
+  A storage leak due to incomplete deallocation of a
+  structure or deep pointer is suspected. Unshared
+  storage that is reachable from a reference that is
+  being deallocated has not yet been deallocated.
+  LCLint assumes when an object is passed as an out
+  only void pointer that the outer object will be
+  deallocated, but the inner objects will not.
+  (-compdestroy will suppress message)
+
+Finished LCLint checking --- 3 code errors found

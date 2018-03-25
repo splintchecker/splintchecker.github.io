@@ -1,0 +1,85 @@
+<h3>lclint-interest message 18</h3>
+<pre>
+Date: Thu, 10 Nov 94 15:44:30 -0500
+From: evs (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: raymie
+Subject: [raymie@larch.lcs.mit.edu: LCLint research]
+
+
+[[[ I've taken a few liberties editing this message on long-range goals for
+    LCLint research.   --- Dave ]]]
+
+From: Raymie Stata <raymie@larch.lcs.mit.edu>
+Subject: LCLint research
+
+
+Just to put my thoughts in a final form.
+
+I see two categories of work here:
+
+1. Using specifications and tools to "fix" "broken" languages.
+Includes: extended type-checking (eg, bool checking), making it easier
+to use existing language facilities (eg, .lh mechanism), adding
+missing features to languages (eg, abstract types, iterators,
+exceptions).
+
+2. Using specfications and tools to get static checking that goes
+beyond type checking (eg, modifies checking).  Actually, there are two
+subcategories here.  (2a), there's extended checking where the
+language being checked cannot be changed.  (2b) there's extended
+checking where the language being checked _can_ be changed.
+
+I would classify the LCLint work as falling under (1) and (2a).  One
+question for your proposal is if you want to continue going in both
+directions, if you want to concentrate on one.  (If you want an
+opinion on where the _hard_ research questions are, my guess is that
+there are more of them in (2) than in (1).)
+
+Regarding choice of language, for both (1) and (2a) it seems to make
+sense to pick a widely-used, broken language ((2b) is another story,
+but you don't seem as interested in this).  Both C and C++ fit this
+description (IMO).  Personally, I would stick to C.  More people are
+using it.  It's more stable.  Also, C is a _much_ easier language to
+process: C++ is complicated by terrible parsing requirements, a hairy
+overloading scheme, and a promise to do all kinds of stuff
+automatically if the user doesn't do it explicitly.  Finally, in C the
+main problem is a _lack_ of features, versus C++ where the problem is
+_broken_ features (eg, parameterized types).  Seems to me you'd have
+an easier time of trying to add features than trying to fix them.
+(And if you thought C was hard to parse...)
+
+Finally, two detailed suggestions of where to go assuming C:
+
+1. Parameterized types for void*-based types.  (i.e., an easy way to get
+lists/sets or an arbitrary abstract type.)
+
+2. A very interesting use for LCLint so far has been to ensure that a
+program does not depend on certain implementation details before
+changing those details.  Perhaps this could be pursued deeper.  For
+example, regarding ADTs, perhaps you can minimize even further the
+amount of specification needed to perform this task.  More generally
+what people are looking for is a way of checking that it's safe to
+make certain changes; perhaps there are other things people might want
+to check that you can support.  Unfortunately I can't think of
+anything off the top of my head, but it seems like something to look
+at.
+
+  Raymie
+
+</pre>
+<A HREF="17.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="19.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

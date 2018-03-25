@@ -1,0 +1,102 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/memchecks1'
+lclint +lh +allimponly -macrovarprefixexclude +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+employee.c: (in function employee_setName)
+employee.c:14,11: Parameter 1 (e->name) to function strcpy is declared unique
+                     but may be aliased externally by parameter 2 (na)
+  A unique or only parameter may be aliased by some other parameter or visible
+  global. Use -mayaliasunique to suppress message.
+< checking eref.c >
+eref.c: (in function eref_initMod)
+eref.c:62,3: Implicitly only storage eref_Pool.conts not released before
+    assignment: eref_Pool.conts = (employee *)malloc(size * sizeof(employee))
+  A memory leak has been detected. Newly-allocated or only-qualified storage is
+  not released before the last reference to is it lost. Use -mustfree to
+  suppress message.
+eref.c:70,3: Implicitly only storage eref_Pool.status not released before
+    assignment: eref_Pool.status = (eref_status *)malloc(size *
+    sizeof(eref_status))
+eref.c:84,2: Global storage *(eref_Pool.conts) contains 4 undefined fields when
+                call returns: ssNum, salary, gen, j
+  Storage derivable from a parameter, return value or global is not defined.
+  Use /*@out@*/ to denote passed or returned storage which need not be defined.
+  Use -compdef to suppress message.
+eref.c:84,2: Global storage eref_Pool contains 1 undefined field when call
+                returns: status
+< checking empset.c >
+empset.c: (in function empset_insertUnique)
+empset.c:44,5: Clauses exit with er referencing fresh storage in true branch,
+                  local storage in continuation
+  The state of a variable is different depending on which branch is taken. This
+  means no annotation can sensibly be applied to the storage. Use -branchstate
+  to suppress message.
+   empset.c:41,7: Fresh storage er allocated
+empset.c: (in function empset_intersect)
+empset.c:126,2: Fresh storage toDelete not released before return
+   empset.c:112,31: Fresh storage toDelete allocated
+< checking ereftab.c >
+< checking erc.c >
+erc.c: (in function erc_create)
+erc.c:39,10: Null storage c->vals derivable from return value: c
+  A possibly null pointer is dereferenced or misused. Value is either the
+  result of a function which may return null (in which case, code should check
+  it is not null), or a global, parameter or structure field declared with the
+  null qualifier. Use -null to suppress message.
+   erc.c:37,13: Storage c->vals becomes null
+erc.c: (in function erc_clear)
+erc.c:55,2: Function returns with null storage derivable from parameter c->vals
+   erc.c:53,13: Storage c->vals becomes null
+erc.c: (in function erc_final)
+erc.c:60,9: Implicitly temp storage c passed as only param: free (c)
+  Temp storage (associated with a formal parameter) is transferred to a
+  non-temporary reference. The storage may be released or new aliases created.
+  Use -temptrans to suppress message.
+erc.c: (in function erc_delete)
+erc.c:104,6: Implicitly only storage prev->next not released before assignment:
+                prev->next = elem->next
+erc.c:104,6: Clauses exit with elem referencing implicitly only storage in true
+                branch, local storage in false branch
+   erc.c:102,6: Storage elem becomes implicitly only
+erc.c:104,6: Storage c->vals->next is kept in one path, but live in another.
+   erc.c:104,6: Storage c->vals->next becomes kept
+erc.c:108,16: Released storage c->vals reachable from parameter at return point
+  Memory is used after it has been released (either by passing as an only param
+  or assigning to and only global. Use -usereleased to suppress message.
+   erc.c:106,10: Storage c->vals is released
+< checking dbase.c >
+dbase.c: (in function uncheckedHire)
+dbase.c:121,2: Fresh storage er not released before return
+   dbase.c:108,3: Fresh storage er allocated
+< checking drive.c >
+drive.c: (in function main)
+drive.c:140,16: Fresh storage em1 not released before assignment:
+                   em1 = empset_create()
+   drive.c:35,3: Fresh storage em1 allocated
+drive.c:146,16: Fresh storage em2 not released before assignment:
+                   em2 = empset_create()
+   drive.c:74,3: Fresh storage em2 allocated
+drive.c:147,3: Fresh storage em3 not released before assignment:
+                  em3 = empset_disjointUnion(em2, em1)
+   drive.c:87,3: Fresh storage em3 allocated
+drive.c:163,12: Fresh storage em1 not released before return
+   drive.c:140,16: Fresh storage em1 allocated
+drive.c:163,12: Fresh storage em2 not released before return
+   drive.c:146,16: Fresh storage em2 allocated
+drive.c:163,12: Fresh storage em3 not released before return
+   drive.c:147,3: Fresh storage em3 allocated
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 21 code errors found
+392 spec, 3011 source (1207 before pre-processing) lines in 4.52 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/memchecks1'

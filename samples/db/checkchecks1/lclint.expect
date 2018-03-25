@@ -1,0 +1,279 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/checkchecks1'
+lclint +lh +checks -allimponly +allmacros +showsummary +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+employee.c: (in function employee_sprint)
+employee.c:29,28: Read-only string literal storage used as initial value for
+                     unqualified storage: gender[0] = "male"
+  A read-only string literal is assigned to a non-observer reference. Use
+  -readonlytrans to suppress message.
+employee.c:29,36: Read-only string literal storage used as initial value for
+                     unqualified storage: gender[1] = "female"
+employee.c:29,46: Read-only string literal storage used as initial value for
+                     unqualified storage: gender[2] = "?"
+employee.c:30,27: Read-only string literal storage used as initial value for
+                     unqualified storage: jobs[0] = "manager"
+employee.c:30,38: Read-only string literal storage used as initial value for
+                     unqualified storage: jobs[1] = "non-manager"
+employee.c:30,53: Read-only string literal storage used as initial value for
+                     unqualified storage: jobs[2] = "?"
+employee.c:33,5: Array fetch using non-integer, gender: gender[e.gen]
+  To allow enum types to index arrays, use +enumindex. Use +enumindex to
+  suppress message.
+employee.c:33,20: Array fetch using non-integer, job: jobs[e.j]
+< checking eref.c >
+eref.c: (in function eref_alloc)
+eref.c:12,14: Undocumented use of file static eref_Pool
+  A checked global variable is used in the function, but not listed in its
+  globals clause. By default, only globals specified in .lcl files are checked.
+  To check all globals, use +allglobals. To check globals selectively use
+  /*@checked@*/ in the global declaration. Use -globs to suppress message.
+eref.c:12,51: Undocumented use of file static eref_Pool
+eref.c:12,73: Undocumented use of file static eref_Pool (in post loop test)
+eref.c:16,14: Undocumented use of file static eref_Pool
+eref.c:18,7: Undocumented use of file static eref_Pool
+eref.c:19,24: Undocumented use of file static eref_Pool
+eref.c:20,14: Undocumented use of file static eref_Pool
+eref.c:18,7: Undocumented modification of eref_Pool.conts:
+    eref_Pool.conts = (employee *)realloc(eref_Pool.conts, 2 * eref_Pool.size *
+    sizeof(employee))
+  An externally-visible object is modified by a function, but not listed in its
+  modifies clause. Use -mods to suppress message.
+eref.c:22,11: Undocumented use of file static eref_Pool
+eref.c:28,7: Undocumented use of file static eref_Pool
+eref.c:29,27: Undocumented use of file static eref_Pool
+eref.c:30,10: Undocumented use of file static eref_Pool
+eref.c:28,7: Undocumented modification of eref_Pool.status:
+    eref_Pool.status = (eref_status *)realloc(eref_Pool.status, 2 *
+    eref_Pool.size * sizeof(eref_status))
+eref.c:32,11: Undocumented use of file static eref_Pool
+eref.c:38,7: Undocumented use of file static eref_Pool
+eref.c:38,26: Undocumented use of file static eref_Pool
+eref.c:38,7: Undocumented modification of eref_Pool.size:
+                eref_Pool.size = 2 * eref_Pool.size
+eref.c:40,27: Undocumented use of file static eref_Pool
+eref.c:41,9: Undocumented use of file static eref_Pool
+eref.c:41,9: Undocumented modification of eref_Pool.status[]:
+                eref_Pool.status[i] = avail
+eref.c:41,37: Undocumented use of file static eref_Pool (in post loop test)
+eref.c:44,3: Undocumented use of file static eref_Pool
+eref.c:44,3: Undocumented modification of eref_Pool.status[]:
+                eref_Pool.status[res] = used
+eref.c: (in function eref_initMod)
+eref.c:54,8: Undocumented use of file static needsInit
+eref.c:59,3: Undocumented use of file static needsInit
+eref.c:59,3: Undocumented modification of needsInit: needsInit = FALSE
+eref.c:63,3: Undocumented modification of eref_Pool.conts:
+                eref_Pool.conts = (employee *)malloc(size * sizeof(employee))
+eref.c:71,3: Undocumented modification of eref_Pool.status:
+    eref_Pool.status = (eref_status *)malloc(size * sizeof(eref_status))
+eref.c:79,3: Undocumented modification of eref_Pool.size: eref_Pool.size = size
+eref.c:84,7: Undocumented modification of eref_Pool.status[]:
+                eref_Pool.status[i] = avail
+eref.c: (in function eref_free)
+eref.c:91,3: Undocumented use of file static eref_Pool
+eref.c:91,3: Undocumented modification of eref_Pool.status[]:
+                eref_Pool.status[er] = avail
+eref.c: (in function eref_assign)
+eref.c:96,3: Undocumented use of file static eref_Pool
+eref.c:96,3: Undocumented modification of eref_Pool.conts[]:
+                eref_Pool.conts[er] = e
+eref.c: (in function eref_get)
+eref.c:101,10: Undocumented use of file static eref_Pool
+< checking empset.c >
+empset.c:5,6: Name _empset_get is in the implementation name space (any
+                 identifier beginning with underscore)
+  External name is reserved for system in ANSI standard. Use -ansireserved to
+  suppress message.
+empset.c: (in function empset_insertUnique)
+empset.c:37,27: Undocumented use of global known
+empset.c:43,23: Undocumented use of global known
+empset.c: (in function empset_initMod)
+empset.c:140,7: Undocumented use of file static initDone
+empset.c:147,3: Undocumented use of global known
+empset.c:147,3: Undocumented modification of known: known = ereftab_create()
+empset.c:147,3: Only storage assigned to unqualified: known = ereftab_create()
+  The only reference to this storage is transferred to another reference that
+  does not have an aliasing annotation. This may lead to a memory leak, since
+  the new reference is not necessarily released. Use -onlyunqglobaltrans to
+  suppress message.
+empset.c:148,3: Undocumented use of file static initDone
+empset.c:148,3: Undocumented modification of initDone: initDone = TRUE
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+dbase.c: (in macro numERCS)
+dbase.c:16,20: Incompatible types for + (enum { mMGRS, fMGRS, mNON, fNON },
+                  int): lastERC - firstERC + 1
+  Types are incompatible. Use -type to suppress message.
+dbase.c: (in function db_initMod)
+dbase.c:26,7: Undocumented use of global initDone
+dbase.c:37,8: Assignment of employeeKinds to int: i = firstERC
+dbase.c:37,22: Operands of <= have incompatible types (int, employeeKinds):
+                  i <= lastERC
+dbase.c:39,7: Undocumented use of global db
+dbase.c:39,7: Undocumented modification of db[]: db[i] = erc_create()
+dbase.c:39,7: Only storage assigned to unqualified: db[i] = erc_create()
+dbase.c:37,22: Incompatible types for <= (int, employeeKinds) (in post loop
+                  test): i <= lastERC
+dbase.c:42,3: Undocumented use of global initDone
+dbase.c:42,3: Undocumented modification of initDone: initDone = TRUE
+dbase.c:45,6: Name _db_ercKeyGet is in the implementation name space (any
+                 identifier beginning with underscore)
+dbase.c:55,6: Name _db_keyGet is in the implementation name space (any
+                 identifier beginning with underscore)
+dbase.c: (in function _db_keyGet)
+dbase.c:60,8: Assignment of employeeKinds to int: i = firstERC
+dbase.c:60,22: Operands of <= have incompatible types (int, employeeKinds):
+                  i <= lastERC
+dbase.c:60,22: Incompatible types for <= (int, employeeKinds) (in post loop
+                  test): i <= lastERC
+dbase.c:72,5: Name _db_addEmpls is in the implementation name space (any
+                 identifier beginning with underscore)
+dbase.c: (in function uncheckedHire)
+dbase.c:118,19: Undocumented use of global db
+dbase.c:118,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+dbase.c:120,19: Undocumented use of global db
+dbase.c:120,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+dbase.c:123,19: Undocumented use of global db
+dbase.c:123,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+dbase.c:125,19: Undocumented use of global db
+dbase.c:125,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+dbase.c: (in function fire)
+dbase.c:132,8: Assignment of employeeKinds to int: i = firstERC
+dbase.c:132,22: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+dbase.c:134,20: Undocumented use of global db
+dbase.c:138,19: Undocumented use of global db
+dbase.c:132,22: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+dbase.c: (in function promote)
+dbase.c:154,23: Undocumented use of global db
+dbase.c:154,23: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+dbase.c:158,27: Undocumented use of global db
+dbase.c:158,27: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+dbase.c:170,19: Undocumented use of global db
+dbase.c:170,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+dbase.c:171,19: Undocumented use of global db
+dbase.c:171,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+dbase.c:175,19: Undocumented use of global db
+dbase.c:175,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+dbase.c:176,19: Undocumented use of global db
+dbase.c:176,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+dbase.c: (in function query)
+dbase.c:222,9: Assignment of employeeKinds to int: i = firstERC
+dbase.c:222,23: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+dbase.c:223,32: Undocumented use of global db
+dbase.c:222,23: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+dbase.c:226,29: Undocumented use of global db
+dbase.c:226,29: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+dbase.c:227,30: Undocumented use of global db
+dbase.c:227,30: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+dbase.c:230,29: Undocumented use of global db
+dbase.c:230,29: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+dbase.c:231,30: Undocumented use of global db
+dbase.c:231,30: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+dbase.c:238,29: Undocumented use of global db
+dbase.c:238,29: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+dbase.c:239,30: Undocumented use of global db
+dbase.c:239,30: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+dbase.c:242,25: Undocumented use of global db
+dbase.c:242,25: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+dbase.c:244,25: Undocumented use of global db
+dbase.c:244,25: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+dbase.c:250,29: Undocumented use of global db
+dbase.c:250,29: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+dbase.c:251,30: Undocumented use of global db
+dbase.c:251,30: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+dbase.c:254,25: Undocumented use of global db
+dbase.c:254,25: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+dbase.c:256,25: Undocumented use of global db
+dbase.c:256,25: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+dbase.c:259,1: Suspect object listed in modifies of query not modified: s
+  An object listed in the modifies clause is not modified by the implementation
+  of the function. The modification may not be detected if it is done through a
+  call to an unspecified function. Use -mustmod to suppress message.
+   dbase.lcl:49: Specification of query
+dbase.c: (in function db_print)
+dbase.c:268,8: Assignment of employeeKinds to int: i = firstERC
+dbase.c:268,22: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+dbase.c:270,30: Undocumented use of global db
+dbase.c:268,22: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+< checking drive.c >
+drive.c: (in function main)
+drive.c:128,22: Assignment of db_status to int: j = hire(e)
+< checking macros bool.h >
+< global checks >
+dbase.c:18,17: Variable db exported but not declared in header file
+  A variable declaration is exported, but does not appear in a header file.
+  (Used with exportheader.) Use -exportheadervar to suppress message.
+empset.c:5,6: Function _empset_get exported but not declared in header file
+  A declaration is exported, but does not appear in a header file. Use
+  -exportheader to suppress message.
+   empset.c:15,1: Definition of _empset_get
+dbase.c:20,6: Variable initDone exported but not declared in header file
+dbase.c:45,6: Function _db_ercKeyGet exported but not declared in header file
+   dbase.c:53,1: Definition of _db_ercKeyGet
+dbase.c:55,6: Function _db_keyGet exported but not declared in header file
+   dbase.c:70,1: Definition of _db_keyGet
+dbase.c:72,5: Function _db_addEmpls exported but not declared in header file
+   dbase.c:89,1: Definition of _db_addEmpls
+< cleaning ......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+usedef                       0           1
+exporttype                   0           5
+globs                       57           1
+macroempty                   0           1
+compdef                      0           1
+onlyunqglobaltrans           2           0
+readonlytrans                6           0
+mods                        16           0
+mustmod                      1           0
+ansireserved                 4           0
+sizeoftype                   0           6
+type                        17           5
+enumindex                   24           0
+exportheader                 4           0
+exportheadervar              2           0
+                          ========  =========
+Total:                     133          20
+
+Finished LCLint checking --- 133 code errors found
+391 spec, 2967 source (1247 before pre-processing) lines in 4.77 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/checkchecks1'

@@ -1,0 +1,79 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/checkchecks1'
+lclint +lh -enumint -type -allimponly +allmacros +showscan +stats +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+Warning: setting +showscan redundant with current value
+Warning: setting +stats redundant with current value
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+employee.c: (in function employee_sprint)
+employee.c:33,5: Array fetch using non-integer, gender: gender[e.gen]
+  To allow enum types to index arrays, use +enumindex. Use +enumindex to
+  suppress message.
+employee.c:33,20: Array fetch using non-integer, job: jobs[e.j]
+< checking eref.c >
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+dbase.c: (in function uncheckedHire)
+dbase.c:118,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+dbase.c:120,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+dbase.c:123,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+dbase.c:125,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+dbase.c: (in function promote)
+dbase.c:154,23: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+dbase.c:158,27: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+dbase.c:170,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+dbase.c:171,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+dbase.c:175,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+dbase.c:176,19: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+dbase.c: (in function query)
+dbase.c:226,29: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+dbase.c:227,30: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+dbase.c:230,29: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+dbase.c:231,30: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+dbase.c:238,29: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+dbase.c:239,30: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+dbase.c:242,25: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+dbase.c:244,25: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+dbase.c:250,29: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+dbase.c:251,30: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+dbase.c:254,25: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+dbase.c:256,25: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 24 code errors found
+391 spec, 2967 source (1247 before pre-processing) lines in 4.77 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/checkchecks1'

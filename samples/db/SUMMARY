@@ -1,0 +1,142 @@
+LCLint Sample
+=============
+db: Employee Database Program
+
+The sample uses the employee database program from Appendix B of the
+Larch Book:
+
+   Guttag, John V. and Horning, James J., with Stephen J. Garland,
+   Kevin D. Jones, Andr\'es Modet, and Jeannette M. Wing, *Larch: Languages
+   and Tools for Formal Specification*, Springer-Verlag, Texts and
+   Monographs in Computer Science, 1993.
+
+The program was carefully checked by hand, and the LCL specifications
+were checked by the original LCL checker, but LCLint was not available
+to check the program before the book was published.  An account
+describing using LCLint 1.2 on the program is found in 
+
+   David Evans, *Using Specifications to Check Source Code*, 
+   MIT/LCS/TR-628, June 1994.  
+	ftp://larch.lcs.mit.edu/pub/Larch/lclint/tr.ps.Z
+
+This directory includes several versions of the db program, resulting
+from various stages of LCLint checking.
+
+In each directory, make lint will run LCLint.
+
+1. original/
+
+This is the original version published in the Larch Book.  You must have
+lsl installed to check this version.  (If not, skip to nolsl.)
+
+Here, the -weak mode is used so only the most relevant errors are
+reported.
+
+2. nolsl/
+
+Four errors involve unused variables:
+
+empset.c:28,8: Variable er declared but not used
+empset.c:135,12: Variable e declared but not used
+dbase.c:210,8: Variable er declared but not used
+dbase.c:211,12: Variable e declared but not used
+
+These are fixed simply by deleting the declaration.
+
+Two errors involve abstraction violations:
+
+erc.c:46,9: Operands of == are abstract type (eref): tmpc->val == er
+erc.c:77,11: Operands of == are abstract type (eref): elem->val == er
+
+Since eref is an abstract type, code outside the eref module should not
+depend on its representation, and the == operator does.  Instead, the
+code should use eref_equal to compare eref's.
+
+Two errors involve incompatible types:
+
+employee.c:23,9: Function strncmp expects arg 3 to be size_t gets int:
+                    maxEmployeeName
+erc.c:139,27: Function malloc expects arg 1 to be size_t gets int:
+                 erc_size(c) * (employeePrintSize + 1) + 1
+
+Since size_t is unsigned long, an int cannot be used where a size_t is
+expected.  The maxEmployeeName constant is declare in employee.lcl:
+
+   constant int maxEmployeeName;
+
+We could change this to:
+
+   imports <stdio>;  /* need stdio for size_t */
+
+   constant size_t maxEmployeeName;
+
+This leads to a new error in employee_setName:
+
+employee.c:10,11: Operands of == have incompatible types (int, size_t):
+                     i == maxEmployeeName
+
+Hence, we change the type of i, to size_t.
+
+The other error, is because the argument to malloc should be a size_t.
+We need to make sure the argument is positive --- informally, we know
+this because erc_size always returns a non-negative, and
+employeePrintSize is non-negative.  To confirm this in the code, we add
+a function,
+
+	unsigned int_toUnsigned (int x)
+	{
+           if (x < 0) /* generate run-time error */
+           else return (unsigned) x;
+        }
+
+(It would make most sense to put this in some kind of utilities library,
+but since there is none, it is added to erc.c.)
+
+The final error,
+
+drive.c: (in function main)
+drive.c:123,4: Return value (type db_status) ignored: hire(e)
+  Result returned by function call is not used.  If this is intended, can cast
+  result to (void) to eliminate message.  Use -retvalother to suppress message.
+
+Concerns an ignored result.  The code should check the status code
+returned by hire.
+
+Now, no errors are reported.  Since +relaxquals is set be the weak mode,
+an int may be passed as a long without error, since it is safe to assume
+no information is lost when the implicit conversion from int to long is
+made.
+
+The remaining seven errors involve undocumented modifications produced
+through calls to erc_iterStart in empset_disjointUnion, empset_union,
+empset_subset, ereftab_lookup, and erc_sprint.  We could fix the
+inconsistency by adding appropriate modifies clauses to these functions;
+however, this would be misleading since they should produce no client
+visible modification.  The problem is that the modification caused by
+erc_iterStart is undone before the function returns, so no modification
+is visible to the client.  For the call in ereftab_lookup, this is not
+true, since the loop may exit without undoing the modification, leading
+to a memory leak.  This fixed by replacing the return with an invokation
+of the erc_iterReturn macro which undoes the modification.  The
+/*@-mods@*/ and /*@=mods@*/ sytlize comments are used around the
+callsites, to suppress the modification error messages.
+
+3. fixweak/
+
+The fixweak directory contains the code after making the changes
+described in the last section to the nolsl version.  Now, running with
+-weak produces no message (gmake lintweak).
+
+4. useiters/
+
+5. fixstandard/
+
+6. memchecks1/
+
+7. memchecks2/
+
+8. fixchecks/
+
+9. naming/
+
+10. fixstrict/

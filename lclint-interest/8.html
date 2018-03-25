@@ -1,0 +1,39 @@
+<h3>lclint-interest message 8</h3>
+<pre>
+Date: Mon, 7 Nov 94 13:25:39 -0500
+From: evs (David Evans)
+To: wilma@deis65.cineca.it
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Wilma Penzo's message of Mon, 7 Nov 1994 18:08:49 +0100 (MET) <9411071708.AA05436@deis65.cineca.it>
+Subject: ``imports'' clause
+
+
+> It seems as if the specified operators have not been exported in the
+> right way. Nevertheless, the .lcs and .lh files are produced.
+
+The problem here is some confusion between LCL functions and LSL
+operators.  In the ensures clause, only LSL operators may be used.  So
+the specification for RAddbirthday should use the LSL operators Okay and
+Already_Known instead of Success and AlreadyKnown (which I presume were
+only defined as LCL functions).  You would also need to add an LSL
+operator comparable for Addbirthday and replace this in the
+specification.
+
+--- Dave
+
+</pre>
+<A HREF="7.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="9.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

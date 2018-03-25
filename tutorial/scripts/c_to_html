@@ -1,0 +1,11 @@
+#!/usr/cs/bin/bash
+cd $1
+echo "<html><head>" > $2.html
+echo "<title>$2</title>" >> $2.html
+echo "</head>" >> $2.html
+echo "" >> $2.html
+echo "<body>" >> $2.html
+echo "<PRE><CODE>" >> $2.html
+$INS_LINE_NUMBERS < $2 >> $2.html
+echo "</PRE></CODE>" >> $2.html
+echo "</body></html>" >> $2.html

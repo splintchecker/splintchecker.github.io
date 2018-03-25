@@ -1,0 +1,74 @@
+gmake[1]: Entering directory `/u/evs/lclint/web/sample/strictchecks'
+lclint +lh +checks +moduncon +modunconnomods +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.0 --- 21 Feb 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+< checking empset.c >
+empset.c: (in function empset_member)
+empset.c:20,27: Undetected modification possible from call to unconstrained
+                   function empset_get: empset_get
+  An unconstrained function is called in a function body where modifications
+  are checked.  Since the unconstrained function may modify anything, there may
+  be undetected modifications in the checked function.  Use -moduncon to
+  suppress message.
+empset.c: (in function empset_insert)
+empset.c:30,23: Undetected modification possible from call to unconstrained
+                   function empset_get: empset_get
+empset.c: (in function empset_delete)
+empset.c:61,8: Undetected modification possible from call to unconstrained
+                  function empset_get: empset_get
+< checking ereftab.c >
+< checking erc.c >
+erc.c: (in function erc_sprint)
+erc.c:131,13: Undetected modification possible from call to unconstrained
+                 function int_toSize: int_toSize
+< checking dbase.c >
+dbase.c: (in function db_keyGet)
+dbase.c:67,12: Undetected modification possible from call to unconstrained
+                  function db_ercKeyGet: db_ercKeyGet
+  An unconstrained function is called in a function body where modifications
+  are checked.  Since the unconstrained function may modify anything, there may
+  be undetected modifications in the checked function.  Use -modunconnomods to
+  suppress message.
+dbase.c: (in function db_hire)
+dbase.c:109,23: Undetected modification possible from call to unconstrained
+                   function db_keyGet: db_keyGet
+dbase.c: (in function db_promote)
+dbase.c:162,8: Undetected modification possible from call to unconstrained
+                  function db_ercKeyGet: db_ercKeyGet
+dbase.c:166,12: Undetected modification possible from call to unconstrained
+                   function db_ercKeyGet: db_ercKeyGet
+dbase.c: (in function db_setSalary)
+dbase.c:200,8: Undetected modification possible from call to unconstrained
+                  function db_keyGet: db_keyGet
+< checking drive.c >
+drive.c: (in function main)
+drive.c:50,7: Undetected modification possible from call to unconstrained
+                 function check: check
+drive.c:66,7: Undetected modification possible from call to unconstrained
+                 function check: check
+drive.c:84,7: Undetected modification possible from call to unconstrained
+                 function check: check
+drive.c:121,7: Undetected modification possible from call to unconstrained
+                  function check: check
+drive.c:125,4: Undetected modification possible from call to unconstrained
+                  function check: check
+drive.c:138,3: Undetected modification possible from call to unconstrained
+                  function check: check
+drive.c:165,3: Undetected modification possible from call to unconstrained
+                  function check: check
+< checking macros bool.h >
+< global checks >
+< cleaning .......... >
+
+Finished LCLint checking --- 16 code errors found
+396 spec, 2923 source (1282 before pre-processing) lines in 5.47 s.
+gmake[1]: Leaving directory `/u/evs/lclint/web/sample/strictchecks'

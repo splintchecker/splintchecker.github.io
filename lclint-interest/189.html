@@ -1,0 +1,85 @@
+<h3>lclint-interest message 189</h3>
+<pre>
+From 100566.1506@csi.com Tue Feb 17 12:38:16 1998
+X-Authentication-Warning: opto4l.default.com: 100566.1506 owned process doing -bs
+Date: Fri, 13 Feb 1998 20:07:37 +0100 (CET)
+From: Hermann Kleier <100566.1506@csi.com>
+X-Sender: 100566.1506@opto4l.default.com
+To: lclint-interest <lclint-interest@larch.lcs.mit.edu>
+Subject: new member introduction
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+My name is Hermann Kleier and I am into C-programming since 15 years.  There are
+several reasons for me to look for lint-like tools:
+
+(1) I have moved from platform to platform (CP/M, MS-DOS, OS-9 (not OS/2), 
+    SCO-UNIX, Linux).  I learned that the portability of C is limited as long as
+    you do not care about it.  At work I often have to write programs which are
+    used on platforms that I never used (SCO XENIX, HP 3000, ...).  This is why
+    portability is so important for me and debugging sometimes is not available
+    at all.
+
+(2) To improve the consistency between documentation and implementation I used
+    D.E.Knuth's web-language (literate programming).  web has nothing to do with
+    the WWW. The name is derived from the weaving process of documentation and
+    implementation which are stored close together in the same file.  After a
+    hard learning phase and setting up the environment the overhead is moderate
+    and the quality of the documentation grows dramatically.
+
+    By thoroughly writing down what I was doing I found design flaws rather than
+    implementation bugs.   The quality of the implementation improved quite a
+    lot.
+
+(3) Since five years I am using Gimpel's FlexeLint.  This is THE tool for
+    finding implementation bugs.  I estimate that I find about 30 % of the bugs
+    before wasting time for debugging.
+
+Now I am new to LcLint.  This tools differs quite a lot from Knuth's web and
+>from FlexeLint, but I hope it can serve the same purpose.  My first impressions
+(likes/dislikes are:
+
+(1) In-line program information is passed to the lints (like FlexeLint or the
+    traditional lint) by control-comments. I feel that the comments are too
+    close to the program and too cryptic to read.  The program becomes too
+    fragmented, the granularity is too small:
+
+       /*lint -esym(528,rcsid) */
+     /*@unused@*/ static char rcsid [] __attribute__ ((unused)) =
+       "$Revision: 1.6 $ $Source: /home/hermann/curr/ftcod/src/RCS/pack.c,v $";
+
+    These comments introduce a lot of noise in the source.  LcLint behaves like
+    the other lints.  Anyway, the programs are still portable.
+
+(2) One thing I do not like at all is a tool that forces me to change the
+    structure of the program sources.  Traditionally C programs are written as
+    .c and .h-files.  This is a must to be portable.  For LcLint project
+    this means, that you cannot pass the .lcl-files and the .h-files. You have
+    to assemble the .h and the .lh-files.  Because this can be done
+    automatically this item is not an issue.  But is maks the development
+    environment more complicated.
+
+(3) What I really like about LcLint is the EXTERNAL formal specification.  I can
+    write constraints and define properties of a module/function at one place.
+    This is readable.  (I feel that this resource should be embedded together
+    with the documentation and the implementation in a single file to improve
+    coherency.)
+
+
+
+</pre>
+<A HREF="188.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="190.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

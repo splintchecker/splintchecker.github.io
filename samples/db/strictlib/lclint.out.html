@@ -1,0 +1,183 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body>
+<pre>
+gmake[1]: Entering directory `/u/evs/lclint/web/sample/strictlib'
+lclint +lh +strict +showsummary -exportconstant -exportlocal +strictlib +whichlib +showscan +stats employee eref empset ereftab erc dbase drive.c bool.lcl check.lcl
+LCLint 2.0+ --- Wed Feb 21 19:07:11 EST 1996
+
+Standard library: /u/evs/lclint/lib/strict.lcd
+   (created using LCLint 2.0 --- 21 Feb 96)
+< reading spec <A HREF="employee.lcl.html">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html">dbase.lcl</A> >
+< reading spec <A HREF="bool.lcl.html">bool.lcl</A> >
+< reading spec <A HREF="check.lcl.html">check.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html">employee.c</A> >
+< checking <A HREF="eref.c.html">eref.c</A> >
+eref.c: (in function eref_alloc)
+<A HREF="eref.c.html#line36">eref.c:36,4</A>: Called procedure printf may access global stdout
+  A checked global variable is used in the function, but not listed in its
+  globals clause.  By default, only globals specified in .lcl files are
+  checked.  To check all globals, use +allglobals.  To check globals
+  selectively use /*@checked@*/ in the global declaration.  Use -globs to
+  suppress message.
+<A HREF="eref.c.html#line36">eref.c:36,4</A>: Undocumented modification of *stdout possible from call to printf:
+                printf("Malloc returned null in eref_alloc\n")
+  An externally-visible object is modified by a function, but not listed in its
+  modifies clause.  Use -mods to suppress message.
+<A HREF="eref.c.html#line36">eref.c:36,4</A>: Return value (type int) ignored: printf("Malloc r...
+  Result returned by function call is not used.  If this is intended, can cast
+  result to (void) to eliminate message.  Use -retvalint to suppress message.
+<A HREF="eref.c.html#line46">eref.c:46,4</A>: Called procedure printf may access global stdout
+<A HREF="eref.c.html#line46">eref.c:46,4</A>: Undocumented modification of *stdout possible from call to printf:
+                printf("Malloc returned null in eref_alloc\n")
+<A HREF="eref.c.html#line46">eref.c:46,4</A>: Return value (type int) ignored: printf("Malloc r...
+eref.c: (in function eref_initMod)
+<A HREF="eref.c.html#line82">eref.c:82,7</A>: Called procedure printf may access global stdout
+<A HREF="eref.c.html#line82">eref.c:82,7</A>: Undocumented modification of *stdout possible from call to printf:
+                printf("Malloc returned null in eref_initMod\n")
+<A HREF="eref.c.html#line82">eref.c:82,7</A>: Return value (type int) ignored: printf("Malloc r...
+<A HREF="eref.c.html#line90">eref.c:90,7</A>: Called procedure printf may access global stdout
+<A HREF="eref.c.html#line90">eref.c:90,7</A>: Undocumented modification of *stdout possible from call to printf:
+                printf("Malloc returned null in eref_initMod\n")
+<A HREF="eref.c.html#line90">eref.c:90,7</A>: Return value (type int) ignored: printf("Malloc r...
+< checking <A HREF="empset.c.html">empset.c</A> >
+< checking <A HREF="ereftab.c.html">ereftab.c</A> >
+< checking <A HREF="erc.c.html">erc.c</A> >
+erc.c: (in function int_toSize)
+<A HREF="erc.c.html#line9">erc.c:9,16</A>: Undocumented use of global stderr
+<A HREF="erc.c.html#line9">erc.c:9,7</A>: Undocumented modification of *stderr possible from call to fprintf:
+              fprintf(stderr, "Error: int_toSize is negative: %d", x)
+<A HREF="erc.c.html#line9">erc.c:9,7</A>: Return value (type int) ignored: fprintf(stderr, ...
+erc.c: (in function erc_create)
+<A HREF="erc.c.html#line26">erc.c:26,7</A>: Called procedure printf may access global stdout
+<A HREF="erc.c.html#line26">erc.c:26,7</A>: Undocumented modification of *stdout possible from call to printf:
+               printf("Malloc returned null in erc_create\n")
+<A HREF="erc.c.html#line26">erc.c:26,7</A>: Return value (type int) ignored: printf("Malloc r...
+erc.c: (in function erc_insert)
+<A HREF="erc.c.html#line78">erc.c:78,7</A>: Called procedure printf may access global stdout
+<A HREF="erc.c.html#line78">erc.c:78,7</A>: Undocumented modification of *stdout possible from call to printf:
+               printf("Malloc returned null in erc_insert\n")
+<A HREF="erc.c.html#line78">erc.c:78,7</A>: Return value (type int) ignored: printf("Malloc r...
+erc.c: (in function erc_sprint)
+<A HREF="erc.c.html#line143">erc.c:143,7</A>: Called procedure printf may access global stdout
+<A HREF="erc.c.html#line143">erc.c:143,7</A>: Undocumented modification of *stdout possible from call to printf:
+                printf("Malloc returned null in erc_sprint\n")
+<A HREF="erc.c.html#line143">erc.c:143,7</A>: Return value (type int) ignored: printf("Malloc r...
+< checking <A HREF="dbase.c.html">dbase.c</A> >
+dbase.c: (in function db_print)
+<A HREF="dbase.c.html#line306">dbase.c:306,3</A>: Return value (type int) ignored: printf("Employee...
+<A HREF="dbase.c.html#line311">dbase.c:311,7</A>: Return value (type int) ignored: printf("%s", pri...
+< checking <A HREF="drive.c.html">drive.c</A> >
+drive.c: (in function main)
+<A HREF="drive.c.html#line31">drive.c:31,7</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line31">drive.c:31,7</A>: Undocumented modification of *stdout possible from call to
+    printf: printf("FormatPos: Wrong number of arguments. Given %d needs 0.\n",
+    argc - 1)
+<A HREF="drive.c.html#line31">drive.c:31,7</A>: Return value (type int) ignored: printf("FormatPo...
+<A HREF="drive.c.html#line41">drive.c:41,7</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line41">drive.c:41,7</A>: Undocumented modification of *stdout possible from call to
+                 printf: printf("Size should be 0.\n")
+<A HREF="drive.c.html#line41">drive.c:41,7</A>: Return value (type int) ignored: printf("Size sho...
+<A HREF="drive.c.html#line57">drive.c:57,7</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line57">drive.c:57,7</A>: Undocumented modification of *stdout possible from call to
+                 printf: printf("Size should be 500.\n")
+<A HREF="drive.c.html#line57">drive.c:57,7</A>: Return value (type int) ignored: printf("Size sho...
+<A HREF="drive.c.html#line73">drive.c:73,7</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line73">drive.c:73,7</A>: Undocumented modification of *stdout possible from call to
+                 printf: printf("Size should be 250.\n")
+<A HREF="drive.c.html#line73">drive.c:73,7</A>: Return value (type int) ignored: printf("Size sho...
+<A HREF="drive.c.html#line93">drive.c:93,7</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line93">drive.c:93,7</A>: Undocumented modification of *stdout possible from call to
+                 printf: printf("Size should be 350.\n")
+<A HREF="drive.c.html#line93">drive.c:93,7</A>: Return value (type int) ignored: printf("Size sho...
+<A HREF="drive.c.html#line100">drive.c:100,7</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line100">drive.c:100,7</A>: Undocumented modification of *stdout possible from call to
+                  printf: printf("Size should be 350.\n")
+<A HREF="drive.c.html#line100">drive.c:100,7</A>: Return value (type int) ignored: printf("Size sho...
+<A HREF="drive.c.html#line103">drive.c:103,3</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line103">drive.c:103,3</A>: Undocumented modification of *stdout possible from call to
+                  printf: printf("Print two different employees:\n")
+<A HREF="drive.c.html#line103">drive.c:103,3</A>: Return value (type int) ignored: printf("Print tw...
+<A HREF="drive.c.html#line109">drive.c:109,7</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line109">drive.c:109,7</A>: Undocumented modification of *stdout possible from call to
+                  printf: printf("%s\n", &(na[0]))
+<A HREF="drive.c.html#line109">drive.c:109,7</A>: Return value (type int) ignored: printf("%s\n", &...
+<A HREF="drive.c.html#line151">drive.c:151,3</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line151">drive.c:151,3</A>: Undocumented modification of *stdout possible from call to
+    printf: printf("Should print true: %s\n", bool_unparse(status ==
+    DBS_DUPLERR))
+<A HREF="drive.c.html#line151">drive.c:151,3</A>: Return value (type int) ignored: printf("Should p...
+<A HREF="drive.c.html#line154">drive.c:154,3</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line154">drive.c:154,3</A>: Undocumented modification of *stdout possible from call to
+                  printf: printf("Employees 0 - 19\n")
+<A HREF="drive.c.html#line154">drive.c:154,3</A>: Return value (type int) ignored: printf("Employee...
+<A HREF="drive.c.html#line155">drive.c:155,3</A>: Called procedure db_print may access global stdout
+<A HREF="drive.c.html#line155">drive.c:155,3</A>: Undocumented modification of *stdout possible from call to
+                  db_print: db_print()
+<A HREF="drive.c.html#line158">drive.c:158,3</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line158">drive.c:158,3</A>: Undocumented modification of *stdout possible from call to
+                  printf: printf("Employees 0 - 16, 18 - 19\n")
+<A HREF="drive.c.html#line158">drive.c:158,3</A>: Return value (type int) ignored: printf("Employee...
+<A HREF="drive.c.html#line159">drive.c:159,3</A>: Called procedure db_print may access global stdout
+<A HREF="drive.c.html#line159">drive.c:159,3</A>: Undocumented modification of *stdout possible from call to
+                  db_print: db_print()
+<A HREF="drive.c.html#line164">drive.c:164,3</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line164">drive.c:164,3</A>: Undocumented modification of *stdout possible from call to
+    printf: printf("Should get two females: %d\n%s\n", i, sprintResult)
+<A HREF="drive.c.html#line164">drive.c:164,3</A>: Return value (type int) ignored: printf("Should g...
+<A HREF="drive.c.html#line174">drive.c:174,3</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line174">drive.c:174,3</A>: Undocumented modification of *stdout possible from call to
+    printf: printf("Should get two females and ten males:
+    %d\n%s\n", i, sprintResult)
+<A HREF="drive.c.html#line174">drive.c:174,3</A>: Return value (type int) ignored: printf("Should g...
+<A HREF="drive.c.html#line180">drive.c:180,3</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line180">drive.c:180,3</A>: Undocumented modification of *stdout possible from call to
+    printf: printf("Should get two females: %d\n%s\n", i, sprintResult)
+<A HREF="drive.c.html#line180">drive.c:180,3</A>: Return value (type int) ignored: printf("Should g...
+<A HREF="drive.c.html#line184">drive.c:184,3</A>: Called procedure printf may access global stdout
+<A HREF="drive.c.html#line184">drive.c:184,3</A>: Undocumented modification of *stdout possible from call to
+                  printf: printf("Should get 18 employees\n")
+<A HREF="drive.c.html#line184">drive.c:184,3</A>: Return value (type int) ignored: printf("Should g...
+<A HREF="drive.c.html#line185">drive.c:185,3</A>: Called procedure db_print may access global stdout
+<A HREF="drive.c.html#line185">drive.c:185,3</A>: Undocumented modification of *stdout possible from call to
+                  db_print: db_print()
+< checking macros <A HREF="bool.h.html">bool.h</A> >
+< global checks >
+< cleaning .......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+usedef                       0           1
+exporttype                   0           3
+globs                       26           0
+retvalint                   25           0
+compdef                      0           1
+mods                        26           0
+                          ========  =========
+Total:                      77           5
+
+Finished LCLint checking --- 77 code errors found
+402 spec, 2984 source (1363 before pre-processing) lines in 6.22 s.
+gmake[1]: Leaving directory `/u/evs/lclint/web/sample/strictlib'
+</pre>
+
+<P>
+<HR>
+<A HREF="index.html">Return to Index</A> | <A
+HREF="http://lclint.cs.virginia.edu/index.html">LCLint Home
+Page</A> <BR> <BR>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<h3>lclint-interest message 61</h3>
+<pre>
+From eric@rrinc.com Sun Mar 24 13:33:43 1996
+Sender: eric@access.rrinc.com
+Date: Fri, 22 Mar 1996 20:32:57 -0500
+From: Eric Bloodworth <eric@rrinc.com>
+Organization: Recognition Research, Inc
+X-Mailer: Mozilla 2.0 (X11; I; AIX 2)
+Mime-Version: 1.0
+To: lclint_sig <lclint-interest@larch.lcs.mit.edu>
+Subject: can lclint detect this leak? 
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Here is a simplified example of the kind of memory allocation that is quite 
+common in our company's code.  I can't seem to make lclint 
+detect this very simple leak....
+Comments included where I haven't been 
+able to figure out an anotation that will do what I want. 
+
+Also, is it possible to annotate particular fields of a structure 
+passed into a function?  It doesn't appear to be...  
+
+
+---- Eric 
+
+#include <stdlib.h>
+#include <stdio.h>
+
+typedef struct {
+	int foo; 
+	char *bar; 
+} booga_s; 
+
+extern int frob(/*@out@*/ booga_s *stuff); 
+extern void free_booga_s(/*@in@*/ booga_s * stuff); 
+
+int frob(booga_s *stuff)
+{
+	
+	/* 
+		How do I say storage->bar isn't allocated after the 	
+		memset? 
+	*/
+ 	(void)memset(stuff, 0, sizeof(*stuff));  
+	stuff->bar = malloc(100); 
+	if (NULL != stuff->bar) {
+		stuff->foo = 100; 
+		return 0; 
+	}
+	return -1; 
+
+}
+
+void free_booga_s(booga_s *stuff)
+{
+	free(stuff->bar); 
+	(void)memset(stuff, 0, sizeof(*stuff)); 
+}
+
+/* 
+	here I'm returning without freeing leaker.
+	How do I tell lclint that leaker must be freed
+	by calling free_booga_s?  Or is there something 
+	I must say about frob which says storage is allocated? 
+*/
+
+void leaker(void)
+{
+	booga_s leaker; 
+	if (0 == frob(&leaker)) {
+		printf("frobnicated\n"); 
+
+	}
+
+}
+int main(
+	/*@unused@*/ int argc, 
+	/*@unused@*/ char *argv[])
+{
+	leaker(); 
+
+	exit(0); 
+}
+
+
+-- Eric
+
+
+</pre>
+<A HREF="60.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="62.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

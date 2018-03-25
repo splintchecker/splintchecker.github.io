@@ -1,0 +1,25 @@
+#!/usr/local/bin/perl
+require "formlib.pl";
+$timestamp = gmtime;
+&GetFormArgs;
+
+print "Content-Type: text/html\n\n";
+
+print "<TITLE>Subscription Success</TITLE>\n";
+print "<H1>Success</H1>\n";
+
+open (SUBS, ">>lclint-announce-new") or
+print "<b>Error: cannot open subscription file.</b>\n";
+print SUBS ";;; $timestamp\n";
+print SUBS ";;; mailing lists page\n";
+print SUBS "$in{email}\n";
+
+print "You have subscribed to the lclint-announce mailing list as ";
+print "<em>$in{email}</em>.<p>\n";   
+print "<p></br>\n";
+
+print "You will receive announcements regarding lclint releases.";
+print "<p><p><hr>\n";
+print "<a href=\"http://www.sds.lcs.mit.edu/lclint/lists.html\">Return</a>\n";
+
+

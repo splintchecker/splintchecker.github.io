@@ -1,0 +1,21 @@
+<h3>LCLint Output</h3>
+<pre>
+LCLint 2.2 --- 25 Aug 96
+
+noeffect.c: (in function noeffect)
+<A HREF="noeffect.c.html#line6" target="source">noeffect.c:6,3</A>: Statement has no effect: y == *x
+  Statement has no visible effect --- no values are
+  modified. (-noeffect will suppress message)
+<A HREF="noeffect.c.html#line7" target="source">noeffect.c:7,3</A>: Statement has no effect: nomodcall(x)
+<A HREF="noeffect.c.html#line8" target="source">noeffect.c:8,3</A>: Statement has no effect (possible
+    undected modification through call to
+    unconstrained function mysterycall):
+    mysterycall(x)
+  Statement has no visible effect --- no values are
+  modified. It may modify something through a call to
+  an unconstrained function. (-noeffectuncon will
+  suppress message)
+
+Finished LCLint checking --- 3 code errors found
+</pre>
+</html>

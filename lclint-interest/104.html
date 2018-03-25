@@ -1,0 +1,99 @@
+<h3>lclint-interest message 104</h3>
+<pre>
+From kir@iitb.fhg.de Tue Sep 17 08:47:01 1996
+X-Env: (fhg.de) kir@iitb.fhg.de -> lclint-interest@larch.lcs.mit.EDU.VIA-SMTP
+Date: Tue, 17 Sep 1996 09:35:33 +0200
+From: kir@iitb.fhg.de (Harald Kirsch)
+To: lclint-interest@larch.lcs.mit.edu
+Subject: (Known?) Bugs? of LCLint and questions
+
+
+1) Running the program
+------------------------------------------------------------------------
+#include <stdio.h>
+#include <unistd.h>
+
+int
+main(int argc, char **argv)
+{
+  char bla[10];
+  char *s = malloc(10);
+  if( !s ) {
+    free(s);
+  }
+
+  s = bla;
+  printf("%d, %s\n", argc, argv[0]);
+  return 0;
+}
+------------------------------------------------------------------------
+results in the message:
+
+------------------------------------------------------------------------
+LCLint 2.1a --- 23 Apr 96
+
+x.c: (in function main)
+x.c:11,3: Variable s is released in true branch, but live in continuation.
+  The state of a variable is different depending on which branch is taken. This
+  means no annotation can sensibly be applied to the storage. Use -branchstate
+  to suppress message.
+   x.c:10,10: Storage s is released
+
+Finished LCLint checking --- 1 code error found
+------------------------------------------------------------------------
+
+Isn't it possible for LCLint to find out that s need not be freed in the
+contination, since it was never allocated?
+
+
+
+2) Handling of realloc is obviously a problem, in particular the case
+were it does not succeed. How would I write a wrapper around realloc
+that can be fully specified with LCLint annotations?
+
+
+3) In 2.1a somethings seems to go wrong with #includes and #defines. In
+two libraries I introduced something like
+
+#ifndef __bool__
+typdef int bool
+ ...
+#endif
+
+and wherever both .h-files are included I get messages about double
+defined types. Is +allmacros probably the reason?
+
+
+4) I've got a program that creates code for a command line parser from a
+simple specification file. The command line parser puts all its findings
+into a static struct, and returns the address of this structure to the
+calling main. 
+
+How do I have to annotate the parser function and/or the static struct
+to make LCLint a believer?
+
+
+Regards,
+	Harald.
+
+-------------------------------------------------+------------------
+Harald Kirsch, kir@iitb.fhg.de, +49 721 6091 384 | This  message is
+FhG/IITB,      Fraunhoferstr.1, 76131 Karlsruhe  | subject oriented.
+
+
+</pre>
+<A HREF="103.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="105.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

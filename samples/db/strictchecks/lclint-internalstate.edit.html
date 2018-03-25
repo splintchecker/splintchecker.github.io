@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>LCLint Output (extracted)</title>
+</head>
+
+<body>
+<pre>
+eref.c: (in function eref_initMod)
+<A HREF="eref.c.html#line63">eref.c:63,3</A>: Called procedure bool_initMod may access internal state, but
+                globals list does not include globals internalState
+  A called function uses internal state, but the globals list for the function
+  being checked does not include internalState  Use -internalglobs to suppress
+  message.
+<A HREF="eref.c.html#line63">eref.c:63,3</A>: Undocumented modification of internal state possible from call to
+                bool_initMod: bool_initMod()
+  An externally-visible object is modified by a function, but not listed in its
+  modifies clause.  Use -mods to suppress message.
+<A HREF="eref.c.html#line64">eref.c:64,3</A>: Called procedure employee_initMod may access internal state, but
+                globals list does not include globals internalState
+<A HREF="eref.c.html#line64">eref.c:64,3</A>: Undocumented modification of internal state possible from call to
+                employee_initMod: employee_initMod()
+empset.c: (in function empset_insert)
+<A HREF="empset.c.html#line35">empset.c:35,3</A>: Called procedure empset_insertUnique may access internal state,
+                  but globals list does not include globals internalState
+<A HREF="empset.c.html#line35">empset.c:35,3</A>: Undocumented modification of internal state possible from call
+                  to empset_insertUnique: empset_insertUnique(s, e)
+dbase.c: (in function db_initMod)
+<A HREF="dbase.c.html#line37">dbase.c:37,3</A>: Called procedure bool_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="dbase.c.html#line37">dbase.c:37,3</A>: Undocumented modification of internal state possible from call to
+                 bool_initMod: bool_initMod()
+<A HREF="dbase.c.html#line38">dbase.c:38,3</A>: Called procedure employee_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="dbase.c.html#line38">dbase.c:38,3</A>: Undocumented modification of internal state possible from call to
+                 employee_initMod: employee_initMod()
+<A HREF="dbase.c.html#line40">dbase.c:40,3</A>: Called procedure erc_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="dbase.c.html#line40">dbase.c:40,3</A>: Undocumented modification of internal state possible from call to
+                 erc_initMod: erc_initMod()
+<A HREF="dbase.c.html#line41">dbase.c:41,3</A>: Called procedure empset_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="dbase.c.html#line41">dbase.c:41,3</A>: Undocumented modification of internal state possible from call to
+                 empset_initMod: empset_initMod()
+drive.c: (in function main)
+<A HREF="drive.c.html#line23">drive.c:23,3</A>: Called procedure bool_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="drive.c.html#line23">drive.c:23,3</A>: Undocumented modification of internal state possible from call to
+                 bool_initMod: bool_initMod()
+  An externally-visible object is modified by a function with no /*@modifies@*/
+  comment.  The /*@modifies ... @*/ control comment can be used to give a
+  modifies list for an unspecified function.  Use -modnomods to suppress
+  message.
+<A HREF="drive.c.html#line24">drive.c:24,3</A>: Called procedure employee_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="drive.c.html#line24">drive.c:24,3</A>: Undocumented modification of internal state possible from call to
+                 employee_initMod: employee_initMod()
+<A HREF="drive.c.html#line25">drive.c:25,3</A>: Called procedure empset_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="drive.c.html#line25">drive.c:25,3</A>: Undocumented modification of internal state possible from call to
+                 empset_initMod: empset_initMod()
+<A HREF="drive.c.html#line153">drive.c:153,9</A>: Called procedure empset_disjointUnion may access internal state,
+                  but globals list does not include globals internalState
+<A HREF="drive.c.html#line153">drive.c:153,9</A>: Undocumented modification of internal state possible from call
+                  to empset_disjointUnion: empset_disjointUnion(em2, em1)
+</pre>
+
+<P>
+<HR>
+<A HREF="index.html">Return to Index</A> | <A
+HREF="http://lclint.cs.virginia.edu/index.html">LCLint Home
+Page</A> <BR> <BR>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+

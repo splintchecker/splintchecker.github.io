@@ -1,0 +1,364 @@
+<p><h4>Changes in <A HREF="bool.h.html">bool.h</A> (<A HREF="../strictchecks/bool.h.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictchecks/bool.h.html#line20">line 20</A> with <A HREF="bool.h.html#line20">line 20</A> to <A HREF="bool.h.html#line21">line 21</A><pre>
+&lt; extern /*@unused@*/ void bool_initMod (void) /*@modifies internalState@*/ ;
+---
+&gt; extern /*@unused@*/ void bool_initMod (void)
+&gt;   /*@globals internalState@*/ /*@modifies internalState@*/ ;
+</pre><br>Replaced <A HREF="../strictchecks/bool.h.html#line22">line 22</A> with <A HREF="bool.h.html#line23">line 23</A><pre>
+&lt; # define bool_initMod()
+---
+&gt; # define bool_initMod() do { ; } while (FALSE)
+</pre><p><p>
+<p><h4>Added <A HREF="bool.lcl.html">bool.lcl</A></h4><pre>
+</pre><p><p>
+<p><h4>Added <A HREF="check.lcl.html">check.lcl</A></h4><pre>
+</pre><p><p>
+<p><h4>Changes in <A HREF="dbase.c.html">dbase.c</A> (<A HREF="../strictchecks/dbase.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictchecks/dbase.c.html#line29">line 29</A> to <A HREF="../strictchecks/dbase.c.html#line30">line 30</A> with <A HREF="dbase.c.html#line29">line 29</A> to <A HREF="dbase.c.html#line30">line 30</A><pre>
+&lt;   /*@globals initDone, undef db@*/
+&lt;   /*@modifies initDone, db@*/
+---
+&gt;   /*@globals initDone, undef db, internalState@*/
+&gt;   /*@modifies initDone, db, internalState@*/
+</pre><br>Replaced <A HREF="../strictchecks/dbase.c.html#line51">line 51</A> with <A HREF="dbase.c.html#line51">line 51</A><pre>
+&lt; static eref db_ercKeyGet(erc c, int key) 
+---
+&gt; static eref db_ercKeyGet(erc c, int key)  /*@*/
+</pre><br>Replaced <A HREF="../strictchecks/dbase.c.html#line55">line 55</A> with <A HREF="dbase.c.html#line55">line 55</A> to <A HREF="dbase.c.html#line58">line 58</A><pre>
+&lt;       if (eref_get(er).ssNum == key) return (er);
+---
+&gt;       if (eref_get(er).ssNum == key) 
+&gt;         {
+&gt;           return (er);
+&gt;         }
+</pre><br>Replaced <A HREF="../strictchecks/dbase.c.html#line61">line 61</A> with <A HREF="dbase.c.html#line64">line 64</A><pre>
+&lt; static eref db_keyGet (int key)
+---
+&gt; static eref db_keyGet (int key) /*@globals db@*/
+</pre><br>Replaced <A HREF="../strictchecks/dbase.c.html#line79">line 79</A> with <A HREF="dbase.c.html#line82">line 82</A> to <A HREF="dbase.c.html#line83">line 83</A><pre>
+&lt;   /*@modifies s@*/
+---
+&gt;   /*@globals internalState@*/
+&gt;   /*@modifies s, internalState@*/
+</pre><br>Replaced <A HREF="../strictchecks/dbase.c.html#line98">line 98</A> with <A HREF="dbase.c.html#line102">line 102</A><pre>
+&lt; db_status db_hire (employee e)
+---
+&gt; db_status db_hire (employee e) /*@globals db@*/
+</pre><br>Added <A HREF="dbase.c.html#line105">line 105</A> (was <A HREF="../strictchecks/dbase.c.html#line100">line 100</A>)<pre>
+&gt;     {
+</pre><br>Added <A HREF="dbase.c.html#line107">line 107</A> (was <A HREF="../strictchecks/dbase.c.html#line101">line 101</A>)<pre>
+&gt;     }
+</pre><br>Added <A HREF="dbase.c.html#line110">line 110</A> (was <A HREF="../strictchecks/dbase.c.html#line103">line 103</A>)<pre>
+&gt;     {
+</pre><br>Added <A HREF="dbase.c.html#line112">line 112</A> (was <A HREF="../strictchecks/dbase.c.html#line104">line 104</A>)<pre>
+&gt;     }
+</pre><br>Added <A HREF="dbase.c.html#line115">line 115</A> (was <A HREF="../strictchecks/dbase.c.html#line106">line 106</A>)<pre>
+&gt;     {
+</pre><br>Added <A HREF="dbase.c.html#line117">line 117</A> (was <A HREF="../strictchecks/dbase.c.html#line107">line 107</A>)<pre>
+&gt;     }
+</pre><br>Added <A HREF="dbase.c.html#line120">line 120</A> (was <A HREF="../strictchecks/dbase.c.html#line109">line 109</A>)<pre>
+&gt;     {
+</pre><br>Added <A HREF="dbase.c.html#line122">line 122</A> (was <A HREF="../strictchecks/dbase.c.html#line110">line 110</A>)<pre>
+&gt;     }
+</pre><br>Replaced <A HREF="../strictchecks/dbase.c.html#line117">line 117</A> with <A HREF="dbase.c.html#line129">line 129</A><pre>
+&lt;    /*@globals db@*/
+---
+&gt;    /*@globals db@*/ /*@modifies db@*/
+</pre><br>Added <A HREF="dbase.c.html#line137">line 137</A> (was <A HREF="../strictchecks/dbase.c.html#line124">line 124</A>)<pre>
+&gt;     {
+</pre><br>Added <A HREF="dbase.c.html#line139">line 139</A> (was <A HREF="../strictchecks/dbase.c.html#line125">line 125</A>)<pre>
+&gt;         {
+</pre><br>Added <A HREF="dbase.c.html#line141">line 141</A> (was <A HREF="../strictchecks/dbase.c.html#line126">line 126</A>)<pre>
+&gt;         }
+</pre><br>Added <A HREF="dbase.c.html#line143">line 143</A> (was <A HREF="../strictchecks/dbase.c.html#line127">line 127</A>)<pre>
+&gt;         {
+</pre><br>Added <A HREF="dbase.c.html#line145">line 145</A> to <A HREF="dbase.c.html#line146">line 146</A> (was <A HREF="../strictchecks/dbase.c.html#line128">line 128</A>)<pre>
+&gt;         }
+&gt;     }
+</pre><br>Added <A HREF="dbase.c.html#line148">line 148</A> (was <A HREF="../strictchecks/dbase.c.html#line129">line 129</A>)<pre>
+&gt;     {
+</pre><br>Added <A HREF="dbase.c.html#line150">line 150</A> (was <A HREF="../strictchecks/dbase.c.html#line130">line 130</A>)<pre>
+&gt;         {
+</pre><br>Added <A HREF="dbase.c.html#line152">line 152</A> (was <A HREF="../strictchecks/dbase.c.html#line131">line 131</A>)<pre>
+&gt;         }
+</pre><br>Added <A HREF="dbase.c.html#line154">line 154</A> (was <A HREF="../strictchecks/dbase.c.html#line132">line 132</A>)<pre>
+&gt;         {
+</pre><br>Added <A HREF="dbase.c.html#line157">line 157</A> to <A HREF="dbase.c.html#line158">line 158</A> (was <A HREF="../strictchecks/dbase.c.html#line134">line 134</A>)<pre>
+&gt;     }
+&gt; }
+</pre><br>Replaced <A HREF="../strictchecks/dbase.c.html#line137">line 137</A> with <A HREF="dbase.c.html#line161">line 161</A><pre>
+&lt;   /*@globals db@*/
+---
+&gt;   /*@globals db@*/ /*@modifies db@*/
+</pre><br>Replaced <A HREF="../strictchecks/dbase.c.html#line155">line 155</A> with <A HREF="dbase.c.html#line179">line 179</A><pre>
+&lt;   /*@globals db@*/
+---
+&gt;   /*@globals db@*/ /*@modifies db@*/
+</pre><br>Added <A HREF="dbase.c.html#line191">line 191</A> (was <A HREF="../strictchecks/dbase.c.html#line166">line 166</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="dbase.c.html#line193">line 193</A> (was <A HREF="../strictchecks/dbase.c.html#line167">line 167</A>)<pre>
+&gt;         {
+</pre><br>Added <A HREF="dbase.c.html#line195">line 195</A> to <A HREF="dbase.c.html#line196">line 196</A> (was <A HREF="../strictchecks/dbase.c.html#line168">line 168</A>)<pre>
+&gt;         }
+&gt; 
+</pre><br>Replaced <A HREF="../strictchecks/dbase.c.html#line190">line 190</A> with <A HREF="dbase.c.html#line218">line 218</A><pre>
+&lt; db_status db_setSalary (int ssNum, int sal)
+---
+&gt; db_status db_setSalary (int ssNum, int sal) /*@globals db@*/
+</pre><p><p>
+<p><h4>Changes in <A HREF="dbase.lcl.html">dbase.lcl</A> (<A HREF="../strictchecks/dbase.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictchecks/dbase.lcl.html#line41">line 41</A> with <A HREF="dbase.lcl.html#line41">line 41</A><pre>
+&lt; bool db_fire (int ssNum) db d; 
+---
+&gt; bool db_fire (int ssNum) db d; internalState;
+</pre><br>Replaced <A HREF="../strictchecks/dbase.lcl.html#line43">line 43</A> with <A HREF="dbase.lcl.html#line43">line 43</A><pre>
+&lt;   modifies d;
+---
+&gt;   modifies d, internalState;
+</pre><br>Replaced <A HREF="../strictchecks/dbase.lcl.html#line49">line 49</A> with <A HREF="dbase.lcl.html#line49">line 49</A><pre>
+&lt; int db_query (db_q q, empset s) db d; 
+---
+&gt; int db_query (db_q q, empset s) db d; internalState;
+</pre><br>Replaced <A HREF="../strictchecks/dbase.lcl.html#line51">line 51</A> with <A HREF="dbase.lcl.html#line51">line 51</A><pre>
+&lt;   modifies s;
+---
+&gt;   modifies s, internalState;
+</pre><br>Replaced <A HREF="../strictchecks/dbase.lcl.html#line92">line 92</A> with <A HREF="dbase.lcl.html#line92">line 92</A><pre>
+&lt; void db_initMod(void) db d; 
+---
+&gt; void db_initMod(void) db d; internalState;
+</pre><br>Replaced <A HREF="../strictchecks/dbase.lcl.html#line94">line 94</A> with <A HREF="dbase.lcl.html#line94">line 94</A><pre>
+&lt;   modifies d;
+---
+&gt;   modifies d, internalState;
+</pre><p><p>
+<p><h4>Changes in <A HREF="drive.c.html">drive.c</A> (<A HREF="../strictchecks/drive.c.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="drive.c.html#line13">line 13</A> (was <A HREF="../strictchecks/drive.c.html#line12">line 12</A>)<pre>
+&gt;   /*@globals internalState@*/ /*@modifies internalState@*/
+</pre><br>Replaced <A HREF="../strictchecks/drive.c.html#line118">line 118</A> to <A HREF="../strictchecks/drive.c.html#line119">line 119</A> with <A HREF="drive.c.html#line119">line 119</A> to <A HREF="drive.c.html#line137">line 137</A><pre>
+&lt;       if (i &lt; 10) e.gen = MALE; else e.gen = FEMALE;
+&lt;       if (i &lt; 15) e.j = NONMGR; else e.j = MGR;
+---
+&gt; 
+&gt;       if (i &lt; 10) 
+&gt;         {
+&gt;           e.gen = MALE; 
+&gt;         }
+&gt;       else 
+&gt;         {
+&gt;           e.gen = FEMALE;
+&gt;         }
+&gt; 
+&gt;       if (i &lt; 15) 
+&gt;         {
+&gt;           e.j = NONMGR; 
+&gt;         }
+&gt;       else
+&gt;         {
+&gt;           e.j = MGR;
+&gt;         }
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="employee.c.html">employee.c</A> (<A HREF="../strictchecks/employee.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictchecks/employee.c.html#line11">line 11</A> with <A HREF="employee.c.html#line11">line 11</A> to <A HREF="employee.c.html#line14">line 14</A><pre>
+&lt;       if (i == maxEmployeeName) return FALSE;
+---
+&gt;       if (i == maxEmployeeName) 
+&gt;         {
+&gt;           return FALSE;
+&gt;         }
+</pre><p><p>
+<p><h4>Changes in <A HREF="employee.lcl.html">employee.lcl</A> (<A HREF="../strictchecks/employee.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictchecks/employee.lcl.html#line49">line 49</A> with <A HREF="employee.lcl.html#line49">line 49</A><pre>
+&lt; void employee_initMod(void) 
+---
+&gt; void employee_initMod(void) internalState;
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset.c.html">empset.c</A> (<A HREF="../strictchecks/empset.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictchecks/empset.c.html#line6">line 6</A> with <A HREF="empset.c.html#line6">line 6</A><pre>
+&lt; static eref empset_get (employee e, erc s) 
+---
+&gt; static eref empset_get (employee e, erc s) /*@*/
+</pre><br>Added <A HREF="empset.c.html#line11">line 11</A> (was <A HREF="../strictchecks/empset.c.html#line10">line 10</A>)<pre>
+&gt; 
+</pre><br>Added <A HREF="empset.c.html#line13">line 13</A> (was <A HREF="../strictchecks/empset.c.html#line11">line 11</A>)<pre>
+&gt;         {
+</pre><br>Added <A HREF="empset.c.html#line15">line 15</A> (was <A HREF="../strictchecks/empset.c.html#line12">line 12</A>)<pre>
+&gt;         }
+</pre><br>Added <A HREF="empset.c.html#line32">line 32</A> to <A HREF="empset.c.html#line33">line 33</A> (was <A HREF="../strictchecks/empset.c.html#line28">line 28</A>)<pre>
+&gt;   /*@globals internalState@*/
+&gt;   /*@modifies internalState@*/
+</pre><br>Added <A HREF="empset.c.html#line120">line 120</A> (was <A HREF="../strictchecks/empset.c.html#line114">line 114</A>)<pre>
+&gt;         {
+</pre><br>Added <A HREF="empset.c.html#line122">line 122</A> (was <A HREF="../strictchecks/empset.c.html#line115">line 115</A>)<pre>
+&gt;         }
+</pre><br>Added <A HREF="empset.c.html#line135">line 135</A> (was <A HREF="../strictchecks/empset.c.html#line127">line 127</A>)<pre>
+&gt;         {
+</pre><br>Added <A HREF="empset.c.html#line137">line 137</A> (was <A HREF="../strictchecks/empset.c.html#line128">line 128</A>)<pre>
+&gt;         }
+</pre><br>Replaced <A HREF="../strictchecks/empset.c.html#line143">line 143</A> with <A HREF="empset.c.html#line152">line 152</A> to <A HREF="empset.c.html#line155">line 155</A><pre>
+&lt;       if (!empset_member(emp, s2)) return FALSE;
+---
+&gt;       if (!empset_member(emp, s2)) 
+&gt;         {
+&gt;           return FALSE;
+&gt;         }
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset.lcl.html">empset.lcl</A> (<A HREF="../strictchecks/empset.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictchecks/empset.lcl.html#line21">line 21</A> with <A HREF="empset.lcl.html#line21">line 21</A><pre>
+&lt; | bool : void | empset_insert(empset s, employee e) 
+---
+&gt; | bool : void | empset_insert (empset s, employee e) internalState; 
+</pre><br>Replaced <A HREF="../strictchecks/empset.lcl.html#line23">line 23</A> with <A HREF="empset.lcl.html#line23">line 23</A><pre>
+&lt;   modifies s;
+---
+&gt;   modifies s, internalState;
+</pre><br>Replaced <A HREF="../strictchecks/empset.lcl.html#line27">line 27</A> with <A HREF="empset.lcl.html#line27">line 27</A><pre>
+&lt; void empset_insertUnique(empset s, employee e) 
+---
+&gt; void empset_insertUnique (empset s, employee e) internalState;
+</pre><br>Replaced <A HREF="../strictchecks/empset.lcl.html#line40">line 40</A> with <A HREF="empset.lcl.html#line40">line 40</A><pre>
+&lt; only empset empset_union(empset s1, empset s2) 
+---
+&gt; only empset empset_union(empset s1, empset s2) internalState;
+</pre><br>Added <A HREF="empset.lcl.html#line42">line 42</A> (was <A HREF="../strictchecks/empset.lcl.html#line41">line 41</A>)<pre>
+&gt;   modifies internalState;
+</pre><br>Replaced <A HREF="../strictchecks/empset.lcl.html#line45">line 45</A> with <A HREF="empset.lcl.html#line46">line 46</A><pre>
+&lt; only empset empset_disjointUnion(empset s1, empset s2) 
+---
+&gt; only empset empset_disjointUnion (empset s1, empset s2) internalState;
+</pre><br>Replaced <A HREF="../strictchecks/empset.lcl.html#line52">line 52</A> with <A HREF="empset.lcl.html#line53">line 53</A><pre>
+&lt; void empset_intersect(empset s1, empset s2) 
+---
+&gt; void empset_intersect (empset s1, empset s2) internalState;
+</pre><br>Replaced <A HREF="../strictchecks/empset.lcl.html#line54">line 54</A> with <A HREF="empset.lcl.html#line55">line 55</A><pre>
+&lt;   modifies s1;
+---
+&gt;   modifies s1, internalState;
+</pre><br>Replaced <A HREF="../strictchecks/empset.lcl.html#line84">line 84</A> with <A HREF="empset.lcl.html#line85">line 85</A><pre>
+&lt; void empset_initMod(void) 
+---
+&gt; void empset_initMod (void) internalState;
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.c.html">erc.c</A> (<A HREF="../strictchecks/erc.c.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="erc.c.html#line2">line 2</A> (was <A HREF="../strictchecks/erc.c.html#line1">line 1</A>)<pre>
+&gt; 
+</pre><br>Replaced <A HREF="../strictchecks/erc.c.html#line4">line 4</A> with <A HREF="erc.c.html#line5">line 5</A><pre>
+&lt; static size_t int_toSize (int x)
+---
+&gt; static size_t int_toSize (int x) /*@*/
+</pre><br>Replaced <A HREF="../strictchecks/erc.c.html#line21">line 21</A> with <A HREF="erc.c.html#line22">line 22</A><pre>
+&lt;   c = (erc) malloc (sizeof (ercInfo));
+---
+&gt;   c = (erc) malloc (sizeof (*c));
+</pre><br>Replaced <A HREF="../strictchecks/erc.c.html#line60">line 60</A> with <A HREF="erc.c.html#line61">line 61</A> to <A HREF="erc.c.html#line66">line 66</A><pre>
+&lt;     if (eref_equal (tmpc-&gt;val, er)) return TRUE; 
+---
+&gt;     {
+&gt;       if (eref_equal (tmpc-&gt;val, er)) 
+&gt;         {
+&gt;           return TRUE; 
+&gt;         }
+&gt;     }
+</pre><br>Replaced <A HREF="../strictchecks/erc.c.html#line68">line 68</A> with <A HREF="erc.c.html#line74">line 74</A><pre>
+&lt;   newElem = (ercElem *) malloc (sizeof (ercElem));
+---
+&gt;   newElem = (ercElem *) malloc (sizeof (*newElem));
+</pre><br>Added <A HREF="erc.c.html#line128">line 128</A> (was <A HREF="../strictchecks/erc.c.html#line121">line 121</A>)<pre>
+&gt;     {
+</pre><br>Added <A HREF="erc.c.html#line130">line 130</A> (was <A HREF="../strictchecks/erc.c.html#line122">line 122</A>)<pre>
+&gt;     }
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.h.html">erc.h</A> (<A HREF="../strictchecks/erc.h.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="erc.h.html#line7">line 7</A> (was <A HREF="../strictchecks/erc.h.html#line6">line 6</A>)<pre>
+&gt; /*@-exporttype@*/ /* These types should not be exported, but are used in macros. */
+</pre><br>Added <A HREF="erc.h.html#line11">line 11</A> to <A HREF="erc.h.html#line12">line 12</A> (was <A HREF="../strictchecks/erc.h.html#line9">line 9</A>)<pre>
+&gt; /*@=exporttype@*/
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.lcl.html">erc.lcl</A> (<A HREF="../strictchecks/erc.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictchecks/erc.lcl.html#line66">line 66</A> with <A HREF="erc.lcl.html#line66">line 66</A><pre>
+&lt; void erc_initMod(void) 
+---
+&gt; void erc_initMod (void) internalState;
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.c.html">eref.c</A> (<A HREF="../strictchecks/eref.c.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="eref.c.html#line5">line 5</A> to <A HREF="eref.c.html#line11">line 11</A> (was <A HREF="../strictchecks/eref.c.html#line4">line 4</A>)<pre>
+&gt; typedef enum { ST_USED, ST_AVAIL } erefStatus;
+&gt; typedef struct {
+&gt;   /*@reldef@*/ /*@only@*/ employee *conts;
+&gt;   /*@only@*/ erefStatus *status;
+&gt;   int size;
+&gt; } erefTable;
+&gt; 
+</pre><br>Replaced <A HREF="../strictchecks/eref.c.html#line14">line 14</A> with <A HREF="eref.c.html#line21">line 21</A> to <A HREF="eref.c.html#line24">line 24</A><pre>
+&lt;   for (i=0; (eref_Pool.status[i] == ST_USED) && (i &lt; eref_Pool.size); i++);
+---
+&gt;   for (i=0; (eref_Pool.status[i] == ST_USED) && (i &lt; eref_Pool.size); i++)
+&gt;     {
+&gt;       ;
+&gt;     }
+</pre><br>Replaced <A HREF="../strictchecks/eref.c.html#line22">line 22</A> with <A HREF="eref.c.html#line32">line 32</A><pre>
+&lt;                               2 * eref_Pool.size * sizeof (employee));
+---
+&gt;                               2 * eref_Pool.size * sizeof (*eref_Pool.conts));
+</pre><br>Replaced <A HREF="../strictchecks/eref.c.html#line32">line 32</A> with <A HREF="eref.c.html#line42">line 42</A><pre>
+&lt;                                  2 * eref_Pool.size * sizeof (erefStatus));
+---
+&gt;                                  2 * eref_Pool.size * sizeof (*eref_Pool.status));
+</pre><br>Added <A HREF="eref.c.html#line53">line 53</A> (was <A HREF="../strictchecks/eref.c.html#line42">line 42</A>)<pre>
+&gt;         {
+</pre><br>Added <A HREF="eref.c.html#line56">line 56</A> (was <A HREF="../strictchecks/eref.c.html#line44">line 44</A>)<pre>
+&gt;     }
+</pre><br>Replaced <A HREF="../strictchecks/eref.c.html#line51">line 51</A> to <A HREF="../strictchecks/eref.c.html#line52">line 52</A> with <A HREF="eref.c.html#line63">line 63</A> to <A HREF="eref.c.html#line64">line 64</A><pre>
+&lt;    /*@globals undef eref_Pool, needsInit@*/
+&lt;    /*@modifies eref_Pool, needsInit@*/
+---
+&gt;    /*@globals undef eref_Pool, needsInit, internalState@*/
+&gt;    /*@modifies eref_Pool, needsInit, internalState@*/
+</pre><br>Replaced <A HREF="../strictchecks/eref.c.html#line66">line 66</A> with <A HREF="eref.c.html#line78">line 78</A><pre>
+&lt;   eref_Pool.conts = (employee *) malloc (size * sizeof (employee));
+---
+&gt;   eref_Pool.conts = (employee *) malloc (size * sizeof (*eref_Pool.conts));
+</pre><br>Replaced <A HREF="../strictchecks/eref.c.html#line74">line 74</A> with <A HREF="eref.c.html#line86">line 86</A><pre>
+&lt;   eref_Pool.status = (erefStatus *) malloc (size * sizeof (erefStatus));
+---
+&gt;   eref_Pool.status = (erefStatus *) malloc (size * sizeof (*eref_Pool.status));
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.h.html">eref.h</A> (<A HREF="../strictchecks/eref.h.html">previous version</A>)</h4><pre>
+</pre><br>Deleted <A HREF="../strictchecks/eref.h.html#line8">line 8</A> to <A HREF="../strictchecks/eref.h.html#line15">line 15</A> (matches <A HREF="eref.h.html#line7">line 7</A>)<pre>
+&lt; /* Private typedefs used in macros  */
+&lt; typedef enum { ST_USED, ST_AVAIL } erefStatus;
+&lt; typedef struct {
+&lt;   /*@reldef@*/ /*@only@*/ employee *conts;
+&lt;   /*@only@*/ erefStatus *status;
+&lt;   int size;
+&lt; } erefTable;
+&lt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.lcl.html">eref.lcl</A> (<A HREF="../strictchecks/eref.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictchecks/eref.lcl.html#line43">line 43</A> with <A HREF="eref.lcl.html#line43">line 43</A><pre>
+&lt; void eref_initMod(void) map m;
+---
+&gt; void eref_initMod(void) map m; internalState;
+</pre><br>Replaced <A HREF="../strictchecks/eref.lcl.html#line45">line 45</A> with <A HREF="eref.lcl.html#line45">line 45</A><pre>
+&lt;   modifies m;
+---
+&gt;   modifies m, internalState;
+</pre><p><p>
+<p><h4>Changes in <A HREF="ereftab.c.html">ereftab.c</A> (<A HREF="../strictchecks/ereftab.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictchecks/ereftab.c.html#line35">line 35</A> with <A HREF="ereftab.c.html#line35">line 35</A> to <A HREF="ereftab.c.html#line39">line 39</A><pre>
+&lt;       if (employee_equal(&e, &e1)) return er;
+---
+&gt; 
+&gt;       if (employee_equal(&e, &e1)) 
+&gt;         {
+&gt;           return er;
+&gt;         }
+</pre><p><p>
+<p><h4>Changes in <A HREF="ereftab.lcl.html">ereftab.lcl</A> (<A HREF="../strictchecks/ereftab.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictchecks/ereftab.lcl.html#line28">line 28</A> with <A HREF="ereftab.lcl.html#line28">line 28</A><pre>
+&lt; void ereftab_initMod(void) 
+---
+&gt; void ereftab_initMod (void) internalState;
+</pre><p><p>

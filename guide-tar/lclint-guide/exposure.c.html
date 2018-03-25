@@ -1,0 +1,93 @@
+<A NAME="line16"></A><html><head>
+<title>exposure.c</title>
+</head><body>
+<h3>exposure.c</h3>
+<PRE>
+<A NAME="line1"></A>#include "<A HREF="employee.h.html">employee.h</A>"
+<A NAME="line2"></A> 
+<A NAME="line3"></A>char *
+<A NAME="line4"></A>employee_getName (employee e) 
+<A NAME="line5"></A>{ 
+<A NAME="line6"></A>  return e-&gtname; 
+<A NAME="line7"></A>}
+<A NAME="line8"></A> 
+<A NAME="line9"></A>/*@observer@*/ char *
+<A NAME="line10"></A>employee_obsName (employee e) 
+<A NAME="line11"></A>{ return e-&gtname; }
+<A NAME="line12"></A> 
+<A NAME="line13"></A>/*@exposed@*/ char *
+<A NAME="line14"></A>employee_exposeName (employee e)
+<A NAME="line15"></A>{ return e-&gtname; }
+<A NAME="line16"></A> 
+<A NAME="line17"></A>void 
+<A NAME="line18"></A>employee_capName (employee e)
+<A NAME="line19"></A>{
+<A NAME="line20"></A>  char *name;
+<A NAME="line21"></A>  
+<A NAME="line22"></A>  name = employee_obsName (e);
+<A NAME="line23"></A>  *name = toupper (*name);
+<A NAME="line24"></A>}
+<A NAME="line25"></A> 
+<A NAME="line26"></A> 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

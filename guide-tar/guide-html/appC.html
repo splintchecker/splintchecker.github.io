@@ -1,0 +1,1978 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="lclint-guide.css" title="style1">
+<title>LCLint User's Guide - Appendix C: Flags</title>
+</head>
+<body>
+<table border="0" rules="none" bgcolor="#FFFFBD" width=100% cellpadding=6 cellspacing=2>
+<tr>
+<td valign=top align=center width=5%>
+<a href="http://lclint.cs.virginia.edu/"><img border=0 align=center width=129 height=86 src="lclint-logo1.gif"></a><br>
+</td>
+<td valign=top>
+<b><a href="index.html">Guide Contents</a></b><br>
+<a href="sec1.html">1. Overview</a><br>
+<a href="sec2.html">2. Operation</a><br>
+<a href="sec3.html">3. Abstract Types</a><br>
+</td>
+<td valign=top>
+<a href="sec4.html">4. Function Interfaces</a><br>
+<a href="sec5.html">5. Memory Management</a><br>
+<a href="sec6.html">6. Sharing</a><br>
+<a href="sec7.html">7. Value Constraints</a><br>
+</td>
+<td valign=top>
+<a href="sec8.html">8. Macros</a><br>
+<a href="sec9.html">9. Naming Conventions</a><br>
+<a href="sec10.html">10. Other Checks</a><br>
+Contact: <a href="mailto:lclint@cs.virginia.edu"><em>lclint@cs.virginia.edu</em></a>
+</td>
+</tr>
+</table>
+<blockquote>
+
+<a name="app-C">
+<h2>Appendix C  Flags</h2>
+<p>
+
+<b></b>Flags can be grouped into four major categories: <p>
+<ul>
+<li>	Global flags for controlling initializations and global behavior
+<li>	Message format flags for controlling how messages are displayed
+<li>	Mode selectors for coarse control of LCLint checking
+<li>	Checking flags that control checking and what classes of
+        messages are reported
+</ul>
+Global flags can be used in initialization files and at the command line; all
+other flags may also be used in control comments.
+<p>
+<b>Global Flags</a></b><p>
+<b></b>Global flags can be set at the command line or in an options file, but
+cannot be set locally using stylized comments.  These flags control on-line
+help, initialization files, pre-processor flags, libraries and output. 
+<p>
+
+<b><i>Help</a></i></b><p>
+<b><i></i></b>On-line help provides documentation on LCLint operation and
+flags.  When a help flag is used, no checking is done by LCLint.  Help flags
+may be preceded by <tt>-</tt> or <tt>+</tt>.<p>
+<a name="flag-help"><tt>help</tt>
+<blockquote>
+Display general help overview, including list of additional help topics.
+</blockquote>
+<tt>help</tt> &lt;<em>topic</em>&gt;
+<blockquote>
+Display help on <i>&lt;topic&gt;</i>. Available topics:
+<blockquote>
+<table>
+<tr><td><tt>annotations</tt></td><td>describe annotations</td></tr>
+<tr><td><tt>comments</tt></td><td>describe control comments</td></tr>
+<tr><td><tt>flags</tt></td><td>summarize flag categories</td></tr>
+<tr><td><tt>flags </tt>&lt;<em>category</em>&gt;</td><td>all flags pertaining to
+&lt;<em>category</em>&gt; (one of the categories listed by <tt>lclint -help
+flags</tt>)</td></tr>         
+<tr><td><tt>flags alpha</tt></td><td>all flags in alphabetical order</td></tr>
+<tr><td><tt>flags full</tt></td><td>print a full description of all flags</td></tr>
+<tr><td><tt>mail</tt></td><td>print information on mailing lists</td></tr>
+<tr><td><tt>modes</tt></td><td>flags settings in modes</td></tr>
+<tr><td><tt>prefixcodes</tt></td><td>character codes for setting namespace prefixes</td></tr>
+<tr><td><tt>references</tt></td><td>print references to relevant papers and web sites</td></tr>
+<tr><td><tt>vars</tt></td><td>describe environment variables</td></tr>
+<tr><td><tt>version</tt></td><td>print maintainer and version information</td></tr>
+</table>
+</blockquote>
+</blockquote>
+<tt>help</tt> &lt;<em>flag</em>&gt;
+<blockquote>
+Describe flag <i>&lt;flag&gt;</i>.  (May list several flags.)
+</blockquote>
+<a name="flag-warnflags"><tt>warnflags</tt>
+<blockquote>
+Display a warning when a flag is set in a surprising way.  An error is reported
+if an obsolete (LCLint Version 1.4 or earlier) flag is set, a flag is set to
+its current value (i.e., the + or - may be wrong), or a mode selector flag is
+set after mode checking flags that will be reset by the mode were set.  By
+default, warnflags is on.  To suppress flag warnings, use <tt>-warnflags</tt>.<a name="_Toc349905932">
+</blockquote>
+<p>
+<b><i>Initialization</a></i></b><p>
+<b><i></i></b>These flags control directories and files used by LCLint.  They
+may be used from the command line or in an options file, but may not be used as
+control comments in the source code.  Except where noted. they have the same
+meaning preceded by - or +.  <p>
+<a name="flag-tmpdir">
+<tt>tmpdir</tt> <i>&lt;directory&gt;</i><p>
+<blockquote>
+Set directory for writing temp files.  Default is <tt>/tmp/</tt>.
+</blockquote>
+<a name="flag-I">
+<tt>I</tt><i>&lt;directory&gt;</i>
+<blockquote>
+Add directory to path searched for C include files.  Note there is no space
+after the I, to be consistent with C preprocessor flags.
+</blockquote>
+<a name="flag-S">
+<tt>S</tt><i>&lt;directory&gt;</i>
+<blockquote>
+Add directory to path search for .lcl specification files.
+</blockquote>
+<p>
+<p>
+<a name="flag-f">
+<tt>f </tt><i>&lt;file&gt;</i><p>
+<blockquote>
+Load options file <i>&lt;file&gt;</i>.  If this flag is used from the command
+line, the default <tt>~/.lclintrc</tt> file is not loaded.  This flag may be used in an
+options file to load in another options file.
+</blockquote>
+<a name="flag-nof">
+<tt>nof</tt>
+<blockquote>
+Prevents the default options files (<tt>./.lclintrc</tt> and
+<tt>~/.lclintrc</tt>) from being loaded.  (Setting <tt>-nof</tt>
+overrides <tt>+nof</tt>, causing the options files to be loaded normally.)
+</blockquote>
+<a name="flag-systemdirs"><tt>systemdirs</tt>
+<blockquote>
+Set directories for system files (default is "<tt>/usr/include</tt>").  Separate
+directories with colons (e.g., "<tt>/usr/include:/usr/local/lib</tt>").  Flag settings
+propagate to files in a system directory.  If <tt>-systemdirerrors</tt> is set, no
+errors are reported for files in system directories.
+</blockquote>
+<a name="_Ref345883190"><a name="_Toc349905933"><p>
+<b><i>Pre-processor</a></a></i></b><p>
+<b><i></i></b>These flags are used to define or undefine pre-processor
+constants.  The -I<i>&lt;directory&gt;</i> flag is also passed to the C
+pre-processor.<p>
+<a name="flag-D">
+<tt>D</tt>&lt;<em>initializer</em>&gt;
+<blockquote>
+Passed to the C pre-processor.
+</blockquote>
+<a name="flag-U">
+<tt>U</tt>&lt;<em>initializer</em>&gt;
+<blockquote>
+Passed to the C pre-processor
+</blockquote>
+<a name="_Ref344793948"><a name="_Toc349905934"><p>
+<b><i>Libraries</a></a></i></b><p>
+<b><i></i></b>These flags control the creation and use of libraries.<p>
+<tt>dump </tt><i>&lt;file&gt;</i>
+<blockquote>
+Save state in <i>&lt;file&gt;</i> for loading.  The default extension .lcd is
+added if <i>&lt;file&gt;</i> has no extension.
+</blockquote>
+<tt>load </tt><i>&lt;file&gt;</i>
+<blockquote>
+Load state from <i>&lt;file&gt;</i> (created by <tt>-dump</tt>).  The default extension
+<tt>.lcd</tt> is added if <i>&lt;file&gt;</i> has no extension.  Only one library file
+may be loaded.
+</blockquote>
+<p>
+By default, the standard library is loaded if the -load flag is not used to
+load a user library.  If no user library is loaded, one of the following flags
+may be used to select a different standard library.  Precede the flag by + to
+load the described library (or prevent a library from being loaded using
+nolib).  See <a href="appF.html">Apppendix F</a> for information on the
+provided libraries.
+
+<p>
+<a name="flag-nolib"><tt>nolib</tt>
+<blockquote>
+Do not load any library.  This prevents the standard library from being loaded.
+</blockquote>
+<a name="flag-ansilib"><tt>ansi-lib</tt>
+<blockquote>
+Use the ANSI standard library (selected by default). 
+</blockquote>
+
+<a name="flag-strictlib"><tt>strict-lib</tt>
+<blockquote>
+Use strict version of the ANSI standard library.
+</blockquote>
+
+<a name="flag-posixlib"><tt>posix-lib</tt>
+<blockquote>
+Use the POSIX standard library.
+</blockquote>
+
+<a name="flag-posixstrictlib"><tt>posix-strict-lib</tt>
+<blockquote>
+Use the strict version of the POSIX standard library.
+</blockquote>
+
+<a name="flag-unixlib"><tt>1-lib</tt>
+<blockquote>
+Use UNIX version of standard library.
+</blockquote>
+
+<a name="flag-unixstrictlib"><tt>1-strict-lib</tt>
+<blockquote>
+Use the strict version of the UNIX standard library. 
+</blockquote>
+
+<p>
+<b><i>Output</a></i></b><p>
+<b><i></i></b>These flags control what additional information is printed by
+LCLint.  Setting +<i>&lt;flag&gt;</i> causes the described information to be
+printed;  setting -<i>&lt;flag&gt;</i> prevents it.  By default, all these
+flags are off.<p>
+<a name="flag-usestderr"><tt>usestderr</tt>
+<blockquote>
+Send error messages to standard error (instead of standard out).
+</blockquote>
+<a name="flag-showsummary"><tt>showsummary</tt>
+<blockquote>
+Show a summary of all errors reported and suppressed.  Counts of suppressed
+errors are not necessarily correct since turning a flag off may prevent some
+checking from being done to save computation, and errors that are not
+reported may propagate differently from when they are reported.
+</blockquote>
+<a name="flag-showscan"><tt>showscan</tt>
+<blockquote>
+Show file names are they are processed.
+</blockquote>
+<a name="flag-showalluses"><tt>showalluses</tt>
+<blockquote>
+Show list of uses of all external identifiers sorted by number of uses.
+</blockquote>
+<a name="flag-stats"><tt>stats</tt>
+<blockquote>
+Display number of lines processed and checking time.
+</blockquote>
+<a name="flag-timedist"><tt>timedist</tt>
+<blockquote>
+Display distribution of where checking time is spent.
+</blockquote>
+<a name="flag-quiet"><tt>quiet</tt>
+<blockquote>
+Suppress herald and error count.  (If quiet is not set, LCLint prints out a
+herald with version  information before checking begins, and a line summarizing
+the total number of errors reported.)
+</blockquote>
+<a name="flag-whichlib"><tt>whichlib</tt>
+<blockquote>
+Print out the standard library filename and creation information.
+</blockquote>
+<a name="flag-limit">
+<tt>limit </tt><i>&lt;number&gt;</i>
+<blockquote>
+At most <i>&lt;number&gt;</i> similar errors are reported consecutively.
+Further errors are suppressed, and a message showing the number of suppressed
+messages is printed.
+</blockquote>
+<a name="_Toc349905936"><p>
+<b><i>Expected Errors</a></i></b><p>
+<b><i></i></b>Normally, LCLint will expect to report no errors.  The exit
+status will be success (0) if no errors are reported, and failure if any errors
+are reported.  Flags can be used to set the expected number of reported errors.
+Because of the provided error suppression mechanisms, these options should
+probably not be used for final checking real programs but may be useful in
+developing programs using make.<p>
+<tt>expect </tt><i>&lt;number&gt;</i>
+<blockquote>
+Exactly <i>&lt;number&gt;</i> code errors are expected.  LCLint will exit with
+failure exit status unless <i>&lt;number&gt;</i> code errors are
+detected. 
+</blockquote>
+<a name="_Toc349905937"><p>
+<b>Message Format</a></b><p>
+<b></b>These flags control how messages are printed.  They may be set at the
+command line, in options files, or locally in syntactic comments.  The linelen
+and limit flags may be preceded by + or - with the same meaning; for the other
+flags, + turns on the describe printing and - turns it off.  The box to the
+left of each flag gives its default value.<p>
+
+<a name="flag-showcolumn"><tt>showcolumn</tt>
+<blockquote>
+Show column number where error is found.  Default: <tt>+</tt>
+</blockquote>
+<a name="flag-showfunc"><tt>showfunc</tt>
+<blockquote>
+Show name of function (or macro) definition containing error.  The function
+name is printed once before the first message detected in that function.
+Default: <tt>+</tt><p>
+</blockquote>
+<a name="flag-showallconjs"><tt>showallconjs</tt>
+<blockquote>
+Show all possible alternate types (see <a
+href="sec8.html#sec-8.2.2">Section 8.2.2</a>).  Default: <tt>-</tt>
+</blockquote>
+<a name="flag-parenfileformat"><tt>paren-file-format</tt>
+<blockquote>
+Use <em>file</em>(<em>line</em>) format in messages.
+</blockquote>
+<a name="flag-hints"><tt>hints</tt>
+<blockquote>
+Provide hints describing an error and how a message may be suppressed for the
+first error reported in each error class. Default: <tt>+</tt>
+</blockquote>
+<a name="flag-forcehints"><tt>forcehints</tt>
+<blockquote>
+Provide hints for all errors reported, even if the hint has already been
+displayed for the same error class.  Default: <tt>-</tt>
+</blockquote>
+<a name="flag-linelen">
+<tt>linelen</tt> <i>&lt;number&gt;</i>
+<blockquote>
+Set length of maximum message line to <i>&lt;number&gt;</i> characters.  LCLint
+will split messages longer than <i>&lt;number&gt;</i> characters long into
+multiple lines.  Default: <tt>80</tt>
+</blockquote>
+<a name="_Toc349905938"><p>
+<b>Mode Selector Flags</a></a></b><p>
+<b></b>Mode selects flags set the mode checking flags to predefined values.
+They provide a quick coarse-grain way of controlling what classes of errors are
+reported. Specific checking flags may be set after a mode flag to override the
+mode settings.  Mode flags may be used locally, however the mode settings will
+override specific command line flag settings.  A warning is produced if a mode
+flag is used after a mode checking flag has been set. <p>
+<p>
+These are brief descriptions to give a general idea of what each mode does.  To
+see the complete flag settings in each mode, use lclint -help modes. A mode
+flag has the same effect when used with either + or -.<p>
+<a name="flag-weak"><tt>weak</tt>
+<blockquote>
+Weak checking, intended for typical unannotated C code.  No modifies checking,
+macro checking, rep exposure, or clean interface checking is done.  Return
+values of type int may be ignored.  The types bool, int, char and user-defined
+enum types are all equivalent.  Old style declarations are unreported. 
+</blockquote>
+<a name="flag-standard"><tt>standard</tt>
+<blockquote>
+The default mode.  All checking done by weak, plus modifies checking, global
+alias checking, use all parameters, using released storage, ignored return
+values or any type, macro checking, unreachable code, infinite loops, and
+fall-through cases.  The types bool, int and char are distinct.  Old style
+declarations are reported.
+</blockquote>
+ <a name="flag-checks"><tt>checks</tt>
+<blockquote>
+Moderately strict checking.  All checking done by standard, plus must
+modification checking, rep exposure, return alias, memory management and
+complete interfaces.
+</blockquote>
+<a name="flag-strict"><tt>strict</tt>
+<blockquote>
+Absurdly strict checking.  All checking done by checks, plus modifications and
+global variables used in unspecified functions, strict standard library, and
+strict typing of C operators. A special reward will be presented to the first
+person to produce a real program that produces no errors with strict checking.
+</blockquote>
+<a name="_Ref344798116"><a name="_Toc349905939">
+<b>Checking Flags</a></b><p>
+<b></b>These flags control checking done by LCLint.  They may be set locally
+using syntactic comments, from the command line, or in an options file.  Some
+flags directly control whether a certain class of message is reported.
+Preceding the flag by + turns reporting on, and preceding the flag by - turns
+reporting off.  Other flags control checking less directly by determining
+default values (what annotations are implicit), making types equivalent (to
+prevent certain type errors), controlling representation access, etc.  For
+these flags, the effect of + is described, and the effect of - is the opposite
+(or explicitly explained if there is no clear opposite).  The organization of
+this section mirrors Sections 3-10.
+<a name="_Toc349905940"><p>
+<b><i>Key</a></i></b><p>
+<b><i></i></b>Under each flag name is a flag descriptor encoding the
+what kind of flag it is and its default value.  The descriptions are:
+<p>
+<a name="plain-key">
+plain: <tt>-</tt>
+<blockquote>
+A plain flag.  The value after the colon gives the default setting
+(e.g., this flag is off.)  
+</blockquote>
+<a name="mode-key">
+m: <tt>--++</tt> 
+<blockquote>
+A mode checking flag.  The value of the flag is set by the mode selector.  The
+four signs give the setting in the weak, standard, checks and strict modes.
+(e.g., this flag is off in the weak and standard modes, and on in the checks
+and strict modes.) 
+</blockquote>
+<a name="shortcut-key">
+shortcut
+<blockquote>
+A shortcut flag.  This flag sets other flags, so it has no default value.
+</blockquote>
+<a name="_Toc349905941"><p>
+<b><i>Types</a></i></b><p>
+<b><i></i>Abstract Types</b><p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-impabstract"><tt>impabstract</tt><p>
+Implicit abstract annotation for type declarations that do not use concrete.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-mutrep"><tt>mutrep</tt><p>
+Representation of mutable type has sharing semantics.<p>
+<b>Access </b>(<a href="sec3.html#sec-3.1">Section 3.1</a>)<b></b><p>
+<b></b>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-accessmodule"><tt>accessmodule</tt><p>
+An abstract type defined in <i>M</i><tt>.h</tt> (or specified in <i>M</i><tt>.lcl</tt>) is
+accessible in <i>M</i><tt>.c</tt>.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-accessfile"><tt>accessfile</tt><p>
+An abstract type named <i>type</i> is accessible in files named
+<i>type</i>.<i>&lt;extenstion&gt;</i>.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-accessczech"><tt>accessczech</tt><p>
+An abstract type named <i>type</i> may be accessible in a function named
+<i>type</i>_<i>name</i>. (see <a href="sec9.html#sec-9.1.1">Section 9.1.1</a>)
+<p><a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-accessslovak"><tt>accessslovak</tt><p>
+An abstract type named <i>type</i> may be accessible in a function named
+<i>typeName</i>.  (see <A href="sec9.html#sec-9.1.2">Section.9.1.2</a>)
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-accessczechoslovak"><tt>accessczechoslovak</tt><p>
+An abstract type named <i>type</i> may be accessible in a function named
+<i>type</i>_<i>name</i> or <i>typeName</i>.  (see <a href="sec9.html#sec-9.1.3">Section 9.1.3</a>)<p>
+<a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-accessall"><tt>accessall</tt><p>
+Sets accessmodule, accessfile and accessczech.<p>
+<b>Boolean Types </b>(<a href="sec3.html#sec-3.3">Section 3.3</a>)<b></b><p>
+<b></b>These flags control the type name used to represent booleans, and
+whether the boolean type is abstract.<p>
+
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-bool"><tt>bool</tt><p>
+Boolean type is an abstract type.<p>
+<a href="appC.html#plain-key">plain</a>: <em>unset</em><br>
+<a name="flag-booltype">
+booltype <i>&lt;name</i><i>&gt;</i> <p>
+Set name of boolean type to <i>&lt;name&gt;</i>.<p>
+<a href="appC.html#plain-key">plain</a>: <tt>FALSE</tt><br>
+<a name="flag-boolfalse">
+<tt>boolfalse </tt><i>&lt;name</i><i>&gt;</i><p>
+Set name of boolean false to <i>&lt;name&gt;</i>.<p>
+<a href="appC.html#plain-key">plain</a>: <tt>TRUE</tt><br>
+<a name="flag-booltrue">
+<tt>booltrue </tt><i>&lt;name</i><i>&gt;</i><p>
+Set name of boolean true to <i>&lt;name&gt;</i>.
+<a name="_Ref344871224"><p>
+<b>Predicates</b><p>
+<b></b><a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-predboolptr"><tt>predboolptr</tt><p>
+Type of condition test is a pointer.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-predboolint"><tt>predboolint</tt><p>
+Type of condition test is an integral type.<p>
+<a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-predboolothers"><tt>predboolothers</tt><p>
+Type of condition test is not a boolean, pointer or integral type.<p>
+<a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-predbool"><tt>predbool</tt><p>
+Sets predboolint, predboolptr and preboolothers.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-predassign"><tt>predassign</tt><p>
+The condition test is an assignment expression. If an assignment is intended,
+add an extra      parentheses nesting (e.g., <tt>if ((a = b)) ...</tt>).<p>
+<b>Primitive Operations</b><p>
+<b></b><a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-ptrarith"><tt>ptrarith</tt><p>
+Arithmetic involving pointer and integer.<p>
+<a href="appC.html#mode-key">m: </a><tt>++--</tt><br>
+<a name="flag-ptrnegate"><tt>ptrnegate</tt><p>
+Allow the operand of the ! operator to be a pointer.<p>
+
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-bitwisesigned"><tt>bitwisesigned</tt><p>
+An operand to a bitwise operator is not an unsigned values.  This may
+have unexpected results depending on the signed representations.
+<p>
+
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-shiftsigned"><tt>shiftsigned</tt><p>
+An operand to a shift operator is not unsigned values.  This may have
+unexpected results depending on the signed representations.
+<p>
+
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-strictops"><tt>strictops</tt><p>
+Primitive operation does not type check strictly.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-sizeoftype"><tt>sizeoftype</tt><p>
+Operand of sizeof operator is a type.  (Safer to use expression, int *x =
+sizeof (*x); instead of sizeof (int).)<p>
+<p>
+<b>Format Codes</b><p>
+<b></b><p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-formatcode"><tt>formatcode</tt><p>
+Invalid format code in format string for printflike or scanflike function.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-formattype"><tt>formattype</tt><p>
+Type-mismatch in parameter corresponding to format code in a printflike or
+scanflike function.<p>
+<b>Main</b><p>
+<b></b><p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-maintype"><tt>maintype</tt><p>
+Type of main does not match expected type (function returning an int, taking no
+parameters or two parameters of type int and char **.)<p>
+<b>Comparisons</b><p>
+<a name="boolcompare">
+<b></b><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<tt>boolcompare</tt></a></a><p>
+Comparison between boolean values.  This is dangerous since there may be
+multiple TRUE values if any non-zero value is interpreted at TRUE.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-realcompare"><tt>realcompare</tt><p>
+Comparison involving float or double values.  This is dangerous since it may
+produce unexpected results because floating point representations are
+inexact.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-ptrcompare"><tt>ptrcompare</tt><p>
+Comparison between pointer and number.<p>
+<b>Type Equivalence</a>
+<a name="globs"></a></b><p>
+<b></b><a href="appC.html#mode-key">m: </a><tt>+---</tt><br>
+<a name="flag-voidabstract"><tt>voidabstract</tt><p>
+Allow <tt>void *</tt> to match pointers to abstract types.  (Casting a pointer to an
+abstract type to a pointer to <tt>void</tt> is okay if <a href="appC.html#flag-voidabstract"><tt>+voidabstract</tt></a> is set.)<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-castfcnptr">
+<tt>castfcnptr</tt>
+<p>
+ A pointer to a function is cast to (or used as) a pointer to void (or
+vice versa).
+<p>
+<a href="appC.html#mode-key">m: </a><tt>+---</tt><br>
+<a name="flag-forwarddecl"><tt>forwarddecl</tt><p>
+Forward declarations of pointers to abstract representation match abstract
+type.<p>
+
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-imptype"><tt>imptype</tt><p>
+A variable declaration has no explicit type.  The type is
+implicitly int.
+<p>
+
+<a href="appC.html#plain-key">plain: </a><tt>+</tt><br>
+<a name="flag-incompletetype"><tt>incompletetype</tt><p>
+A formal parameter is declared with an incomplete type (e.g.,
+<tt>int[][]</tt>).
+<p>
+
+<a href="appC.html#mode-key">m: </a><tt>+---</tt><br>
+<a name="flag-charindex"><tt>charindex</tt><p>
+Allow char to index arrays.<p>
+<a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-enumindex"><tt>enumindex</tt><p>
+Allow members of enum type  to index arrays.<p>
+<a href="appC.html#mode-key">m: </a><tt>+---</tt><br>
+<a name="flag-boolint"><tt>boolint</tt><p>
+Make bool and int types equivalent.  (No type errors are reported when a boolean
+is used where an integral type is expected and vice versa.) <p>
+<a href="appC.html#mode-key">m: </a><tt>+---</tt><br>
+<a name="flag-charint"><tt>charint</tt><p>
+Make <tt>char</tt> and <tt>int</tt> types equivalent.<p>
+<a href="appC.html#mode-key">m: </a><tt>++--</tt><br>
+<a name="flag-enumint"><tt>enumint</tt><p>
+Make <tt>enum</tt> and <tt>int</tt> types equivalent.<p>
+<a href="appC.html#mode-key">m: </a><tt>+---</tt><br>
+<a name="flag-floatdouble"><tt>floatdouble</tt><p>
+Make <tt>float</tt> and <tt>double</tt> types equivalent.<p>
+<a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-ignorequals"><tt>ignorequals</tt><p>
+Ignore type qualifiers (<tt>long</tt>, <tt>short</tt>, <tt>unsigned</tt>).<p>
+<a href="appC.html#mode-key">m: </a><tt>++--</tt><br>
+<a name="flag-relaxquals"><tt>relaxquals</tt><p>
+Report qualifier mismatches only if dangerous (information may be lost since a
+larger type is assigned to (or passed as) a smaller one or a comparison uses
+signed and unsigned values.)<p>
+<a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-ignoresigns"><tt>ignoresigns</tt><p>
+Ignore signs in type comparisons (<tt>unsigned</tt> matches <tt>signed</tt>).<p>
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-longintegral">
+<tt>longintegral</tt>
+<p>
+Allow <tt>long</tt> type to match an arbitrary integral type (e.g., <tt>size_t</tt>).
+<p>
+<a href="appC.html#mode-key">m: </a><tt>+---</tt><br>
+<a name="flag-longunsignedintegral">
+<tt>longunsignedintegral</tt>
+<p>
+Allow <tt>long unsigned</tt> type to match an arbitrary integral type (e.g.,
+<tt>dev_t</tt>).
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-matchanyintegral">
+<tt>matchanyintegral</tt>
+<p>
+Allow any integral type to match an arbitrary integral type (e.g.,
+<tt>dev_t</tt>).<p>
+<p>
+
+<a href="appC.html#mode-key">m: </a><tt>+---</tt><br>
+<a name="flag-longunsignedunsignedintegral">
+<tt>long-unsigned-unsigned-integral</tt>
+<p>
+Allow unsigned long type to match an arbitrary unsigned integral type
+(e.g., <tt>size_t</tt>).
+<p>
+<a href="appC.html#mode-key">m: </a><tt>+---</tt><br>
+<a name="flag-longsignedintegral">
+<tt>long-signed-integral</tt>
+<p>
+Allow long type to match an arbitrary signed integral type (e.g.,
+<tt>ssize_t</tt>).
+</p>
+<a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-numliteral"><tt>num-literal</tt><p>
+Integer literals can be used as floats.<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-charintliteral">
+<tt>char-int-literal</tt>
+<p>A character constant may be used as an <tt>int</tt>.<p>
+<a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-zeroptr"><tt>zeroptr</tt><p>
+Literal <tt>0</tt> may be used as a pointer.<p>
+<a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-relaxtypes"><tt>relaxtypes</tt><p>
+Allow all numeric types to match.
+<a name="_Toc349905942"><p>
+<p>
+<a href="appC.html#plain-key">plain: </a><tt>+</tt><br>
+<a name="flag-fullinitblock"><tt>fullinitblock</tt><p>
+Initializer does not set every field in the structure.
+<p>
+<b><i>Function Interfaces</a></i></b><p>
+<b><i></i>Modification </b>(<a href="sec4.html#sec-4.1">Section 4.1</a>)<b></b><p>
+<b></b><a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-modifies"><tt>modifies</tt><p>
+Undocumented modification of caller-visible state.  Without <a href="appC.html#flag-moduncon"><tt>+moduncon</tt></a>,
+modification errors are only reported in the definitions of functions declared
+with a modifies clause (or specified).<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-mustmod"><tt>mustmod</tt><p>
+Documented modification is not detected.  An object listed in the modifies
+clause for a function, is not modified by the implementation.<p>
+<a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-moduncon"><tt>mod-uncon</tt><p>
+Report modification errors in functions declared without a modifies
+clause.(Sets <a href="appC.html#flag-modnomods"><tt>modnomods</tt></a>, <a href="appC.html#flag-modglobsnomods"><tt>mod-globs-nomods</tt></a> and <a href="appC.html#flag-modstrictglobsnomods"><tt>mod-strict-globs-nomods</tt></a>.)<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-modnomods"><tt>mod-nomods</tt><p>
+Report modification errors (not involving global variables) in functions
+declared without a modifies clause.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-modunconnomods"><tt>mod-uncon-nomods</tt><p>
+An unconstrained function is called in a function body where  modifications are
+checked.  Since the unconstrained function may modify anything, there may be
+undetected modifications in the checked function.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-modinternalstrict"><tt>mod-internal-strict</tt><p>
+A function that modifies <tt>internalState</tt> is called from a function that does not
+list <tt>internalState</tt> in its modifies clause.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-modfilesys"><tt>mod-file-sys</tt><p>
+
+A function modifies the file system but does not list fileSystem in its
+modifies clause.  <p>
+
+<b>Global Variables<i> </i></b>(<a href="sec4.html#sec-4.2">Section 4.2</a>)<i>
+<a name="globflags"></a></i><p>
+<i></i>Errors involving the use and modification of global and file static
+variables are reported depending on flag settings, annotations where the global
+variable is declared, and whether or not the function where the global is used
+was declared with a globals clause.<p>
+<a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-globs"><tt>globs</tt><p>
+Undocumented use of a checked global variable in a function with a globals
+list.<p>
+<a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-globuse"><tt>globuse</tt><p>
+A global listed in the globals list is not used in the implementation.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-globnoglobs"><tt>globnoglobs</tt><p>
+Use of a checked global in a function with no globals list.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-internalglobs"><tt>internalglobs</tt><p>
+Undocumented use of internal state (should have <tt>globals internalState</tt>).<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-internalglobsnoglobs"><tt>internalglobsnoglobs</tt><p>
+        Use of internal state in function with no globals list.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-globstate"><tt>globstate</tt><p>
+A function returns with global in inconsistent state (null or undefined)<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-allglobs"><tt>allglobs</tt><p>
+Report use and modification errors for globals not annotated with unchecked.<p>
+<a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-checkstrictglobs"><tt>checkstrictglobs</tt><p>
+Report use and modification errors for checkedstrict globals.<p>
+<i>Modification of Global Variables</i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-modglobs"><tt>modglobs</tt><p>
+Undocumented modification of a checked global variable. <p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-modglobsunchecked"><tt>modglobsunchecked</tt><p>
+Undocumented modification of an unchecked global variable.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-modglobsnomods"><tt>modglobsnomods</tt><p>
+Undocumented modification of a checked global variable in a function with no
+modifies clause. <p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-modstrictglobsnomods"><tt>modstrictglobsnomods</tt><p>
+Undocumented modification of a checkedstrict global variable in a function
+declared with no modifies clause.<p>
+<i>Globals Lists and Modifies Clauses</i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-warnmissingglobs"><tt>warnmissingglobs</tt><p>
+Global variable used in modifies clause is not listed in globals list.  (The
+global is added to the globals list.)<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-warnmissingglobsnoglobs"><tt>warnmissingglobsnoglobs</tt><p>
+Global variable used in modifies clause of a function with no globals list.<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-globsimpmodsnothing"><tt>globsimpmodsnothing</tt><p>
+A function declared with a globals list but no modifies clause is assumed to
+modify nothing.<p>
+<a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-modsimpnoglobs"><tt>modsimpnoglobs</tt><p>
+A function declared with a modifies clause but no globals list is assumed to
+use no globals.<p>
+<i>Implicit Checking Qualifiers</i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-impcheckedglobs"><tt>impcheckedglobs</tt><p>
+Implicit checked qualifier on global variables with no checking annotation.<p>
+<a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-impcheckedstatics"><tt>impcheckedstatics</tt><p>
+Implicit checked qualifier file static scope variables with no checking
+annotation. <p>
+<a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-impcheckmodglobs"><tt>impcheckmodglobs</tt><p>
+Implicit checkmod qualifier on global variables with no checking annotation.<p>
+<a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-impcheckmodstatics"><tt>impcheckmodstatics</tt><p>
+Implicit checkmod qualifier file static scope variables with no checking
+annotation.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-impcheckedstrictglobs"><tt>impcheckedstrictglobs</tt><p>
+Implicit checked qualifier on global variables with no checking annotation.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-impcheckedstrictstatics"><tt>impcheckedstrictstatics</tt><p>
+Implicit checked qualifier file static scope variables with no checking
+annotation.<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-impcheckmodinternals"><tt>impcheckmodinternals</tt><p>
+Implicit checkmod qualifier on function scope static variables with no checking
+annotation.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-impglobsweak"><tt>impglobsweak</tt><p>
+<i>Global Aliasing</i><p>
+<i></i><a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-globalias"><tt>globalias</tt><p>
+Function returns with global aliasing external state (sets
+<a href="appC.html#flag-checkstrictglobalias"><tt>checkstrictglobalias</tt></a>, <a href="appC.html#flag-checkedglobalias"><tt>checkedglobalias</tt></a>, <a href="appC.html#flag-checkmodglobalias"><tt>checkmodglobalias</tt></a> and
+<a href="appC.html#flag-uncheckedglobalias"><tt>uncheckedglobalias</tt></a>).<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-checkstrictglobalias"><tt>checkstrictglobalias</tt><p>
+Function returns with a checkstrict global aliasing external state.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-checkedglobalias"><tt>checkedglobalias</tt><p>
+Function returns with a checked global aliasing external state.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-checkmodglobalias"><tt>checkmodglobalias</tt><p>
+Function returns with a checkmod global aliasing external state.<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-uncheckedglobalias"><tt>uncheckedglobalias</tt><p>
+Function returns with an unchecked global aliasing external state.<p>
+<b>Declaration Consistency </b><i>(<a href="sec4.html#sec-4.3">Section 4.3</a>)</i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-incondefs"><tt>incondefs</tt><p>
+Identifier redeclared or redefined with inconsistent type.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-incondefslib"><tt>incondefslib</tt><p>
+Identifier defined in a library is redefined with inconsistent <a name="flag-type"><tt>type</tt><p>
+<a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-overload"><tt>overload</tt><p>
+Standard library function overloaded.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-matchfields"><tt>matchfields</tt><p>
+A struct or enum type is redefined with inconsistent fields or members.
+<a name="_Toc349905943"><p>
+<b><i>Memory Management</a></i></b><p>
+<b><i></i></b>Reporting of memory management errors is controlled by flags
+setting checking and implicit annotations and code annotations.  <p>
+<b>Deallocation Errors </b>(<a href="sec5.html#sec-5.2">Section 5.2</a>)<b><i></i></b><p>
+<b><i></i></b><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-usereleased"><tt>usereleased</tt><p>
+Storage used after it may have been released.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-strictusereleased"><tt>strictusereleased</tt><p>
+An array element used after it may have been released.<p>
+<b>Inconsistent Branches</b><p>
+<b></b><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-branchstate"><tt>branchstate</tt><p>
+Storage has inconsistent states of alternate paths through a branch (e.g., it
+is released in the true branch of an if-statement, but there is no else
+branch.)<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-strictbranchstate"><tt>strictbranchstate</tt><p>
+Storage through array fetch has inconsistent states of alternate paths through
+a branch.  Since array elements are not checked accurately, this may lead to
+spurious errors.<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-deparrays"><tt>deparrays</tt><p>
+Treat array elements as dependent storage.  Checking of array elements cannot
+be done accurately by LCLint.  If deparrays is not set, array elements are
+assumed to be independent, so code that releases the same element more than
+once will produce no error.  If deparrays is set, array elements are assumed to
+be dependent, so code that releases the same element more that once will
+produce an error, but so will code that releases different elements correctly
+will produce a spurious error.<p>
+<b>Memory Leaks</b><p>
+<b></b><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-mustfree"><tt>mustfree</tt><p>
+Allocated storage was not released before return or scope exit  Errors are
+reported for only, fresh or owned storage.<p>
+<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-compdestroy"><tt>compdestroy</tt><p>
+All only references derivable from out only parameter of type void * must be
+released.  (This is the type of the parameter to free, but may also be used for
+user-defined deallocation functions.)<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-strictdestroy"><tt>strictdestroy</tt><p>
+Report complete destruction errors for array elements that may have been
+released.  (If strictdestroy is not set, LCLint will assume that if any array
+element was released, the entire array was correctly released.)<p>
+<p>
+<b>Transfer Errors </b><p>
+<b></b>A transfer error is reported when storage is transferred (by an
+assignment, passing a parameter, or returning) in a way that is inconsistent.
+<p>
+<a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-memtrans"><tt>memtrans</tt><p>
+Sets all memory transfer errors flags.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-onlytrans"><tt>onlytrans</tt><p>
+Only storage transferred to non-only reference (memory leak).<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-ownedtrans"><tt>ownedtrans</tt><p>
+Owned storage transferred to non-owned reference (memory leak).<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-freshtrans"><tt>freshtrans</tt><p>
+Newly-allocated storage transferred to non-only reference (memory leak).<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-sharedtrans"><tt>sharedtrans</tt><p>
+Shared storage transferred to non-shared reference.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-dependenttrans"><tt>dependenttrans</tt><p>
+Inconsistent dependent transfer. Dependent storage is transferred to a
+non-dependent reference.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-temptrans"><tt>temptrans</tt><p>
+Temporary storage (associated with a temp formal parameter) is transferred to a
+non-temporary reference.  The storage may be released or new aliases created.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-kepttrans"><tt>kepttrans</tt><p>
+Kept storage transferred to non-temporary reference.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-keeptrans"><tt>keeptrans</tt><p>
+Keep storage is transferred in a way that may add a new alias to it, or release
+it.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-refcounttrans"><tt>refcounttrans</tt><p>
+Reference counted storage is transferred in an inconsistent way.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-newreftrans"><tt>newreftrans</tt><p>
+A new reference transferred to a reference counted reference (reference count
+is not set correctly).<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-immediatetrans"><tt>immediatetrans</tt><p>
+An immediate address (result of &amp;) is transferred inconsistently.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-statictrans"><tt>statictrans</tt><p>
+Static storage is transferred in an inconsistent way.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-exposetrans"><tt>exposetrans</tt><p>
+Inconsistent exposure transfer. Exposed storage is transferred to a
+non-exposed, non-observer reference.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-observertrans"><tt>observertrans</tt><p>
+Inconsistent observer transfer. Observer storage is transferred to a
+non-observer reference.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-unqualifiedtrans"><tt>unqualifiedtrans</tt><p>
+Unqualified storage is transferred in an inconsistent way.<p>
+
+<i>Initializers</i><p>
+<a href="appC.html#mode-key">m:</a> <tt>--++</tt><br>
+<a name="onlyunqglobaltrans">
+<tt>onlyunqglobaltrans</tt>
+<p>
+
+Only storage transferred to an unqualified global or static reference.
+This may lead to a memory leak, since the new reference is not
+necessarily released.
+<p>
+<a href="appC.html#mode-key">m:</a> <tt>--++</tt></a><br>
+<a name="staticinittrans">
+<tt>staticinittrans</tt>
+<p>
+Static storage is used as an initial value in an inconsistent way.
+<p>
+<a href="appC.html#mode-key">m:</a> <tt>--++</tt><br>
+<a name="unqualifiedinittrans">
+<tt>unqualifiedinittrans</tt>
+<p>
+Unqualified storage is used as an initial value in an inconsistent way.
+<p>
+
+<i>Derived Storage</i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-compmempass"><tt>compmempass</tt><p>
+Storage derivable from a parameter does not match the alias kind expected for
+the formal parameter.<p>
+<i>Stack References</i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-stackref"><tt>stackref</tt><p>
+A stack reference is pointed to by an external reference when the function
+returns.  Since the call frame will be destroyed when the function returns the
+return value will point to dead storage. (<a href="sec5.html#sec-5.2.6">Section 5.2.6</a>)<p>
+<b>Implicit Memory Annotations </b>(<a href="sec5.html#sec-5.3">Section 5.3</a>)<i></i><p>
+<i></i><p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-globimponly"><tt>globimponly</tt><p>
+Assume unannotated global storage is only.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-paramimptemp"><tt>paramimptemp</tt><p>
+Assume unannotated parameter is temp.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-retimponly"><tt>retimponly</tt><p>
+Assume unannotated returned storage is only.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-structimponly"><tt>structimponly</tt><p>
+Assume unannotated structure or union field is only.<p>
+<a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-codeimponly"><tt>codeimponly</tt><p>
+Sets globimponly, retimponly and structimponly.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-memimp"><tt>memimp</tt><p>
+Report memory errors for unqualified storage.<p>
+<a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-passunknown"><tt>passunknown</tt><p>
+Passing a value as an unannotated parameter clears its annotation.  This will
+prevent many spurious errors from being report for unannotated programs, but
+eliminates the possibility of detecting many errors.
+<a name="_Toc349905944"><p>
+<b><i>Sharing</a></i></b><p>
+<b><i></i>Aliasing </b>(<a href="sec6.html">Section 6</a>)<i></i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-aliasunique"><tt>aliasunique</tt><p>
+A actual parameter that is passed as a unique formal parameter is aliased by
+another parameter or global variable.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-mayaliasunique"><tt>mayaliasunique</tt><p>
+A actual parameter that is passed as a unique formal parameter may be aliased
+by another parameter or global variable.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-mustnotalias"><tt>mustnotalias</tt><p>
+An alias has been added to a temp-qualifier parameter or global that is visible
+externally when the function returns.  <p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-retalias"><tt>retalias</tt><p>
+A function returns an alias to parameter or global.<p>
+<b>Exposure </b>(<a href="sec6.html#sec-6.2">Section 6.2</a>)<b></b><p>
+<b></b><a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-repexpose"><tt>repexpose</tt><p>
+The internal representation of an abstract type is visible to the caller.  This
+means clients may have access to a pointer into the abstract representation.
+(Sets assignexpose, retexpose, and castexpose.)<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-assignexpose"><tt>assignexpose</tt><p>
+Abstract representation is exposed by an assignment or passed parameter.<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-castexpose"><tt>castexpose</tt><p>
+Abstract representation is exposed through a cast.<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-retexpose"><tt>retexpose</tt><p>
+Abstract representation is exposed by a return value.<p>
+<i>Observer Modifications</i><p>
+<i></i><p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-modobserver"><tt>modobserver</tt><p>
+Possible modification of observer storage.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-modobserveruncon"><tt>modobserveruncon</tt><p>
+Storage declared with observer may be modified through a call to an
+unconstrained function.<p>
+<i>String Literals  </i>(<a href="sec6.html#sec-6.2.1">Section 6.2.1</a>)<i> </i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-readonlytrans"><tt>readonlytrans</tt><p>
+Report memory transfer errors for initializations to read-only string literals
+<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-readonlystrings"><tt>readonlystrings</tt><p>
+String literals are read-only (ANSI semantics).  An error is reported if a
+string literal may be modified or released.
+<a name="_Toc349905945"><p>
+<b><i>Use Before Definition </i></b>(<a href="sec7.html#sec-7.1">Section 7.1</a></a>)<i></i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-usedef"><tt>usedef</tt><p>
+The value of a location that may not be initialized on some execution path is
+used.<p>
+<a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-impouts"><tt>impouts</tt><p>
+Allow unannotated pointer parameters to functions to be implicit out
+parameters.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-compdef"><tt>compdef</tt><p>
+Storage derivable from a parameter, return value or global variable is not
+completely defined.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-uniondef"><tt>uniondef</tt><p>
+No field of a union is defined.  (No error is reported if at least one union
+field is defined.)<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-mustdefine"><tt>mustdefine</tt><p>
+Parameter declared with out is not defined before return or scope exit.
+<a name="_Toc349905946"><p>
+<b><i>Null Pointers </i></b>(<a href="sec7.html#sec-7.2">Section 7.2</a></a>)<b><i></i></b><p>
+
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-nullderef"><tt>nullderef</tt><p>
+A possibly null pointer may be dereferenced.
+<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-nullpass"><tt>nullpass</tt><p>
+A possibly null pointer is passed as a parameter not annotated with <tt>null</tt>.
+
+<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-nullret"><tt>nullret</tt><p>
+A possibly null pointer is return as a result not annotated with
+<tt>null</tt>.
+<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-nullstate"><tt>nullstate</tt><p>
+Possibly null pointer reachable from a reference with no null
+annotation.
+<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-nullassign"><tt>nullassign</tt><p>
+<p>
+Inconsistent assignment or initialization involving null pointer.
+<p>
+<a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-null"><tt>null</tt><p>
+Sets all null checking flags.
+
+<a name="_Toc349905947"><p>
+<b><i>Macros </i></b>(<a href="sec8.html">Section 8</a>)</a><b><i></i></b><p>
+<b><i></i></b>These flags control expansion and checking of macro definitions
+and invocations.<p>
+<b>Macro Expansion</b><p>
+<b></b>These flags control which macros are checked as functions or constants,
+and which are expanded in the pre-processing phase.  Macros preceded by
+<tt>/&#42;@notfunction@*/</tt> are never expanded regardless of these flag settings.  These
+flags may be used in source-file control comments.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-fcnmacros"><tt>fcnmacros</tt><p>
+Macros defined with parameter lists are not expanded and are checked as
+functions.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-constmacros"><tt>constmacros</tt><p>
+Macros defined without parameter lists are not expanded and are checked as
+constants.<p>
+<a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-allmacros"><tt>allmacros</tt><p>
+Sets allfcnmacros and allconstmacros.<p>
+<p>
+
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-libmacros"><tt>libmacros</tt><p>
+Macros defining identifiers declared in a loaded library are not expanded and
+are checked according to the library information.	<p>
+<b>Macro Definitions</b><p>
+<b></b>These flags control what errors are reported in macro definitions.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-macrostmt"><tt>macrostmt</tt><p>
+Macro definition is not syntactically equivalent to function.  This means if
+the macro is used as a statement (e.g., <tt>if (test) macro();</tt>) unexpected behavior
+may result.  One fix is to surround the macro body with <tt>do { ...; } while
+(FALSE)</tt>. <p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-macroparams"><tt>macroparams</tt><p>
+A macro parameter is not used exactly once in all possible invocations of the
+macro.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-macroassign"><tt>macroassign</tt><p>
+A macro parameter is used as the left side of an assignment expression.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-macroparens"><tt>macroparens</tt><p>
+A macro parameter is used without parentheses (in potentially dangerous
+context).<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-macroempty"><tt>macroempty</tt><p>
+Macro definition of a function is empty.   <p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-macroredef"><tt>macroredef</tt><p>
+Macro is redefined.  There is another macro defined with the same name.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+macrounrecog <p>
+An unrecognized identifier appears in a macro definition.  Since the identifier
+may be defined where the macro is used, this could be okay, but LCLint will not
+be able to check the unrecognized identifier appropriately.<p>
+<i>Corresponding Declarations</i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-macromatchname"><tt>macromatchname</tt><p>
+A iter or constant macro is defined using a different name from the one used in
+the previous syntactic comment.<p>
+<a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-macrodecl"><tt>macrodecl</tt><p>
+A macro definition has no corresponding declaration.  (Sets macrofcndecl and
+macroconstdecl.)<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-macrofcndecl"><tt>macrofcndecl</tt><p>
+Macro definition with parameter list has no corresponding function prototype.
+Without a prototype, the types of the macro result and parameters is unknown.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-macroconstdecl"><tt>macroconstdecl</tt><p>
+A macro definition without parameter list has no corresponding constant
+declaration.	
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-nextlinemacros"><tt>nextlinemacros</tt><p>
+A constant or iter declaration is not immediately followed by a macro
+definition.<p>
+<b>Side-Effect Free Parameters </b>(<a href="sec8.html#sec-8.2.1">Section 8.2.1</a>)<i></i><p>
+<i></i>These flags control error reporting for parameters with inconsistent
+side-effects in invocations of checked function macros and function calls.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-sefparams"><tt>sefparams</tt><p>
+An actual parameter with side-effects is passed as a formal parameter declared
+with <tt>sef</tt>.<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-sefuncon"><tt>sefuncon</tt><p>
+An actual parameter involving a call to an unconstrained function (declared
+without modifies clause) that may modify anything is passed as a <tt>sef</tt> parameter.
+<a name="_Toc349905948"><p>
+<b><i>Iterators</a></i></b><p>
+<b><i></i></b><p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-hasyield"><tt>hasyield</tt><p>
+An iterator has been declared with no parameters annotated with yield.
+<a name="_Toc349905949"><p>
+<b><i>Naming Conventions</a></i></b><p>
+<b><i></i></b><p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-namechecks"><tt>namechecks</tt><p>
+ Turns all name checking on or off without changing other settings.<p>
+<b>Type-Based Naming Conventions </b>(<a href="sec9.html#sec-9.1">Section 9.1</a>)<b></b><p>
+<b></b><i>Czech Naming Convention</i><p>
+<i></i><a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-czech"><tt>czech</tt><p>
+Selects complete Czech naming convention (sets 
+<a href="appC.html#flag-accessczech"><tt>accessczech</tt></a>, 
+<a href="appC.html#flag-czechfcns"><tt>czechfcns</tt></a>,
+<a href="appC.html#flag-czechvars"><tt>czechvars</tt></a>, 
+<a href="appC.html#flag-czechconsts"><tt>czechconsts</tt></a>, 
+<a href="appC.html#flag-czechmacros"><tt>czechmacros</tt></a>, and 
+<a href="appC.html#flag-czechtypes"><tt>czechtypes</tt></a>).
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-accessczech"><tt>accessczech</tt><p>
+Allow access to abstract types following Czech naming convention.  The
+representation of an abstract type named <i>t</i> is accessible in the
+definition of a function or constant named <i>t_name</i>.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-czechfcns"><tt>czechfcns</tt><p>
+Function or iterator name is not consistent with Czech naming convention.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-czechvars"><tt>czechvars</tt><p>
+ Variable name is not consistent with Czech naming convention.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-czechmacros"><tt>czechmacros</tt><p>
+ Expanded macro name is not consistent with Czech naming convention.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-czechconsts"><tt>czechconsts</tt><p>
+Constant name is not consistent with Czech naming convention.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-czechtypes"><tt>czechtypes</tt><p>
+ Type name is not consistent with Czech naming convention.  Czech type names
+must not use the underscore character.<p>
+<i>Slovak Naming Convention</i><p>
+<i></i><a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-slovak"><tt>slovak</tt><p>
+Selects complete Slovak naming convention (sets 
+<a href="appC.html#flag-accessslovak"><tt>accessslovak</tt></a>, 
+<a href="appC.html#flag-slovakfcns"><tt>slovakfcns</tt></a>, 
+<a href="appC.html#flag-slovakvars"><tt>slovakvars</tt></a>, 
+<a href="appC.html#flag-slovakconsts"><tt>slovakconsts</tt></a>, 
+<a href="appC.html#flag-slovakmacros"><tt>slovakmacros</tt></a>,  and 
+<a href="appC.html#flag-slovaktypes"><tt>slovaktypes</tt></a>).
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-accessslovak"><tt>accessslovak</tt><p>
+Allow access to abstract types following Slovak naming convention. The
+representation of an abstract type named <i>t</i> is accessible in the
+definition of a function or constant named <i>tName</i>.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-slovakfcns"><tt>slovakfcns</tt><p>
+Function or iterator name is not consistent with Slovak naming convention.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-slovakmacros"><tt>slovakmacros</tt><p>
+Expanded macro name is not consistent with Slovak naming convention.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-slovakvars"><tt>slovakvars</tt><p>
+ Variable name is not consistent with Slovak naming convention.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-slovakconsts"><tt>slovakconsts</tt><p>
+ Constant name is not consistent with Slovak naming convention.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-slovaktypes"><tt>slovaktypes</tt><p>
+Type name is not consistent with Slovak naming convention.  Slovak type names
+may not include uppercase letters.<p>
+<p>
+<p>
+<p>
+<i>Czechoslovak Naming Convention</i><p>
+<i></i><a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-czechoslovak"><tt>czechoslovak</tt><p>
+Selects complete Czechoslovak naming convention (sets 
+<a
+href="appC.html#flag-accessczechoslovak"><tt>accessczechoslovak</tt></a>,
+<a href="appC.html#flag-czechoslovakfcns"><tt>czechoslovakfcns</tt></a>,
+<a href="appC.html#flag-czechoslovakvars"><tt>czechoslovakvars</tt></a>, 
+<a href="appC.html#flag-czechoslovakconsts"><tt>czechoslovakconsts</tt></a>, 
+<a href="appC.html#flag-czechoslovakmacros"><tt>czechoslovakmacros</tt></a>, and
+<a href="appC.html#flag-czechoslovaktypes"><tt>czechoslovaktypes</tt></a>).
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-accessczechoslovak"><tt>accessczechoslovak</tt><p>
+Allow access to abstract types by Czechoslovak naming convention. The
+representation of an abstract type named <i>t</i> is accessible in the
+definition of a function or constant named <i>t_name</i> or <i>tName</i>.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-czechoslovakfcns"><tt>czechoslovakfcns</tt><p>
+ Function name is not consistent with Czechoslovak naming convention.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-czechoslovakmacros"><tt>czechoslovakmacros</tt><p>
+Expanded macro name is not consistent with Czechoslovak naming convention.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-czechoslovakvars"><tt>czechoslovakvars</tt><p>
+ Variable name is not consistent with Czechoslovak naming convention.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-czechoslovakconsts"><tt>czechoslovakconsts</tt><p>
+ Constant name is not consistent with Czechoslovak naming convention.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-czechoslovaktypes"><tt>czechoslovaktypes</tt><p>
+ Type name is not consistent with Czechoslovak naming convention. Czechoslovak
+type names may not include uppercase letters or the underscore character.<p>
+<b>Namespace Prefixes  </b>(<a href="sec9.html#sec-9.2">Section
+9.2</a>)
+<p>
+<a name="flag-macrovarprefix">
+<tt>macrovarprefix </tt><i>&lt;prefix string&gt;</i><p>
+Set namespace prefix for variables declared in a macro body.  (Default is
+m_.)
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-macrovarprefixexclude"><tt>macrovarprefixexclude</tt><p>
+A variable declared outside a macro body starts with the macrovarprefix.<p>
+<a name="flag-tagprefix">
+<tt>tagprefix </tt><i>&lt;prefix string&gt;</i><p>
+Set namespace prefix of struct, union or enum tag identifiers.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-tagprefixexclude"><tt>tagprefixexclude</tt><p>
+ An identifier that is not a tag starts with the tagprefix.<p>
+<a name="flag-enumprefix">
+<tt>enumprefix </tt><i>&lt;prefix string&gt;</i><p>
+Set namespace prefix for enum members.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-enumprefixexclude"><tt>enumprefixexclude</tt><p>
+ An identifier that is not an enum member starts with the enumprefix.<p>
+<a name="flag-filestaticprefix">
+<tt>filestaticprefix </tt><i>&lt;prefix string&gt;</i><p>
+Set namespace prefix for file static declarations.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-filestaticprefixexclude"><tt>filestaticprefixexclude</tt><p>
+An identifier that is not file static starts with the filestaticprefix.<p>
+<a name="flag-globalprefix">
+<tt>globalprefix </tt><i>&lt;prefix string&gt;</i><p>
+Set namespace prefix for global variables.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-globalprefixexclude"><tt>globalprefixexclude</tt><p>
+An identifier that is not a global variable starts with the globalprefix.<p>
+<a name="flag-typeprefix">
+<tt>typeprefix </tt><i>&lt;prefix string&gt;</i><p>
+Set namespace prefix for user-defined types.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-typeprefixexclude"><tt>typeprefixexclude</tt><p>
+An identifier that is not a type name starts with the typeprefix.<p>
+<a name="flag-externalprefix">
+<tt>externalprefix </tt><i>&lt;prefix string&gt;</i><p>
+Set namespace prefix for external identifiers.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-externalprefixexclude"><tt>externalprefixexclude</tt><p>
+An identifier that is not external starts with the externalprefix.<p>
+<a name="flag-localprefix">
+<tt>localprefix </tt><i>&lt;prefix string&gt;</i><p>
+Set namespace prefix for local variables.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-localprefixexclude"><tt>localprefixexclude</tt><p>
+ An identifier that is not a local variable starts with the localprefix.<p>
+<a name="flag-uncheckedmacroprefix">
+<tt>uncheckedmacroprefix </tt><i>&lt;prefix string&gt;</i><p>
+<i></i>Set namespace prefix for unchecked macros.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-uncheckedmacroprefixexclude"><tt>uncheckedmacroprefixexclude</tt><p>
+An identifier that is not the name of an unchecked macro starts with the
+uncheckedmacroprefix.<p>
+<a name="flag-constprefix">
+<tt>constprefix </tt><i>&lt;prefix string&gt;</i><p>
+Set namespace prefix for constants.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-constprefixexclude"><tt>constprefixexclude</tt><p>
+An identifier that is not a constant starts with the constantprefix.<p>
+<a name="flag-iterprefix">
+<tt>iterprefix </tt><i>&lt;prefix string&gt;</i><p>
+Set namespace prefix for iterators.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-iterprefixexclude"><tt>iterprefixexclude</tt><p>
+An identifier that is not a iter starts with the iterprefix.<p>
+
+<a name="flag-protoparamprefix">
+<tt>proto-param-prefix </tt><i>&lt;prefix string&gt;</i><p>
+Set namespace prefix for parameters in function prototypes.
+<p>
+
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-protoparamprefixexclude"><tt>proto-param-prefix-exclude</tt><p>
+An identifier that is not a parameter in a function prototype starts with the 
+protoprarmprefix. <p>
+
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-protoparamname">
+<tt>proto-param-name</tt>
+<p>
+A parameter in a function prototype has a name (can interfere with macro
+definitions). 
+<p>
+
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-protoparammatch">
+<tt>proto-param-match</tt>
+<p>
+
+The name of a parameter in a function definition does not match the
+corresponding name of the parameter in a function prototype (after
+removing the protoparamprefix).
+<p>
+
+<b>Naming Restrictions  </b>(<a href="sec9.html#sec-9.3">Section 9.3</a>)<i></i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-shadow"><tt>shadow</tt><p>
+Declaration reuses name visible in outer scope.<p>
+<i>Reserved Names</i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-ansireserved"><tt>ansi-reserved</tt><p>
+External name conflicts with name reserved for the compiler or standard
+library.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-ansireservedinternal"><tt>ansi-reserved-internal</tt><p>
+ Internal name conflicts with name reserved for the compiler or standard
+library.<p>
+
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-cppnames"><tt>cpp-names</tt><p>
+Internal or external name conflicts with a C++ reserved word.  (Will
+cause problems if program is compiled with a C++ compiler.)
+<p>
+
+<i>Distinct External Names</i><p>
+<i></i><p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-distinctexternalnames"><tt>distinct-external-names</tt><p>
+An external name is not distinguishable from another external name using
+externalnamelen significant characters.<p>
+<a name="flag-externalnamelen">
+<tt>external-name-len</tt><i>&lt;number&gt;</i><p>
+Sets the number of significant characters in an external name (ANSI default
+minimum is 6).  Sets <a href="appC.html#flag-distinctexternalnames"><tt>+distinctexternalnames</tt></a>.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-externalnamecaseinsensitive"><tt>external-name-case-insensitive</tt><p>
+Make alphabetic case insignificant in external names.  According to ANSI
+standard, case need not be significant in an external name.  If
+<a href="appC.html#flag-distinctexternalnames"><tt>+distinctexternalnames</tt></a> is not set, sets <a href="appC.html#flag-distinctexternalnames"><tt>+distinctexternalnames</tt></a> with unlimited
+external name length.<p>
+<i>Distinct Internal Names</i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-distinctinternalnames"><tt>distinct-internal-names</tt><p>
+An internal name is not distinguishable from another internal name using
+internalnamelen significant characters.   (Also effected by
+internalnamecaseinsensitive and internalnamelookalike.)<p>
+<a name="flag-internalnamelen">
+<tt>internal-name-len </tt><i>&lt;number&gt;</i><p>
+Set the number of significant characters in an internal name. Sets
+<a href="appC.html#flag-distinctinternalnames"><tt>+distinctinternalnames</tt></a>.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-internalnamecaseinsensitive"><tt>internal-name-case-insensitive</tt><p>
+Set whether case is significant an internal names (-internalnamecaseinsensitive
+means case is significant).  If <a href="appC.html#flag-distinctinternalnames"><tt>+distinctinternalnames</tt></a> is not set, sets
+<a href="appC.html#flag-distinct-internal-names"><tt>+distinct-internal-names</tt></a> with unlimited internal name length.<p>
+
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-internalnamelookalike"><tt>internalnamelookalike</tt><p>
+ Set whether similar looking characters (e.g., "1" and "l") match in internal
+names.
+<a name="_Ref344891223"><a name="_Toc349905950"><p>
+<b><i>Other Checks</a></a></i></b><p>
+<b><i></i>Undefined Evaluation Order  </b>(<a href="sec10.html#sec-10.1">Section 10.1</a>)<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+evalorder <p>
+Behavior of an expression is undefined because sub-expressions contain
+interfering side effects that may be evaluated in any order.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-evalorderuncon"><tt>evalorderuncon</tt><p>
+An expression may be undefined because a sub-expression contains a call to an
+unconstrained function (no modifies clause) that may modify something that may
+be modified or used by another sub-expression.<p>
+<b>Problematic Control Structures </b>(<a href="sec10.html#sec-10.2">Section 10.2</a>)<i></i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-infloops">
+<tt>infloops</tt><p>
+Likely infinite loop is detected (<a href="sec10.html#sec-10.2.1">Section 10.2.1</a>).<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-infloopsuncon">
+<tt>infloopsuncon</tt><p>
+Likely infinite loop is detected.  Loop test or body calls an unconstrained
+function, that may produce an undetected modification.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-elseifcomplete"><tt>elseifcomplete</tt><p>
+There is no final else following an else if construct (<a href="sec10.html#sec-10.2.5">Section 10.2.5</a>).
+<b><i></i></b><p>
+<b><i></i></b><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-casebreak"><tt>casebreak</tt><p>
+These is a non-empty case in a switch not followed by a break (Section
+10.2.2).<i></i><p>
+<i></i><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-misscase"><tt>misscase</tt><p>
+A switch on an enum type is missing a case for a member of the enumerator.<p>
+<a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-loopexec"><tt>loopexec</tt><p>
+Assume all loops execute at least once.  This effects use-before-definition and
+memory checking.  It should probably not be used globally, but may be used
+surrounding a particular loop that is known to always execute to prevent
+spurious messages.<p>
+<b>Deep Break  </b>(<a href="sec10.html#sec-10.2.3">Section 10.2.3</a>)<b></b><p>
+<b></b><a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-deepbreak"><tt>deepbreak</tt><p>
+Report errors for break statements inside a nested while, for or switch.  (Sets
+all nested break and continue flags.)<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-looploopbreak"><tt>looploopbreak</tt><p>
+There is a break inside a while, for or iterator loop that is inside a while,
+for or iterator loop. Mark with <tt>/&#42;@innerbreak@*/</tt> to suppress the message.<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-switchloopbreak"><tt>switchloopbreak</tt><p>
+There is a break inside a while, for or iterator loop that is inside a switch
+statement.  Mark with <tt>/&#42;@loopbreak@*/</tt>.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-loopswitchbreak"><tt>loopswitchbreak</tt><p>
+There is a break inside a switch statement that is inside a while, for or
+iterator loop.  Mark with <tt>/&#42;@switchbreak@*/</tt>.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-switchswitchbreak"><tt>switchswitchbreak</tt><p>
+There is a break inside a switch statement that is inside another switch
+statement.  Mark with  <tt>/&#42;@innerbreak@*/</tt>.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-looploopcontinue"><tt>looploopcontinue</tt><p>
+There is a continue inside a while, for or iterator loop that is inside a
+while, for or iterator loop.  Mark with <tt>/&#42;@innercontinue@*/</tt>.<p>
+<b>Loop and if Bodies  </b>(<a href="sec10.html#sec-10.2.4">Section 10.2.4</a>)<b><i></i></b><p>
+<b><i></i></b><a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-allempty"><tt>allempty</tt><p>
+An if, while or for statement has no body (sets 
+<a href="appC.html#flag-ifempty"><tt>ifempty</tt></a>, 
+<a href="appC.html#flag-whileempty"><tt>whileempty</tt></a> and
+<a href="appC.html#flag-forempty"><tt>forempty</tt></a>.)<p>
+<a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-allblock"><tt>allblock</tt><p>
+The body of an if, while or for statement is not a block (sets ifblock,
+whileblock and forblock.)<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-whileempty"><tt>whileempty</tt><p>
+A while statement has no body.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-whileblock"><tt>whileblock</tt><p>
+ The body of a while statement is not a <a name="flag-block"><tt>block</tt><p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-forempty"><tt>forempty</tt><p>
+A for statement has no body.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-forblock"><tt>forblock</tt><p>
+The body of a for statement is not a block.<p>
+<a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-ifempty"><tt>ifempty</tt><p>
+An if statement has no body.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-ifblock"><tt>ifblock</tt><p>
+The body of an if statement is not a block.<p>
+<b>Suspicious Statements  </b>(<a href="sec10.html#sec-10.3">Section 10.3</a>)<b></b><p>
+<b></b><a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-unreachable"><tt>unreachable</tt><p>
+Code is not reached on any possible execution.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-noeffect"><tt>noeffect</tt><p>
+Statement has no effect.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-noeffectuncon"><tt>noeffectuncon</tt><p>
+Statement involving call to unconstrained function may have no effect.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-noret"><tt>noret</tt><p>
+There is a path with no return in a function declared to return a non-void
+value.<p>
+<b>Ignored Return Values  </b>(<a href="sec10.html#sec-10.3.2">Section 10.3.2</a>)<i></i><p>
+<i></i>These flags control when errors are reported for function calls that do
+not use the return value.  Casting the function call to void or declaring the
+called function to return <tt>/&#42;@alt void@*/</tt>.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-retvalbool"><tt>retvalbool</tt><p>
+Return value of type bool ignored. <p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-retvalint"><tt>retvalint</tt><p>
+Return value of type int ignored. <p>
+<a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-retvalother"><tt>retvalother</tt><p>
+Return value of type other than bool or int ignored.<p>
+<a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-retval"><tt>retval</tt><p>
+Return value ignored  (Sets retvalbool, retvalint, retvalother.)</a><p>
+<b>Unused Declarations  </b>(<a href="sec10.html#sec-10.4">Section 10.4</a>)<b></b><p>
+<b></b>These flags control when errors are reported for declarations that are
+never used.  The unused annotation can be used to prevent unused errors from
+being report for a particular declaration.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-topuse"><tt>topuse</tt><p>
+A external declaration is not used in any file.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-constuse"><tt>constuse</tt><p>
+Constant never used. <p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-enummemuse"><tt>enummemuse</tt><p>
+Member of enumerator never used. <p>
+<a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-varuse"><tt>varuse</tt><p>
+Variable never used.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-paramuse"><tt>paramuse</tt><p>
+Function parameter never used.<p>
+<a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-fcnuse"><tt>fcnuse</tt><p>
+Function is never used.<p>
+<a href="appC.html#mode-key">m: </a><tt>++++</tt><br>
+<a name="flag-typeuse"><tt>typeuse</tt><p>
+Defined type never used. <p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-fielduse"><tt>fielduse</tt><p>
+Field of structure or union type is never used.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-unusedspecial"><tt>unusedspecial</tt><p>
+Declaration in a special file (corresponding to <tt>.l</tt> or
+<tt>.y</tt> file) is unused.<p> 
+<b>Complete Programs  </b>(<a href="sec10.html#sec-10.5">Section 10.5</a>)<b></b><p>
+<b></b><a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-declundef"><tt>declundef</tt><p>
+Function, variable, iterator or constant declared but never defined.<p>
+<a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-partial"><tt>partial</tt><p>
+Check as partial system (sets 
+<a href="appC.html#flag-declundef"><tt>-declundef</tt></a>, 
+<a href="appC.html#flag-exportlocal"><tt>-exportlocal</tt></a> and prevents checking of
+macros in headers without corresponding <tt>.c</tt> files.)<p>
+<b>Exports</b><p>
+<b></b><a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-exportlocal"><tt>export-local</tt><p>
+A declaration is exported but not used outside this module.  (Declaration can
+use the static qualifier.)<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-exportheader"><tt>export-header</tt><p>
+A declaration (other than a variable) is exported but does not appear in a
+header file.<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-exportheadervar"><tt>export-header-var</tt><p>
+A variable declaration is exported but does not appear in a header file.<p>
+<b>Unrecognized Identifiers</b><p>
+<b></b><p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-unrecog"><tt>unrecog</tt><p>
+An unrecognized identifier is used.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-systemunrecog"><tt>sys-unrecog</tt><p>
+Report unrecognized identifiers that start with the system prefix, <tt>__</tt> (two
+underscores).
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-repeatunrecog"><tt>repeat-unrecog</tt><p>
+Report multiple messages for unrecognized identifiers.  If repeatunrecog is not
+set, an error is reported only the first time a particular unrecognized
+identifier appears in the file.<p>
+<b>Multiple Definition and Declarations</b><p>
+<b></b><p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-redef"><tt>redef</tt><p>
+A function or variable is defined more than once.<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-redecl"><tt>redecl</tt><p>
+An identifier is declared more than once.<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-nestedextern"><tt>nested-extern</tt><p>
+An extern declaration is used inside a function body.
+<p>
+
+<b>ANSI C Conformance</b><p>
+
+
+
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-noparams"><tt>noparams</tt><p>
+A function is declared without a parameter list prototype. <p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-oldstyle"><tt>oldstyle</tt><p>
+Function definition is in old style syntax.  Standard prototype syntax is
+preferred.<p>
+<p>
+<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-exitarg"><tt>exitarg</tt><p>
+Argument to exit has implementation defined behavior.  The only valid arguments
+to exit are EXIT_SUCCESS, EXIT_FAILURE and 0.  An error is reported if LCLint
+can detect statically that the argument to exit is not one of these.<p>
+<b>Limits </b>(<a href="sec10.html#sec-10.6">Section 10.6</a>)<b></b><p>
+<b></b><a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-ansilimits"><tt>ansilimits</tt><p>
+Check for violations of standard limits (Sets 
+<a href="appC.html#flag-controlnestdepth"><tt>controlnestdepth</tt></a>,
+<a
+href="appC.html#flag-stringliterallen"><tt>stringliterallen</tt></a>, 
+<a href="appC.html#flag-includenest"><tt>includenest</tt></a>, 
+<a href="appC.html#flag-numstructfields"><tt>numstructfields</tt></a>,
+and 
+<a href="appC.html#flag-numenummembers"><tt>numenummembers</tt></a>).<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<p>
+<a name="flag-controlnestdepth">
+<tt>controlnestdepth </tt><i>&lt;number&gt;</i><p>
+Set maximum nesting depth of compound statements, iteration control structures,
+and selection control structures (ANSI minimum is 15).<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-stringliterallen">
+<tt>stringliterallen </tt><i>&lt;number&gt;</i><p>
+Set maximum length of string literals (ANSI minimum is 509).<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-numstructfields">
+<tt>numstructfields </tt><i>&lt;number&gt;</i><p>
+Set maximum number of fields in a struct or union (ANSI minimum is 127).<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-numenummembers">
+<tt>numenummembers </tt><i>&lt;number&gt;</i><p>
+Set maximum number of members of an enum type (ANSI minimum is 127).<p>
+<a href="appC.html#mode-key">m: </a><tt>--++</tt><br>
+<a name="flag-includenest">
+<tt>includenest </tt><i>&lt;number&gt;</i><p>
+Set maximum number of nested #include files (ANSI minimum is 8).<p>
+<b>Header Inclusion </b>(<a href="appF.html">Apppendix F</a>)<i></i><p>
+
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-skipansiheaders">
+<tt>skip-ansi-headers</tt>
+<p>
+
+Prevent inclusion of header files in a system directory with names that
+match standard ANSI headers. The symbolic information in the standard
+library is used instead.  In effect only if a library that includes the
+ANSI library is used.  The ANSI headers are: <tt>assert</tt>,
+<tt>ctype</tt>, <tt>errno</tt>, <tt>float</tt>, <tt>limits</tt>,
+<tt>locale</tt>, <tt>math</tt>, <tt>setjmp</tt>, <tt>signal</tt>,
+<tt>stdarg</tt>, <tt>stddef</tt>, <tt>stdio</tt>, <tt>stdlib</tt>,
+<tt>strings</tt>, <tt>string</tt>, <tt>time</tt>, and <tt>wchar</tt>.
+<p>
+
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-skipposixheaders">
+<tt>skip-posix-headers</tt>
+<p>
+
+Prevent inclusion of header files in a system directory with names that
+match standard POSIX headers. The symbolic information in the standard
+library is used instead.  In effect only if a library that includes the
+POSIX library is used.  The POSIX headers are: <tt>dirent</tt>,
+<tt>fcntl</tt>, <tt>grp</tt>, <tt>pwd</tt>, <tt>termios</tt>,
+<tt>sys/stat</tt>, <tt>sys/times</tt>, <tt>sys/types</tt>,
+<tt>sys/utsname</tt>, <tt>sys/wait</tt>, <tt>unistd</tt>, and
+<tt>utime</tt>.
+
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-warnposixheaders">
+<tt>warn-posix-headers</tt>
+<p>
+Report use of a POSIX header when checking a program with a non-POSIX
+library.
+<p>
+<a name="flag-skipsysheaders"><tt>skipsysheaders</tt><p>
+Do not include header files in system directories (as set by <a
+href="appC.html#flag-systemdirs"><tt>-sysdirs</tt></a>)
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-systemdirexpandmacros">
+<tt>sys-dir-expand-macros</tt>
+<p>
+Expand macros in system directories regardless of other settings, except
+for macros corresponding to names defined in a load library. 
+<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-systemdirerrors"><tt>sys-dir-errors</tt><p>
+Report errors in files in system directories (set by -systemdirs).   
+<p>
+
+<a name="flag-singleinclude"><tt>single-include</tt><p>
+Optimize header inclusion to only include each header file once.<p>
+<a name="flag-neverinclude"><tt>never-include</tt><p>
+Use library information instead of including header files. 
+<p>
+
+<b>Comments</b><p>
+<b></b>These flags control how syntactic comments are interpreted (see
+<a href="appE.html">Apppendix E</a>).<p>
+<a name="commentchar">
+<tt>commentchar </tt><i>&lt;char&gt;</i><p>
+Set the marker character for syntactic comments.  Comments beginning with
+/&#42;<i>&lt;char&gt;</i> are interpreted by LCLint.  Default: <tt>@</tt>
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-noaccess"><tt>noaccess</tt><p>
+Ignore access comments.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-nocomments"><tt>nocomments</tt><p>
+Ignore all stylized comments. 
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-supcounts"><tt>supcounts</tt><p>
+Actual number of errors does not match number in <tt>/&#42;@i</tt><i>&lt;n&gt;</i><tt>@*/</tt>
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-lintcomments"><tt>lintcomments</tt><p>
+Interpret traditional lint comments (<tt>/&#42;FALLTHROUGH*/</tt>, <tt>/&#42;NOTREACHED*/</tt>,
+<tt>/&#42;PRINTLIKE*/</tt>).<p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<a name="flag-warnlintcomments"><tt>warnlintcomments</tt><p>
+Print a warning and suggest an alternative when a traditional lint comment is
+used.   <p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-unrecogcomments">
+<tt>unrecogcomments</tt>
+<p>
+Stylized comment is unrecognized.
+<p>
+<b>Parsing</b><p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-continuecomment">
+<tt>continue-comment</tt>
+<p>
+A line continuation marker (<tt>\</tt>) appears inside a comment on the
+same line as the comment close. Preprocessors should handle this correctly, but it causes problems for some preprocessors.
+
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-nestcomment">
+<tt>nest-comment</tt>
+<p>
+A comment open sequence (<tt>/&#42;</tt>) appears inside a comment.  This usually
+indicates that an earlier comment was not closed.
+<p>
+
+
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-duplicatequals">
+<tt>duplicate-quals</tt>
+<p>
+
+Report duplicate type qualifiers (e.g., <tt>long long</tt>).  Duplicate type
+qualifiers not supported by ANSI, but some compilers (e.g., <tt>gcc</tt>) do
+support duplicate qualifiers.
+
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-gnuextensions">
+<tt>gnu-extensions</tt>
+<p>
+Support some GNU (gcc) and Microsoft language extensions.
+<p>
+
+<b>Array Formal Parameters</b><p>
+
+These flags control reporting of common errors caused by confusion about
+the semantics of array formal parameters.
+<p>
+
+<b>General Checks</b><p>
+
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-sizeofformalarray"><tt>sizeof-formal-array</tt>
+<p>
+The sizeof operator is used on a parameter declared as an array.  (In
+many instances this has unexpected behavior, since the result is the
+size of a pointer to the element type, not the number of elements in the
+array.)
+<p>
+
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-fixedformalarray"><tt>fixed-formal-array</tt>
+<p>
+
+An array formal parameter is declared with a fixed size (e.g., <tt>int
+x[20]</tt>).  This is likely to be confusing, since the size is ignored.
+
+<p>
+
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-formalarray"><tt>formal-array</tt>
+<p>
+A formal parameter is declared as an array.  This is probably not a
+problem, but can be confusing since it is treated as a pointer.
+<p>
+
+<b></b>These flags should probably not be set globally since the turn off
+general checks that should always be done.  They may be used locally to
+suppress spurious errors.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-abstract"><tt>abstract</tt><p>
+A data abstraction barrier is violated.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-control"><tt>control</tt><p>
+A control flow error is detected.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-syntax"><tt>syntax</tt><p>
+Parse error.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-trytorecover"><tt>trytorecover</tt><p>
+Try to recover from a parse error.  If trytorecover is not set, LCLint will
+abort checking after a parse error is detected.  If it is set, LCLint will
+attempt to recover, but LCLint does performs only minimal error recovery. 
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-type"><tt>type</tt><p>
+Type mismatch.
+<a name="_Toc349905952"><p>
+<b>Flag Name Abbreviations</a></b><p>
+<b></b>Within a flag name, abbreviations may be used. Table 2 shows the flag
+name abbreviations.  The expanded and short forms are interchangeable in flag
+names.  <p>
+For example, globsimpmodsnothing and globalsimpliesmodifiesnothing denote the
+same flag.  Abbreviations in flag names allow pronounceable, descriptive names
+to be used without making flag names excessively long (although one must admit
+even globsimpmodsnothing is a bit of a mouthful.)<p>
+
+<table>
+<tr><td><b>Expanded Form</b></td><td><b>Short Form</b></td></tr>
+
+<tr><td><tt>constant </tt></td><td><tt>                       const   </tt></td></tr>     
+<tr><td><tt>declaration  </tt></td><td><tt>                   decl          </tt></td></tr>     
+<tr><td><tt>function                   </tt></td><td><tt>     fcn           </tt></td></tr>     
+<tr><td><tt>global</tt></td><td><tt>  			    glob         </tt></td></tr>      
+<tr><td><tt>implicit, implied       </tt></td><td><tt>        imp           </tt></td></tr>     
+<tr><td><tt>iterator                 </tt></td><td><tt>       iter </tt></td></tr>     
+<tr><td><tt>length                       </tt></td><td><tt>   len           </tt></td></tr>     
+<tr><td><tt>modifies		</tt></td><td><tt>	mods      </tt></td></tr>     
+<tr><td><tt>modify			  </tt></td><td><tt>      mod           </tt></td></tr>     
+<tr><td><tt>memory                       </tt></td><td><tt>   mem           </tt></td></tr>     
+<tr><td><tt>parameter                   </tt></td><td><tt>    param         </tt></td></tr>     
+<tr><td><tt>pointer                     </tt></td><td><tt>    ptr           </tt></td></tr>     
+<tr><td><tt>return                      </tt></td><td><tt>    ret           </tt></td></tr>     
+<tr><td><tt>variable                     </tt></td><td><tt>   var           </tt></td></tr>     
+<tr><td><tt>unconstrained, unconst      </tt></td><td><tt>    uncon         </tt></td></tr>     
+</table>
+
+<a name="_Ref344870348"><a name="_Ref344870759"><a name="_Ref348090060"><a name="_Ref348090064"><a name="_Toc349905996">
+</pre>
+<b>Table 2.  Flag name abbreviations.</b></a></a>
+
+
+<p>
+<b>Next: <A HREF="appD.html">Appendix D. Annotations</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+</blockquote>
+
+<table border="0" rules="none" bgcolor="#FFFFBD" width=100% cellpadding=6 cellspacing=2>
+<tr>
+<td valign=top align=center width=5%>
+<a href="http://lclint.cs.virginia.edu/"><img border=0 align=center width=129 height=86 src="lclint-logo1.gif"></a><br>
+</td>
+<td valign=top>
+<b><a href="index.html">Guide Contents</a></b><br>
+<a href="sec1.html">1. Overview</a><br>
+<a href="sec2.html">2. Operation</a><br>
+<a href="sec3.html">3. Abstract Types</a><br>
+</td>
+<td valign=top>
+<a href="sec4.html">4. Function Interfaces</a><br>
+<a href="sec5.html">5. Memory Management</a><br>
+<a href="sec6.html">6. Sharing</a><br>
+<a href="sec7.html">7. Value Constraints</a><br>
+</td>
+<td valign=top>
+<a href="sec8.html">8. Macros</a><br>
+<a href="sec9.html">9. Naming Conventions</a><br>
+<a href="sec10.html">10. Other Checks</a><br>
+Contact: <a href="mailto:lclint@cs.virginia.edu"><em>lclint@cs.virginia.edu</em></a>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+

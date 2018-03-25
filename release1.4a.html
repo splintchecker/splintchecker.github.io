@@ -1,0 +1,174 @@
+<html>
+<head>
+<title>LCLint Version 1.4a</title>
+</head>
+<body>
+
+<H1>
+LCLint Version 1.4a<BR>
+</H1>
+
+<em>This is a release notice for an obsolete version of LCLint.  It is
+included for archival purposes only.</em>
+<p>
+<pre>
+			   LCLint Version 1.4a
+                           ===================
+
+LCLint Version 1.4a is now available from MIT by anonymous ftp.  This is
+a minor release consisting of fixes to problems reported in version 1.4
+and a few improvements.
+
+Please install the latest version of lclint on your system, so you will
+not run into bugs that have already been fixed.  Updated binaries are
+available now for the alpha, decmips, and sunos platforms in
+ftp://ftp.sds.lcs.mit.edu/pub/lclint/lclint.<platform>.tar.Z.  
+
+Since lclint has now been sucessfully built on many platforms, we can no
+longer attempt to keep up to date binaries for all platforms.  Instead,
+the source code is provided with a more streamlined build and install
+procedure (described at the end of the message).  The binaries for
+version 1.4 will be kept in
+ftp://ftp.sds.lcs.mit.edu/pub/lclint/old/.
+
+Development is largely driven by user feedback, so please continue to
+send me suggestions, ideas, complaints and bug reports.  Thanks to
+everyone who sent comments and bug reports on the 1.4 release.  We are
+also interested in any more general feedback or experience you have to
+report.  
+
+Bug reports should be sent to lclint-bug@larch.lcs.mit.edu.  If you have
+messages of general interest, send them to
+lclint-interest@larch.lcs.mit.edu.  If you are interested in
+participating in discussions on lclint use and development, send
+human-readable mail to lclint-request@larch.lcs.mit.edu saying that you
+would like to join the lclint-interest list.  If you want to be removed
+from this list, send mail to lclint-request@larch.lcs.mit.edu.
+
+Changes from Version 1.4:
+
+Improvements:
+=============
+
+o Improved reachability checking and detecting of paths with no return
+  statments.  Added flag -noreturn to suppress path with no return
+  messages.
+
+o -usedef to suppress use before definition checking.
+
+o Added flags to set name for bool type.  
+	[suggested by Richard Brooksby and John Rogers]
+
+  Use,
+
+	-boolname <name>   (to replace "bool" with <name>)
+	-boolfalse <name>  (to replace "FALSE" with <name>)
+	-booltrue <name>   (to replace "TRUE" with <name>)
+
+  Note that these can be used in a .lclintrc file.
+
+o Standardized installation procedure.  [suggested by Maarten Ballintijn ]
+
+o Installation package now includes standard library specification.
+
+Bug Fixes:
+==========
+
+o declaration parsing problems
+     file starting with type name [reported by Dov Bai]
+     functions returning functions [reported by Peter Chang]
+     parenthesized declarators [reported by Richard Brooksby]
+     declaration syntax (use of type qualifiers)
+	[reported by Maarten Ballintijn]
+     pointers to functions in specifications 
+
+o [fs]scanf problems
+     typechecking for scanf functions with * 
+	[reported by John Gerard Malecki and Albert L. Ting]
+     use before definition errors on scanf arguments 
+	[reported by John Gerard Malecki]
+
+o standard library
+	added vprintf functions 
+		[reported by Maarten Ballintijn and Frank Botte]
+	changed specification of va_start to not constrain type of
+	   second argument
+
+o loading .lldmp files for iterators 
+
+o use of -D<identifier> in .lclintrc files [reported by Frank Botte]
+
+o proper handling of -D<identifier>="string" 
+	[reported by Albert L. Ting]
+
+o proper handling of ... arguments in output for .lh files 
+	[reported by Maarten Ballintijn]
+	
+o overloading library functions specified with elipsis without using
+     elipsis [reported by Ian Moor]
+
+o fixed handling of standard libraries in non-standard directories
+	[reported by Albert L. Ting]
+
+o generation of forward struct declarations in .lh files 
+	[reported by Albert L. Ting]
+
+o problem handling __const (used in system include files on some
+     systems) [reported by Frank Botte]
+
+o type checking for forward declared structures 
+	[reported by Albert L. Ting]
+
+As far as I know, there are no other known bugs (except one possibly
+system-dependant linux bug).  If you know of a bug not listed (and
+fixed) here, please report it.
+
+Installation
+============
+
+LCLint no longer requires lsl, unless lsl specifications are used.  So,
+building lclint involves:
+		
+	1. building the garbage collector (unless you already have one)
+	2. building lclint
+
+The only system requirements are gmake (GNU make) and a C compiler (gcc
+is recommended, but cc is fine.)  If gmake is unavailable, standard make
+may be used, but more manual editing of the makefile is required.
+
+To build lclint, get the installation package
+ftp://ftp.sds.lcs.mit.edu/pub/lclint/lclint.src.tar.Z.  Uncompress
+and 'tar xf' this file.  This will create an lclint subdirectory; look
+at lclint/Makefile for more details.
+
+If you build a binary which is not already available, please let me
+know.  If possible, I would like to add binaries to the ftp site as they
+become available.
+
+To my knowledge, lclint (version 1.4) has been compiled on these
+platforms: DEC Alpha AXP running OSF/1, DECstation running Ultrix, Sun
+workstation (Sparc) running Solaris 2, Sun workstation (Sparc) running
+SunOS4.1/Solaris), PC running linux, SGIs runing IRIX, IBM RS/6000
+running RS/AIX, Unixware, HP/UX.
+</pre>
+<P>
+<HR>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

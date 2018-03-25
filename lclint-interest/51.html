@@ -1,0 +1,131 @@
+<h3>lclint-interest message 51</h3>
+<pre>
+From alt@vlibs.com Thu Mar 21 12:01:19 1996
+Date: Wed, 20 Mar 1996 16:09:21 -0800 (PST)
+From: "Albert L. Ting" <alt@vlibs.com>
+To: lclint-interest@larch.lcs.mit.edu
+Cc: alt@vlibs.com
+Subject: garbage collection checks?
+
+
+When writing C code for a system which uses garbage collection, such
+as a Scheme interpreter, there are a number of rules which must be
+followed.  I am not sure if LCLint can be be used to catch violations
+of these rules.  Maybe you can help me determine the best use of
+LCLint in this situation.
+
+A garbage collection package typically has a top-level data structure
+like this:
+
+	typedef DATA __DATA {
+	    int f1,f2,f3;
+	} DATA;
+	typedef DATAPTR *DATA;
+
+	DATA gc_arr[MAX_SIZE];
+
+	struct __lock {
+	    DATAPTR *lock;            
+	    struct __lock *next;
+	} *gc_locks;
+
+The garbage collector has an internal array of DATA'S (gc_arr).
+Whenever I need new DATA, I call the garbage collection package.
+It will return a pointer to the first available space in the array.
+(type=DATAPTR).
+
+If there is no available space in the array, garbage collection
+occurs.  This is done by first scanning gc_locks, a link list of
+pointers to pointers to an element in gc_arr (lock).  For each lock,
+it marks the associated entry in gc_arr.  It then frees up any entries
+in gc_arr that were not marked.  Next, for optimization reasons, the
+array is reorganized.  Finally, it updates all locks in the gc_lock
+list to point to the new index in gc_arr.
+
+While this allows me to not worry about freeing memory locations, it
+does have other types of problems.  Below is one such example:
+
+	DATAPTR func (DATAPTR a,b,c) {
+	   DATAPTR res;
+
+/*	   Lock(&c);  */
+	   res = func1(a,b);
+	   res = func2(c,res);
+/*	   Unlock(&c);  */
+	   return(res);
+	}
+
+Both func1 and func2 creates new DATAPTR by calling the garbage
+collection package.  Since what 'c' is pointing to could change after
+calling func1, it needs to be 'locked' so that 'c' is always pointing
+to the correct location.  With out the lock, 'c' could be pointing to
+a stale DATAPTR.
+
+It would be nice if lclint could detect this be recognizing if a previous
+function call could cause garbage collection.
+
+I also have a related problem that's more subtle.  Below is the same
+code as before by nesting the function calls:
+
+	DATAPTR func (DATAPTR a,b,c) {
+	   DATAPTR res;
+
+	   Lock(&c); 
+	   res = func2(c,func1(a,b));
+	   Unlock(&c); 
+	   return(res);
+	}
+
+The C language does not specify the order of parameter evaluation.  So
+for the above situation, 'c' could be pushed onto the parameter stack
+before calling func1.  If a garbage collection occurs, 'c' would be
+updated appropriately but not the copy that's on the parameter stack.
+Therefore, func2 would receive an stale copy of 'c'.  In this situation,
+I need to make sure no function calls that affects garbage collection
+are passed directly as parameters.
+
+Another subtle problem are assignments.  Assume the garbage collector
+supports array of DATAPTRs.
+
+	DATAPTR func (DATAPTR a,b,c) {
+	   DATAPTR res[2];
+
+	   Lock(&c);
+	   LockArray(&res,2);   /* lock a two element array */
+	   res[0] = func1(a,b);
+	   res[1] = func2(c,res[0]);
+	   Unlock(&c); UnlockArray(&res);
+	   return(res[1]);
+	}
+
+Depending on the C compiler, the index to res[1] could already be
+stored in a register before a garbage collection occurs in func2.  It
+would then store the results of func2 in a stale address location
+rather than the current location that res[1] is pointing to.
+
+Albert
+
+-- 
+VLSI Libraries Incorporated has moved!
+
+Albert L. M. Ting * mail:alt@vlibs.com * phone:408-487-5327 * fax:408-453-3500
+VLSI Libraries Incorporated, 2077 Gateway Place, Suite 300, San Jose, CA 95110
+
+
+
+</pre>
+<A HREF="50.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="52.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

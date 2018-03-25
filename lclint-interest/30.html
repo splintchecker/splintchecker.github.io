@@ -1,0 +1,38 @@
+<h3>lclint-interest message 30</h3>
+<pre>
+Date: Wed, 15 Feb 95 10:48:26 -0500
+From: evs (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Maarten Ballintijn's message of Wed, 15 Feb 95 10:07:56 MET <9502150907.AA05716@dxmint.cern.ch>
+Subject: Makefiles for Lclint
+
+
+The handling of whitespace before control commands (ifdef, else, etc.)
+changed between gmake versions 3.62 and 3.7.  Newer versions of gmake
+send these commands preceeded by a <TAB> to the shell directly, instead
+of pre-processing them.  The Makefiles provided with the current
+packages fix this problem so it should work with all versions of gmake,
+but if you picked up one of the early versions of 1.4c you should remove
+the <TAB>s before these commands.
+
+If you don't have gnu make, you can use can use the provided plain
+makefiles instead.  The shell script useplain will set things up to use
+the plain makefiles instead.
+
+--- Dave
+</pre>
+<A HREF="29.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="31.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

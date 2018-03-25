@@ -1,0 +1,105 @@
+<A NAME="line36"></A><html><head>
+<title>erc.h</title>
+</head><body>
+<h1>erc.h</h1>
+<PRE>
+<A NAME="line1"></A># ifndef ERC_H
+<A NAME="line2"></A># define ERC_H
+<A NAME="line3"></A> 
+<A NAME="line4"></A># include &ltassert.h&gt
+<A NAME="line5"></A>#include "<A HREF="eref.h.html">eref.h</A>"
+<A NAME="line6"></A> 
+<A NAME="line7"></A>/*@-exporttype@*/ /* These types should not be exported, but are used in macros. */
+<A NAME="line8"></A>typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;
+<A NAME="line9"></A>typedef ercElem *ercList;
+<A NAME="line10"></A>typedef struct { /*@null@*/ ercList vals; int size; } ercInfo;
+<A NAME="line11"></A>/*@=exporttype@*/
+<A NAME="line12"></A> 
+<A NAME="line13"></A>typedef ercInfo *erc;
+<A NAME="line14"></A> 
+<A NAME="line15"></A>#include "<A HREF="erc.lh.html">erc.lh</A>"
+<A NAME="line16"></A> 
+<A NAME="line17"></A># define erc_size(c) ((c)-&gtsize)
+<A NAME="line18"></A> 
+<A NAME="line19"></A># define erc_initMod() \
+<A NAME="line20"></A>    do { bool_initMod(); employee_initMod();\
+<A NAME="line21"></A>         eref_initMod(); } while (0)
+<A NAME="line22"></A> 
+<A NAME="line23"></A># define erc_elements(c, m_x) \
+<A NAME="line24"></A>  { erc m_c = (c); ercElem *m_ec = (m_c)-&gtvals; int m_i = 0; \
+<A NAME="line25"></A>    while (m_i &lt (m_c)-&gtsize) { \
+<A NAME="line26"></A>      eref m_x; assert (m_ec != NULL); m_x = m_ec-&gtval; m_ec = m_ec-&gtnext; m_i++; 
+<A NAME="line27"></A> 
+<A NAME="line28"></A># define end_erc_elements }}
+<A NAME="line29"></A> 
+<A NAME="line30"></A># endif
+</pre>
+<P>
+<HR>
+<A HREF="index.html">Return to Index</A> | <A HREF="http://lclint.cs.virginia.edu/index.html">LCLint Home Page</A> <BR> <BR>
+<author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+<pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

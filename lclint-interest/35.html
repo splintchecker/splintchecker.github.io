@@ -1,0 +1,55 @@
+<h3>lclint-interest message 35</h3>
+<pre>
+From: Jon Freeman <freeman_jon@jpmorgan.com>
+Date: Mon, 19 Jun 1995 08:57:35 -0400
+To: lclint-interest@larch.lcs.mit.edu
+Subject: False alarms in lclint 1.4
+
+The current version of lclint is falsely identifying unreachable code
+in many of our routines.  Someone might want to correct this.
+
+Our routines frequently have the following overall structure:
+
+                int RandomRoutine( ... )
+                {
+                    static char routine[] = "RandomRoutine";
+
+                    if( ...error condition 1... )
+                        goto failed;
+                    ...
+                    if( ...error condition 2... )
+                        goto failed;
+                    ...
+
+                    return SUCCESS;
+
+                  failed:
+                    RecordError( "%s:  Failed.\n", routine );
+                    return FAILURE;
+                }
+
+The purpose of this structure is to create a stack of error messages
+in the error log so that when an error occurs, we can trace it quickly
+and easily.  The problem is that lclint always marks the code beneath
+the "failed:" label as unreachable, even though this is clearly not
+the case.
+
+                        Thanks,
+                         Jon
+
+</pre>
+<A HREF="34.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="36.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 11. Macros</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+<h1 style='margin-left:0in;text-indent:0in'><a name="_Toc534975006"></a><a
+name="_Ref534642895"></a><a name="_Ref534642215">11<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Macros</a></h1>
+
+<p class=TextFontCX>Macros are commonly used in C
+programs to implement constants or to mimic functions without the overhead of a
+function call.  Macros that are used to implement functions are a persistent
+source of bugs in C programs, since they may not behave like the intended
+function when they are invoked with certain parameters or used in certain
+syntactic contexts.  </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Splint eliminates most of the
+potential problems by detecting macros with dangerous implementations and
+dangerous macro invocations.  Whether or not a macro definition is checked or
+expanded normally depends on flag settings and control comments (see Section 11.3). 
+Stylized macros can also be used to define control structures for iterating
+through many values (see Section 11.4).</p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534975007"></a><a
+name="_Ref361651263"></a><a name="_Ref344916524"></a><a name="_Ref344908437"></a><a
+name="_Toc344355419">11.1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Constant Macros</a></h2>
+
+<p class=TextFontCX>Macros may be used to
+implement constants.  To get type-checking for constant macros, use the <span
+class=Annot><span style='font-size:10.0pt'>constant</span></span> annotation. 
+For example,</p>
+
+<p class=example>/*@constant null char *mstring_undefined@*/</p>
+
+<p class=TextFontCX>Declared constants are not
+expanded and are checked according to the declaration.  A constant with a <span
+class=Annot><span style='font-size:10.0pt'>null</span></span> annotation may be used as <span class=Annot><span style='font-size:10.0pt'>only</span></span> storage.</p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534975008"></a><a
+name="_Toc344355420"></a><a name="_Ref343363760">11.2<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Function-like Macros</a></h2>
+
+<p class=TextFontCX>Using macros to imitate
+functions is notoriously dangerous.  Consider this broken macro for squaring a
+number:</p>
+
+<p class=example># define square(x) x * x</p>
+
+<p class=TextFontCX>This works fine for a simple
+invocation like <span class=CodeText><span style='font-size:10.0pt'>square(i)</span></span>. 
+It behaves unexpectedly, though, if it is instantiated with a parameter that
+has a side effect.  For example, <span class=CodeText><span style='font-size:
+10.0pt'>square(i++)</span></span> expands to <span class=CodeText><span
+style='font-size:10.0pt'>i++ * i++</span></span>.  Not only does this give the
+incorrect result, it has undefined behavior since the order in which the
+operands are evaluated is not defined.  (See Section 8.2 for more information
+on how expressions exhibiting undefined evaluation order behavior are detected
+by Splint.)  To correct the problem we either need to rewrite the macro so that
+its parameter is evaluated exactly once, or prevent clients from invoking the
+macro with a parameter that has a side effect.  </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Another possible problem with
+macros is that they may produce unexpected results because of operator
+precedence rules.  The instantiation, <span class=CodeText><span
+style='font-size:10.0pt'>square(i+1)</span></span> expands to <span
+class=CodeText><span style='font-size:10.0pt'>i+1*i+1</span></span>, which
+evaluates to <span class=CodeText><span style='font-size:10.0pt'>i+i+1</span></span>
+instead of the square of <span class=CodeText><span style='font-size:10.0pt'>i+1</span></span>. 
+To ensure the expected behavior, the macro parameter should be enclosed in
+parentheses where it is used in the macro body.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Macros may also behave
+unexpectedly if they are not syntactically equivalent to an expression. 
+Consider the macro definition,</p>
+
+<p class=example># define incCounts()  ntotal++; ncurrent++;</p>
+
+<p class=TextFontCX>This works fine, unless it is
+used as a statement.  For example,</p>
+
+<p class=example>if (x &lt; 3) incCounts();</p>
+
+<p class=TextFontCX>increments <span
+class=CodeText><span style='font-size:10.0pt'>ntotal</span></span> if <span
+class=CodeText><span style='font-size:10.0pt'>x &lt; 3</span></span> but always
+increments <span class=CodeText><span style='font-size:10.0pt'>ncurrent</span></span>.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>One solution is to use the
+comma operator to define the macro:</p>
+
+<p class=example># define incCounts()  (ntotal++, ncurrent++)</p>
+
+<p class=beforelist>More complicated macros can be written using a <span
+class=CodeText><span style='font-size:10.0pt'>do … while</span></span>
+construction:</p>
+
+<p class=Verbatim>  # define incCounts() \</p>
+
+<p class=Verbatim>     do { ntotal++; ncurrent++; } while (FALSE)</p>
+
+<p class=afterlist>Splint detects these pitfalls in macro definitions, and
+checks that a macro behaves as much like a function as possible.  A client
+should only be able to tell that a function was implemented by a macro if it
+attempts to use the macro as a pointer to a function.</p>
+
+<p class=MsoListBullet>&nbsp;</p>
+
+<p class=beforelist>Splint does these checks on a macro definition
+corresponding to a function:</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>Each
+parameter to a macro (except those declared to be side effect free, see Section
+11.2.1) must be used exactly once in all possible executions of the macro, so
+side effecting arguments behave as expected.<a href="#_ftn15" name="_ftnref15"
+title=""><span class=MsoFootnoteReference><span class=MsoFootnoteReference><span
+style='font-size:11.0pt;font-family:"Times New Roman"'>[15]</span></span></span></a> 
+(Controlled by <span class=Flag><span style='font-size:10.0pt'>macroparams</span></span>.)</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>A
+parameter to a macro may not be used as the left-hand side of an assignment
+expression or as the operand of an increment or decrement operator in the macro
+text, since this produces non-functional behavior.  (Controlled by <span
+class=Flag><span style='font-size:10.0pt'>macroassign</span></span>.)</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>Macro
+parameters must be enclosed in parentheses when they are used in potentially
+dangerous contexts.  (Controlled by <span class=Flag><span style='font-size:
+10.0pt'>macroparens</span></span>.)</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>A
+macro definition must be syntactically equivalent to a statement when it is
+invoked followed by a semicolon. (Controlled by <span class=Flag><span
+style='font-size:10.0pt'>macrostmt</span></span>.)</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>The
+type of the macro body must match the return type of the corresponding
+function.  If the macro is declared with type <span class=CodeText><span
+style='font-size:10.0pt'>void</span></span>, its body may have any type but the
+macro value may not be used.</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>All
+variables declared in the body of a macro definition must be in the macro
+variable namespace, so they do not conflict with variables in the scope where
+the macro is invoked (which may be used in the macro parameters).  By default,
+the macro namespace is all names prefixed by <span class=CodeText><span
+style='font-size:10.0pt'>m_</span></span>.  (See Section 12.2 for information
+on controlling namespaces.)</p>
+
+<p class=afterlist>At the call site, a macro is checked like any other function
+call.</p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534975009"></a><a
+name="_Toc344355421"></a><a name="_Ref343109609">11.2.1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;
+</span>Side Effect Free Parameters</a></h3>
+
+<p class=beforelist>Suppose we really do want to implement <span
+class=CodeText><span style='font-size:10.0pt'>square</span></span> as a macro,
+but want do so in a safe way.  One way to do this is to require that it is
+never invoked with a parameter that has a side effect.  Splint will check that
+this constraint holds, if the parameter is annotated to be side effect free. 
+That is, the expression corresponding to this parameter must not modify any state, so it does not matter how many times it is evaluated.  The <span
+class=Annot><span style='font-size:10.0pt'>sef</span></span> annotation is used to denote a parameter that may not have any side effects:</p>
+
+<p class=Verbatim><span style='font-size:9.5pt'>   extern int square (/*@sef@*/
+int x);</span></p>
+
+<p class=Verbatim><span style='font-size:9.5pt'>   # define square(x) ((x)
+*(x))</span></p>
+
+<p class=afterlist>Now, Splint will not report an error checking the definition
+of <span class=CodeText><span style='font-size:10.0pt'>square</span></span>
+even though <span class=CodeText><span style='font-size:10.0pt'>x</span></span>
+is used more than once.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>A message will be reported,
+however, if <span class=CodeText><span style='font-size:10.0pt'>square</span></span>
+is invoked with a parameter that has a side effect.  For the code fragment,</p>
+
+<p class=example>square (i++)</p>
+
+<p class=beforelist>Splint produces the message:</p>
+
+<p class=Verbatim>   <span style='font-family:Arial'>Parameter 1 to square is
+declared sef,</span><span style='font-family:Arial'> </span><span
+style='font-family:Arial'>but the argument may modify: i++</span></p>
+
+<p class=betweenlists>It is also an error to pass a macro parameter that is not
+annotated with <span class=Annot><span style='font-size:10.0pt'>sef</span></span>
+as a <span class=Annot><span style='font-size:10.0pt'>sef</span></span> macro
+parameter in the body of a macro definition.  For example,</p>
+
+<p class=Verbatim><span style='font-size:9.5pt'>   extern int sumsquares (int
+x, int y);</span></p>
+
+<p class=Verbatim><span style='font-size:9.5pt'>   # define sumsquares(x,y)
+(square(x) + square(y))</span></p>
+
+<p class=afterlist>Although <span class=CodeText><span style='font-size:10.0pt'>x</span></span>
+only appears once in the definition of <span class=CodeText><span
+style='font-size:10.0pt'>sumsquares</span></span> it will be evaluated twice
+since <span class=CodeText><span style='font-size:10.0pt'>square</span></span>
+is expanded.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>A parameter may be passed as
+a <span class=Annot><span style='font-size:10.0pt'>sef</span></span> parameter
+without an error being reported, if Splint can determine that evaluating the
+parameter has no side effects.  For function calls, the modifies clause is used to determine if a side effect is possible.<a href="#_ftn16"
+name="_ftnref16" title=""><span class=MsoFootnoteReference><span
+class=MsoFootnoteReference><span style='font-size:11.0pt;font-family:"Times New Roman"'>[16]</span></span></span></a>  
+To prevent many spurious errors, if the called function has no modifies clause,
+Splint will report an error only if <span class=Flag><span style='font-size:
+10.0pt'>sef-uncon</span></span> is on.  Justifiably paranoid programmers will
+insist on setting <span class=Flag><span style='font-size:10.0pt'>sef-uncon</span></span>
+on, and will add modifies clauses to unconstrained functions that are used in <span
+class=Annot><span style='font-size:10.0pt'>sef</span></span> macro arguments.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=beforelist>One common application of macros is to get around the lack
+of polymorphism in C.  We can use the <span class=Annot><span style='font-size:
+10.0pt'>/*@alt &lt;type&gt;,<sup>+</sup>@&gt;</span></span> syntax  (see Section 4.4) to indicate that an alternate type may be used.  For example,</p>
+
+<p class=Verbatim><span style='font-size:9.5pt'>  extern int /*@alt float@*/
+square (/*@sef@*/ int /*@alt float@*/ x);</span></p>
+
+<p class=Verbatim><span style='font-size:9.5pt'>  # define square(x) ((x) *(x))</span></p>
+
+<p class=afterlist>declares <span class=CodeText><span style='font-size:10.0pt'>square</span></span>
+for both <span class=CodeText><span style='font-size:10.0pt'>int</span></span>s
+and <span class=CodeText><span style='font-size:10.0pt'>float</span></span>s. 
+Note however, that the return type is either <span class=CodeText><span
+style='font-size:10.0pt'>int</span></span> or <span class=CodeText><span
+style='font-size:10.0pt'>float</span></span>, regardless of the actual
+parameter type.  This is weaker than what is actually known about the return
+type. </p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534975010"></a><a
+name="_Ref347227227">11.3<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Controlling Macro Checking</a></h2>
+
+<p class=TextFontCX>By default, Splint expands
+macros normally and checks the resulting code after macros have been expanded. 
+Flags and control comments may be used to control which macros are expanded and
+which are checked as functions or constants.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>If the <span class=Flag><span
+style='font-size:10.0pt'>fcn-macros</span></span> flag is on, Splint assumes all macros defined with parameter lists implement
+functions and checks them accordingly.  Parameterized macros are not expanded
+and are checked as functions with unknown result and parameter types (or using
+the types in the prototype, if one is given).  The analogous flag for macros
+that define constants is <span class=Flag><span style='font-size:10.0pt'>const-macros</span></span>.  If it is on, macros with no parameter lists are assumed to be constants, and checked accordingly.  The <span class=Flag><span style='font-size:10.0pt'>all-macros</span></span> flag sets both <span class=Flag><span style='font-size:10.0pt'>fcn-macros</span></span>
+and <span class=Flag><span style='font-size:10.0pt'>const-macros</span></span>. 
+If the <span class=Flag><span style='font-size:10.0pt'>macro-fcn-decl</span></span> flag is set, a message reports parameterized macros with no corresponding function prototype.  If the <span class=Flag><span style='font-size:10.0pt'>macro-const-decl</span></span> flag is set, a similar message reports macros with no parameters that have no corresponding constant declaration.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=beforelist>The macro checks described in the previous sections make
+sense only for macros that are intended to replace functions or constants. 
+When <span class=Flag><span style='font-size:10.0pt'>fcnmacros</span></span> or <span class=Flag><span style='font-size:10.0pt'>constmacros</span></span> is on, more general macros need to be marked so they will not be checked as
+functions or constants, and will be expanded normally.  Macros that are not
+meant to behave like functions should be preceded by the /<span class=Annot><span
+style='font-size:10.0pt'>*@notfunction@*/</span></span><span class=Annot><span style='font-size:10.0pt'> </span></span>comment.  For
+example,</p>
+
+<p class=Verbatim><span style='font-size:9.5pt'>   /*@notfunction@*/</span></p>
+
+<p class=Verbatim><span style='font-size:9.5pt'>   # define forever for(;;)</span></p>
+
+<p class=afterlist>Macros preceded by <span class=Annot><span style='font-size:
+10.0pt'>notfunction</span></span> are expanded normally before regular checking
+is done.  If a macro that is not syntactically equivalent to a statement
+without a semi-colon (e.g., a macro which enters a new scope) is not preceded
+by <span class=Annot><span style='font-size:10.0pt'>notfunction</span></span>,
+parse errors may result when <span class=Flag><span style='font-size:10.0pt'>fcn-macros</span></span> or <span
+class=Flag><span style='font-size:10.0pt'>const-macros</span></span> is on.</p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Ref345771875"></a><a
+name="_Ref345489124"></a><a name="_Toc344355423"></a><a name="_Toc534975011"></a><a
+name="_Ref361651257"></a><a name="_Ref349897909"></a><a name="_Ref344916532"></a><a
+name="_Ref344908410"></a><a name="_Toc344355424">11.4<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Iterators</a></h2>
+
+<p class=TextFontCX>It is often useful to be able
+to execute the same code for many different values.  For example, we may want
+to sum all elements in an <span class=CodeText><span style='font-size:10.0pt'>intSet</span></span>
+that represents a set of integers.  If <span class=CodeText><span
+style='font-size:10.0pt'>intSet</span></span> is an abstract type, there is no easy way of doing this in a client module without depending on the
+concrete representation of the type.  Instead, we could provide such a
+mechanism as part of the type’s implementation.  We call a mechanism for
+looping through many values an <i>iterator</i>.</p>
+
+<p class=TextFontCX> </p>
+
+<p class=TextFontCX>The C language provides no
+mechanism for creating user-defined iterators.  Splint supports a stylized form
+of iterators declared using syntactic comments and defined using macros.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Iterator declarations are
+similar to function declarations except instead of returning a value, they
+assign values to their <span class=Annot><span style='font-size:10.0pt'>yield</span></span>
+parameters in each iteration.  For example, we could add this iterator
+declaration to <span class=Keyword><span style='font-size:10.0pt;font-family:
+Arial;color:windowtext'>intSet.h</span></span>:</p>
+
+<p class=example>/*@iter intSet_elements (intSet s, yield int el);@*/</p>
+
+<p class=TextFontCX>The <span class=Annot><span
+style='font-size:10.0pt'>yield</span></span> annotation means that the variable
+passed as the second actual argument is declared as a local variable of type <span
+class=CodeText><span style='font-size:10.0pt'>int</span></span> and assigned a
+value in each loop iteration.</p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534975012">11.4.1<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span>Defining
+Iterators</a></h3>
+
+<p class=beforelist>An iterator is defined using a macro.  Here’s one (not
+particularly efficient) way of defining <span class=CodeText><span
+style='font-size:10.0pt'>intSet_elements</span></span>:</p>
+
+<p class=Verbatim>   typedef /*@abstract@*/ struct {</p>
+
+<p class=Verbatim>      int nelements;</p>
+
+<p class=Verbatim>      int *elements; </p>
+
+<p class=Verbatim>   } intSet;</p>
+
+<p class=Verbatim>   …</p>
+
+<p class=Verbatim>   # define intSet_elements(s,m_el) \</p>
+
+<p class=Verbatim>     { int m_i; \ </p>
+
+<p class=Verbatim>       for (m_i = (0); m_i &lt;= ((s)-&gt;nelements); m_i++)
+{ \</p>
+
+<p class=Verbatim>           int m_el = (s)-&gt;elements[(m_i)];</p>
+
+<p class=Verbatim>&nbsp;</p>
+
+<p class=Verbatim>   # define end_intSet_elements }}</p>
+
+<p class=afterlist>Each time through the loop, the yield parameter <span
+class=CodeText><span style='font-size:10.0pt'>m_el</span></span> is assigned to
+the next value.  After each value has been assigned to <span class=CodeText><span
+style='font-size:10.0pt'>m_el</span></span> for one iteration, the loop
+terminates.  Variables declared by the iterator macro (including the <span
+class=Annot><span style='font-size:10.0pt'>yield</span></span> parameter) are
+preceded by the macro variable namespace prefix <span class=CodeText><span
+style='font-size:10.0pt'>m_</span></span> (see Section 11.2) to avoid conflicts
+with variables defined in the scope where the iterator is used.</p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534975013">11.4.2<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span>Using Iterators</a></h3>
+
+<p class=TextFontCX>The general structure for
+using an iterator is,</p>
+
+<p class=example><i>iter</i> (<i>&lt;params&gt;</i>) stmt; end_<i>iter</i></p>
+
+<p class=beforelist>For example, a client could use <span class=CodeText><span
+style='font-size:10.0pt'>intSet_elements</span></span> to sum the elements of
+an <span class=CodeText><span style='font-size:10.0pt'>intSet</span></span>:</p>
+
+<p class=Verbatim>   intSet s;</p>
+
+<p class=Verbatim>   int sum = 0;</p>
+
+<p class=Verbatim>   ...</p>
+
+<p class=Verbatim>   intSet_elements (s, el) { </p>
+
+<p class=Verbatim style='text-indent:.5in'>sum += el; </p>
+
+<p class=Verbatim>   } end_intSet_elements;</p>
+
+<p class=afterlist>The actual parameter corresponding to a yield parameter, <span
+class=CodeText><span style='font-size:10.0pt'>el</span></span>, is not declared
+in the function scope.  Instead, it is declared by the iterator and assigned to
+an appropriate value for each iteration.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=beforelist>Splint will do the following checks for uses of stylized
+iterators:</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>An
+invocation of the iterator <span class=CodeText><i><span style='font-size:10.0pt'>iter</span></i></span>
+must be balanced by a corresponding end, named <span class=CodeText><span
+style='font-size:10.0pt'>end_<i>iter</i></span></span>.</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>All
+actual parameters must be defined, except those corresponding to yield
+parameters.</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>Yield
+parameters must be new identifiers, not declared in the current scope or any
+enclosing scope.</p>
+
+<p class=afterlist>Iterators are a bit awkward to implement, but they enable
+compact, easily understood client code.  For abstract collection types, an
+iterator can be used to enable clients to operate on elements of the collection
+without breaking data abstraction.<a name="_Ref348845281"></a><a
+name="_Toc344355425"></a><a name="_Ref343247905"></a></p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+
+<p>
+<a href="sec12.html"><b>Next:</b> 12. Naming Conventions</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

@@ -1,0 +1,136 @@
+<h3>lclint-interest message 60</h3>
+<pre>
+From evs Fri Mar 22 16:07:32 1996
+Date: Fri, 22 Mar 96 15:54:08 -0500
+From: evs (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: alt@vlibs.com
+In-Reply-To: "Albert L. Ting"'s message of Wed, 20 Mar 1996 16:09:21 -0800 (PST) <199603210009.QAA27075@boa.vlibs.com>
+Subject: garbage collection checks?
+
+
+This sounds like an interesting application but it is a bit beyond what
+is possible with lclint currently.  What is really needed is some way of
+describing your own constraints and getting associated checking --- I
+believe this would be a very useful direction for future work in this
+area. 
+
+There are a couple of "tricks" you could use to get some help from
+lclint, though.
+
+One idea is to use a bogus global variable to represent different
+aspects of the state of the garbage collector.  For example, we could
+use a "gclock" variable to represent whether or not the garbage
+collector is locked.  (I realize, what you really need is a way of
+locking it for a particular variable.  One can imagine having separate
+locks for each variable, but this is probably not realistic.)  Then we
+declare functions that set the lock to define gclock, and functions that
+release the lock to undefine ("kill") gclock. 
+
+Here is the declaration of the dummy variable:
+
+typedef void *DUMMYVAR;
+/*@unused@*/ /*@checkedstrict@*/ DUMMYVAR gclock;
+
+Note that we have used "checkedstrict" to indicate that the use and
+modification of gclock should be checked strictly --- hence, an error is
+reported anywhere it is used unless it is explicitly specified.  
+
+Now, the declarations of lock and unlock:
+
+void lock (void) /*@globals undef gclock@*/ /*@modifies gclock@*/ ;
+void unlock (void) /*@globals killed gclock@*/ /*@modifies gclock@*/ ;
+
+So for lock, we have gclock as an undef global variable.  This means it
+is undefined before the call, and defined after.  For unlock, it is
+killed --- defined before the call, undefined after.
+
+To declare a function that needs the lock, we just need to list it in
+the globals clause:
+
+int funcneedslock (void) /*@globals gclock@*/ ;
+
+Now, consider the function:
+
+int func (void) 
+{
+  return (funcneedslock ());
+}
+
+Checking reports:
+
+  gc.c: (in function func)
+  gc.c:20,11: Called procedure funcneedslock may access global gclock
+
+Because of the checkedstrict annotation on gclock, we need to add it to
+the declaration of func:
+
+int func (void) /*@globals gclock@*/
+{
+  return (funcneedslock ());
+}
+
+But, this means gclock must be defined before the call (i.e., the lock
+is set).
+
+Another approach would be to declare functions to not have the lock when
+they are called and to release it before they return.  This is expressed
+by,
+
+# define LOCK /*@globals undef killed gclock@*/
+
+Now if we forget to release the lock:
+
+int funcbad (void) LOCK
+{
+  lock ();
+  return (func ());
+}
+
+a failure to release sotrage message is reported:
+
+  gc.c:27,2: Killed global gclock not released before return
+
+This certainly isn't a very elegant way to deal with this problem, but
+it does make it possible to check certain things in an indirect way by
+taking advantage of use-before-definition and must relese checking.
+
+We could do a similar thing to find places where state is modifies and
+read in an undefined way.  (We would need to add a dummy function that
+uses this global state when a variable is passed to a function, though,
+e.g.,
+
+	DATAPTR readvar (DATAPTR c) /*@globals gcstate@*/ ;
+	# define readvar(c) (c)
+
+	...
+
+	func2 (readvar (c), func1 (readvar (a), readvar (b)));
+
+--- Dave
+
+
+
+
+
+
+
+
+
+
+</pre>
+<A HREF="59.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="61.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

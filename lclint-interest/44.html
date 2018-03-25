@@ -1,0 +1,100 @@
+<h3>lclint-interest message 44</h3>
+<pre>
+From evs Tue Mar 19 15:32:18 1996
+Date: Sun, 10 Mar 96 12:53:49 -0500
+From: evs (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: tgm@netcom.com
+In-Reply-To: Thomas G. McWilliams's message of Fri, 8 Mar 1996 20:15:40 -0500 <199603090115.UAA23669@netcom8.netcom.com>
+Subject: Re: LCLint 2.0 anomaly?
+
+
+> Questions with respect to the example below:
+>   What does it mean that storage becomes dependent?
+>   What does it mean that storage becomes owned?
+
+A pointer is dependent if it points to storage that is "owned" by some
+other reference.  This means the storage should not be dealloacted
+through the dependent pointer, since the owner pointer will then point
+to dead storage.  For external variables (e.g., parameters, return
+values, fields in structures reachable from global variables or
+parameters), the annotation on the declaration determines if the
+reference is dependent or owned.  For local variables, lclint tries to
+determine whether the variable points to dependent storage from the
+code.
+
+As your example points out, this doesn't always do the right thing for
+real programs:
+
+8    char *buf = malloc(10);
+9
+10   if (buf != NULL) {
+11	char *line = buf;
+12	if (1) {
+13	    line = buf;
+14	}
+15	free(buf);
+16   }
+
+At line 8, the result of malloc is assigned to buf.  So, buf is "fresh"
+storage, that is not shared by any other reference.
+
+At line 11, buf is assigned to line, so line and buf are aliases.  Now,
+buf and line both point to the same storage so there is an
+owner/dependent relationship.  It isn't clear from the code which should
+be considered the owner and which is dependent, so lclint will
+arbitrarily make line the owner and buf the dependent.  Normally, it
+won't matter which is which, since lclint keeps track of the aliasing
+relationship and can switch them (say, if line is assigned to a new
+value).  Note if we wrote,
+
+   if (1) { free (line); } else { free (buf); }
+
+no error would be reported.
+
+Instead, however, line 13 assigns buf to line.  LCLint doesn't know that
+that value of line is already buf, so treats this like a normal
+assignment.  Before the assignment, buf was dependent (on line) and line
+was owned.  The assignment (apparently) reassigns line so the storage
+lclint checks that the storage previously pointed to by line is owned by
+some other reference.  In this case, buf is an alias to the storage.
+Since the other alias to the storage is now lost (since line was
+reassigned), buf is no longer a pointer to dependent storage, but
+becomes a pointer to owned storage.  In fact, we know that nothing
+should change because line is just being reassigned to its current
+value.  lclint is not able to detect this however.
+
+So, at the confluence point, buf is dependent (on line) if the if
+predicate is false, and independent (because of the reassignment of
+line) if the predicate is true.  There is no way to resolve independent
+and dependent storage, so lclint reports the anomaly.  If -branchstate
+is set, the error is not reported and the state of buf after the branch
+will be resolved to an error state.
+
+In summary, its definitely possible to construct programs where lclint
+reports spurious error messages because it cannot analyze the code at a
+deep enough level to determine that it is correct.  Fortunately, these
+situations are not too common in real programs (at least in my limited
+experience so far), and often a suprious message does indicate code that
+is unnecessarily unclear to human readers also (like in this example.)
+
+--- Dave
+
+
+
+</pre>
+<A HREF="43.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="45.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

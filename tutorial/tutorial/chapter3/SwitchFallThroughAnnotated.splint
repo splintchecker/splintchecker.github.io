@@ -1,0 +1,10 @@
+Splint 3.0.1.4 --- 19 Jan 2002
+
+SwitchFallThroughAnnotated.c: (in function main)
+SwitchFallThroughAnnotated.c:7:38: Return value (type int) ignored:
+                                      scanf("%d", &Number)
+  Result returned by function call is not used. If this is intended, can cast
+  result to (void) to eliminate message. (Use -retvalint to inhibit warning)
+
+Finished checking --- 1 code warning
+32 source lines in 0.02 s.

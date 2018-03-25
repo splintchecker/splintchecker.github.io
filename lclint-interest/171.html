@@ -1,0 +1,85 @@
+<h3>lclint-interest message 171</h3>
+<pre>
+From astala@tnso13.tele.nokia.fi Thu Sep 25 11:16:00 1997
+From: astala@tnso13.tele.nokia.fi (Arto Astala)
+Subject: Re: how do I annotate formal parameters
+To: evans@cs.virginia.edu (David Evans), lclint-interest@larch.lcs.mit.edu
+Date: Thu, 25 Sep 1997 11:21:39 +0300 (EEST)
+In-Reply-To: <9709241701.AA17361@larch.lcs.mit.edu> from "David Evans" at Sep 24, 97 01:01:43 pm
+X-Mailer: ELM [version 2.4 PL23]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO
+Content-Transfer-Encoding: 8bit
+
+> Dave:
+> One solution is to preface formal parameter names with a prefix that
+> (hopefully) keeps them from interfering with the system namespace.
+
+One, so are there any others? I must admit tha this makes name 
+clashes very unlikely and is usually enough. Mostly using 
+lclint involves fixing things one feels are not going to 
+cause any trouble. Doing this another way probably would not 
+make any real difference but make me feel better about it.
+
+Maybe in some future release one can say either something like
+this (giving names in formal comments):
+
+  void
+tf_print_symboltable_binding (
+          /*@observer@*/ tpstSymbolTable * /*sym_tab*/,
+	  FILE * /*@param out_file@*/,            <--- give name
+	  /*@temp@*/ char * /*bind_name*/, 
+          /*@temp@*/ char * /*@param str@*/,      <--- give name
+          unsigned int /*max_len*/,
+                   int /*piece_len*/,
+                   int /*indent_len*/
+          )
+     /*@modifies fileSystem, *out_file, str@*/ ;
+
+or like this (referencing params by number):
+
+  void
+tf_print_symboltable_binding (
+          /*@observer@*/ tpstSymbolTable * /*sym_tab*/,
+	  FILE * /*out_file*/, 
+	  /*@temp@*/ char * /*bind_name*/, 
+          /*@temp@*/ char * /*str*/,
+          unsigned int /*max_len*/,
+                   int /*piece_len*/,
+                   int /*indent_len*/
+          )
+     /*@modifies fileSystem, *@2@, @4@ @*/ ;      <--- by number
+
+or maybe like this (giving formal comment in place of parameter name):
+
+  void
+tf_print_symboltable_binding (
+          /*@observer@*/ tpstSymbolTable * /*sym_tab*/,
+	  FILE * /*@modifies@*/,                  <--- formal comment
+	  /*@temp@*/ char * /*bind_name*/, 
+          /*@temp@*/ char * /*@modifies@*/,       <--- formal comment
+          unsigned int /*max_len*/,
+                   int /*piece_len*/,
+                   int /*indent_len*/
+          )
+     /*@modifies fileSystem, *out_file, str@*/ ;
+
+t.aa
+
+
+</pre>
+<A HREF="170.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="172.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<h3>lclint-interest message 202</h3>
+<pre>
+From 100566.1506@csi.com Wed Mar  4 12:48:13 1998
+X-Authentication-Warning: opto4l.default.com: 100566.1506 owned process doing -bs
+Date: Wed, 4 Mar 1998 10:37:52 +0100 (CET)
+From: Hermann Kleier <100566.1506@csi.com>
+X-Sender: 100566.1506@opto4l.default.com
+To: David Evans <evans@cs.virginia.edu>
+Cc: 100045.1545@compuserve.com, lclint-interest@larch.lcs.mit.edu,
+        weco@csi.com
+Subject: re: signal function interface
+In-Reply-To: <9802212331.AA10981@larch.lcs.mit.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Dave,
+
+On Sat, 21 Feb 1998, David Evans wrote:
+
+> Its seems quite strange to me where you get implicit function pointers
+> (i.e., why func1 and func1 * are the same), and where you don't.  (Is
+> this explained clearly in the standard somewhere?)
+
+A good source is the `Rationale for American National Standard for Information
+Systems - Programming Language - C', which can be found at
+http://www.mit.edu/afs/sipb/contrib/doc/ANSI-C-rationale
+(and elsewhere).  The section 3.3.2.2 explains the origins of the implicit
+castings.  They show examples like
+
+int f ();
+(***f) ();
+
+The 2nd line is a legal invocation (with multiple implicit pointer casts), which
+makes me blushing when presented to me by a PASCAL-disciple.
+
+Hermann
+
+
+
+
+
+
+</pre>
+<A HREF="201.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

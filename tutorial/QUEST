@@ -1,0 +1,109 @@
+QUESTIONS/TODO for tutorial
+
+GENERAL
+=========================================
+
+TODO: write a script that generates a single file from all the
+chapters (and also makes the links correct).
+
+
+TODO:
+change the names of all files to lowercase. make the names shorter. 
+
+
+TODO:
+after each section include a summary of the main points.
+
+
+TODO:
+write a short summary of the key differences between C and C++.
+
+TODO:
+chapter on procedures.
+
+
+TODO:
+throughout the paper explain Splin warnings better. 
+
+TODO:
+verify that the code does not suffer from the 
+
+#include <stdlib.h>
+
+problem where the < and > are interpreted as HTML.
+Most of these are fixed by just doing:
+
+#include "stdlib.h"
+
+TODO:
+In the splint output somehow show what flags are being used. 
+
+
+NOTE:
+There are scrap heaps at the end of chapter 3 and chapter 4 of 
+content that got cut. 
+
+
+
+CHAPTER 0: Introduction
+=========================================
+
+
+CHAPTER 1: Getting Strated with C
+=========================================
+
+QUESTION: 
+is it okay to do int main() or should all functions be defined with
+parameter lists int main(int argc, char** argv)?
+
+
+CHAPTER 2: Types and Operations
+=========================================
+
+TODO: 
+give more justification in the introduction about why types are
+useful
+
+TODO:
+there is a section that starts out "other things to be aware of" which
+could be presented better. 
+
+
+QUESTION:
+how true is the following statement?
+In C we usually think of a string as an array of characters.
+
+TODO: 
+include material on abstract and bool types.
+
+
+CHAPTER 3: Control Flow
+=========================================
+
+TODO:
+include more information on flags when doing the body mass index
+example. 
+
+
+CHAPTER 4: Dynamic Memory Management
+=========================================
+
+TODO: 
+change the linked list to hold sorted ints instead of names.
+
+TODO:
+explain the meaning of the NULL pointer in more detail.
+
+QUESTION: 
+is it okay to refer to using freed storage as a "dangling pointer" 
+
+QUESTION:
+after adding free to the program that exhausts all the computers
+memory will the program always necessarily run in an infinite loop?
+
+TODO:
+include in chapter 4 a section on buffer overflow checks.
+
+
+
+

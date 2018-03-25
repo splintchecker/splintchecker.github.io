@@ -1,0 +1,222 @@
+<A NAME="line35"></A><html><head>
+<title>empset.c</title>
+</head><body>
+<h3>empset.c</h3>
+<PRE>
+<A NAME="line1"></A>#include "<A HREF="empset.h.html">empset.h</A>"
+<A NAME="line2"></A> 
+<A NAME="line3"></A>static bool initDone = FALSE;
+<A NAME="line4"></A> 
+<A NAME="line5"></A>eref _empset_get (employee e, erc s) 
+<A NAME="line6"></A>{
+<A NAME="line7"></A>  erc_elements(s, er)
+<A NAME="line8"></A>    {
+<A NAME="line9"></A>      employee e1 = eref_get(er);
+<A NAME="line10"></A>      if (employee_equal(&e1, &e))
+<A NAME="line11"></A>	return er;
+<A NAME="line12"></A>    } end_erc_elements ;
+<A NAME="line13"></A>  
+<A NAME="line14"></A>  return erefNIL;
+<A NAME="line15"></A>}
+<A NAME="line16"></A> 
+<A NAME="line17"></A>void empset_clear (empset s) 
+<A NAME="line18"></A>{
+<A NAME="line19"></A>  erc_clear (s);
+<A NAME="line20"></A>}
+<A NAME="line21"></A> 
+<A NAME="line22"></A>bool /*@alt void@*/ empset_insert (empset s, employee e) 
+<A NAME="line23"></A>{
+<A NAME="line24"></A>  if (!eref_equal (_empset_get (e, s), erefNIL)) 
+<A NAME="line25"></A>    {
+<A NAME="line26"></A>      return FALSE;
+<A NAME="line27"></A>    }
+<A NAME="line28"></A>  
+<A NAME="line29"></A>  empset_insertUnique (s, e);
+<A NAME="line30"></A>  return TRUE;
+<A NAME="line31"></A>}
+<A NAME="line32"></A> 
+<A NAME="line33"></A>void empset_insertUnique (empset s, employee e) 
+<A NAME="line34"></A>{
+<A NAME="line35"></A>  eref er;
+<A NAME="line36"></A> 
+<A NAME="line37"></A>  er = ereftab_lookup (e, known);
+<A NAME="line38"></A> 
+<A NAME="line39"></A>  if (eref_equal (er, erefNIL)) 
+<A NAME="line40"></A>    {
+<A NAME="line41"></A>      er = eref_alloc ( );
+<A NAME="line42"></A>      eref_assign (er,e);
+<A NAME="line43"></A>      ereftab_insert (known, e, er);
+<A NAME="line44"></A>    }
+<A NAME="line45"></A>  
+<A NAME="line46"></A>  erc_insert (s, er);
+<A NAME="line47"></A>}
+<A NAME="line48"></A> 
+<A NAME="line49"></A>bool /*@alt void@*/ empset_delete (empset s, employee e) 
+<A NAME="line50"></A>{
+<A NAME="line51"></A>  eref er;
+<A NAME="line52"></A> 
+<A NAME="line53"></A>  er = _empset_get (e, s);
+<A NAME="line54"></A> 
+<A NAME="line55"></A>  if (eref_equal (er, erefNIL)) 
+<A NAME="line56"></A>    {
+<A NAME="line57"></A>      return FALSE;
+<A NAME="line58"></A>    }
+<A NAME="line59"></A>  return erc_delete (s, er);
+<A NAME="line60"></A>}
+<A NAME="line61"></A> 
+<A NAME="line62"></A>empset empset_disjointUnion (empset s1, empset s2) 
+<A NAME="line63"></A>{
+<A NAME="line64"></A>  erc result;
+<A NAME="line65"></A>  empset tmp;
+<A NAME="line66"></A>  
+<A NAME="line67"></A>  result = erc_create ( );
+<A NAME="line68"></A> 
+<A NAME="line69"></A>  if (erc_size (s1) &gt; erc_size (s2)) 
+<A NAME="line70"></A>    {
+<A NAME="line71"></A>      tmp = s1;
+<A NAME="line72"></A>      s1 = s2;
+<A NAME="line73"></A>      s2 = tmp;
+<A NAME="line74"></A>    }
+<A NAME="line75"></A>  
+<A NAME="line76"></A>  erc_join (result, s1);
+<A NAME="line77"></A> 
+<A NAME="line78"></A>  empset_elements(s2, emp)
+<A NAME="line79"></A>    {
+<A NAME="line80"></A>      empset_insertUnique(result, emp);
+<A NAME="line81"></A>    } end_empset_elements ;
+<A NAME="line82"></A> 
+<A NAME="line83"></A>  return result;
+<A NAME="line84"></A>}
+<A NAME="line85"></A> 
+<A NAME="line86"></A>empset empset_union (empset s1, empset s2) 
+<A NAME="line87"></A>{
+<A NAME="line88"></A>  erc result;
+<A NAME="line89"></A>  empset tmp;
+<A NAME="line90"></A> 
+<A NAME="line91"></A>  result = erc_create ();
+<A NAME="line92"></A> 
+<A NAME="line93"></A>  if (erc_size (s1) &gt; erc_size (s2)) 
+<A NAME="line94"></A>    {
+<A NAME="line95"></A>      tmp = s1;
+<A NAME="line96"></A>      s1 = s2;
+<A NAME="line97"></A>      s2 = tmp;
+<A NAME="line98"></A>    }
+<A NAME="line99"></A>  erc_join (result, s2);
+<A NAME="line100"></A> 
+<A NAME="line101"></A>  empset_elements (s1, emp)
+<A NAME="line102"></A>    {
+<A NAME="line103"></A>      if (!empset_member(emp, s2))
+<A NAME="line104"></A>	empset_insert(result, emp);
+<A NAME="line105"></A>    } end_empset_elements ;
+<A NAME="line106"></A> 
+<A NAME="line107"></A>  return result;
+<A NAME="line108"></A>}
+<A NAME="line109"></A> 
+<A NAME="line110"></A>void empset_intersect (empset s1, empset s2) 
+<A NAME="line111"></A>{
+<A NAME="line112"></A>  erc toDelete = erc_create();
+<A NAME="line113"></A> 
+<A NAME="line114"></A>  empset_elements (s2, emp)
+<A NAME="line115"></A>    {
+<A NAME="line116"></A>      if (!empset_member(emp, s2))
+<A NAME="line117"></A>	empset_insert(toDelete, emp);
+<A NAME="line118"></A>    } end_empset_elements ;
+<A NAME="line119"></A> 
+<A NAME="line120"></A>  empset_elements (toDelete, emp)
+<A NAME="line121"></A>    {
+<A NAME="line122"></A>      empset_delete(s1, emp);
+<A NAME="line123"></A>    } end_empset_elements;
+<A NAME="line124"></A> 
+<A NAME="line125"></A>  erc_final (toDelete);
+<A NAME="line126"></A>}
+<A NAME="line127"></A> 
+<A NAME="line128"></A>bool empset_subset (empset s1, empset s2) 
+<A NAME="line129"></A>{
+<A NAME="line130"></A>  empset_elements(s1, emp)
+<A NAME="line131"></A>    {
+<A NAME="line132"></A>      if (!empset_member(emp, s2)) return FALSE;
+<A NAME="line133"></A>    } end_empset_elements ;
+<A NAME="line134"></A> 
+<A NAME="line135"></A>  return TRUE;
+<A NAME="line136"></A>}
+<A NAME="line137"></A> 
+<A NAME="line138"></A>void empset_initMod (void) 
+<A NAME="line139"></A>{
+<A NAME="line140"></A>  if (initDone) return;
+<A NAME="line141"></A> 
+<A NAME="line142"></A>  bool_initMod ();
+<A NAME="line143"></A>  employee_initMod ();
+<A NAME="line144"></A>  eref_initMod ();
+<A NAME="line145"></A>  erc_initMod ();
+<A NAME="line146"></A>  ereftab_initMod ();
+<A NAME="line147"></A>  known = ereftab_create ();
+<A NAME="line148"></A>  initDone = TRUE;
+<A NAME="line149"></A>}
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

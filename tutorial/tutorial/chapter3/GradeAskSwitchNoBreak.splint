@@ -1,0 +1,13 @@
+Splint 3.0.1.4 --- 19 Jan 2002
+
+GradeAskSwitchNoBreak.c: (in function main)
+GradeAskSwitchNoBreak.c:11:12: Fall through case (no preceding break)
+  Execution falls through from the previous case. (Use -casebreak to inhibit
+  warning)
+GradeAskSwitchNoBreak.c:13:12: Fall through case (no preceding break)
+GradeAskSwitchNoBreak.c:15:12: Fall through case (no preceding break)
+GradeAskSwitchNoBreak.c:17:12: Fall through case (no preceding break)
+GradeAskSwitchNoBreak.c:19:15: Fall through case (no preceding break)
+
+Finished checking --- 5 code warnings
+24 source lines in 0.01 s.

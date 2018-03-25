@@ -1,0 +1,330 @@
+Plain Differences between current directory and strictlib
+3a4
+> #include <assert.h>
+18,19c18
+< typedef /*@only@*/ erc o_erc;
+< static o_erc db[numERCS];
+---
+> static erc db[numERCS];
+83,84c82,83
+<   /*@globals internalState@*/
+<   /*@modifies s, internalState@*/
+---
+>   /*@globals internalState, stderr@*/
+>   /*@modifies s, internalState, *stderr@*/
+307c306
+<   printf ("Employees:\n");
+---
+>   check (printf ("Employees:\n") >= 0);
+312c311
+<       printf ("%s", printVal);
+---
+>       check (printf ("%s", printVal) >= 0);
+17c17
+< db_status db_hire (employee e) db d; 
+---
+> db_status db_hire (employee e) db d; FILE *stderr;
+19c19
+<   modifies d;
+---
+>   modifies d, *stderr^;
+32c32
+< void db_uncheckedHire (employee e) db d; 
+---
+> void db_uncheckedHire (employee e) db d; FILE *stderr;
+37c37
+<   modifies d;
+---
+>   modifies d, *stderr^;
+49c49
+< int db_query (db_q q, empset s) db d; internalState;
+---
+> int db_query (db_q q, empset s) db d; internalState; FILE *stderr;
+51c51
+<   modifies s, internalState;
+---
+>   modifies s, internalState, *stderr^;
+57c57
+< bool db_promote (int ssNum) db d; 
+---
+> bool db_promote (int ssNum) db d; FILE *stderr;
+59c59
+<   modifies d;
+---
+>   modifies d, *stderr^;
+83c83
+< void db_print(void) db d; FILE *stdout; 
+---
+> void db_print(void) db d; FILE *stdout; FILE *stderr; 
+85c85
+<   modifies *stdout^;
+---
+>   modifies *stdout^, *stderr^;
+92c92
+< void db_initMod(void) db d; internalState;
+---
+> void db_initMod(void) db d; internalState; FILE *stderr;
+94c94
+<   modifies d, internalState;
+---
+>   modifies d, internalState, *stderr^;
+13c13,14
+<   /*@globals internalState@*/ /*@modifies internalState@*/
+---
+>   /*@globals internalState, stderr, stdout@*/
+>   /*@modifies internalState, *stderr, *stdout@*/
+31,32c32,33
+<       printf ("FormatPos: Wrong number of arguments. Given %d needs 0.\n",
+<               argc - 1);
+---
+>       check (fprintf (stderr, "FormatPos: Wrong number of arguments. "
+>                       "Given %d needs 0.\n", argc - 1) >= 0);
+41c42
+<       printf("Size should be 0.\n");
+---
+>       check (printf("Size should be 0.\n") >= 0);
+57c58
+<       printf("Size should be 500.\n");
+---
+>       check (printf("Size should be 500.\n") >= 0);
+73c74
+<       printf("Size should be 250.\n");
+---
+>       check (printf("Size should be 250.\n") >= 0);
+93c94
+<       printf("Size should be 350.\n");
+---
+>       check (printf("Size should be 350.\n") >= 0);
+100c101
+<       printf("Size should be 350.\n");
+---
+>       check (printf("Size should be 350.\n") >= 0);
+103c104
+<   printf("Print two different employees:\n");
+---
+>   check (printf("Print two different employees:\n") >= 0);
+109c110
+<       printf("%s\n", &(na[0]));
+---
+>       check (printf("%s\n", &(na[0])) >= 0);
+151,152c152,154
+<   printf("Should print true: %s\n", 
+<          bool_unparse (/*@-usedef@*/ status == DBS_DUPLERR /*@=usedef@*/)); 
+---
+>   check (printf("Should print true: %s\n", 
+>                 bool_unparse (/*@-usedef@*/ status == DBS_DUPLERR /*@=usedef@*/))
+>          >= 0); 
+154c156
+<   printf("Employees 0 - 19\n");
+---
+>   check (printf("Employees 0 - 19\n") >= 0);
+158c160
+<   printf("Employees 0 - 16, 18 - 19\n");
+---
+>   check (printf("Employees 0 - 16, 18 - 19\n") >= 0);
+164c166
+<   printf("Should get two females: %d\n%s\n", i, sprintResult);
+---
+>   check (printf("Should get two females: %d\n%s\n", i, sprintResult) >= 0);
+174c176,177
+<   printf("Should get two females and ten males: %d\n%s\n", i, sprintResult);
+---
+>   check (printf("Should get two females and ten males: %d\n%s\n", i, sprintResult)
+>          >= 0);
+180c183
+<   printf("Should get two females: %d\n%s\n", i, sprintResult);
+---
+>   check (printf("Should get two females: %d\n%s\n", i, sprintResult) >= 0);
+184c187
+<   printf("Should get 18 employees\n");
+---
+>   check (printf("Should get 18 employees\n") >= 0);
+1c1
+< imports employee;
+---
+> imports employee, <stdio>;
+4c4
+< only empset empset_create(void) 
+---
+> only empset empset_create(void) FILE *stderr;
+5a6
+>   modifies *stderr^;
+21c22,23
+< | bool : void | empset_insert (empset s, employee e) internalState; 
+---
+> | bool : void | empset_insert (empset s, employee e) 
+>    internalState; FILE *stderr;
+23c25
+<   modifies s, internalState;
+---
+>   modifies s, internalState, *stderr^;
+27c29
+< void empset_insertUnique (empset s, employee e) internalState;
+---
+> void empset_insertUnique (empset s, employee e) internalState; FILE *stderr;
+30c32
+<   modifies s, internalState;
+---
+>   modifies s, internalState, *stderr^;
+40c42,43
+< only empset empset_union(empset s1, empset s2) internalState;
+---
+> only empset empset_union(empset s1, empset s2) 
+>    internalState; FILE *stderr;
+42c45
+<   modifies internalState;
+---
+>   modifies internalState, *stderr^;
+46c49,50
+< only empset empset_disjointUnion (empset s1, empset s2) internalState;
+---
+> only empset empset_disjointUnion (empset s1, empset s2) 
+>   internalState; FILE *stderr;
+48c52
+<   modifies internalState;
+---
+>   modifies internalState, *stderr^;
+53c57
+< void empset_intersect (empset s1, empset s2) internalState;
+---
+> void empset_intersect (empset s1, empset s2) internalState; FILE *stderr;
+55c59
+<   modifies s1, internalState;
+---
+>   modifies s1, internalState, *stderr^;
+80c84
+< only char *empset_sprint(empset s) 
+---
+> only char *empset_sprint(empset s) FILE *stderr;
+81a86
+>   modifies *stderr^;
+85c90
+< void empset_initMod (void) internalState;
+---
+> void empset_initMod (void) internalState; FILE *stderr;
+87c92
+<   modifies internalState;
+---
+>   modifies internalState, *stderr^;
+2c2
+< 
+---
+> # include <assert.h>
+5c5
+< static size_t int_toSize (int x) /*@*/
+---
+> static size_t int_toSize (int x) /*@globals stderr@*/ /*@modifies *stderr@*/
+9c9
+<       fprintf (stderr, "Error: int_toSize is negative: %d", x);
+---
+>       check (fprintf (stderr, "Error: int_toSize is negative: %d", x) >= 0);
+26c26
+<       printf ("Malloc returned null in erc_create\n");
+---
+>       check (fprintf (stderr, "Malloc returned null in erc_create\n") >= 0);
+78c78
+<       printf ("Malloc returned null in erc_insert\n");
+---
+>       check (fprintf (stderr, "Malloc returned null in erc_insert\n") >= 0);
+143c143
+<       printf ("Malloc returned null in erc_sprint\n");
+---
+>       check (fprintf (stderr, "Malloc returned null in erc_sprint\n") >= 0);
+1c1
+< imports eref;
+---
+> imports eref, <stdio>;
+5c5
+< only erc erc_create(void) 
+---
+> only erc erc_create(void) FILE *stderr;
+6a7
+>   modifies *stderr^;
+17c18
+< void erc_insert(erc c, eref er) 
+---
+> void erc_insert(erc c, eref er) FILE *stderr;
+20c21
+<   modifies c;
+---
+>   modifies c, *stderr^;
+48c49
+< void erc_join(erc c1, erc c2) 
+---
+> void erc_join(erc c1, erc c2) FILE *stderr; 
+51c52
+<   modifies c1;
+---
+>   modifies c1, *stderr^;
+55c56
+< only char *erc_sprint(erc c) 
+---
+> only char *erc_sprint(erc c) FILE *stderr; 
+56a58
+>   modifies *stderr^;
+66c68
+< void erc_initMod (void) internalState;
+---
+> void erc_initMod (void) internalState; FILE *stderr;
+68c70
+<   modifies internalState;
+---
+>   modifies internalState, *stderr^;
+36c36
+<           printf ("Malloc returned null in eref_alloc\n");
+---
+>           check (fprintf (stderr, "Malloc returned null in eref_alloc\n") >= 0);
+46c46
+<           printf ("Malloc returned null in eref_alloc\n");
+---
+>           check (fprintf (stderr, "Malloc returned null in eref_alloc\n") >= 0);
+82c82
+<       printf ("Malloc returned null in eref_initMod\n");
+---
+>       check (fprintf (stderr, "Malloc returned null in eref_initMod\n") >= 0);
+90c90
+<       printf ("Malloc returned null in eref_initMod\n");
+---
+>       check (fprintf (stderr, "Malloc returned null in eref_initMod\n") >= 0);
+1c1
+< imports employee;
+---
+> imports employee, <stdio>;
+10c10
+< eref eref_alloc(void) map m; 
+---
+> eref eref_alloc(void) map m; FILE *stderr;
+12c12
+<   modifies m;
+---
+>   modifies m, *stderr^;
+43c43
+< void eref_initMod(void) map m; internalState;
+---
+> void eref_initMod(void) map m; FILE *stderr; internalState;
+45c45
+<   modifies m, internalState;
+---
+>   modifies m, internalState, *stderr^;
+5c5
+< only ereftab ereftab_create(void) 
+---
+> only ereftab ereftab_create(void) FILE *stderr;
+6a7
+>   modifies *stderr^;
+10c11
+< void ereftab_insert(ereftab t, employee e, eref er) 
+---
+> void ereftab_insert(ereftab t, employee e, eref er) FILE *stderr;
+13c14
+<   modifies t;
+---
+>   modifies t, *stderr^;
+28c29
+< void ereftab_initMod (void) internalState;
+---
+> void ereftab_initMod (void) internalState; FILE *stderr;
+30c31
+<   modifies internalState;
+---
+>   modifies internalState, *stderr^;

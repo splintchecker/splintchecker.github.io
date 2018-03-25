@@ -1,0 +1,124 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint - Release 2.5m</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<center><h2>
+LCLint Release 2.5q
+</h2>
+<b>26 July 2000</b>
+</center>
+<p>
+
+Release 2.5q is a minor upgrade to the last public release, <a
+href="release-2.5m.html">Version 2.5m</a>.  
+<p>
+<b><a href="download.html">Download</a></b>
+<p>
+
+<h3>Enhancements</h3>
+
+<b>Boolean Checking</b> 
+
+<blockquote>
+Fixed boolean type checking to treat user boolean types consistently.
+Added the <tt>-zerobool</tt> mode flag to control whether or not <tt>0</tt>
+may be treated as a boolean (the default in standard mode is to allow
+<tt>0</tt> to represent boolean FALSE, as was the old behavior).
+</blockquote>
+
+<h3>Bug Fixes</h3>
+
+<b>Special Clauses at function exit</b> 
+<blockquote> LCLint reports an
+internal error for violations of pre-clauses at function exits.  The
+pre special clauses should not be checked at function exit points.  (Reported by Bernd Warken).
+</blockquote>
+
+<b>Passing incompatible long/int pointers</b>
+<blockquote>
+If +relaxquals is set (as in standard mode), LCLint does not report an
+error when an int * is passed as a long int *, even though this is
+dangerous.  (Reported by Peter van Hoof).
+</blockquote>
+
+<B>Mysterious Parse Errors</b>
+<blockquote>
+The parser appeared broken under certain compilers with optimizations
+turned on and versions of bison.  This had to do with stray use of an
+old sgrammar.h and sgrammar_tokens.h files.
+</blockquote>
+
+<b>Include Files</b>
+<blockquote>
+Search path for include files in nested directories does not handle
+current directory correctly.  (Reported by Simon Dyke)
+</blockquote>
+
+<b>Unnamed Array Parameters</b>
+<blockquote>
+LCLint handles int[][2] in a parameter list differently from int p[][2]
+(revealed through spurious incomplete type errors).  (Reported by Peter
+van Hoof.)
+</blockquote>
+
+<b>Parsing malformed comments</b>
+<blockquote>
+LCLint crashes on malformed syntactic comments like
+<tt>/*@-PRIVATE-CALLS-@*/</tt>.  (Reported by Wolfgang Stolzenburg.)
+</blockquote>
+
+<b>Printing long long</b>
+<blockquote>
+LCLint does not support %lld format codes in printf for <tt>long
+long</tt>.  (Reported by Denis Baylor.)
+</blockquote>
+
+<b>Spurious stack-allocation errors</b>
+<blockquote>
+LCLint incorrectly assumes elements of stack-allocated arrays are
+stack-allocated.  (Reported by Denis Baylor.)
+</blockquote>
+
+<b>Result Codes</b>
+<blockquote>
+LCLint does not return EXIT_FAILURE as it should when the error counts
+do not match.  (Reported by Herbert Dietze.)
+</blockquote>
+
+<b>Hex Constants with UL</b>
+<blockquote>
+LCLint reports an error for hex constants ending with U and L modifiers.
+(Reported by David Denholm.)
+</blockquote>
+
+<b>Dumping special ctypes</b>
+<blockquote>
+Internal error in cttable.i when creating a library file requires a
+comparison between two special ctypes (e.g., "..." in function types).
+(Reported by Martin Smoot.)
+</blockquote>
+
+<!--#include virtual="footer.html"-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,57 @@
+<h3>lclint-interest message 45</h3>
+<pre>
+From aubreyd@knox.pcec.philips.com Tue Mar 19 15:33:51 1996
+X-Mailer: Novell GroupWise 4.1
+Date: Thu, 14 Mar 1996 19:52:35 -0500
+From: Debra Aubrey <aubreyd@knox.pcec.philips.com>
+To: lclint-interest@larch.lcs.mit.edu
+Cc: wanigasd@knox.pcec.philips.com
+Subject:  Question about system dirs
+
+Hi,
+
+We have a system where we do not want to use the Unix system
+headers.  Right now, our .lclintrc looks like this:
+
+-noeffect
+-predboolint
+-boolops
+-nolib
+-systemdirs "/projects/bella/MWOS/SRC/DEFS"
++D__STDC__
++I.
++I/projects/bella/MWOS/SRC/DEFS
++I/projects/bella/MWOS/OS9/SRC/DEFS
++I/projects/bella/MWOS/SRC/DEFS/DAVID
+
+Located in /projects/bella/MWOS/SRC/DEFS/signal.h is a function
+prototype that we need to reference.
+
+Unfortunately, the identifier is reported as "unrecognized" in
+the source file that references it.
+
+Any clues as to how we can get our system headers included?
+
+Debbie.
+
+
+
+
+
+
+</pre>
+<A HREF="44.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="46.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<h3>lclint-interest message 49</h3>
+<pre>
+From evs Tue Mar 19 16:24:11 1996
+Date: Tue, 19 Mar 96 15:54:09 -0500
+From: evs (David Evans)
+To: ropella@lvs-emh.lvs.loral.com
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: ropella@lvs-emh.lvs.loral.com's message of Fri, 15 Mar 1996 17:29:51 -0600 <199603152329.RAA11045@plato.lvs.loral.com>
+Subject: Include files and the CPP
+
+
+Sorry for the slow responses, I was out of town last week.
+
+> How can I get rid of warnings like the following that come from
+> the cpp?
+
+There is no easy way to this.  LCLint runs its own preprocessor on the
+source files first to prevent macro expansion, and then uses the C
+preprocessor (as set by the LCLINT_CPPCMD environment variable.)  It
+should probably handle error messages in a better way, but for now they
+just appear on standard error.  LCLint does run all the files through
+cpp at once, so you may get redefinition errors that don't appear in
+standard compilation.  A future release of lclint may handle
+preprocessing better (I'd like to have an integrated preprocessor
+instead of having to use an extra pass and a system call).
+
+One temporary solution would be do use
+
+	# ifndef __LCLINT__
+	# define ...  
+	# endif
+
+around the macro redefinitions that are producing errors.
+
+--- Dave
+
+
+
+
+
+</pre>
+<A HREF="48.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="50.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<h3>lclint-interest message 123</h3>
+<pre>
+From alt@vlibs.com Tue Nov 26 15:23:22 1996
+Date: Tue, 26 Nov 1996 11:14:45 -0800 (PST)
+From: "Albert L. Ting" <alt@vlibs.com>
+To: evans@cs.virginia.edu
+Cc: lclint-interest@larch.lcs.mit.edu
+Subject: Re: lclint format-type question
+References: <199611252114.NAA12225@seal.vlibs.com>
+	<9611261552.AA10781@larch.lcs.mit.edu>
+
+
+David Evans writes:
+> From: evans@cs.virginia.edu (David Evans)
+> To: alt@vlibs.com
+> Subject: lclint format-type question
+> Date: Tue, 26 Nov 96 10:52:18 -0500
+> 
+> 
+> Type checking for printf format codes is enabled in -weak mode, the
+> difference is the type checking --- since char and int are equivalent in
+> weak mode, lclint will not report an error when a char is printed using
+> %d, etc.  It will, for instance, report and error when a float is
+> printed as %d.  
+> 
+> If this is what you have in mind, then you would need to set -charint to
+> get the errors reported in printf's (as elsewhere).  If there is some
+> other kind of error you expect but aren't getting, let me know.
+> 
+> --- Dave
+
+
+Below is an example that finds the error in strict mode, but not in weak
+mode.  I guess -charint treats char and ints as equivalent, but not shorts?
+
+Albert
+
+#include <stdio.h>
+
+int main() {
+  char *s = "DATA 1 2";
+  short num1, num2;
+
+  (void) sscanf(s, "DATA %d %d", &num1, &num2);
+  return(0);
+}
+
+
+-- 
+Albert L. M. Ting * mail:alt@vlibs.com * phone:408-487-5327 * fax:408-453-3500
+VLSI Libraries Incorporated, 2077 Gateway Place, Suite 300, San Jose, CA 95110
+
+
+
+</pre>
+<A HREF="122.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="124.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

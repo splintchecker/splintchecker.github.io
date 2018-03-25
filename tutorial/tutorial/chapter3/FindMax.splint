@@ -1,0 +1,9 @@
+Splint 3.0.1.4 --- 19 Jan 2002
+
+FindMax.c: (in function main)
+FindMax.c:12:4: Statement has no effect: max == array[i]
+  Statement has no visible effect --- no values are modified. (Use -noeffect to
+  inhibit warning)
+
+Finished checking --- 1 code warning
+21 source lines in 0.02 s.

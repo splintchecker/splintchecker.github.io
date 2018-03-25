@@ -1,0 +1,55 @@
+<h3>lclint-interest message 87</h3>
+<pre>
+Date: Fri, 5 Jul 96 15:51:02 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: evans@cs.virginia.edu, ok@yallara.cs.rmit.edu.au
+In-Reply-To: Richard A OKeefe's message of Fri, 5 Jul 1996 12:19:13 +1000 (EST) <199607050219.MAA28510@yallara.cs.rmit.EDU.AU>
+Subject: Formal array size check request
+
+
+> From: Peter Seebach <seebs@solon.com>
+>
+> The names given to the parameters must be in the implementation namespace,
+> and should generally be *far* from anything anyone would ever use.
+
+This is a good point, I hadn't considered.  
+
+Richard O'Keefe's suggestion to treat formal parameters in protoypes as
+a separate namespace sounds like a good idea --- I'll add this to the
+next minor version.  
+
+Its often useful to have some name there for documentation, so some
+checking to relate the names used in the prototype to the names in the
+definition might be useful.  Perhaps it should be an option to generate
+a message when the name in the prototype after removing the namespace
+prefix does not match the definition name.  
+
+The other suggested checks/flags all seem useful (and trivial to
+implement, except perhaps sizeofformalarray) so I'll add these to the
+next minor version.
+
+> From: Richard A OKeefe <ok@yallara.cs.rmit.edu.au>
+>    How would it be if lclint were always to squish underscores and hyphens
+>    out of flag names, so that these flags could also be written as
+
+Good idea...don't see any reason not to do this.
+
+--- Dave
+
+</pre>
+<A HREF="86.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="88.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

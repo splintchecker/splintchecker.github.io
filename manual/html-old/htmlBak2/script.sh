@@ -1,0 +1,14 @@
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec1.html  >../sec1.html;
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec10.html  >../sec10.html;
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec11.html  >../sec11.html;
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec12.html  >../sec12.html;
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec13.html  >../sec13.html;
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec14.html  >../sec14.html;
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec2.html  >../sec2.html;
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec3.html  >../sec3.html;
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec4.html  >../sec4.html;
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec5.html  >../sec5.html;
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec6.html  >../sec6.html;
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec7.html  >../sec7.html;
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec8.html  >../sec8.html;
+sed  s/a href=\\\"#_ftn\([0123456789]*\)\\\"/a href=\\\"appNotes.html#_ftn\1\\\"/g  sec9.html  >../sec9.html;

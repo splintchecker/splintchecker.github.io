@@ -1,0 +1,195 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="lclint.css" title="style1">
+<title>LCLint Home Page</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<center><h1>
+LCLint Home Page
+</h1></center>
+<p>
+LCLint is a tool for statically checking C programs.  With minimal
+effort, LCLint can be used as a better lint.  If additional effort is
+invested adding <A HREF="guide/sec2.html#sec-2.3.1">annotations</A> to
+programs, LCLint can perform stronger <a href="#checking">checking than
+can be done by any standard lint</a>.
+<p>
+
+<b><a href="download.html">LCLint Version 2.5q</a> is now
+available</b> (<a href="release.html">Release Notes</a>). LCLint is
+available as <a href="source.html">source code</a>, licensed under <a
+href="http://www.gnu.org/copyleft/gpl.html">GPL</a>.  Binaries are
+available for <a href="freebsd.html">FreeBSD</a>, <a
+href="linux.html">Linux</a>, <a href="solaris.html">Solaris</a> and <a
+href="win32.html">Win32</a>.
+
+<h3>Documentation</h3>
+
+<em><a
+href="guide/">LCLint User's Guide</a></em>
+<blockquote>
+A comprehensive guide to using LCLint effectively.
+</blockquote>
+
+<p>
+<a href="pubs.html">Papers</a> on LCLint include:
+<blockquote>
+David Evans.  <em><a href="http://www.cs.virginia.edu/~evans/icse-position.html">
+Annotation-Assisted Lightweight Static Checking</a></em>.  In <em><a href="http://ase.arc.nasa.gov/icse2000/">The First
+International Workshop on Automated Program Analysis, Testing and
+Verification</a></em> (ICSE 2000), Feb&nbsp;2000&nbsp;&#150;&nbsp;A short position paper describing the research agenda behind LCLint.
+<p>
+David Evans.  <em><a HREF="http://www.cs.virginia.edu/~evans/pldi96-abstract.html">Static
+Detection of Dynamic Memory Errors</A></em>.  In
+<em><A HREF="http://www.cs.wisc.edu/~fischer/pldi96/index.html"> SIGPLAN
+Conference on Programming Language Design and Implementation</A></em> (PLDI
+'96), May 1996.  (<a
+href="http://www.cs.virginia.edu/~evans/pldi96.pdf">PDF</a>, <a
+href="http://www.cs.virginia.edu/~evans/pldi96.ps.gz">gzipped
+postscript</a>; 10 pages) &#150; Describes approach for exploiting annotations added to code to detect
+a wide class of errors, focusing on memory management concerns.
+<p>
+<em><a href="pubs.html">More Papers</a></em>
+</blockquote>
+
+Recent articles about LCLint:
+<blockquote>
+Linux Journal, <a href="http://www2.linuxjournal.com/lj-issues/issue73/3599.html">
+The Code Analyser LCLint</a>.  By David Santo Orcero, May 2000.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<em>&#147;Debugging code is never fun, but this tool makes it a bit easier.&#148;</em>
+<p>
+Linux Gazette, <a
+href="http://www.linuxgazette.com/issue51/pramode.html">Static
+checking of C programs with LCLint</a>.  By Pramode C E and Gopakumar
+C E.  Issue 51, March 2000.
+(<a href="http://gaceta.piensa.com/piensa/dir_gaceta/html_display_art?url=http://gaceta.piensa.com/es/lg/issue51/pramode.html">Spanish translation</a>)
+<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<em>&#147;LCLint is justifiably angry at such amateurish use of C, but he is gentle in his admonishments.&#148;</em><br>
+<p>
+<em><a href="links.html#articles">More Articles</a></em>
+</blockquote>
+<p>
+
+Sarah Mount of the University of Coventry has contributed an <a
+href="html-src/files.html">htmlized version</a> of the LCLint source code.
+
+<h3><A name="checking">Checking</a></h3>
+<P>
+LCLint does many of the traditional lint checks including <A
+HREF="guide/sec10.html#sec-10.4">unused declarations</A>, <A
+HREF="guide/sec3.html#sec-3.4">type inconsistencies</A>, <A
+HREF="guide/sec7.html#sec-7.1">use-before-definition</A>,
+<a HREF="guide/sec10.html#sec-10.3.2">ignored return values</A>, 
+<a href="guide/appC.html#flag-noret">execution paths with no return</a>, 
+<A HREF="guide/sec10.html#sec-10.2.1">likely infinite
+loops</A>, and <A HREF="guide/sec10.html#sec-10.2.2">fall-through
+cases</A>.  Our main focus, however, is on more powerful checks that are
+made possible by additional information given in source code
+annotations.  Annotations are stylized comments that document certain
+assumptions about functions, variables, parameters, and types.  They may
+be used to indicate where the representation of a user-defined type is
+hidden, to limit where a global variable may be used or modified, to
+constrain what a function implementation may do to its parameters, and
+to express checked assumptions about variables, types, structure fields,
+function parameters, and function results.  In addition to the checks
+specifically enabled by annotations, many of the traditional lint checks
+are improved by exploiting this additional information.
+
+<P>
+Some problems detected by LCLint include:
+<UL>
+<LI> <A HREF="guide/sec3.html">Violations of information hiding</A>.  A user-defined type can be declared
+  as abstract, and a message is reported where code inappropriately
+  depends on the representation of the type.
+<LI> <A HREF="guide/sec4.html#sec-4.1">Inconsistent modification of caller-visible state</A>.  Functions can be
+  annotated with information on what caller-visible state may be modified
+  by the function, and an error is reported if the modifications produced
+  by the function contradict its declaration.  
+
+<LI> <A HREF="guide/sec4.html#sec-4.2">Inconsistent use of global variables</A>.  Information on what global and
+  file scope variables a function may use can be added to function
+  declarations, and a message is reported if the implementation of the
+  function uses other global variables or does not uses every global
+  variable listed in its declaration.  
+
+<LI> <A HREF="guide/sec5.html">Memory management errors</A>.  Instances where storage that has been
+  deallocated is used, or where storage is not deallocated (memory leaks).
+
+<LI> <A HREF="guide/sec6.html">Dangerous data sharing or unexpected aliasing</A>.  Parameters to a
+  function share storage in a way that may lead to undefined or undesired
+  behavior, or a reference to storage within the representation of an
+  abstract type is created.  
+
+<LI> <A HREF="guide/sec7.html#sec-7.1">Using possibly undefined storage or returning storage that is not
+  completely defined</A> (except as documented).  
+
+<LI> <A HREF="guide/sec7.html#sec-7.2">Dereferencing a possibly null pointer</A>.  
+
+<LI> <A HREF="guide/sec8.html">Dangerous macro implementations or invocations</A>. 
+
+<LI> Violations of customizable <A HREF="guide/sec9.html">naming conventions</A>. 
+
+<LI> Program behavior that is undefined because it <A HREF="guide/sec10.html#sec-10.1">depends on order of
+  evaluation</A>, <A HREF="guide/sec10.html#sec-10.2.1">likely infinite
+loops</A>, <A HREF="guide/sec10.html#sec-10.2.5">incomplete logic</A>,
+  <A HREF="guide/sec10.html#sec-10.3.1">statements with no effect</A>, <A
+HREF="guide/sec10.html#sec-10.3.2">ignored return values</A>, <A
+HREF="guide/sec10.html#sec-10.4">unused declarations</A>, and <A HREF="guide/sec10.html#sec-10.6">exceeding certain standard limits</a>.  
+</UL>
+
+LCLint checking can be customized to select what classes of errors are
+reported using <A HREF="guide/appC.html">command line flags</A>
+and <A HREF="guide/appE.html">stylized comments</A> in the code.
+<p>
+
+<h3>Contact</h3>
+
+To receive email announcements of new LCLint releases, send a message to <a href="mailto:majordomo@virginia.edu"><em>majordomo@virginia.edu</em></a> containing the body: <tt>subscribe lclint-announce</tt>
+<p>
+To participate in discussions about LCLint, send a message to <a
+href="mailto:majordomo@virginia.edu"><em>majordomo@virginia.edu</em></a>
+containing the body: <tt>subscribe lclint-interest</tt>
+<p>
+
+To report a bug, send a message to <a
+href="mailto:lclint-bug@cs.virginia.edu"><em>lclint-bug@cs.virginia.edu</em></a>.  Send other questions or comments to <a
+href="mailto:lclint@cs.virginia.edu"><em>lclint@cs.virginia.edu</em></a>.
+
+<h3>People</h3>
+
+<a href="http://www.cs.virginia.edu/~evans">David Evans</a> - Project leader<br>
+<a href="http://www.cs.virginia.edu/~drl7x/">David Larochelle</a><br>
+<p>
+
+LCLint grew out of the <a href="http://wind.lcs.mit.edu/larch/">Larch
+Project</a>, directed by <A
+HREF="http://www.sds.lcs.mit.edu/~guttag/">John Guttag</A> and <A
+HREF="http://www.star-lab.com/horning/">Jim Horning</A>.  <a
+href="acknowledgements.html">Many others</a> have contributed to
+LCLint's development.
+<p>
+
+<h3>Index</h3>
+
+<p>
+<p>
+<a href="bugs.html">Bugs</a> - information on known bugs and on reporting new bugs<br>
+<a href="acknowledgements.html">Credits</a> - people and sponsors who contributed to LCLint<br>
+<a href="download.html">Download</a> - instructions for downloading
+and installing LCLint<br>
+<a href="faq.html">FAQ</a> - frequently asked questions
+<br>
+<a href="guide/">Guide</a> - LCLint User's Guide<br>
+<a href="links.html">Links</a> - links to related work<br>
+<a href="lists.html">Lists</a> - information about LCLint-related mailing lists<br>
+<a href="pubs.html">Papers</a> - publications relating to LCLint <br>
+<a href="press.html">Press</a> - external articles about LCLint<br>
+<a href="release.html">Release</a> - latest release notes<br>
+<a href="samples/">Samples</a> - examples demonstrating use of LCLint
+
+<!--#include virtual="footer.html"-->
+
+

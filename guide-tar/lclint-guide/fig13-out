@@ -1,0 +1,17 @@
+LCLint 2.2 --- 25 Aug 96
+
+usedef.c: (in function dumbfunc)
+<A HREF="usedef.c.html#line11" target="source">usedef.c:11,12</A>: Value *x used before definition
+  An rvalue is used that may not be initialized to a
+  value on some execution path. (-usedef will suppress
+  message)
+<A HREF="usedef.c.html#line13" target="source">usedef.c:13,20</A>: Passed storage x not completely
+    defined (*x is undefined): getVal (x)
+  Storage derivable from a parameter, return value or
+  global is not defined. Use /*@out@*/ to denote
+  passed or returned storage which need not be
+  defined. (-compdef will suppress message)
+<A HREF="usedef.c.html#line15" target="source">usedef.c:15,24</A>: Passed storage x not completely
+    defined (*x is undefined): mysteryVal (x)
+
+Finished LCLint checking --- 3 code errors found

@@ -1,0 +1,68 @@
+#!/usr/local/bin/perl
+
+# require "/tmp_mnt/majoram/export/home/httpd/cgi_bin/cgi-lib.pl";
+
+$sendmail = "/usr/sbin/sendmail";;
+
+  print <<ENDOFHEADER;
+Content-type: text/html
+
+<HTML>
+<HEAD>
+<TITLE>Submission receipt</TITLE> 
+
+<H2>Submission receipt</H2>
+<P>
+
+<HR>
+</HEAD>
+
+<BODY>
+<P>You have successfully subscribed to the lclint-announce mailing list as<tt>
+ENDOFHEADER
+
+  &ReadParse(*input);
+  $from = $input{'email'};
+  $subject = "Subscription request";
+  $llannounce = $input{'lclint-announce'};
+  $llinterest = $input{'lclint-interest'};
+  $comments = $input{'comments'};
+  # print &PrintVariables(%input); # for debugging
+
+  open(SENDMAIL, "|$sendmail lclint-request@sds.lcs.mit.edu")
+    || die "cannot sendmail process.\n";
+  print SENDMAIL "To: lclint-request@sds.lcs.mit.edu\n";
+  print SENDMAIL "From: $from\n";
+  print SENDMAIL "Subject: $subject\n\n";
+  print SENDMAIL "lclint-announce: $llannounce\n";
+  print SENDMAIL "lclint-interest: $llinterest\n\n";
+  print SENDMAIL "comments:\n$comments\n";
+  print SENDMAIL "\n\n\n< Message sent by: lclint-subscribe WWW Service >\n";
+  close(SENDMAIL);
+
+  $body =~ s/\n/\n<BR>/g;
+  print "<P>To: <code>lclint-request@sds.lcs.mit.edu</code>\n";
+  print "<BR>From: <CODE>$from</CODE>\n";
+  print "<BR>Subject: $subject<BR><br>";
+  print "lclint-announce: $llannounce<br>";
+  print "lclint-interest: $llinterest<br><br>";
+  print "comments:<BR><XMP>$comments</XMP>";
+  print "<br><br><hr><P><P>Thanks for your interest!<p>";
+  print "You should receive a confirmation message in a few days. ";
+  print "If not, there may be a problem with your address and I am unable to";
+  print "send email.";
+  print <<ENDOFTRAILER;
+<P>
+<a href="http://www.sds.lcs.mit.edu/lclint/">
+<IMG ALIGN=left SRC =
+"http://www.sds.lcs.mit.edu/lclint/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> 
+<a href="http://www.sds.lcs.mit.edu/~evs">David Evans</a> <br>
+<A href="http://www.sds.lcs.mit.edu/">Software Devices and Systems</A><br>
+<a href="mailto:evs@sds.lcs.mit.edu"><em>evs@sds.lcs.mit.edu</em></a>
+</author>
+</body>
+</html>
+ENDOFTRAILER
+
+  

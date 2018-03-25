@@ -1,0 +1,177 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint User's Guide - Appendix G: Specifications</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<a name="app-G"></a>
+<h2>Appendix G  Specifications</h2></a></a></a></b><p>
+<b></b>Another way of providing more information about programs is to use
+formal specifications.  Although this document has largely ignored
+specifications, LCLint was originally designed to use the information in LCL
+specifications instead of source-code annotations.  This document focuses on
+annotations since it takes less effort to add annotations to source code than
+to maintain an additional specification file.  Annotations can express
+everything that can be expressed in LCL specifications that is relevant to
+LCLint checking.  However, LCL specifications can provide more precise
+documentation on program interfaces than is possible with LCLint annotations.
+This
+appendix (extracted from [<a href="references.html#ref-Evans94">Evans94</a>]) is a very brief introduction to LCL
+Specifications.
+For more information, consult [<a href="references.html#ref-GH93">GH93</a>].      <p>
+<p>
+The Larch family of languages is a two-tiered approach to formal specification.
+A specification is built using two languages -- the <i>Larch Shared
+Language</i> (LSL), which is independent of the implementation language, and a
+<i>Larch Interface Language</i> designed for the specific implementation
+language.  An LSL specification defines <i>sorts</i>, analogous to abstract
+types in a programming language, and <i>operators</i>, analogous to procedures.
+It expresses the underlying semantics of an abstraction.<p>
+<p>
+The interface language specifies an interface to an abstraction in a particular
+programming language.  It captures the details of the interface needed by a
+client using the abstraction and places constraints on both correct
+implementations and uses of the module.  The semantics of the interface are
+described using primitives and sorts and operators defined in LSL
+specifications.  Interface languages have been designed for several
+programming languages.<p> 
+<p>
+LCL
+[<a
+href="references.html#ref-GH93">GH93</A>, 
+<a
+href="references.html#ref-Tan94">Tan94</A>] is a Larch interface language for Standard C.  LCL uses a
+C-like syntax.  Traditionally, a C module <i>M</i> consists of a source file,
+<i>M</i><tt>.c</tt>, and a header file, <i>M</i><tt>.h</tt>.  The header
+file contains prototype declarations for functions, variables and constants exported
+by <i>M</i>, as well as those macro definitions that implement exported
+functions or constants, and definitions of exported types. When using LCL, a
+module includes two additional files - <i>M</i><tt>.lcl</tt>, a formal specification of
+<i>M</i>, and  <i>M</i><tt>.lh</tt>, which is derived by LCLint (if the
+<a href="appG.html#flag-lh"><tt>lh</tt></a> flag is on) from
+<i>M</i><tt>.lcl</tt>.  Clients use <i>M</i><tt>.lcl</tt> for documentation, and should
+not need to look at any implementation file.  The derived file,
+<i>M</i><tt>.lh</tt>, contains include directives (if <i>M</i> depends on other specified modules), prototypes of functions and declarations of variables as specified in
+<i>M</i><tt>.lcl</tt>.  The file <i>M</i><tt>.h</tt> should include
+<i>M</i><tt>.lh</tt> and retain the implementation aspects of the old
+<i>M</i><tt>.h</tt>, but is no longer used for client documentation.<p>
+<p>
+The LCLint release package includes a grammar for LCL and examples of LCL
+specifications.
+<a name="_Ref348845779"><a name="_Toc349905951"><p>
+<b><i>Specification Flags</a></i></b><p>
+<b><i></i></b>These flags are relevant only when LCLint is used with LCL
+specifications. <p>
+<b>Global Flags</b><p>
+<b></b><a name="flag-lcs"><tt>lcs</tt><p>
+Generate <tt>.lcs</tt> files containing symbolic state of <tt>.lcl</tt> files (used for imports).
+By default <tt>.lcs</tt> files are generated for each <tt>.lcl</tt> file
+processed.  Use <tt>-lcs</tt> to
+prevent generation of <tt>.lcs</tt> files.<p>
+<a name="flag-lh"><tt>lh</tt><p>
+Generate <tt>.lh</tt> files.  By default, <tt>-lh</tt> is set and no
+<tt>.lh</tt> files are generated. Use <a href="appG.html#flag-lh"><tt>+lh</tt></a> to enable .lh file generation.  <p>
+<a name="flag-i">
+<tt>i </tt>&lt;file&gt;<p>
+Set LCL initialization file to <i>&lt;file&gt;</i>.  The LCL initialization
+file is read if any <tt>.lcl</tt> files are listed on the command line.  The default
+file is <tt>lclinit.lci</tt>, found on the <tt>LARCH_PATH</tt>.<p>
+<a name="flag-lclexpect">
+<tt>lclexpect </tt><i>&lt;number&gt;</i><p>
+Exactly <i>&lt;number&gt;</i> specification errors are expected.  Specification
+errors are errors detected when checking the specifications.  They do not
+depend on the source code.<p>
+<b>Implicit Globals Checking Qualifiers</b><p>
+
+<a name="flag-impcheckedspecglobs">
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<tt>impcheckedspecglobs</tt><br>
+Implicit checked qualifier on global variables specified in an LCL file
+with no checking annotation.<p>
+<a href="appC.html#mode-key">m: </a><tt>----</tt><br>
+<a name="flag-impcheckmodspecglobs"><tt>impcheckmodspecglobs</tt><br>
+Implicit checkmod qualifier on global variables specified in an LCL file with
+no checking annotation.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-impcheckedstrictspecglobs"><tt>impcheckedstrictspecglobs</tt><p>
+Implicit checked qualifier on global variables specified in an LCL file with no
+checking annotation. 
+<p>
+<b>Implicit Annotations</b><p>
+
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-specglobimponly"><tt>specglobimponly</tt>
+<p>
+Implicit only annotation on global variable declaration in an LCL file with no
+allocation annotation.<p>
+
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-specretimponly"><tt>specretimponly</tt><p>
+Implicit only annotation on return value declaration in an LCL file with no
+allocation annotation.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-specstructimponly"><tt>specstructimponly</tt><p>
+Implicit only annotation on structure field declarations in an LCL file with no
+allocation annotation.<p>
+<a href="appC.html#shortcut-key">shortcut</a><br>
+<a name="flag-specimponly"><tt>specimponly</tt><p>
+Sets <a
+href="appG.html#flag-specglobimponly"><tt>specglobimponly</tt></a>, 
+<a href="appG.html#flag-specretimponly"><tt>specretimponly</tt></a> and
+<a href="appG.html#flag-specstructimponly"><tt>specstructimponly</tt></a>.<p>
+<p>
+<b>Macro Expansion</b><p>
+<b></b><p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>             
+<a name="flag-specmacros"><tt>specmacros</tt><p>
+Macros defining specified identifiers are not expanded and are checked
+according to the specification.	<p>
+<b>Complete Programs and Specifications</b><p>
+<a href="appC.html#mode-key">m: </a><tt>-+++</tt><br>
+<b></b><a name="flag-specundef"><tt>specundef</tt><p>
+Function, variable, iterator or constant specified but never defined.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>                   
+<a name="flag-specundecl"><tt>specundecl</tt><p>
+Function, variable, iterator or constant specified but never declared.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-needspec"><tt>needspec</tt><p>
+There is information in the specification that is not duplicated in syntactic
+comments.  Normally, this is not an error, but it may be useful to detect it to
+make sure checking incomplete systems without the specifications will still use
+this information.<p>
+<a href="appC.html#shortcut-key">shortcut</a><br>       
+<a name="flag-exportany"><tt>exportany</tt><p>
+An error is reported for any identifier that is exported but not specified.
+(Sets all export flags below.)<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-exportconst"><tt>exportconst</tt><p>
+Constant exported but not specified.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-exportvar"><tt>exportvar</tt><p>
+Variable exported but not specified.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-exportfcn"><tt>exportfcn</tt><p>
+Function exported but not specified.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-exportiter"><tt>exportiter</tt><p>
+Iterator exported but not specified.<p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>            
+<a name="flag-exportmacro"><tt>exportmacro</tt><p>
+An expanded macro exported but not <a name="flag-specified"><tt>specified</tt><p>
+<a href="appC.html#mode-key">m: </a><tt>---+</tt><br>
+<a name="flag-exporttype"><tt>exporttype</tt><p>            
+Type definition exported but not specified 
+<a name="_Toc349905969"><a name="_Ref349906218"></a><p>
+
+<p>
+<b>Next: <A HREF="references.html">References</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+<!--#include virtual="footer.html"-->
+

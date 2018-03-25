@@ -1,0 +1,81 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/checkchecks2'
+lclint +lh +checks -allimponly +allmacros +showsummary  +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+<A HREF="empset.c.html#line38" target="source">empset.c:38,6</A>: Function empset_insertUnique inconsistently redeclared with
+                  known in globals list
+  A function, variable or constant is redefined with a different type. Use
+  -incondefs to suppress message.
+   <A HREF="empset.lcl.html#line27" target="source">empset.lcl:27</A>: Specification of empset_insertUnique
+empset.c: (in function empset_disjointUnion)
+<A HREF="empset.c.html#line86" target="source">empset.c:86,7</A>: Called procedure empset_insertUnique may access global known
+  A checked global variable is used in the function, but not listed in its
+  globals clause. By default, only globals specified in .lcl files are checked.
+  To check all globals, use +allglobals. To check globals selectively use
+  /*@checked@*/ in the global declaration. Use -globs to suppress message.
+<A HREF="empset.c.html#line144" target="source">empset.c:144,6</A>: Function empset_initMod inconsistently redeclared with known in
+                   globals list
+   <A HREF="empset.lcl.html#line83" target="source">empset.lcl:83</A>: Specification of empset_initMod
+empset.c: (in function empset_initMod)
+<A HREF="empset.c.html#line148" target="source">empset.c:148,24</A>: Function returns with global known undefined
+  A global variable does not satisfy its annotations when control is
+  transferred. Use -globstate to suppress message.
+   <A HREF="empset.lcl.html#line83" target="source">empset.lcl:83</A>: Storage known becomes undefined
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+< cleaning ......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+incondefs                    2           0
+usedef                       0           1
+exporttype                   0           5
+globs                        1           0
+macroempty                   0           1
+compdef                      0           1
+sizeoftype                   0           6
+globstate                    1           0
+                          ========  =========
+Total:                       4          14
+
+Finished LCLint checking --- 4 code errors found
+391 spec, 2985 source (1270 before pre-processing) lines in 5.12 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/checkchecks2'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

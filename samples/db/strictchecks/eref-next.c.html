@@ -1,0 +1,197 @@
+<html><head>
+<title>eref.c</title>
+</head><body>
+<h1>eref.c</h1>
+<PRE>
+<A NAME="line1"></A># include &ltstdio.h&gt
+<A NAME="line2"></A># include &ltstdlib.h&gt
+<A NAME="line3"></A>#include "<A HREF="eref.h.html">eref.h</A>"
+<A NAME="line4"></A> 
+<A NAME="line5"></A>typedef enum { ST_USED, ST_AVAIL } erefStatus;
+<A NAME="line6"></A>typedef struct {
+<A NAME="line7"></A>  /*@reldef@*/ /*@only@*/ employee *conts;
+<A NAME="line8"></A>  /*@only@*/ erefStatus *status;
+<A NAME="line9"></A>  int size;
+<A NAME="line10"></A>} erefTable;
+<A NAME="line11"></A> 
+<A NAME="line12"></A>static erefTable eref_Pool;     /* private */
+<A NAME="line13"></A>static bool needsInit = TRUE;  /* private */
+<A NAME="line14"></A> 
+<A NAME="line15"></A>eref eref_alloc (void) 
+<A NAME="line16"></A>   /*@globals eref_Pool@*/
+<A NAME="line17"></A>   /*@modifies eref_Pool@*/
+<A NAME="line18"></A>{
+<A NAME="line19"></A>  int i, res;
+<A NAME="line20"></A>  
+<A NAME="line21"></A>  for (i=0; (eref_Pool.status[i] == ST_USED) && (i &lt eref_Pool.size); i++)
+<A NAME="line22"></A>    {
+<A NAME="line23"></A>      ;
+<A NAME="line24"></A>    }
+<A NAME="line25"></A>  
+<A NAME="line26"></A>  res = i;
+<A NAME="line27"></A> 
+<A NAME="line28"></A>  if (res == eref_Pool.size) 
+<A NAME="line29"></A>    {
+<A NAME="line30"></A>      eref_Pool.conts =
+<A NAME="line31"></A>	(employee *) realloc (eref_Pool.conts,
+<A NAME="line32"></A>			      2 * eref_Pool.size * sizeof (*eref_Pool.conts));
+<A NAME="line33"></A>      
+<A NAME="line34"></A>      if (eref_Pool.conts == 0) 
+<A NAME="line35"></A>	{
+<A NAME="line36"></A>	  printf ("Malloc returned null in eref_alloc\n");
+<A NAME="line37"></A>	  exit (EXIT_FAILURE);
+<A NAME="line38"></A>	}
+<A NAME="line39"></A>      
+<A NAME="line40"></A>      eref_Pool.status =
+<A NAME="line41"></A>	(erefStatus *) realloc (eref_Pool.status,
+<A NAME="line42"></A>				 2 * eref_Pool.size * sizeof (*eref_Pool.status));
+<A NAME="line43"></A> 
+<A NAME="line44"></A>      if (eref_Pool.status == 0) 
+<A NAME="line45"></A>	{
+<A NAME="line46"></A>	  printf ("Malloc returned null in eref_alloc\n");
+<A NAME="line47"></A>	  exit (EXIT_FAILURE);
+<A NAME="line48"></A>	}
+<A NAME="line49"></A>      
+<A NAME="line50"></A>      eref_Pool.size = 2*eref_Pool.size;
+<A NAME="line51"></A> 
+<A NAME="line52"></A>      for (i = res+1; i &lt eref_Pool.size; i++)
+<A NAME="line53"></A>	{
+<A NAME="line54"></A>	  eref_Pool.status[i] = ST_AVAIL;
+<A NAME="line55"></A>	}
+<A NAME="line56"></A>    }
+<A NAME="line57"></A>  
+<A NAME="line58"></A>  eref_Pool.status[res] = ST_USED;
+<A NAME="line59"></A>  return (eref) res;
+<A NAME="line60"></A>}
+<A NAME="line61"></A> 
+<A NAME="line62"></A>void eref_initMod (void) 
+<A NAME="line63"></A>   /*@globals undef eref_Pool, needsInit, internalState@*/
+<A NAME="line64"></A>   /*@modifies eref_Pool, needsInit, internalState@*/
+<A NAME="line65"></A>{
+<A NAME="line66"></A>  int i;
+<A NAME="line67"></A>  const int size = 16;
+<A NAME="line68"></A>  
+<A NAME="line69"></A>  if (!needsInit) 
+<A NAME="line70"></A>    {
+<A NAME="line71"></A>      /*@-compdef@*/ return; /*@=compdef@*/
+<A NAME="line72"></A>    }
+<A NAME="line73"></A> 
+<A NAME="line74"></A>  needsInit = FALSE;
+<A NAME="line75"></A>  bool_initMod ();
+<A NAME="line76"></A>  employee_initMod ();
+<A NAME="line77"></A> 
+<A NAME="line78"></A>  eref_Pool.conts = (employee *) malloc (size * sizeof (*eref_Pool.conts));
+<A NAME="line79"></A> 
+<A NAME="line80"></A>  if (eref_Pool.conts == 0) 
+<A NAME="line81"></A>    {
+<A NAME="line82"></A>      printf ("Malloc returned null in eref_initMod\n");
+<A NAME="line83"></A>      exit (EXIT_FAILURE);
+<A NAME="line84"></A>    }
+<A NAME="line85"></A>  
+<A NAME="line86"></A>  eref_Pool.status = (erefStatus *) malloc (size * sizeof (*eref_Pool.status));
+<A NAME="line87"></A> 
+<A NAME="line88"></A>  if (eref_Pool.status == 0) 
+<A NAME="line89"></A>    {
+<A NAME="line90"></A>      printf ("Malloc returned null in eref_initMod\n");
+<A NAME="line91"></A>      exit (EXIT_FAILURE);
+<A NAME="line92"></A>    }
+<A NAME="line93"></A>  
+<A NAME="line94"></A>  eref_Pool.size = size;
+<A NAME="line95"></A> 
+<A NAME="line96"></A>  /*@+loopexec@*/
+<A NAME="line97"></A>  for (i = 0; i &lt size; i++)
+<A NAME="line98"></A>    {
+<A NAME="line99"></A>      eref_Pool.status[i] = ST_AVAIL;
+<A NAME="line100"></A>    }
+<A NAME="line101"></A>  /*@=loopexec@*/
+<A NAME="line102"></A>}
+<A NAME="line103"></A> 
+<A NAME="line104"></A>void eref_free (eref er)
+<A NAME="line105"></A>  /*@globals eref_Pool@*/
+<A NAME="line106"></A>  /*@modifies eref_Pool@*/
+<A NAME="line107"></A>{
+<A NAME="line108"></A>  eref_Pool.status[er] = ST_AVAIL;
+<A NAME="line109"></A>}
+<A NAME="line110"></A> 
+<A NAME="line111"></A>void eref_assign (eref er, employee e) 
+<A NAME="line112"></A>  /*@globals eref_Pool@*/
+<A NAME="line113"></A>  /*@modifies eref_Pool@*/
+<A NAME="line114"></A>{
+<A NAME="line115"></A>  eref_Pool.conts[er] = e;
+<A NAME="line116"></A>}
+<A NAME="line117"></A> 
+<A NAME="line118"></A>employee eref_get (eref er) 
+<A NAME="line119"></A>   /*@globals eref_Pool@*/
+<A NAME="line120"></A>{
+<A NAME="line121"></A>  return eref_Pool.conts[er];
+<A NAME="line122"></A>}
+</pre>
+<P>
+<HR>
+<A HREF="index.html">Return to Index</A> | <A HREF="http://lclint.cs.virginia.edu/index.html">LCLint Home Page</A> <BR> <BR>
+<author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+<pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

@@ -1,0 +1,181 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint User's Guide - Section 2: Operation</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<h2>
+<a name="operation">
+2. Operation</a></a>
+</a></h2>
+LCLint is invoked by listing files to be checked.  Initialization files,
+command line flags, and stylized comments may be used to customize checking
+globally and locally.<p>
+<p>
+The best way to learn to use LCLint, of course, is to actually use it (if you
+don't already have LCLint installed on your system, <a
+href="../download.html">download it</A>).  Before you
+read much further in this document, I recommend finding a small C program.
+Then, try running:<p>
+<code>lclint *.c</code><p>
+For the most C programs, this will produce a large number of messages.  To turn
+off reporting for some of the messages, try:<p>
+<code>lclint -weak *.c</code><p>
+The <a href="appC.html#flag-weak"><tt>-weak</tt></a> flag is a mode
+flag that sets many checking parameters to select weaker checking than
+is done in the default mode.  Other LCLint flags will be introduced in the following sections;  a complete list is given in <a href="appC.html">Appendix C</a>.
+<h4>
+<a name="sec-2.1">2.1 Messages
+</a></h4>
+The format and content of messages printed by LCLint can be customized by the
+user. A typical message is:<p>
+<blockquote>
+<pre>
+sample.c: (in function faucet)
+sample.c:11:12: Fresh storage x not released before return
+  A memory leak has been detected.  Newly-allocated or only-qualified storage
+  is not released before the last reference to is it lost.  Use -mustfree to
+  suppress message.
+   sample.c:5:47: Fresh storage x allocated
+</pre>
+</blockquote>
+The first line gives the name of the function in which the error is found.
+This is printed before the first message reported for a function.  (The
+function context is not printed if <a
+href="appC.html#flag-showfunc"><tt>-showfunc</tt></a> is used.) <p> 
+<p>
+The second line is the text of the message.  This message reports a memory leak
+- storage allocated in a function is not deallocated before the function
+returns. The text is preceded by the file name, line and column number where
+the error is located.  The column numbers are used by the emacs mode (see
+<a href="appH.html">Appendix&nbsp;H</a>) to jump to the
+appropriate line and column location.  (Column numbers are not printed
+if <a href="appC.html#flag-showcolumn"><tt>-showcolumn</tt></a> is used.)  <p>
+<p>
+The next line is a hint giving more information about the suspected error.
+Most hints also include information on how the message may be suppressed.   For
+this message, setting the <a
+href="appC.html#flag-mustfree"><tt>-mustfree</tt></a> flag would
+prevent the message from being reported.  Hints may be turned off by
+using <a href="appC.html#flag-hints"><tt>-hints</tt></a>.  Normally, a hint is given only the first time a class of error is reported.
+To have LCLint print a hint for every message regardless, use <a href="appC.html#flag-forcehints"><tt>+forcehints</tt></a>.<p>
+<p>
+The final line of the message gives additional location information.  For this
+message, it tells where the leaking storage is allocated.<p>
+<p>
+The generic message format is (parts enclosed in square brackets are
+optional):<p>
+<pre>
+  [&lt;file&gt;:&lt;line&gt; (in &lt;context&gt;)]
+  &lt;file&gt;:&lt;line&gt;[,&lt;column&gt;]: <i>message</i>
+     [<i>hint</i>]
+      &lt;file&gt;:&lt;line&gt;,&lt;column&gt;: <i>extra location information, if appopriate</i><p>
+</pre>
+The text of messages and hints may be longer than one line.  They are split
+into lines of length less than the value set using <a href="appC.html#flag-linelen"><tt>-linelen</tt></a>
+<i>&lt;number&gt;</i>.  The default line length is 80 characters.  LCLint
+attempts to split lines in a sensible place as near to the line length limit as
+possible.  
+<p>
+The <a
+href="appC.html#flag-parenfileformat"><tt>+parenfileformat</tt></a> flag
+can be used to generate file locations in the format recognized by
+Microsoft Developer Studio.  If <tt>+parenfileformat</tt> is set, the
+line number follows the file name in parentheses (e.g.,
+<tt>sample.c(11)</tt>.).
+
+<a name="_Toc344355436"><a name="_Ref344870278"><a name="_Ref344882148"><a name="_Ref348092990"><a name="_Ref348343330"><a name="_Ref348343333"><a name="_Toc349905845">
+<h4>
+<a name="RTFToC4">
+<a name="sec-2.2">2.2 Flags</A></a></a></a></a></a></a></a>
+</a></h4>
+So that many programming styles can be supported, LCLint provides over 300
+flags for controlling checking and message reporting.  Some of the flags are
+introduced in the body of this document.  <a href="appC.html">Apppendix C</a> describes every flag.
+Modes and shortcut flags are provided for setting many flags at once.
+Individual flags can override the mode settings.<p>
+<p>
+Flags are preceded by + or -.  When a flag is preceded by + we say it is
+<i>on</i>; when it is preceded by - it is <i>off</i>. The precise meaning of on
+and off depends on the type of flag.  <p>
+<p>
+The +/- flag settings are used for consistency and clarity, but contradict
+standard UNIX usage and is easy to accidentally use the wrong one.  To reduce
+the likelihood of using the wrong flag, LCLint issues warnings when a flag is
+set in an unusual way.  Warnings are issued when a flag is redundantly set to
+the value it already had (these errors are not reported if the flag is set
+using a stylized comment), if a mode flag or special flag is set after a more
+specific flag that will be set by the general flag was already set, if value
+flags are given unreasonable values, of if flags are set in an inconsistent
+way.  The <a href="appC.html#flag-warnflags"><tt>-warnflags</tt></a> flag suppresses these warnings.<p>
+<p>
+
+<a name="lclintrc">
+Default flag settings will be read from <tt>~/.lclintrc</tt> if it is
+readable (in Windows, the <tt>$HOME/lclint.rc</tt> file is used).  If
+there is a <tt>.lclintrc</tt> file in the working directory, settings
+in this file will be read next and its settings will override those in
+<tt>~/.lclintrc</tt>.  Command-line flags override settings in either
+file.  The syntax of the <tt>.lclintrc</tt> file is the same as that
+of command-line flags, except that flags may be on separate lines and
+the <tt>#</tt> character may be used to indicate that the remainder of
+the line is a comment. The <a
+href="appC.html#flag-nof"><tt>-nof</tt></a> flag prevents the
+<tt>~/.lclintrc</tt> file from being loaded.  The <a
+href="appC.html#flag-f"><tt>-f</tt></a> <i>&lt;filename&gt;</i> flag
+loads options from <i>filename</i>.  <a name="_Ref343086686"><a
+name="_Toc344355442"><a name="_Toc349905846"> <h4> <a name="RTFToC5">
+<a name="sec-2.3">2.3 Stylized Comments</A></a></a></a> </a></h4>
+Stylized comments are used to provide extra information about a type,
+variable or function interface to improve checking, or to control flag
+settings locally.<p> <p> All stylized comments begin with <tt>/*@</tt>
+and are closed by the end of the comment.  The role of the <tt>@</tt>
+may be played by any printable character.  Use <a
+href="appC.html#flag-commentchar"><tt>-commentchar</tt></a>
+<i>&lt;char&gt;</i> to select a different stylized comment marker.
+<h4> <a name="sec-2.3.1">2.3.1 Annotations </a></h4> Annotations are
+stylized comments that follow a definite syntax.  Although they are
+comments, they may only be used in fixed grammatical contexts (e.g.,
+like a type qualifier).<p> <p> Syntactic comments for function
+interfaces are described in <a href="sec4.html">Section 4</a>;
+comments for declaring constants in <a
+href="sec8.html#sec-8.1">Section 8.1.</a> and comments for declaring
+iterators in <a href="sec8.html#sec-8.4">Section 8.4.</a> Sections 3-8
+include descriptions of annotations for expressing assumptions about
+variables, parameters, return values, structure fields and type
+definitions.  A summary of annotations is found in <a
+href="appD.html">Apppendix D</a>.
+
+<h4>
+<a name="sec-2.3.2">2.3.2 Control Comments
+</a></h4>
+Unlike annotations, control comments may appear between any two tokens in a C
+program.<a href="guide_fn.html#fn3">[3]</a>  Syntactically, they are no
+different from standard comments.  Control comments are used to provide
+source-level control of LCLint checking.  They may be used to suppress spurious
+messages, set flags, and control checking locally in other ways.  A complete
+description of control comments is found in <a href="appE.html">Apppendix E</a>.<p>
+<p>
+Most flags (all except those characterized as "global" in <a href="appC.html">Apppendix C</a>) can be
+set locally using control comments.  A control comment can set flags locally to
+override the command line settings.  The original flag settings are restored
+before processing the next file. The syntax for setting flags in control
+comments is the same as that of the command line, except that flags may also be
+preceded by = to restore their setting to the original command-line value.  For
+instance,
+<pre>
+/*@+boolint -modifies =showfunc@*/
+</pre>
+sets <a href="appC.html#flag-boolint"><tt>boolint</tt></a> on (this
+makes bool and int indistinguishable types), 
+sets <a href="appC.html#flag-modifies"><tt>modifies</tt></a> off (this prevents reporting of modification errors), and sets 
+<a href="guide.html#flag-showfunc"><tt>showfunc</tt></a> to its original
+setting (this controls  whether or not the name of a function is
+displayed before a message). 
+<p>
+<b>Next: <A HREF="sec3.html">Abstract Types</a></b><br>
+<a href="index.html">Contents</a>
+<p>
+<!--#include virtual="footer.html"-->

@@ -1,0 +1,4 @@
+/* Output from LCLint 2.1a */
+# include "bool.h"
+
+extern /*@falseexit@*/ void check (bool x);

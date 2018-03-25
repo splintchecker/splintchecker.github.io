@@ -1,0 +1,56 @@
+<h3>lclint-interest message 187</h3>
+<pre>
+From 100566.1506@compuserve.com Wed Feb 11 12:21:08 1998
+Sender: 100566.1506@compuserve.com
+Date: Wed, 11 Feb 1998 13:18:56 +0100 (CET)
+From: Hermann Kleier <100566.1506@compuserve.com>
+X-Sender: 100566.1506@opto4l.default.com
+Reply-To: Hermann Kleier <100566.1506@compuserve.com>
+To: lclint-interest <lclint-interest@larch.lcs.mit.edu>
+Subject: global types in lcl-files
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+N. Wirth is told to have stated that C is a `portable assembler'. C is more.
+But one feature a portable assembler should offer is the support for portable
+data types.
+
+Example: I need a counter ranging from 0 up to 1000000.  In other words: I need
+a 20-bit unsigned counter.  Because I have been writing programs on
+different machines (word size: 8, 12, 16, 32, and 60 bit) I am aware of
+portability problems  (One of the motivations for using lint's).  I would like
+to code:
+
+U20 counter;
+
+This approach is portable.  Unluckily this is not supported by ANSI-C.
+Instead ANSI-C offers the file <limits.h>, which can be used to typedef
+portable types.  I put the stuff in a global file named "ptypes.h", which I
+included in serveral projects over the years.
+
+How can I create types in a .lcl-file that depend on the contents of other
+files?
+
+Hermann
+
+
+
+
+
+
+</pre>
+<A HREF="186.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="188.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

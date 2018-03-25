@@ -1,0 +1,57 @@
+<h3>lclint-interest message 112</h3>
+<pre>
+From erik@it.et.tudelft.nl Wed Oct 16 14:02:06 1996
+From: erik@it.et.tudelft.nl (Erik Mouw)
+Subject: Re: LCLint and indent
+To: mikee@rd.bbc.co.uk (Mike Ellis)
+Date: Wed, 16 Oct 96 16:28:42 MET DST
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: <12867.9610161231@holly.rd.bbc.co.uk>; from "Mike Ellis" at Oct 16, 96 1:31 pm
+X-Mailer: ELM [version 2.3 PL11]
+
+> I've just started to set up a new project with automagic makefiles to do 
+> everything for me.  This includes,  as part of the compilation phase,  
+> running both indent and lclint over the code.  However,  I've come unstuck 
+> as my version of indent seems to insist on mangling lclint's embedded 
+> comments,  thus
+> "/*@unused@*/" becomes "/* @unused@ */" and so on.  
+> 
+> LClint (V2.2a) seems unable to cope with this and simply ignores the 
+> comments,  thus causing all sorts of warnings to appear.  Has anyone else 
+> experienced this problem and found a solution?  I could re-install a hacked 
+> version of LCLint where "/*@" and "/* @" were equivalent,  but I'd rather 
+> not have to do this if there is a better way.
+
+What about the following sed scripts:
+
+sed 's/\/\*\ @/\/\*@/'
+sed 's/@\ \*\//@\*\//'
+
+They replace every "/* @" in "/*@". It's just a hack, but I think it
+works.
+
+
+Erik
+
+-- 
+Erik Mouw
+email: J.A.K.Mouw@ET.TUDelft.NL  erik@it.et.tudelft.nl
+WWW  : http://elektron.et.tudelft.nl/~mouw/
+
+
+</pre>
+<A HREF="111.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="113.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

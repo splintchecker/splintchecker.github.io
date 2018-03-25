@@ -1,0 +1,75 @@
+Plain Differences between current directory and memchecks2
+4c4
+< empset empset_create(void) 
+---
+> only empset empset_create(void) 
+9c9
+< void empset_final(empset s) 
+---
+> void empset_final (only empset s) 
+40c40
+< empset empset_union(empset s1, empset s2) 
+---
+> only empset empset_union(empset s1, empset s2) 
+45c45
+< empset empset_disjointUnion(empset s1, empset s2) 
+---
+> only empset empset_disjointUnion(empset s1, empset s2) 
+78c78
+< char *empset_sprint(empset s) 
+---
+> only char *empset_sprint(empset s) 
+90d89
+< 
+158a159,163
+> eref erc_choose (erc c) 
+> {
+>   assert (c->vals != NULL);
+>   return c->vals->val;
+> }
+7c7
+< typedef struct _elem { eref val; struct _elem *next; } ercElem;
+---
+> typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;
+15c15
+< # define erc_choose(c) (((c)->vals)->val)
+---
+> 
+23c23
+<       eref m_x = m_ec->val; m_ec = m_ec->next; m_i++; 
+---
+>       eref m_x; assert (m_ec != NULL); m_x = m_ec->val; m_ec = m_ec->next; m_i++; 
+5c5
+< eref_ERP eref_Pool;            /* private */
+---
+> static eref_ERP eref_Pool;     /* private */
+48a49
+>    /*@globals undef eref_Pool@*/
+87a89,102
+> void eref_free (eref er)
+> {
+>   eref_Pool.status[er] = avail;
+> }
+> 
+> void eref_assign (eref er, employee e) 
+> {
+>   eref_Pool.conts[er] = e;
+> }
+> 
+> employee eref_get (eref er) 
+> {
+>   return eref_Pool.conts[er];
+> }
+16,18d15
+< /* Declared here so that macros can use it  */
+< extern eref_ERP eref_Pool;
+< 
+22,25d18
+< 
+< # define eref_free(er)        (eref_Pool.status[er] = avail)
+< # define eref_assign(er, e)   (eref_Pool.conts[er] = (e))
+< # define eref_get(er)         (eref_Pool.conts[er])
+5c5
+< ereftab ereftab_create(void) 
+---
+> only ereftab ereftab_create(void) 

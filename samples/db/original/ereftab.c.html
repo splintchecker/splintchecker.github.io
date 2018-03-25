@@ -1,0 +1,115 @@
+<A NAME="line61"></A><html><head>
+<title>ereftab.c</title>
+</head><body>
+<h3>ereftab.c</h3>
+<PRE>
+<A NAME="line1"></A>/* ereftab.c */
+<A NAME="line2"></A> 
+<A NAME="line3"></A>/* This is not a good implementation.  I should probably replace
+<A NAME="line4"></A>the erc with a hash table.  */
+<A NAME="line5"></A> 
+<A NAME="line6"></A>#include "<A HREF="ereftab.h.html">ereftab.h</A>"
+<A NAME="line7"></A> 
+<A NAME="line8"></A>ereftab ereftab_create(void) {
+<A NAME="line9"></A>  return erc_create( );
+<A NAME="line10"></A>}
+<A NAME="line11"></A> 
+<A NAME="line12"></A>void ereftab_insert(ereftab t, employee e, eref er) {
+<A NAME="line13"></A>  eref_assign(er, e);
+<A NAME="line14"></A>  erc_insert(t, er);
+<A NAME="line15"></A>}
+<A NAME="line16"></A> 
+<A NAME="line17"></A>bool ereftab_delete(ereftab t, eref er) {
+<A NAME="line18"></A>  bool result;
+<A NAME="line19"></A> 
+<A NAME="line20"></A>  result = erc_member(er, t);  
+<A NAME="line21"></A>  erc_delete(t, er);
+<A NAME="line22"></A>  return result;
+<A NAME="line23"></A>}
+<A NAME="line24"></A> 
+<A NAME="line25"></A>eref ereftab_lookup(employee e, ereftab t) {
+<A NAME="line26"></A>  eref er;
+<A NAME="line27"></A>  employee e1;
+<A NAME="line28"></A>  ercIter it;
+<A NAME="line29"></A> 
+<A NAME="line30"></A>  for_ercElems(er, it, t) { 
+<A NAME="line31"></A>        e1 = eref_get(er);
+<A NAME="line32"></A>        if (employee_equal(&e, &e1)) return er;
+<A NAME="line33"></A>      }
+<A NAME="line34"></A>  return erefNIL;
+<A NAME="line35"></A>}
+<A NAME="line36"></A> 
+<A NAME="line37"></A>void ereftab_initMod(void) {
+<A NAME="line38"></A>  bool_initMod();
+<A NAME="line39"></A>  eref_initMod();
+<A NAME="line40"></A>  erc_initMod();
+<A NAME="line41"></A>}
+<A NAME="line42"></A> 
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

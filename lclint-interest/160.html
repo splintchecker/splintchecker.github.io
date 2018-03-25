@@ -1,0 +1,67 @@
+<h3>lclint-interest message 160</h3>
+<pre>
+From kir@iitb.fhg.de Tue Sep 23 11:11:30 1997
+X-Env: (mailgw1.fhg.de) kir@iitb.fhg.de -> lclint-interest@larch.lcs.mit.EDU.VIA-SMTP
+Date: Tue, 23 Sep 1997 11:42:36 +0200
+From: kir@iitb.fhg.de (Harald Kirsch)
+To: lclint-interest@larch.lcs.mit.edu
+Subject: FILE versus _IO_FILE
+
+
+Hi there,
+
+currently I am running lclint-2.3i on Linux. I am using the binary
+version which can be downloaded. I get strange messages like
+
+trigger.c:390: Function fprintf expects arg 1 to be FILE * gets _IO_FILE *:
+                  ((_IO_FILE *)(&_IO_stderr_))
+
+This message disappears as soon as I give lclint a -I option. Although I
+am rather sure that the -I does points to identical files (an installed
+version versus a working version) I investigated with strace and found
+the following:
+
+If I give a -I option, the only include files lclint loads are:
+	>grep open strace-output | grep '\.h'
+
+	4218  open("/home1/kir/work/tdfe/tdfsig.h", O_RDONLY) = 6
+	4218  open("/home1/kir/work/tdfe/tdfsig.h", O_RDONLY) = 7
+	4218  open("/home1/kir/work/tdfe/tdfe.h", O_RDONLY) = 8
+	4218  open("/home1/kir/work/tdfe/tdfe.h", O_RDONLY) = 9
+	4218  open("cmdline.h", O_RDONLY)       = 6
+	4218  open("cmdline.h", O_RDONLY)       = 7
+
+If I don't specify -I, lclint reads the usual stuff from /usr/include,
+/usr/i486-linux/include, etc. and prints a lot of messages as shown
+above.
+
+As far as I know, also .lcd-files are relevant. In both cases, 
+   /usr/local/lclint-2.3i/lib/posix.lcd
+is loaded, as I run lclint with +posixlib.
+
+I suspect this is a bug!
+
+	Regards,
+	Harald.
+
+-------------------------------------------------+------------------
+Harald Kirsch, kir@iitb.fhg.de, +49 721 6091 369 | Now I rebooted.
+FhG/IITB,      Fraunhoferstr.1, 76131 Karlsruhe  |     --- Jerry Pournelle
+
+
+</pre>
+<A HREF="159.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="161.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

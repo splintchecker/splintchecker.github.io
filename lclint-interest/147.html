@@ -1,0 +1,68 @@
+<h3>lclint-interest message 147</h3>
+<pre>
+From kir@iitb.fhg.de Wed Sep 10 10:42:32 1997
+X-Env: (mailgw2.fhg.de) kir@bsilx1.iitb.fhg.de -> lclint-interest@larch.lcs.mit.EDU.VIA-SMTP
+Date: Wed, 10 Sep 1997 11:50:36 +0200
+From: Harald Kirsch <kir@iitb.fhg.de>
+To: lclint-interest@larch.lcs.mit.edu, kir@iitb.fhg.de
+Subject: proper annotation of arrays
+
+
+
+Hi there,
+
+>from the docs I find that arrays of pointers cannot be fully handled by
+lclint. It seems to be particularly difficult to know the state of
+array elements, i.e. whether they are dead, live, allocated etc.
+
+The example shown below reports an error where `lines[i]' is passed to
+`free'.
+########################################################################
+int
+main(void)
+{
+  char **lines;
+  size_t i, N;
+
+  N = 10;
+  lines = (char **)malloc(N*sizeof(*lines));
+  if( NULL==lines ) exit(EXIT_FAILURE);
+  for(i=0; i<N; i++) {
+    lines[i] = malloc(100);
+  }
+
+  for(i=0; i<N; i++) {
+    free(lines[i]);	/****** lclint complains about dead storage */
+  }
+
+  free(lines);
+
+  return 0;
+}
+########################################################################
+
+Can anybody tell me the most specific annotation to use so that lclint
+knows that `lines[i]' is not dead where it is passed to `free'?
+
+I am asking for the most specific annotation because I don't want
+disable too much checking.
+
+	Harald Kirsch
+
+
+</pre>
+<A HREF="146.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="148.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>LCLint Version 1.4c</title>
+</head>
+<body>
+
+<H1>
+LCLint Version 1.4c<BR>
+</H1>
+
+<em>This is a release notice for an obsolete version of LCLint.  It is
+included for archival purposes only.</em>
+<p>
+<pre>
+			   LCLint Version 1.4c
+                           ===================
+
+LCLint Version 1.4c is now available from MIT by anonymous ftp.  This is
+a minor release consisting of fixes to problems reported in version 1.4a
+and a few improvements.  (Version 1.4b was not publically released.)
+
+Please install the latest version of lclint on your system so you will
+not run into bugs that have already been fixed.  Updated binaries are
+available now for the alpha, decmips, and sun4 platforms in
+ftp://ftp.sds.lcs.mit.edu/pub/lclint/lclint.<platform>.tar.Z.
+Source code for building other platforms is in
+ftp://ftp.sds.lcs.mit.edu/pub/lclint/lclint.src.tar.Z.
+
+Development is largely driven by user feedback, so please continue to
+send me suggestions, ideas, complaints and bug reports.  Thanks to
+everyone who sent comments and bug reports.  We are also interested in
+any more general feedback or experience you have to report.
+
+Bug reports should be sent to lclint-bug@larch.lcs.mit.edu.  If you have
+messages of general interest, send them to
+lclint-interest@larch.lcs.mit.edu.  If you are interested in
+participating in discussions on lclint use and development, send
+human-readable mail to lclint-request@larch.lcs.mit.edu saying that you
+would like to join the lclint-interest list.  If you want to be removed
+from this list, send mail to lclint-request@larch.lcs.mit.edu.
+
+Changes from Version 1.4a:
+
+Improvements:
+=============
+
+o sequence point checking --- detects errors involving undefined
+  behavior because of order of execution (because of modifies and global
+  specifications, this can be done for function calls.)  This catches
+  the infamous "a[i++] = i"-type bugs, but also more subtle errors
+  involving modification of parameters or globals if specifications
+  (or specified library functions) are used.
+
+o checking enumerated cases (controlled by +misscase) --- for a switch
+  on an enumerated type, report cases which are not handled.
+        [suggested by Albert L. Ting]
+
+o messages include location of specification (where relevant)
+
+o -mutrep to suppress complaints about representations of mutable types
+  not having sharing semantics.  (This is more useful as a control
+  comment, if you are implementing a mutable abstract type with an
+  int handle.)
+
+o efficiency improvements (should run at least 25% faster for large systems)
+
+Bug Fixes:
+==========
+
+(apologies for not describing some of these in functionality-level
+terms)
+
+o conditional errors (not popping the stack when the pred is an error)
+     [ reported by Albert L. Ting ]
+
+o problem relating to use of noVarInfo (Undeclared global variable messages)
+     [ reported by Mathieu Antoine ] 
+
+o problem with temporary file names not being unique 
+     [ reported (and fix suggested) by Huver Hu ]
+
+o makefile environment variable problems
+     [ reported by Lawrence Chim and Huver Hu ]
+
+o semantics of imports unclear or incorrect
+     [ reported by Huver Hu ]
+
+o spurious rep exposure and return alias messages concerning immutable types
+     [ reported by Yang Meng Tan ]
+
+o symtable bug (causes segmentation faults on some systems)
+     [ reported and traced by Rick Farnbach ]
+
+o use-before-definition checking on arrays
+     [ suggested by previous bug not being detected by LCLint ]
+
+o incorrect modification errors involving structures (copy assignments)
+
+o macro parsing broken with '/'
+
+o fixed stdlib to make error codes constant int's instead of enum's
+
+As far as I know, there are no other known bugs.  If you know of a bug
+not listed (and fixed) here, please report it.  
+</pre>
+<P>
+<HR>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

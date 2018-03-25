@@ -1,0 +1,23 @@
+Plain Differences between current directory and allmacros
+4,7d3
+< # define firstERC mMGRS
+< # define lastERC fNON
+< # define numERCS (lastERC - firstERC + 1)
+< 
+11a8,16
+> 
+> /*@constant static employeeKinds firstERC;@*/
+> # define firstERC mMGRS
+> 
+> /*@constant static employeeKinds lastERC;@*/
+> # define lastERC fNON
+> 
+> /*@constant static int numERCS;@*/
+> # define numERCS (lastERC - firstERC + 1)
+5d4
+< # define employeeFormat "%9d  %-20s  %-6s  %-11s  %6d.00"
+6a6,9
+> 
+> /*@notfunction@*/
+> # define employeeFormat "%9d  %-20s  %-6s  %-11s  %6d.00"
+> 

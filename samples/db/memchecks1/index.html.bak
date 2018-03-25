@@ -1,0 +1,299 @@
+<html
+<head>
+<title> LCLint Sample - Memory Checks 1</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<h1>
+LCLint Sample - Memory Checks 1<BR>
+</h1>
+
+<H3> Changes from <A HREF="../standardchecks/index.html">Standard</A> </H3>
+
+<A HREF="diffs.html">Differences</A> 
+<P>
+Fixed all messages reported in standard mode without memory checks.  
+<P>
+Running LCLint with <tt>-memchecks</tt> detects <A HREF="lclint-nomemchecks.out.html">no errors</A>.
+
+<H3> Modules </H3>
+
+<UL>
+<LI>employee - employee datatype (<A HREF="employee.lcl.html">LCL</A>,
+<A HREF="employee.c.html">Code</A>,  <A HREF="employee.h.html">Header</A>)
+<LI>empset - sets of employees (<A HREF="empset.lcl.html">LCL</A>,
+<A HREF="empset.c.html">Code</A>,  <A HREF="empset.h.html">Header</A>)
+<LI>dbase - database of employees (<A HREF="dbase.lcl.html">LCL</A>, 
+<A HREF="dbase.c.html">Code</A>,  <A HREF="dbase.h.html">Header</A>)
+<LI>eref - reference to an employee (<A HREF="eref.lcl.html">LCL</A>,
+<A HREF="eref.c.html">Code</A>,  <A HREF="eref.h.html">Header</A>)
+<LI>erc - collection of erefs (<A HREF="erc.lcl.html">LCL</A>, <A
+HREF="erc.c.html">Code</A>,  <A HREF="erc.h.html">Header</A>)
+<LI>ereftab - table of employees and erefs (<A
+HREF="ereftab.lcl.html">LCL</A>, <A HREF="ereftab.c.html">Code</A>, <A HREF="ereftab.h.html">Header</A>)
+</UL>
+
+<H3> Memory Checking </h3>
+
+Now we remove the <tt>-memchecks</tt> flags to turn on checks relating
+to memory management (they are done by default in the standard mode).
+
+<P>
+Here we us the <tt>-allimponly</tt> flag to disable all implicit only
+annotations.  LCLint reports <A HREF="lclint.out.html">15 anomalies</A>.
+
+In instead we ran lclint using <tt>+allimponly</tt>, LCLint would assume
+that unannotated function results, structure fields and global variables
+are <tt>only</tt> storage.  With <tt>+allimponly</tt>, LCLint reports <A
+HREF="lclint-imp.out.html">21 anomalies</A>.  We could find the real
+errors more quickly using implicit annotations, but for instructive
+purposes it will be clearer to see how LCLint checking leads us to add
+the annotations explicitly.
+
+<P>
+
+<H4> <A href="../../../guide/guide.html#sec-7.2">Null Pointers</a> </h4>
+
+Two messages reports a null pointer error:
+<PRE>
+erc.c: (in function erc_create)
+<A HREF="erc.c.html#line39" target="source">erc.c:39,10</A>: Null storage c->vals derivable from return value: c
+  A possibly null pointer is dereferenced or misused. Value is either the
+  result of a function which may return null (in which case, code should check
+  it is not null), or a global, parameter or structure field declared with the
+  null qualifier. Use -null to suppress message.
+   <A HREF="erc.c.html#line37" target="source">erc.c:37,13</A>: Storage c->vals becomes null
+erc.c: (in function erc_clear)
+<A HREF="erc.c.html#line55" target="source">erc.c:55,2</A>: Function returns with null storage derivable from parameter c->vals
+   <A HREF="erc.c.html#line53" target="source">erc.c:53,13</A>: Storage c->vals becomes null
+</PRE>
+
+Here, the value of <tt>c->vals</tt> is <tt>NULL</tt> (in one case in the
+return value, in the second, of a passed parameter when the function returns),
+but there is no <tt>null</tt> annotation in the type definition.  We add
+the <tt>null</tt> annotation to the type definition of <tt>erc</tt>:
+<PRE>
+typedef struct { /*@null@*/ ercList vals; int size; } *erc;
+</PRE>
+
+This annotation will propagate to detect new anomalies in the <A HREF="../memchecks2/index.html#null">next iteration</A>.
+
+<A NAME="addonly">
+<H4> Returning Fresh Storage </H4>
+
+Two errors concerning returning fresh storage as unqualified:
+
+<PRE>
+erc.c: (in function erc_create)
+<A HREF="erc.c.html#line39" target="source">erc.c:39,10</A>: Fresh storage returned as unqualified (should be only): c
+  Fresh storage (newly allocated in this function) is transferred in a way that
+  the obligation to release storage is not propagated.  Use the /*@only@*/
+  annotation to indicate the a return value is the only reference to the
+  returned storage. Use -freshtrans to suppress message.
+   <A HREF="erc.c.html#line29" target="source">erc.c:29,3</A>: Fresh storage c allocated
+</pre>
+
+Since there is no <tt>only</tt> annotation on the function result, the
+obligation to release storage was not transferred.  We add <tt>only</tt>
+annotations to the specifications of <tt>erc_create</tt> and
+<tt>erc_sprint</tt>.  These annotations propagate in the <A HREF="../memchecks2/index.html#onlyfree">next iteration</A>.
+
+<H4> <A href="../../../guide/guide.html#sec-5.2">Only Transfers</a></H4>
+
+Six messages report inconsistencies between unqualified and only or
+fresh storage.  A reference annotated with <tt>only</tt> implies an
+obligation to release the storage associated with the reference before
+the reference is lost.  Since we are not using implicit annotations
+here, errors are reported for assignments of freshly allocated storage
+to unqualified structure fields since the storage may never be released.
+Also, errors are reported when there structure fields are passed as
+<tt>only</tt> parameters to the library reallocation routine.
+<P>
+All of these errors relate to fields of <tt>eref_Pool</tt>, type
+<tt>eref_ERP</tt>:
+
+<PRE>
+eref.c: (in function eref_alloc)
+<A HREF="eref.c.html#line19">eref.c:19,24</A>: Unqualified storage passed as only:
+                 realloc (eref_Pool.conts, ...)
+  Unqualified storage is transferred in an inconsistent way.  Use
+  -unqualifiedtrans to suppress message.
+<A HREF="eref.c.html#line29">eref.c:29,27</A>: Unqualified storage passed as only:
+                 realloc (eref_Pool.status, ...)
+<A HREF="eref.c.html#line45">eref.c:45,21</A>: Storage eref_Pool.status reachable from global is only (should be
+                 unqualified)
+  Storage derivable from a parameter does not match the alias kind expected for
+  the formal parameter.  Use -compmempass to suppress message.
+   <A HREF="eref.c.html#line30">eref.c:30,48</A>: Storage eref_Pool.status becomes only
+<A HREF="eref.c.html#line45">eref.c:45,21</A>: Storage eref_Pool.conts reachable from global is only (should be
+                 unqualified)
+   <A HREF="eref.c.html#line20">eref.c:20,49</A>: Storage eref_Pool.conts becomes only
+eref.c: (in function eref_initMod)
+<A HREF="eref.c.html#line84">eref.c:84,2</A>: Storage eref_Pool.conts reachable from global is fresh (should be
+                unqualified)
+   <A HREF="eref.c.html#line62">eref.c:62,3</A>: Fresh storage eref_Pool.conts allocated
+<A HREF="eref.c.html#line84">eref.c:84,2</A>: Storage eref_Pool.status reachable from global is fresh (should be
+                unqualified)
+   <A HREF="eref.c.html#line70">eref.c:70,3</A>: Fresh storage eref_Pool.status allocated
+</PRE>
+<P>
+We fix these by adding <tt>only</tt> annotations to two fields in the
+type definition:
+<PRE>
+typedef struct {
+  /*@only@*/ employee *conts;
+  /*@only@*/ eref_status *status;
+  int size;
+} eref_ERP;
+</PRE>
+
+<H4> <A href="../../../guide/guide.html#sec-5.2">Releasing Temporary Storage</a></h4>
+
+One message reports releasing temporary storage:
+
+<PRE>
+<A HREF="erc.c.html#line60" target="source">erc.c:60,9</A>: Implicitly temp storage c passed as only param: free (c)
+  Temp storage (associated with a formal parameter) is transferred to a
+  non-temporary reference. The storage may be released or new aliases created.
+  Use -temptrans to suppress message.
+</PRE>
+
+Here, <tt>c</tt> is a parameter to <tt>erc_final</tt>.  Since it has no
+annotation, it is implicitly <tt>temp</tt> storage, so it is an anomaly
+to pass it to <tt>free</tt> as an <tt>only</tt> parameter.  An
+<tt>only</tt> annotation is added to the parameter declaration.  This
+annotation will propagate to detect new anomalies in the <A
+HREF="../memchecks2/index.html#only">next iteration</A>.  
+
+<H4> <A href="../../../guide/guide.html#sec-6.1">Aliasing </a></H4>
+
+One message concerns a  possible aliasing error:
+
+<PRE>
+employee.c: (in function employee_setName)
+<A HREF="employee.c.html#line14">employee.c:14,11</A>: Parameter 1 (e->name) to function strcpy is declared unique
+                     but may be aliased externally by parameter 2 (na)
+  A unique or only parameter may be aliased by some other parameter or visible
+  global.  Use -mayaliasunique to suppress message.
+</PRE>
+
+The <tt>strcpy</tt> library function is declared,
+<PRE>
+| void : char * | strcpy  (returned out unique char *s1, char *s2) 
+{ modifies *s1; }
+</PRE>
+There is a <tt>unique</tt> qualifier on the first parameter since the
+behavior of <tt>strcpy</tt> is undefined if the parameters share
+storage.
+
+Here, <tt>e</tt> and <tt>na</tt> are parameters to
+<tt>employee_setName</tt> so there is no guaranteed that
+<tt>e->name</tt> and <tt>na</tt> do not share storage.  We fix the
+problem by adding a <tt>unique</tt> annotation to the specification of
+<tt>employee_setName</tt>:
+<PRE>
+bool employee_setName (employee *e, unique char na[]) 
+</PRE>
+
+<H4><A href="../../../guide/guide.html#sec-7.1">Undefined Fields</a></h4>
+
+Two errors report undefined fields in <tt>eref_initMod</tt>:
+
+<PRE>
+<A HREF="eref.c.html#line84">eref.c:84,2</A>: Global storage *(eref_Pool.conts) contains 4 undefined fields when
+                call returns: ssNum, salary, gen, j
+  Storage derivable from a parameter, return value or global is not defined. 
+  Use /*@out@*/ to denote passed or returned storage which need not be defined.
+   Use -compdef to suppress message.
+<A HREF="eref.c.html#line84">eref.c:84,2</A>: Global storage eref_Pool contains 1 undefined field when call
+                returns: status
+</PRE>
+
+The value of <tt>eref_Pool.conts</tt> is only defined if the
+<tt>size</tt> of the <tt>eref_Pool</tt> is greater than <tt>0</tt>.  We
+add a <tt>reldef</tt> qualifier to the <tt>conts</tt> field declaration
+to relax definition checking: 
+<PRE> 
+typedef struct {
+  /*@reldef@*/ /*@only@*/ employee *conts;
+  /*@only@*/ eref_status *status;
+  int size;
+} eref_ERP;
+</PRE>
+
+The second error results from LCLint not being able to determine that
+the <A HREF="eref.c.html#line80">loop</A> defining
+<tt>eref_Pool.status</tt> must always execute.  We use
+the <tt>+loopexec</tt> syntactic comment to indicate that the loop must
+always execute at least once.
+
+<H4> Spurious Error </h4>
+
+The remaining error:
+<pre>
+<A HREF="erc.c.html#line108" target="source">erc.c:108,16</A>: Released storage c->vals reachable from parameter at return point
+  Memory is used after it has been released (either by passing as an only param
+  or assigning to and only global. Use -usereleased to suppress message.
+   <A HREF="erc.c.html#line106" target="source">erc.c:106,10</A>: Storage c->vals is released
+</pre>
+
+is a spurious error resulting from a complicated aliasing relationship.
+<P>
+In the <A HREF="erc.c.html#line95">loop</A>,
+<PRE>
+  for (prev = 0, elem = c->vals;
+       elem != 0;
+       prev = elem, elem = elem->next) 
+    {
+      if (eref_equal (elem->val, er))
+	{ 
+	  if (prev == 0)
+	    c->vals = elem->next;
+	  else 
+	    prev->next = elem->next;
+	  
+	  free (elem); 
+	  c->size--;
+	  return TRUE;
+	}
+    } 
+</PRE> 
+
+<tt>elem</tt> aliases <tt>c->vals</tt>, but only on the
+first iteration where <tt>prev</tt> is <tt>0</tt>.  The <A
+HREF="erc.c.html#line106"><tt>free</tt></A> call releases <tt>elem</tt>
+(which may alias <tt>c->vals</tt>.  Except, looking at the code, we know
+that <tt>elem</tt> only aliases <tt>c->vals</tt> when <tt>prev</tt> is
+<tt>0</tt>, and if <tt>prev</tt> is <tt>0</tt>, <tt>c->vals</tt> is <A
+HREF="erc.c.html#line104">reassigned</A>.  So, <tt>elem</tt> passed to <A
+HREF="erc.c.html#line106"><tt>free</tt></A> does not alias
+<tt>c->vals</tt>.  LCLint's alias analysis is not good enough to figure
+this out, so an anomaly is reported to indicate that <tt>c->vals</tt>
+may be released when the function returns.   
+<P>
+We could suppress the message using the <tt>-compmempass</tt> flag.
+Instead, we <A HREF="erc-next.c.html#line96">rewrite the code</A> in a
+clearer way.  This makes the loop easier for human readers to
+understand, and allows LCLint to check it correctly.
+
+<P>
+<HR>
+<A HREF="run.html">
+<IMG ALIGN=left SRC =
+"http://larch-www.lcs.mit.edu:8001/larch/lclint/lclint-run.jpg" ALT = "Run LCLint"></A>
+<A HREF="../memchecks2/index.html">
+<IMG ALIGN=left SRC =
+"http://larch-www.lcs.mit.edu:8001/larch/lclint/right-arrow.jpg" ALT =
+"Continue to Memory Checks 2"></A>
+<A HREF="../index.html">
+<IMG ALIGN=left SRC = "http://larch-www.lcs.mit.edu:8001/larch/lclint/up-arrow.jpg" ALT = "Return to Summary"></A>
+<A HREF="http://larch-www.lcs.mit.edu:8001/larch/lclint/index.html">
+<IMG ALIGN=left SRC = "http://larch-www.lcs.mit.edu:8001/larch/lclint/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://larch-www.lcs.mit.edu:8001/~evs">David
+Evans</a> <br>
+<A href="http://larch-www.lcs.mit.edu:8001/">Systematic Program Develpoment</A><br>
+<a
+href="mailto:evs@larch.lcs.mit.edu"><em>evs@larch.lcs.mit.edu</em></a>
+</author>
+</body>
+</html>

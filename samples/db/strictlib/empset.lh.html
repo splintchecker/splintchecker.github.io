@@ -1,0 +1,96 @@
+<A NAME="line30"></A><html><head>
+<title>empset.lh</title>
+</head><body>
+<h1>empset.lh</h1>
+<PRE>
+<A NAME="line1"></A>/* Output from LCLint 2.0 */
+<A NAME="line2"></A> 
+<A NAME="line3"></A>#include "<A HREF="bool.h.html">bool.h</A>"
+<A NAME="line4"></A>#include "<A HREF="employee.h.html">employee.h</A>"
+<A NAME="line5"></A> 
+<A NAME="line6"></A> 
+<A NAME="line7"></A>extern /*@only@*/ empset empset_create (void);
+<A NAME="line8"></A>extern void empset_final (/*@only@*/ empset s);
+<A NAME="line9"></A>extern void empset_clear (empset s);
+<A NAME="line10"></A>extern bool /*@alt void@*/ empset_insert (empset s, employee e);
+<A NAME="line11"></A>extern void empset_insertUnique (empset s, employee e);
+<A NAME="line12"></A>extern bool /*@alt void@*/ empset_delete (empset s, employee e);
+<A NAME="line13"></A>extern /*@only@*/ empset empset_union (empset s1, empset s2);
+<A NAME="line14"></A>extern /*@only@*/ empset empset_disjointUnion (empset s1, empset s2);
+<A NAME="line15"></A>extern void empset_intersect (empset s1, empset s2);
+<A NAME="line16"></A>extern int empset_size (empset s);
+<A NAME="line17"></A>extern bool empset_member (employee e, empset s);
+<A NAME="line18"></A>extern bool empset_subset (empset s1, empset s2);
+<A NAME="line19"></A>extern employee empset_choose (empset s);
+<A NAME="line20"></A>extern /*@only@*/ char *empset_sprint (empset s);
+<A NAME="line21"></A>extern void empset_initMod (void);
+</pre>
+<P>
+<HR>
+<A HREF="index.html">Return to Index</A> | <A HREF="http://lclint.cs.virginia.edu/index.html">LCLint Home Page</A> <BR> <BR>
+<author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+<pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

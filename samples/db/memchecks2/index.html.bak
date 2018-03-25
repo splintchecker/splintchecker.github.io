@@ -1,0 +1,195 @@
+<html
+<head>
+<title> LCLint Sample - Memory Checks 2</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<h1>
+LCLint Sample - Memory Checks 2<BR>
+</h1>
+
+<H3> Changes from <A HREF="../memchecks1/index.html">Memory Checks 1</A> </H3>
+
+<A HREF="diffs.html">Differences</A>
+<P>
+Fixed all messages reported in first run using memory checks.  
+<P>
+
+<H3> Modules </H3>
+
+<UL>
+<LI>employee - employee datatype (<A HREF="employee.lcl.html">LCL</A>,
+<A HREF="employee.c.html">Code</A>,  <A HREF="employee.h.html">Header</A>)
+<LI>empset - sets of employees (<A HREF="empset.lcl.html">LCL</A>,
+<A HREF="empset.c.html">Code</A>,  <A HREF="empset.h.html">Header</A>)
+<LI>dbase - database of employees (<A HREF="dbase.lcl.html">LCL</A>, 
+<A HREF="dbase.c.html">Code</A>,  <A HREF="dbase.h.html">Header</A>)
+<LI>eref - reference to an employee (<A HREF="eref.lcl.html">LCL</A>,
+<A HREF="eref.c.html">Code</A>,  <A HREF="eref.h.html">Header</A>)
+<LI>erc - collection of erefs (<A HREF="erc.lcl.html">LCL</A>, <A
+HREF="erc.c.html">Code</A>,  <A HREF="erc.h.html">Header</A>)
+<LI>ereftab - table of employees and erefs (<A
+HREF="ereftab.lcl.html">LCL</A>, <A HREF="ereftab.c.html">Code</A>, <A HREF="ereftab.h.html">Header</A>)
+</UL>
+
+<H3> Memory Checking </h3>
+
+Now, the annotations we added propagate to detect new anomalies.
+<P>
+LCLint reports <A HREF="lclint.out.html">10 anomalies</A>.
+<P>
+
+<A NAME="null">
+<H4> <A href="../../../guide/guide.html#sec-7.2">Null Pointers</a> </h4>
+
+In part 1, we added a <tt>null</tt> annotation to the <tt>vals</tt>
+field of <A HREF="erc.h.html#line8"><tt>ercInfo</tt></A>.   Three new
+anomalies result: 
+
+<PRE>
+erc.c: (in function erc_insert)
+<A HREF="erc.c.html#line88">erc.c:88,2</A>: Function returns with possibly null storage derivable from
+               parameter c->vals->next
+  A possibly null pointer is dereferenced or misused.  Value is either the
+  result of a function which may return null (in which case, code should check
+  it is not null), or a global, parameter or structure field declared with the
+  null qualifier.  Use -null to suppress message.
+   <A HREF="erc.c.html#line85">erc.c:85,19</A>: Storage c->vals->next may become null
+erc.h: (in macro erc_choose)
+<A HREF="erc.h.html#line14">erc.h:14,25</A>: Arrow access from possibly null pointer c->vals: ((c)->vals)->val
+erc.h: (in macro erc_elements)
+<A HREF="erc.h.html#line19">erc.h:19,149</A>: Arrow access from possibly null pointer M__ec: M__ec->val
+   <A HREF="erc.h.html#line19">erc.h:19,69</A>: Storage M__ec may become null
+</PRE>
+
+The first suggests a <tt>null</tt> annotation should be added to the
+<tt>next</tt> field of <tt>ercList</tt>:
+<PRE>
+typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;
+</PRE>
+
+The other two indicate places where a null-pointer may be dereferenced.
+<P>
+For <tt>erc_choose</tt> there is a constraint on the caller that it only
+be called for a non-empty set.  If the set is non-empty, <tt>vals</tt>
+is not null.  Since there is nothing to enforce the caller constraint,
+it is good defensive programming practice to add an assertion to check
+that <tt>vals</tt> is not null before it is dereferenced.
+<P>
+The other error is similar.  In <tt>erc_elements</tt> we iterate through
+the elements of the <tt>erc</tt>.  The number of non-null <tt>val</tt>
+indirections should be the number of elements, but it makes good sense
+to add an assertion to make sure this is the case.  (Alternately, we
+could rewrite the loop as, <tt>while ((M__ec) != NULL)</tt> and remove
+the <tt>M_i</tt> variable.)
+
+<A NAME="onlyfree">
+<H4> <A href="../../../guide/guide.html#sec-5.2">Returning Fresh Storage</a></h4>
+
+Five errors report returning fresh or only storage as unqualified:
+
+<PRE>
+empset.c: (in function empset_disjointUnion)
+<A HREF="empset.c.html#line83">empset.c:83,10</A>: Fresh storage returned as unqualified (should be only): result
+  Fresh storage (newly allocated in this function) is transferred in a way that
+  the obligation to release storage is not propagated.   Use the /*@only@*/
+  annotation to indicate the a return value is the only reference to the
+  returned storage.  Use -freshtrans to suppress message.
+   <A HREF="empset.c.html#line67">empset.c:67,3</A>: Fresh storage result allocated
+empset.c: (in function empset_union)
+<A HREF="empset.c.html#line107">empset.c:107,10</A>: Fresh storage returned as unqualified (should be only): result
+   <A HREF="empset.c.html#line91">empset.c:91,3</A>: Fresh storage result allocated
+empset.h: (in macro empset_create)
+<A HREF="empset.h.html#line28">empset.h:28,27</A>: Only storage returned as unqualified: (erc_create())
+  The only reference to this storage is transferred to another reference (e.g.,
+  by returning it) that does not have the only annotation.  This may lead to a
+  memory leak, since the new reference is not necessarily released.  Use
+  -onlytrans to suppress message.
+empset.h: (in macro empset_sprint)
+<A HREF="empset.h.html#line34">empset.h:34,28</A>: Only storage returned as unqualified: (erc_sprint(es))
+< checking ereftab.c >
+ereftab.c: (in function ereftab_create)
+<A HREF="ereftab.c.html#line10">ereftab.c:10,10</A>: Only storage returned as unqualified: erc_create()
+</PRE>
+
+These result from the <tt>only</tt> annotations we added in <A
+HREF="../memchecks1/index.html#addonly">Memory Checks 1</a>.  These are
+fixed by adding <tt>only</tt> annotations on the function results in the
+specifications of 
+<A HREF="empset-next.lcl.html#line4">empset_create</A>,
+<A HREF="empset-next.lcl.html#line40">empset_union</A>,
+<A HREF="empset-next.lcl.html#line45">empset_disjointUnion</A>,
+<A HREF="empset-next.lcl.html#line78">empset_sprint</A>, and
+<A HREF="ereftab-next.lcl.html#line5">ereftab_create</A>.  
+
+<A NAME="only">
+<h4> <A href="../../../guide/guide.html#sec-5.2">Releasing Temporary Storage</a></h4>
+
+The <tt>only</tt> annotation we added to <tt>erc_final</tt> leads to one
+message reporting releasing temporary storage:
+
+<PRE>
+empset.h: (in macro empset_final)
+<A HREF="empset.h.html#line29">empset.h:29,37</A>: Implicitly temp storage s passed as only param: erc_final (s)
+  Temp storage (associated with a formal parameter) is transferred to a
+  non-temporary reference.  The storage may be released or new aliases created.
+   Use -temptrans to suppress message.
+</PRE>
+
+An <tt>only</tt> annotation is added to the parameter of <A
+HREF="empset-next.lcl.html#line9"><tt>empset_final</tt></A>. 
+
+<H4> <A href="../../../guide/guide.html#sec-5.2">Unreleased Field</a></H4>
+
+The final message reports a failure to release storage:
+<PRE>
+eref.c: (in function eref_initMod)
+<A HREF="eref.c.html#line70">eref.c:70,3</A>: Only storage eref_Pool.status not released before assignment:
+    eref_Pool.status = (eref_status *)malloc(size * sizeof(eref_status))
+  A memory leak has been detected.  Newly-allocated or only-qualified storage
+  is not released before the last reference to is it lost.  Use -mustfree to
+  suppress message.
+</PRE>
+The problem is that <tt>eref_Pool</tt> is not initialized before the
+call.  There is no memory leak, but we need to add a globals list to
+indicate that <tt>eref_Pool</tt> is not defined before the call:
+
+<PRE>
+void eref_initMod (void) 
+   /*@globals undef eref_Pool@*/
+</PRE>
+
+The <tt>undef</tt> qualifier means the variable is not defined before
+the call, so it is not an error to assign its fields before deallocating
+them.
+<P>
+In order to make this work properly, we need to make <tt>eref_Pool</tt>
+a file static variable.  Otherwise, we will get a consistency error
+since the specification does not list <tt>eref_Pool</tt>.  We could add
+<tt>eref_Pool</tt> to the specification globals list, and declared it as
+an interface variable, but it is really not intended to be exported.  It
+was exported originally so that macros exported by <tt>eref.h</tt> could
+use it.  Now, we make it a file static variable, and rewrite the macros
+that use it as functions.
+
+<P>
+<HR>
+<A HREF="run.html">
+<IMG ALIGN=left SRC =
+"http://larch-www.lcs.mit.edu:8001/larch/lclint/lclint-run.jpg" ALT = "Run LCLint"></A>
+<A HREF="../memchecks3/index.html">
+<IMG ALIGN=left SRC =
+"http://larch-www.lcs.mit.edu:8001/larch/lclint/right-arrow.jpg" ALT =
+"Continue to Memory Checks 3"></A>
+<A HREF="../index.html">
+<IMG ALIGN=left SRC = "http://larch-www.lcs.mit.edu:8001/larch/lclint/up-arrow.jpg" ALT = "Return to Summary"></A>
+<A HREF="http://larch-www.lcs.mit.edu:8001/larch/lclint/index.html">
+<IMG ALIGN=left SRC = "http://larch-www.lcs.mit.edu:8001/larch/lclint/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://larch-www.lcs.mit.edu:8001/~evs">David
+Evans</a> <br>
+<A href="http://larch-www.lcs.mit.edu:8001/">Systematic Program Develpoment</A><br>
+<a
+href="mailto:evs@larch.lcs.mit.edu"><em>evs@larch.lcs.mit.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<A NAME="line0"></A><html><head>
+<title>special.c</title>
+</head><body>
+<h3>special.c</h3>
+<PRE>
+<A NAME="line1"></A>typedef struct 
+<A NAME="line2"></A>{
+<A NAME="line3"></A>  int id;
+<A NAME="line4"></A>  /*@only@*/ char *name;
+<A NAME="line5"></A>} *record;
+<A NAME="line6"></A> 
+<A NAME="line7"></A>static /*@special@*/ record record_new (void)
+<A NAME="line8"></A>  /*@defines result-&gt;id@*/
+<A NAME="line9"></A>{
+<A NAME="line10"></A>  record r = (record) malloc (sizeof (*r));
+<A NAME="line11"></A> 
+<A NAME="line12"></A>  assert (r != NULL);
+<A NAME="line13"></A>  r-&gt;id = 3;
+<A NAME="line14"></A>  return r;
+<A NAME="line15"></A>}
+<A NAME="line16"></A> 
+<A NAME="line17"></A>static void record_setName (/*@special@*/ record r, /*@only@*/ char *name)
+<A NAME="line18"></A>   /*@defines r-&gt;name@*/
+<A NAME="line19"></A>{
+<A NAME="line20"></A>  r-&gt;name = name;
+<A NAME="line21"></A>}
+<A NAME="line22"></A> 
+<A NAME="line23"></A>record record_create (/*@only@*/ char *name)
+<A NAME="line24"></A>{
+<A NAME="line25"></A>  record r = record_new ();
+<A NAME="line26"></A>  record_setName (r, name);
+<A NAME="line27"></A>  return r;
+<A NAME="line28"></A>}
+<A NAME="line29"></A> 
+<A NAME="line30"></A>void record_clearName (/*@special@*/ record r)
+<A NAME="line31"></A>   /*@releases r-&gt;name@*/
+<A NAME="line32"></A>   /*@post:isnull r-&gt;name@*/
+<A NAME="line33"></A>{
+<A NAME="line34"></A>  free (r-&gt;name);
+<A NAME="line35"></A>  r-&gt;name = NULL;
+<A NAME="line36"></A>}
+<A NAME="line37"></A> 
+<A NAME="line38"></A>void record_free (/*@only@*/ record r)
+<A NAME="line39"></A>{
+<A NAME="line40"></A>  record_clearName (r);
+<A NAME="line41"></A>  free (r);
+<A NAME="line42"></A>}
+<A NAME="line43"></A> 
+<A NAME="line44"></A> 
+<A NAME="line45"></A> 
+<A NAME="line46"></A> 
+<A NAME="line47"></A> 
+</pre>
+</body>
+</html> 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

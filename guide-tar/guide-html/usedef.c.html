@@ -1,0 +1,89 @@
+<A NAME="line9"></A><html><head>
+<title>usedef.c</title>
+</head><body>
+<h3>usedef.c</h3>
+<PRE>
+<A NAME="line1"></A>extern void 
+<A NAME="line2"></A>  setVal (/*@out@*/ int *x);
+<A NAME="line3"></A>extern int 
+<A NAME="line4"></A>  getVal (/*@in@*/ int *x);
+<A NAME="line5"></A>extern int mysteryVal (int *x);
+<A NAME="line6"></A> 
+<A NAME="line7"></A>int 
+<A NAME="line8"></A>dumbfunc (/*@out@*/ int *x, int i)
+<A NAME="line9"></A>{
+<A NAME="line10"></A>  if (i &gt 3) 
+<A NAME="line11"></A>    return *x;
+<A NAME="line12"></A>  else if (i &gt 1) 
+<A NAME="line13"></A>    return getVal (x);
+<A NAME="line14"></A>  else if (i == 0) 
+<A NAME="line15"></A>    return mysteryVal (x);
+<A NAME="line16"></A>  else
+<A NAME="line17"></A>    { 
+<A NAME="line18"></A>      setVal (x);
+<A NAME="line19"></A>      return *x;
+<A NAME="line20"></A>    }     
+<A NAME="line21"></A>}
+</pre>
+</body>
+</html>  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

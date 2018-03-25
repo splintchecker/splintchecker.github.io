@@ -1,0 +1,5 @@
+#!/usr/cs/bin/bash
+cd $1
+echo "<PRE><CODE>" > $2.html
+$INS_LINE_NUMBER < $2>> $2.html
+echo "</PRE></CODE> >> $2.html

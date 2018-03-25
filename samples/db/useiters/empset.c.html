@@ -1,0 +1,233 @@
+<A NAME="line35"></A><html><head>
+<title>empset.c</title>
+</head><body>
+<h3>empset.c</h3>
+<PRE>
+<A NAME="line1"></A>#include "<A HREF="empset.h.html">empset.h</A>"
+<A NAME="line2"></A> 
+<A NAME="line3"></A>static bool initDone = FALSE;
+<A NAME="line4"></A> 
+<A NAME="line5"></A>eref _empset_get (employee e, erc s) 
+<A NAME="line6"></A>{
+<A NAME="line7"></A>  eref er;
+<A NAME="line8"></A>  ercIter it;
+<A NAME="line9"></A>  employee e1;
+<A NAME="line10"></A> 
+<A NAME="line11"></A>  for_ercElems (er, it, s) 
+<A NAME="line12"></A>    {
+<A NAME="line13"></A>      e1 = eref_get (er);
+<A NAME="line14"></A>      if (employee_equal (&e1, &e))
+<A NAME="line15"></A>	erc_iterReturn (it, er);
+<A NAME="line16"></A>    }
+<A NAME="line17"></A>  
+<A NAME="line18"></A>  return erefNIL;
+<A NAME="line19"></A>}
+<A NAME="line20"></A> 
+<A NAME="line21"></A>void empset_clear (empset s) 
+<A NAME="line22"></A>{
+<A NAME="line23"></A>  erc_clear (s);
+<A NAME="line24"></A>}
+<A NAME="line25"></A> 
+<A NAME="line26"></A>bool empset_insert (empset s, employee e) 
+<A NAME="line27"></A>{
+<A NAME="line28"></A>  if (!eref_equal (_empset_get (e, s), erefNIL)) 
+<A NAME="line29"></A>    {
+<A NAME="line30"></A>      return FALSE;
+<A NAME="line31"></A>    }
+<A NAME="line32"></A>  
+<A NAME="line33"></A>  empset_insertUnique (s, e);
+<A NAME="line34"></A>  return TRUE;
+<A NAME="line35"></A>}
+<A NAME="line36"></A> 
+<A NAME="line37"></A>void empset_insertUnique (empset s, employee e) 
+<A NAME="line38"></A>{
+<A NAME="line39"></A>  eref er;
+<A NAME="line40"></A> 
+<A NAME="line41"></A>  er = ereftab_lookup (e, known);
+<A NAME="line42"></A> 
+<A NAME="line43"></A>  if (eref_equal (er, erefNIL)) 
+<A NAME="line44"></A>    {
+<A NAME="line45"></A>      er = eref_alloc ( );
+<A NAME="line46"></A>      eref_assign (er,e);
+<A NAME="line47"></A>      ereftab_insert (known, e, er);
+<A NAME="line48"></A>    }
+<A NAME="line49"></A>  
+<A NAME="line50"></A>  erc_insert (s, er);
+<A NAME="line51"></A>}
+<A NAME="line52"></A> 
+<A NAME="line53"></A>bool empset_delete (empset s, employee e) 
+<A NAME="line54"></A>{
+<A NAME="line55"></A>  eref er;
+<A NAME="line56"></A> 
+<A NAME="line57"></A>  er = _empset_get (e, s);
+<A NAME="line58"></A> 
+<A NAME="line59"></A>  if (eref_equal (er, erefNIL)) 
+<A NAME="line60"></A>    {
+<A NAME="line61"></A>      return FALSE;
+<A NAME="line62"></A>    }
+<A NAME="line63"></A>  return erc_delete (s, er);
+<A NAME="line64"></A>}
+<A NAME="line65"></A> 
+<A NAME="line66"></A>empset empset_disjointUnion (empset s1, empset s2) 
+<A NAME="line67"></A>{
+<A NAME="line68"></A>  erc result;
+<A NAME="line69"></A>  ercIter it;
+<A NAME="line70"></A>  eref er;
+<A NAME="line71"></A>  empset tmp;
+<A NAME="line72"></A>  
+<A NAME="line73"></A>  result = erc_create ( );
+<A NAME="line74"></A> 
+<A NAME="line75"></A>  if (erc_size (s1) &gt; erc_size (s2)) 
+<A NAME="line76"></A>    {
+<A NAME="line77"></A>      tmp = s1;
+<A NAME="line78"></A>      s1 = s2;
+<A NAME="line79"></A>      s2 = tmp;
+<A NAME="line80"></A>    }
+<A NAME="line81"></A>  
+<A NAME="line82"></A>  erc_join (result, s1);
+<A NAME="line83"></A>  /*@-mods@*/
+<A NAME="line84"></A>  for_ercElems (er, it, s2)
+<A NAME="line85"></A>    empset_insertUnique (result, eref_get (er));
+<A NAME="line86"></A>  /*@=mods@*/
+<A NAME="line87"></A> 
+<A NAME="line88"></A>  return result;
+<A NAME="line89"></A>}
+<A NAME="line90"></A> 
+<A NAME="line91"></A>empset empset_union (empset s1, empset s2) 
+<A NAME="line92"></A>{
+<A NAME="line93"></A>  eref er;
+<A NAME="line94"></A>  ercIter it;
+<A NAME="line95"></A>  erc result;
+<A NAME="line96"></A>  empset tmp;
+<A NAME="line97"></A> 
+<A NAME="line98"></A>  result = erc_create ();
+<A NAME="line99"></A> 
+<A NAME="line100"></A>  if (erc_size (s1) &gt; erc_size (s2)) 
+<A NAME="line101"></A>    {
+<A NAME="line102"></A>      tmp = s1;
+<A NAME="line103"></A>      s1 = s2;
+<A NAME="line104"></A>      s2 = tmp;
+<A NAME="line105"></A>    }
+<A NAME="line106"></A>  erc_join (result, s2);
+<A NAME="line107"></A> 
+<A NAME="line108"></A>  /*@-mods@*/
+<A NAME="line109"></A>  for_ercElems (er, it, s1) 
+<A NAME="line110"></A>    if (!empset_member (eref_get (er), s2))
+<A NAME="line111"></A>      erc_insert (result, er);
+<A NAME="line112"></A>  /*@=mods@*/
+<A NAME="line113"></A> 
+<A NAME="line114"></A>  return result;
+<A NAME="line115"></A>}
+<A NAME="line116"></A> 
+<A NAME="line117"></A>void empset_intersect (empset s1, empset s2) 
+<A NAME="line118"></A>{
+<A NAME="line119"></A>  eref er;
+<A NAME="line120"></A>  ercIter it;
+<A NAME="line121"></A>  erc toDelete;
+<A NAME="line122"></A> 
+<A NAME="line123"></A>  toDelete = erc_create ();
+<A NAME="line124"></A> 
+<A NAME="line125"></A>  for_ercElems (er, it, s1)
+<A NAME="line126"></A>    if (!empset_member (eref_get (er), s2))
+<A NAME="line127"></A>      erc_insert (toDelete, er);
+<A NAME="line128"></A>  
+<A NAME="line129"></A>  for_ercElems (er, it, toDelete)
+<A NAME="line130"></A>    erc_delete (s1, er);
+<A NAME="line131"></A> 
+<A NAME="line132"></A>  erc_final (toDelete);
+<A NAME="line133"></A>}
+<A NAME="line134"></A> 
+<A NAME="line135"></A>bool empset_subset (empset s1, empset s2) 
+<A NAME="line136"></A>{
+<A NAME="line137"></A>  eref er;
+<A NAME="line138"></A>  ercIter it;
+<A NAME="line139"></A> 
+<A NAME="line140"></A>  /*@-mods@*/  
+<A NAME="line141"></A>  for_ercElems (er, it, s1) 
+<A NAME="line142"></A>    if (!empset_member (eref_get (er), s2))
+<A NAME="line143"></A>      erc_iterReturn (it, FALSE);
+<A NAME="line144"></A>  /*@=mods@*/
+<A NAME="line145"></A> 
+<A NAME="line146"></A>  return TRUE;
+<A NAME="line147"></A>}
+<A NAME="line148"></A> 
+<A NAME="line149"></A>void empset_initMod (void) 
+<A NAME="line150"></A>{
+<A NAME="line151"></A>  if (initDone) return;
+<A NAME="line152"></A> 
+<A NAME="line153"></A>  bool_initMod ();
+<A NAME="line154"></A>  employee_initMod ();
+<A NAME="line155"></A>  eref_initMod ();
+<A NAME="line156"></A>  erc_initMod ();
+<A NAME="line157"></A>  ereftab_initMod ();
+<A NAME="line158"></A>  known = ereftab_create ();
+<A NAME="line159"></A>  initDone = TRUE;
+<A NAME="line160"></A>}
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

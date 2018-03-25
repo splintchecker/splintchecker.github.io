@@ -1,0 +1,239 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint User's Guide - Section 4: Function Interfaces</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<h2>
+<a name="sec-4">
+4. Function Interfaces
+</a></h2>
+Functions communicate with their calling environment through an interface.  The
+caller communicates the values of actual parameters and global variables to the
+function, and the function communicates to the caller through the return value,
+global variables and storage reachable from the actual parameters.  By keeping
+interfaces narrow (i.e., restricting the amount of information visible across a
+function interface), we can understand and implement functions independently.
+<p>
+<p>
+A function prototype documents the interface to a function.  It serves as a
+contract between the function and its caller.  In early versions of C, the
+function "prototype" was very limited.  It described the type returned by the
+function but nothing about its parameters.  The main improvement provided by
+ANSI C was the ability to add information on the number and types of parameter
+to a function.  LCLint provides the means to express much more about a function
+interface: what global variable the function may use, what values visible to
+the caller it may modify, if a pointer parameter may be a null pointer or point
+to undefined storage, if storage pointed to by a parameter is deallocated
+before the function returns, if the function may create new aliases to a
+parameter, can the caller modify or deallocate the return value, etc.  <p>
+<p>
+The extra interface information places constraints on both how the function may
+be called and how it may be implemented.  LCLint reports places where these
+constrains are not satisfied.  Typically, these indicate bugs in the code or
+errors in the interface documentation.<p>
+<p>
+This section describes syntactic comments may be added to a function
+declaration to document what global variables the function implementation may
+use and what values visible to its caller it may modify.  Sections 5-7 describe
+annotations may be added to parameters to constrain valid arguments to a
+function and how these arguments may be used after the call and to the return
+value to constrain results. 
+<a name="_Toc344355403"><a name="_Ref344892358"><a name="_Ref344908335"><a name="_Ref348845225"><a name="_Toc349905858">
+<h2>
+<a name="RTFToC17">
+<a name="sec-4.1">4.1 Modifications</A></a></a></a></a></a>
+</a></h2>
+The modifies clause lists what values visible to the caller may be modified by
+a function.  Modifies clauses limit what values a function may modify, but they
+do not require that listed values are always modified.  The declaration,
+<pre>
+int f (int *p, int *q) /*@modifies *p@*/;
+</pre>
+declares a function f that may modify the value pointed to by its first
+argument but may not modify the value of its second argument or any global
+state.<p>
+<p>
+LCLint checks that a function does not modify any caller-visible value not
+encompassed by its  modifies clause and does modify all values listed in its
+modifies clause on some possible execution of the function.  Figure 4 shows an
+example of modifies checking done by LCLint.
+<a name="_Ref344908343"><a name="_Toc349905859">
+<h4>
+<a name="RTFToC18">
+<a name="sec-4.1.1">4.1.1 Special Modifications</A></a></a>
+</a></h4>
+A few special names are provided for describing function modifications:<p>
+<tt>internalState</tt>
+<blockquote>
+The function modifies some internal state (that is, the value of a static
+variable).  Even though a client cannot access the internal state directly, it
+is important to know that something may be modified by the function call
+both for clear documentation and for checking undefined order of
+evaluation (<a href="sec10.html#sec-10.1">Section 10.1</a>) and
+side-effect free parameters (Section 8.2.1).<p> 
+</blockquote>
+<tt>fileSystem</tt>
+<blockquote>
+The function modifies the file system.  Any modification that may change
+the system state is considered a file system modification.  All
+functions that modify an object of type pointer to <tt>FILE</tt> also
+modify the file system.  In addition, functions that do not modify a
+<tt>FILE</tt> pointer but modify some state that is visible outside this
+process also modify the file system (e.g., <tt>rename</tt>).  The flag
+<a href="appC.html#flag-modfilesys"><tt>mod-file-system</tt></a>
+controls reporting of undocumented file system modifications.
+</blockquote>
+
+<tt>nothing</tt>
+<blockquote>
+The function modifies nothing (i.e., it is side-effect free). 
+</blockquote>
+<p>
+The syntactic comment, <tt>/*@*/</tt> in a function declaration or definition (after the
+parameter list, before the semi-colon or function body) denotes a function that
+modifies nothing and does not use any global variables (see <a href="sec4.html#sec-4.2">Section 4.2</a>).
+<a name="_Ref345591515"><a name="_Toc349905860">
+<p>
+<a href="fig4.html">Figure 4.  Modifies checking.</a>
+<p>
+
+<h4>
+<a name="RTFToC19">
+<a name="sec-4.1.2">4.1.2 Missing Modifies Clauses</A></a></a>
+</a></h4>
+LCLint is designed so programs with many functions that are declared without
+modifies clauses can be checked effectively.  Unless modnomods is in on, no
+modification errors are reported checking a function declared with no modifies
+clause.  <p>
+<p>
+A function with no modifies clause is an <i>unconstrained</i> function since
+there are no documented constraints on what it may modify.  When an
+unconstrained function is called, it is checked differently from a function
+declared with a modifies clause.  To prevent spurious errors, no modification
+error is reported at the call site unless the moduncon flag is on.  Flags
+control whether errors involving unconstrained functions are reported for other
+checks that depend on modifications (side-effect free macro parameters
+(<a href="sec8.html#sec-8.2.1">Section 8.2.1</a>), undefined evaluation order (<a href="sec10.html#sec-10.1">Section 10.1</a>), and likely infinite loops
+(<a href="sec10.html#sec-10.2.1">Section 10.2.1</a>).)
+<a name="_Toc349905861">
+<h4>
+<a name="RTFToC20">
+<a name="sec-4.1.3">4.1.3 Limitations</A></a>
+</a></h4>
+Determining whether a function modifies a particular parameter or global is in
+general an undecidable<a href="guide_fn.html#fn9">[9]</a> problem.  To enable useful
+checking, certain simplifying assumptions are necessary.  LCLint assumes an
+object is modified when it appears on the left hand side of an assignment or it
+is passed to a function as a parameter which may be modified by that function
+(according to the called function's modifies clause). Hence, LCLint will report
+spurious modification errors for assignments that do not change the value
+of an object or modifications that are always reversed before a procedure
+returns.  The <tt>/*@-mods@*/</tt> and <tt>/*@=mods@*/</tt> control comments can be used around
+these modifications to suppress the message. 
+<a name="_Toc344355404"><a name="_Ref344893725"><a name="_Ref344908307"><a name="_Ref347171487"><a name="_Ref347475720"><a name="_Ref348845219"><a name="_Toc349905862">
+<h2>
+<a name="RTFToC21">
+<a name="sec-4.2">4.2 Global Variables</A></a></a></a></a></a></a></a>
+</a></h2>
+Another aspect of a function's interface, is the global variables it uses.  A
+globals list in a function declaration lists external variables that may be
+used in the function body. LCLint checks that global variables used in a
+procedure match those listed in its globals list. A global is used in a
+function if it appears in the body directly, or it is in the globals list of a
+function called in the body. LCLint reports if a global that is used in a
+procedure is not listed in its globals list, and if a listed global is not used
+in the function implementation.  <p>
+
+<a href="fig5.html">Figure 5</a> shows an example function definition with a globals list and associated checking done by LCLint.
+
+<h4>
+<a name="RTFToC22">
+<a name="sec-4.2.1">4.2.1 Controlling Globals Checking</A></a></a></a></a></a></a></a></a></a>
+</a></h4>
+Whether on not an error is reported for a use of a global variable in a given
+function depends on the scope of the variable (file static or external), the
+checking annotation used in the variable declaration or the implicit annotation
+if no checking annotation is used, whether or not the function is declared with
+a globals list, and flag settings. <p>
+<p>
+A global or file static variable declaration may be preceded by an annotation
+to indicate how the variable should be checked.  In order of decreasing checks,
+the annotations are:<p>
+<tt>/*@checkedstrict@*/</tt>
+<blockquote>
+Strictest checking.  Undocumented uses and modifications of the variable are
+reported in all functions whether or not they have a globals list (unless
+<a href="appC.html#flag-checkstrictglobs"><tt>checkstrictglobs</tt></a> is off).
+</blockquote>
+<tt>/*@checked@*/</tt>
+<blockquote>
+Undocumented use of the variable is reported in a function with a globals list,
+but not in a function declared with no globals (unless <a href="appC.html#flag-globnoglobs"><tt>globnoglobs</tt></a> is on).<p>
+</blockquote>
+<tt>/*@checkmod@*/</tt>
+<blockquote>
+Undocumented uses of the variable are not reported, but undocumented
+modifications are reported.   (If <a href="appC.html#flag-modglobsnomods"><tt>modglobsnomods</tt></a> is on, errors are reported even
+in functions declared with no modifies clause or globals list.)
+</blockquote>
+<tt>/*@unchecked@*/</tt>
+<blockquote>
+No messages are reported for undocumented use or modification of this global
+variable.  If a variable has none of these annotations, an implicit
+annotation is determined by the flag settings.  
+</blockquote>
+<p>
+Different flags control the implicit annotation for variables declared with
+global scope and variables declared with file scope (i.e., using the static
+storage qualifier). To set the implicit annotation for global variables
+declared in <i>context</i> (globs for external variables or statics for file
+static variable) to be <i>annotation</i> (<tt>checked</tt>, <tt>checkmod</tt>, <tt>checkedstrict</tt>) use
+imp<i>&lt;annotation&gt;&lt;context&gt;</i>.  For example,
+<a href="appC.html#flag-impcheckedstrictstatics"><tt>+impcheckedstrictstatics</tt></a> makes the implicit checking on unqualified file static
+variables checkedstrict.  (See <a href="appC.html">Apppendix C</a>, page 51, for a complete list of
+globals checking flags.)
+<a name="_Toc344355406"><a name="_Ref344894947"><a name="_Toc349905864">
+<h2>
+<a name="RTFToC23">
+<a name="sec-4.3">4.3 Declaration Consistency</A></a></a></a>
+</a></h2>
+LCLint checks that function declarations and definitions are consistent.  The
+general rule is that the <i>first</i> declaration of a function imply all later
+declarations and definitions.  If a function is declared in a header file, the
+first declaration processed is its first declaration (if it is declared in more
+than one header file an error is reported if redecl is set).  Otherwise, the
+first declaration in the file defining the function is its first declaration.<p>
+<p>
+Later declarations may not include variables in the globals list that were not
+included in the first declaration.  The exception to this is when the first
+declaration is in a header file and the later declaration or definition
+includes file static variables.  Since these are not visible in the header
+file, they can not be included in the header file declaration.  Similarly, the
+modifies clause of a later declaration may not include objects that are not
+modifiable in the first declaration.  The later declaration may be more
+specific.  For example, if the header declaration is:
+<pre>
+extern void setName (employee e, char *s) /*@modifies e@*/;
+</pre>
+the later declaration could be,
+<pre>
+   void setName (employee e, char *) /*@modifies e-&gt;name@*/;
+</pre>
+If employee is an abstract type, the declaration in the header should not refer
+to a particular implementation (i.e., it shouldn't rely on there being a name
+field), but the implementation declaration can be more specific.  <p>
+<p>
+This rule also applies to file static variables.  The header declaration for a
+function that modifies a file static variable should use modifies internalState
+since file static variables are not visible to clients.  The implementation
+declaration should list the actual file static variables that may be modified.
+<p>
+<b>Next: <A HREF="sec5.html">Memory Management</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+<!--#include virtual="footer.html"-->
+

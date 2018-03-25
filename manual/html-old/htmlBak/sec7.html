@@ -1,0 +1,786 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 7. Function Interfaces</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+<h1 style='margin-left:0in;text-indent:0in'><a name="_Ref361649198"></a><a
+name="_Ref361649165"></a><a name="_Ref354415790"></a><a name="_Ref350062908"></a><a
+name="_Ref348845273"></a><a name="_Ref345591297"></a><a name="_Ref344916609"></a><a
+name="_Ref344894369"></a><a name="_Ref344891459"></a><a name="_Ref344798185"></a><a
+name="_Toc344355418"></a><a name="_Toc534974976"></a><a name="_Ref534014913"></a><a
+name="_Ref534014715"></a><a name="_Ref348871484">7<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Function Interfaces</a></h1>
+
+<p class=TextFontCX>Functions communicate with their calling environment through an interface.  The caller communicates
+the values of actual parameters and global variables to the function, and the
+function communicates to the caller through the return value, global variables
+and storage reachable from the actual parameters.  By keeping interfaces narrow
+(restricting the amount of information visible across a function interface), we
+can understand and implement functions independently.  </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>A function prototype
+documents the interface to a function.  It serves as a contract between the
+function and its caller.  In early versions of C, the function “prototype” was
+very limited.  It described the type returned by the function but nothing about
+its parameters.  ANSI C (1989) provided function prototypes with the ability to
+add information on the number and types of parameter to a function.  Splint
+provides the means to express much more about a function interface such as what
+global variable the function may use and what values visible to the caller it
+may modify.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>The extra interface
+information places constraints on both how the function may be called and how
+it may be implemented.  Splint reports places where these constraints are not
+satisfied.  Typically, these indicate bugs in the code or errors in the
+interface documentation.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>This section describes
+annotations that may be added to a function declaration to document what global
+variables the function implementation may use and what values visible to its
+caller it may modify.</p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534974977"></a><a
+name="_Ref348845225"></a><a name="_Ref344908335"></a><a name="_Ref344892358"></a><a
+name="_Toc344355403">7.1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Modifications</a></h2>
+
+<p class=TextFontCX>The modifies clause lists what values visible to the caller may be modified by a function. 
+Modifies clauses limit what values a function may modify, but they do not
+require that listed values are always modified.  The declaration,</p>
+
+<p class=example>int f (int *p, int *q) /*@modifies *p@*/;</p>
+
+<p class=TextFontCX>declares a function <span
+class=CodeText><span style='font-size:10.0pt'>f</span></span> that may modify
+the value pointed to by its first argument but may not modify the value of its
+second argument or any global state.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Splint checks that a function
+does not modify any caller-visible value not encompassed by its modifies clause
+and does modify all values listed in its modifies clause on some possible
+execution of the function.  Figure 12 shows an example of modifies checking done by Splint.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<center>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 
+ style='margin-left:5.4pt;border-collapse:collapse' width=80%>
+ <tr>
+  <td width="40%" valign=top style='border:solid black 1.5pt;
+  border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt;height:13.5pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><a name="_Ref344908343"><span class=Keyword><b><span
+  style='font-size:10.0pt;color:white'>modify.c</span></b></span></a></p>
+  </td>
+  <td width=60% valign=top style='border-top:solid black 1.5pt;
+  border-left:none;border-bottom:none;border-right:solid black 1.5pt;
+  background:black;padding:0in 5.4pt 0in 5.4pt;height:13.5pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><b><span style='color:white'>Running Splint</span></b></p>
+  </td>
+ </tr>
+ <tr style='height:120.9pt'>
+  <td valign=top style='border:solid black 1.5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:120.9pt'>
+  <p class=Verbatim>void setx (int *x, int *y)</p>
+  <p class=Verbatim>  /*@modifies *x@*/</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>4</span></span> 
+  *y = *x;</p>
+  <p class=Verbatim>}</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>void sety (int *x, int *y)</p>
+  <p class=Verbatim>  /*@modifies *y@*/</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim>   setx (y, x);</p>
+  <p class=Verbatim>}</p>
+  </td>
+  <td width=60% valign=top style='border-top:none;border-left:
+  none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt;
+  padding:0in 5.4pt 0in 5.4pt;height:120.9pt'>
+  <p class=lclintrun>&gt; splint modify.c +checks</p>
+  <p class=lclintrun>modify.c:4: Undocumented modification of *y: *y = *x</p>
+  <p class=lclintrun>modify.c:5: Suspect object listed in modifies of setx</p>
+  <p class=lclintrun>               not modified: *x</p>
+  <p class=lclintrun>   modify.c:1: Declaration of setx</p>
+  <p class=TextFontCX><i><span style='font-size:
+  10.0pt'>&nbsp;</span></i></p>
+  <p class=TextFontCX style='page-break-after:
+  avoid'><i><span style='font-size:10.0pt'>There are n</span></i><i><span
+  style='font-size:10.0pt'>o errors for </span></i><span class=CodeText><span
+  style='font-size:10.0pt'>sety</span></span><i><span style='font-size:10.0pt'>
+  – the call to </span></i><span class=CodeText><span style='font-size:10.0pt'>setx</span></span><i><span
+  style='font-size:10.0pt'> modifies the value <br>pointed to by its first
+  parameter (</span></i><span class=CodeText><span style='font-size:10.0pt'>y</span></span><i><span
+  style='font-size:10.0pt'>) as documented by the <br>modifies clause.  The </span></i><span
+  class=Flag><span style='font-size:10.0pt'>checks</span></span><i><span style='font-size:10.0pt'> mode turns on </span></i><span class=Flag><span
+  style='font-size:10.0pt'>mustmod</span></span><i><span style='font-size:10.0pt'>
+  </span></i><i><span style='font-size:10.0pt'>checking,<br> so the second error
+  concerning missing documented <br>modifications is reported.</span></i></p>
+  </td>
+ </tr>
+ <tr height=0>
+  <td  style='border:none'></td>
+  <td  style='border:none'></td>
+ </tr>
+</table>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0 >
+ <tr>
+  <td valign=top style='padding-top:4.3pt;padding-right:
+  .3in;padding-bottom:4.3pt;padding-left:.3in'>
+  <p class=MsoCaption><a name="_Toc534824616"></a><a name="_Ref534822865">Figure
+  12</a>.  Modification</p>
+  </td>
+ </tr>
+</table>
+
+</center>
+
+<br clear=ALL>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974978">7.1.1<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>State Modifications</a></h3>
+
+<p class=beforelist>A few special names are provided for describing function
+modifications that effect state not identifiable through parameters or global
+variables:</p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>internalState</span></span></p>
+
+<p class=IndentText>The function modifies some internal state (that is, the
+value of a <span class=CodeText><span style='font-size:10.0pt'>static</span></span>
+variable).  Even though a client cannot access the internal state directly, it
+is important to know that something may be modified by the function call both
+for clear documentation and for checking undefined order of evaluation (Section 8.2) and side effect free parameters (Section 11.2.1).</p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>fileSystem</span></span></p>
+
+<p class=IndentText>The function modifies the file system.  Any modification
+that may change the system state is considered a file system modification.  All
+functions that modify an object of type pointer to <span class=CodeText><span
+style='font-size:10.0pt'>FILE</span></span> also modify the file system.  In
+addition, functions that do not modify a <span class=CodeText><span
+style='font-size:10.0pt'>FILE</span></span> pointer but modify some state that
+is visible outside this process also modify the file system (e.g., <span
+class=CodeText><span style='font-size:10.0pt'>rename</span></span>).   The flag
+<span class=Flag><span style='font-size:10.0pt'>mod-file-system</span></span> controls reporting of undocumented file system modifications.</p>
+
+<p class=MsoListBullet><span class=Annot><span style='font-size:10.0pt'>nothing</span></span></p>
+
+<p class=IndentText>The function modifies nothing (i.e., it is side effect
+free). </p>
+
+<p class=TextFontCX style='margin-left:.5in'>&nbsp;</p>
+
+<p class=TextFontCX>The annotation, <span
+class=Annot><span style='font-size:10.0pt'>/*@*/</span></span> in a function declaration or definition (after the parameter list, before the
+semi-colon or function body) denotes a function that modifies nothing and does
+not use any global variables (see Section 7.2).</p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974979"></a><a
+name="_Ref345591515">7.1.2<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Missing Modifies Clauses</a></h3>
+
+<p class=TextFontCX>Splint is designed so
+programs with many functions that are declared without modifies clauses can be
+checked effectively.  Unless <span class=Flag><span style='font-size:10.0pt'>modnomods</span></span>
+is in on, no modification errors are reported checking a function declared with
+no modifies clause.  </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>A function with no modifies
+clause is an <i>unconstrained</i> function since there are no documented
+constraints on what it may modify.  When an unconstrained function is called,
+it is checked differently from a function declared with a modifies clause.  To
+prevent spurious errors, no modification error is reported at the call site
+unless the <span class=Flag><span style='font-size:10.0pt'>mod-uncon</span></span> flag is on.  Flags control whether errors involving unconstrained functions are reported for other checks that depend on modifications (side effect free macro parameters (Section
+11.2.1), undefined evaluation order (Section 8.2), and likely infinite loops (Section 8.3.1).)</p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Ref534980042"></a><a
+name="_Toc534974980"></a><a name="_Ref534972121"></a><a name="_Ref348845219"></a><a
+name="_Ref347475720"></a><a name="_Ref347171487"></a><a name="_Ref344908307"></a><a
+name="_Ref344893725"></a><a name="_Toc344355404">7.2<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Global Variables</a></h2>
+
+<p class=TextFontCX>Another aspect of a
+function’s interface, is the global variables it uses.  A globals list in a function declaration lists external variables that may be used in the
+function body.  Splint checks that global variables used in a procedure match
+those listed in its globals list. A global is used in a function if it appears
+in the body directly, or it is in the globals list of a function called in the
+body. Splint reports if a global that is used in a procedure is not listed in
+its globals list, and if a listed global is not used in the function
+implementation.  Figure 13 shows an example function definition with a globals list and associated checking done by Splint.</p>
+<p>
+<center>
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ style='margin-left:9.9pt;border-collapse:collapse;margin-left:-2.25pt;
+ margin-right:-2.25pt'>
+ <tr style='height:13.25pt'>
+  <td  valign=top style='width:202.5pt;border:solid black 1.5pt;
+  border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt;height:13.25pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><span class=Keyword><b><span style='font-size:10.0pt;
+  color:white'>globals.c</span></b></span></p>
+  </td>
+  <td  valign=top style='width:220.5pt;border-top:solid black 1.5pt;
+  border-left:none;border-bottom:none;border-right:solid black 1.5pt;
+  background:black;padding:0in 5.4pt 0in 5.4pt;height:13.25pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><b><span style='color:white'>Running Splint</span></b></p>
+  </td>
+ </tr>
+ <tr style='height:70.65pt'>
+  <td  valign=top style='width:202.5pt;border:solid black 1.5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:70.65pt'>
+  <p class=Verbatim><span style='font-size:9.5pt'>int glob1, glob2;</span></p>
+  <p class=Verbatim><span style='font-size:9.5pt'>&nbsp;</span></p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>3 </span></span><span
+  style='font-size:9.5pt'>int f (void) /*@globals glob1;@*/</span></p>
+  <p class=Verbatim><span style='font-size:9.5pt'>{</span></p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>5  </span></span><span
+  style='font-size:9.5pt'>return glob2;</span></p>
+  <p class=Verbatim><span style='font-size:9.5pt'>}</span></p>
+  </td>
+  <td  valign=top style='width:220.5pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt;
+  padding:0in 5.4pt 0in 5.4pt;height:70.65pt'>
+  <p class=lclintrun>&gt; splint globals.c +checks</p>
+  <p class=lclintrun>&nbsp;</p>
+  <p class=lclintrun>globals.c:5: Undocumented use of global glob2</p>
+  <p class=lclintrun>globals.c:3: Global glob1 listed but not used</p>
+  <p class=lclintrun>&nbsp;</p>
+  <p class=lclintrun style='page-break-after:avoid'>&nbsp;</p>
+  </td>
+ </tr>
+</table>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0>
+ <tr>
+  <td valign=top align=left style='padding-top:8.65pt;padding-right:
+  9.35pt;padding-bottom:8.65pt;padding-left:9.35pt'>
+  <p class=MsoCaption><a name="_Ref349498221"></a><a name="_Ref349498215"></a><a
+  name="_Ref347468808"></a><a name="_Ref347468791"></a><a name="_Ref344908072"></a><a
+  name="_Ref344908069"></a><a name="_Ref344893745"></a><a name="_Toc344355405"></a><a
+  name="_Toc534824617"></a><a name="_Ref534822988">Figure 13</a>.  Global
+  Variables</p>
+  </td>
+ </tr>
+</table>
+
+</center>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974981">7.2.1<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Controlling Globals Checking</a></h3>
+
+<p class=TextFontCX>Whether on not an error is
+reported for a use of a global variable in a given function depends on the
+scope of the variable (file <span class=CodeText><span style='font-size:10.0pt'>static</span></span>
+or external), the checking annotation used in the variable declaration or the
+implicit annotation if no checking annotation is used, whether or not the
+function is declared with a globals list, and flag settings.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=beforelist>A global or file static variable declaration may be
+preceded by an annotation to indicate how the variable should be checked.  In
+order of decreasing checks, the annotations are:</p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@checkedstrict@*/</span></span></p>
+
+<p class=IndentText>Strictest checking.  Undocumented uses and modifications of
+the variable are reported in all functions whether or not they have a globals
+list (unless <span class=Flag><span style='font-size:10.0pt'>check-strict-globs</span></span>
+is off).</p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@checked@*/</span></span></p>
+
+<p class=IndentText>Undocumented use of the variable is reported in a function
+with a globals list, but not in a function declared with no globals (unless <span
+class=Flag><span style='font-size:10.0pt'>glob-noglobs</span></span> is on).<a name=here></a></p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@checkmod@*/</span></span></p>
+
+<p class=IndentText>Undocumented uses of the variable are not reported, but
+undocumented modifications are reported.   (If <span class=Flag><span
+style='font-size:10.0pt'>mod-globs-nomods</span></span> is on, errors are
+reported even in functions declared with no modifies clause or globals list.)</p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@unchecked@*/</span></span></p>
+
+<p class=IndentText>No messages are reported for undocumented use or
+modification of this global variable.</p>
+
+<p class=afterlist>If a variable has none of these annotations, an implicit
+annotation is determined by the flag settings.  </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Different flags control the
+implicit annotation for variables declared with global scope and variables
+declared with file scope (i.e., using the <span class=CodeText><span
+style='font-size:10.0pt'>static</span></span> storage qualifier). To set the
+implicit annotation for global variables declared in <span class=Flag><i><span
+style='font-size:10.0pt'>context</span></i></span> (<span class=Flag><span
+style='font-size:10.0pt'>globs</span></span> for external variables or <span
+class=Flag><span style='font-size:10.0pt'>statics</span></span> for file static
+variable) to be <span class=Flag><i><span style='font-size:10.0pt'>annotation</span></i></span>
+(<span class=Flag><span style='font-size:10.0pt'>checked</span></span>, <span
+class=Flag><span style='font-size:10.0pt'>checkmod</span></span>, <span
+class=Flag><span style='font-size:10.0pt'>checkedstrict</span></span>) use <span
+class=Flag><span style='font-size:10.0pt'>imp<i>&lt;annotation&gt;
+&lt;context&gt;</i></span></span>.  For example, <span class=Flag><span
+style='font-size:10.0pt'>+imp-checked-strict-statics</span></span> makes the implicit checking on unqualified file static variables <span class=Flag><span
+style='font-size:10.0pt'>checkedstrict</span></span>.  See Appendix B for a complete list of globals checking flags. </p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974982"></a><a
+name="_Ref534971010">7.2.2<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></a>Definition State</h3>
+
+<p class=TextFontCX>Annotations can be used in
+the globals list of a function declaration to describe the states of global
+variables before and after the call.  If a global is preceded by <span
+class=Annot><span style='font-size:10.0pt'>undef</span></span>, it is assumed to be undefined before the call. Thus, no error is reported if the
+global is not defined when the function is called, but an error is reported if
+the global is used in the function body before it is defined.  The <span
+class=Annot><span style='font-size:10.0pt'>killed</span></span> annotation
+denotes a global variable that may be undefined when the call returns.  For
+globals that contain dynamically allocated storage, a <span class=Annot><span
+style='font-size:10.0pt'>killed</span></span> global variable is similar to an <span
+class=Annot><span style='font-size:10.0pt'>only</span></span> parameter (Section 5.2).  An error is reported if it contains the only reference to
+storage that is not released before the call returns.  Figure 14 illustrated <span
+class=Annot><span style='font-size:10.0pt'>killed</span></span> and <span
+class=Annot><span style='font-size:10.0pt'>undef</span></span> globals.</p>
+
+<p>
+<center>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+  style='margin-left:.9pt;border-collapse:collapse;
+ margin-left:-2.25pt;margin-right:-2.25pt'>
+ <tr>
+  <td  valign=top style='border:solid black 1.5pt;
+  border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt;height:13.45pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'>            <span class=Keyword><b><span
+  style='font-size:10.0pt;color:white'>annotglobs.c</span></b></span></p>
+  </td>
+  <td  valign=top style='width:198.8pt;border-top:solid black 1.5pt;
+  border-left:none;border-bottom:none;border-right:solid black 1.5pt;
+  background:black;padding:0in 5.4pt 0in 5.4pt;height:13.45pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><b><span style='color:white'>Running Splint</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td  valign=top style='border:solid black 1.5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:236.7pt'>
+  <p class=Verbatim>int globnum;</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>struct {</p>
+  <p class=Verbatim>  char *firstname, *lastname;</p>
+  <p class=Verbatim>  int id;</p>
+  <p class=Verbatim>} globname;</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>void </p>
+  <p class=Verbatim>initialize (/*@only@*/ char *name)</p>
+  <p class=Verbatim>  /*@globals undef globnum,</p>
+  <p class=Verbatim>             undef globname @*/</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>13 </span></span>globname.id
+  = globnum;</p>
+  <p class=Verbatim>  globname.lastname = name;</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>15</span></span>}</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>void finalize (void)</p>
+  <p class=Verbatim>  /*@globals killed globname@*/</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim>  free (globname.lastname);</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>21 </span></span>}</p>
+  </td>
+  <td  valign=top style='width:198.8pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt;
+  padding:0in 5.4pt 0in 5.4pt;height:236.7pt'>
+  <p class=lclintrun>&gt; splint annotglobs.c</p>
+  <p class=lclintrun>&nbsp;</p>
+  <p class=lclintrun>annotglobs.c:13: Undef global globnum used</p>
+  <p class=lclintrun>                    before definition</p>
+  <p class=lclintrun>annotglobs.c:15: Global storage globname</p>
+  <p class=lclintrun>    contains 1 undefined field when call</p>
+  <p class=lclintrun>    returns: firstname</p>
+  <p class=lclintrun>annotglobs.c:21: Only storage</p>
+  <p class=lclintrun>    globname.firstname (type char *) derived</p>
+  <p class=lclintrun>    from killed global is not released</p>
+  <p class=lclintrun style='page-break-after:avoid'>    (memory leak)</p>
+  </td>
+ </tr>
+</table>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0>
+ <tr>
+  <td valign=top align=left style='padding-top:10.1pt;padding-right:
+  9.35pt;padding-bottom:10.1pt;padding-left:9.35pt'>
+  <p class=MsoCaption><a name="_Toc534824618"></a><a name="_Ref534823055">Figure
+  14</a>.  Annotated Globals Lists</p>
+  </td>
+ </tr>
+</table>
+</center>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534974983"></a><a
+name="_Ref344894947"></a><a name="_Toc344355406">7.3<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Declaration Consistency</a></h2>
+
+<p class=TextFontCX>Splint checks that function declarations and definitions are consistent.  The general rule is that the <i>first</i> declaration of a function implies all later declarations and
+definitions.  If a function is declared in a header file, the first declaration
+processed is its first declaration (if it is declared in more than one header
+file an error is reported if <span class=Flag><span style='font-size:10.0pt'>redecl</span></span> is set)<span
+style='display:none'> (if the same function is declared in more than one header
+file ???)</span>.  Otherwise, the first declaration in the file defining the
+function is its first declaration.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Later declarations may not
+include variables in the globals list that were not included in the first
+declaration.  The exception to this is when the first declaration is in a
+header file and the later declaration or definition includes file static
+variables.  Since these are not visible in the header file, they can not be
+included in the header file declaration.  Similarly, the modifies clause of a
+later declaration may not include objects that are not modifiable in the first
+declaration.  The later declaration may be more specific.  For example, if the
+header declaration is:</p>
+
+<p class=example style='text-indent:.3in'>extern void setName (employee e, char
+*s) /*@modifies e@*/;</p>
+
+<p class=TextFontCX>the later declaration could
+be,</p>
+
+<p class=example>   void setName (employee e, char *) /*@modifies e-&gt;name@*/;</p>
+
+<p class=TextFontCX>If <span class=CodeText><span
+style='font-size:10.0pt'>employee</span></span> is an abstract type, the declaration in the header should not refer to a particular implementation
+(i.e., it shouldn’t rely on there being a <span class=CodeText><span
+style='font-size:10.0pt'>name</span></span> field), but the implementation
+declaration can be more specific.  </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>This rule also applies to
+file static variables.  The header declaration for a function that modifies a
+file static variable should use <span class=Annot><span style='font-size:10.0pt'>modifies
+internalState</span></span> since file static variables are not visible to
+clients.  The implementation declaration should list the actual file static
+variables that may be modified.</p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534974984"></a><a
+name="_Ref354411787">7.4<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>State Clauses</a></h2>
+
+<p class=TextFontCX>Sometimes it is necessary to
+specify function interfaces at a lower level than is possible with the standard
+annotations.  For example, if a function defines some fields of a returned
+structure but does not define all the fields.  The <span class=Annot><span
+style='font-size:10.0pt'>/*@special@*/</span></span> annotation is used to mark
+a parameter, global variable, or return value that is described using state
+clauses.  </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>State clauses may be used to
+constrain the state of a parameter or return value before or after a call.  One
+or more state clauses may appear in a function declaration, before the modifies
+or globals clauses.  State clauses may be listed in any order, but the same
+state clause should not be used more than once.  In a state clause list, <span
+class=CodeText><span style='font-size:10.0pt'>result</span></span> is used to
+refer to the return value of the function.  </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX style='margin-bottom:6.0pt'>The
+following state clauses are used to describe the definition state or parameters
+before and after the function is called and the return value after the function
+returns:</p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@uses <i>&lt;references&gt;</i>@*/</span></span></p>
+
+<p class=indentbefore0>References in a <span
+class=Annot><span style='font-size:10.0pt'>uses</span></span> clause must be
+completely defined before the function is called.  They are assumed to be
+defined at function entrance when the function is checked.</p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@sets <i>&lt;references&gt;</i>@*/</span></span></p>
+
+<p class=indentbefore0>References in a <span
+class=Annot><span style='font-size:10.0pt'>sets</span></span> clause must be
+allocated before the function is called.  They are completely defined after the
+function returns. They are assumed to be allocated but undefined storage at
+function entrance and an error is reported if there is a path on which they are
+not defined before the function returns.</p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@defines <i>&lt;references&gt;</i>@*/</span></span></p>
+
+<p class=indentbefore0>References in a <span
+class=Annot><span style='font-size:10.0pt'>defines</span></span> clause must
+not refer to unshared, allocated storage before the function is called.  They
+are completely defined after the function returns. When the function is
+checked, they are assumed to be undefined at function entrance and an error is
+reported if there is a path on which they are not defined before the function
+returns.</p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@allocates <i>&lt;references&gt;</i>@*/</span></span></p>
+
+<p class=indentbefore0>References in an <span
+class=Annot><span style='font-size:10.0pt'>allocates</span></span> clause must
+be unallocated before the function is called.  They are allocated but not necessarily
+defined after the function returns. An error is reported if there is a path
+through the function on which they are not allocated before the function
+returns.</p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@releases &lt;references&gt;@*/</span></span></p>
+
+<p class=IndentText>References in the <span
+class=Annot><span style='font-size:10.0pt'>releases</span></span> clause are
+deallocated by the function.  They must be storage that could be passed as an <span
+class=Annot><span style='font-size:10.0pt'>only</span></span> parameter before the function is called, and are dead pointers after the function returns.  They are assumed to be defined at function entrance and an error is reported if they
+refer to live, allocated storage at any return point.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Some examples of state
+clauses are shown in Figure 15. The <span class=Annot><span style='font-size:
+10.0pt'>defines</span></span> clause for <span class=CodeText><span
+style='font-size:10.0pt'>record_new</span></span> indicates that the <span
+class=CodeText><span style='font-size:10.0pt'>id</span></span> field of the
+structure pointed to by the result is defined, but the <span class=CodeText><span
+style='font-size:10.0pt'>name</span></span> field is not.  So, <span
+class=CodeText><span style='font-size:10.0pt'>record_create</span></span> needs
+to call <span class=CodeText><span style='font-size:10.0pt'>record_setName</span></span>
+to define the name field.  Similarly, the <span class=Annot><span
+style='font-size:10.0pt'>releases</span></span> clause for <span
+class=CodeText><span style='font-size:10.0pt'>record_clearName</span></span>
+indicates that no storage is associated with the <span class=CodeText><span
+style='font-size:10.0pt'>name</span></span> field of its parameter after the
+return, so no failure to deallocate storage message is produced for the call to
+<span class=CodeText><span style='font-size:10.0pt'>free</span></span> in <span
+class=CodeText><span style='font-size:10.0pt'>record_free</span></span>.  The <span
+class=Annot><span style='font-size:10.0pt'>ensures isnull</span></span> clause
+is described in the next section.</p>
+
+<p>
+<center>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 
+ style='margin-left:9.9pt;border-collapse:collapse;margin-left:-2.25pt;
+ margin-right:-2.25pt'>
+ <tr>
+  <td  valign=top style='width:423.0pt;border:solid black 1.5pt;
+  border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><span class=Keyword><b><span style='font-size:10.0pt;
+  color:white'>clauses.c</span></b></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td  valign=top style='width:423.0pt;border:solid black 1.5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=Verbatim>typedef struct</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim>  int id;</p>
+  <p class=Verbatim>  /*@only@*/ char *name;</p>
+  <p class=Verbatim>} *record;</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>static /*@special@*/ record record_new (void)</p>
+  <p class=Verbatim>  /*@defines result-&gt;id@*/</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim>  record r = (record) malloc (sizeof (*r));</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>  assert (r != NULL);</p>
+  <p class=Verbatim>  r-&gt;id = 3;</p>
+  <p class=Verbatim>  return r;</p>
+  <p class=Verbatim>}</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>static void </p>
+  <p class=Verbatim>   record_setName (/*@special@*/ record r, /*@only@*/ char
+  *name)</p>
+  <p class=Verbatim>   /*@defines r-&gt;name@*/</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim>  r-&gt;name = name;</p>
+  <p class=Verbatim>}</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>record record_create (/*@only@*/ char *name)</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim>  record r = record_new ();</p>
+  <p class=Verbatim>  record_setName (r, name);</p>
+  <p class=Verbatim>  return r;</p>
+  <p class=Verbatim>}</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>void record_clearName (/*@special@*/ record r)</p>
+  <p class=Verbatim>   /*@releases r-&gt;name@*/</p>
+  <p class=Verbatim>   /*@ensures isnull r-&gt;name@*/</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim>  free (r-&gt;name);</p>
+  <p class=Verbatim>  r-&gt;name = NULL;</p>
+  <p class=Verbatim>}</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>void record_free (/*@only@*/ record r)</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim>  record_clearName (r);</p>
+  <p class=Verbatim>  free (r);</p>
+  <p class=Verbatim>}</p>
+  <p class=Verbatim style='page-break-after:avoid'>&nbsp;</p>
+  </td>
+ </tr>
+</table>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0>
+ <tr>
+  <td valign=top style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=MsoCaption><a name="_Toc534824619"></a><a name="_Ref354412972">Figure
+  15</a>.  State Clauses</p>
+  </td>
+ </tr>
+</table>
+</center>
+
+<p class=TextFontCX><span class=Keyword><span
+style='font-size:10.0pt'>&nbsp;</span></span></p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534974985"></a><a
+name="_Ref534888798">7.5<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Requires and Ensures Clauses</a></h2>
+
+<p class=TextFontCX>More general assumptions
+about state of parameters and globals before and after a function is called can
+be described using <span class=Annot><i><span style='font-size:10.0pt'>requires</span></i></span>
+and <span class=Annot><i><span style='font-size:10.0pt'>ensures</span></i></span>
+clauses.  A <span class=Annot><span style='font-size:10.0pt'>requires</span></span>
+clause specifies a predicate that must be true at a call site; when checking a
+function implementation Splint assumes the constraints given in its <span
+class=Annot><span style='font-size:10.0pt'>requires</span></span> clauses are
+true at function entry.  An <span class=Annot><span style='font-size:10.0pt'>ensures</span></span>
+clause specifies a predicate that is true at a call site after the call
+returns; when checking a function implementation Splint warns if there is an
+execution path that does not return with a state that satisfies the
+constraints given in its <span class=Annot><span style='font-size:10.0pt'>ensures</span></span>
+clauses.  A function declaration can have many <span class=Annot><span
+style='font-size:10.0pt'>requires</span></span> and <span class=Annot><span
+style='font-size:10.0pt'>ensures</span></span> clauses as long as their
+meanings are not contradictory.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>The following constraints can
+be stated using <span class=Annot><span style='font-size:10.0pt'>requires</span></span>
+and <span class=Annot><span style='font-size:10.0pt'>ensures</span></span>
+clauses:</p>
+
+<h6 style='margin-left:0in;text-indent:0in'><b>Aliasing Annotations</b></h6>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@requires only<i>&lt;references&gt;</i>@*/</span></span>;
+<span class=Annot><span style='font-size:10.0pt'>/*@ensures only<i>&lt;references&gt;</i>@*/</span></span></p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@requires shared<i>&lt;references&gt;</i>@*/</span></span>;
+<span class=Annot><span style='font-size:10.0pt'>/*@ensures shared<i>&lt;references&gt;</i>@*/</span></span></p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@requires owned<i>&lt;references&gt;</i>@*/</span></span>;
+<span class=Annot><span style='font-size:10.0pt'>/*@ensures owned<i>&lt;references&gt;</i>@*/</span></span></p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@requires dependent<i>&lt;references&gt;</i>@*/</span></span>;
+<span class=Annot><span style='font-size:10.0pt'>/*@ensures dependent<i>&lt;references&gt;</i>@*/</span></span></p>
+
+<p class=IndentText>References refer to <span
+class=Annot><span style='font-size:10.0pt'>only</span></span>, <span
+class=Annot><span style='font-size:10.0pt'>shared</span></span>, <span
+class=Annot><span style='font-size:10.0pt'>owned</span></span> or <span
+class=Annot><span style='font-size:10.0pt'>dependent</span></span> storage
+before (<span class=Annot><span style='font-size:10.0pt'>requires</span></span>)
+or after (<span class=Annot><span style='font-size:10.0pt'>ensures</span></span>)
+the call.</p>
+
+<h6 style='margin-left:0in;text-indent:0in'><b>Exposure Annotations</b></h6>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@requires observer<i>&lt;references&gt;</i>@*/</span></span>;
+<span class=Annot><span style='font-size:10.0pt'>/*@ensures observer<i>&lt;references&gt;</i>@*/</span></span></p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@requires exposed<i>&lt;references&gt;</i>@*/</span></span>;
+<span class=Annot><span style='font-size:10.0pt'> /*@ensures exposed <i>&lt;references&gt;</i>@*/</span></span></p>
+
+<p class=IndentText>References refer to <span class=Annot><span
+style='font-size:10.0pt'>observer</span></span> or <span class=Annot><span
+style='font-size:10.0pt'>exposed</span></span> storage before (<span
+class=Annot><span style='font-size:10.0pt'>requires</span></span>) or after (<span
+class=Annot><span style='font-size:10.0pt'>ensures</span></span>) the call.</p>
+
+<h6 style='margin-left:0in;text-indent:0in'><b>Null</b><b> </b><b>State</b><b>
+Annotations</b></h6>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@requires isnull<i>&lt;references&gt;</i>@*/</span></span>;
+<span class=Annot><span style='font-size:10.0pt'>/*@ensures isnull<i>&lt;references&gt;</i>@*/</span></span></p>
+
+<p class=IndentText>References have the value <span class=CodeText><span
+style='font-size:10.0pt'>NULL</span></span> before (<span class=Annot><span
+style='font-size:10.0pt'>requires</span></span>) or after (<span class=Annot><span
+style='font-size:10.0pt'>ensures</span></span>) the call.  Note, this is not
+the same name or meaning as the <span class=Annot><span style='font-size:10.0pt'>null</span></span>
+annotation (which means the value may or may not be <span class=Annot><span
+style='font-size:10.0pt'>NULL</span></span>.)</p>
+
+<p class=TextFontCX><span class=Annot><span
+style='font-size:10.0pt'>/*@requires notnull<i>&lt;references&gt;</i>@*/</span></span>;
+<span class=Annot><span style='font-size:10.0pt'>/*@ensures notnull<i>&lt;references&gt;</i>@*/</span></span></p>
+
+<p class=IndentText>References do not have the value <span class=CodeText><span
+style='font-size:10.0pt'>NULL</span></span> before (<span class=Annot><span
+style='font-size:10.0pt'>requires</span></span>) or after (<span class=Annot><span
+style='font-size:10.0pt'>ensures</span></span>) the call.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+
+<p class=TextFontCX>&nbsp;</p>
+
+
+<p>
+<a href="sec8.html"><b>Next:</b> 8. Control Flow</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

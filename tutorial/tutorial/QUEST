@@ -1,0 +1,14 @@
+1. is it okay to do 
+int main()
+
+or should all functions be defined with parameter lists
+
+int main(int argc, char** argv)
+
+
+2. change the names of all files to lowercase.
+
+3. in the memory management chapter change the
+linked list to hold ints instead of names. 
+
+4. is realloc dangerous

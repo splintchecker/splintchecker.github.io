@@ -1,0 +1,196 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="lclint-guide.css" title="style1">
+<title>LCLint User's Guide - References</title>
+</head>
+<body>
+<table border="0" rules="none" bgcolor="#FFFFBD" width=100% cellpadding=6 cellspacing=2>
+<tr>
+<td valign=top align=center width=5%>
+<a href="http://lclint.cs.virginia.edu/"><img border=0 align=center width=129 height=86 src="lclint-logo1.gif"></a><br>
+</td>
+<td valign=top>
+<b><a href="index.html">Guide Contents</a></b><br>
+<a href="sec1.html">1. Overview</a><br>
+<a href="sec2.html">2. Operation</a><br>
+<a href="sec3.html">3. Abstract Types</a><br>
+</td>
+<td valign=top>
+<a href="sec4.html">4. Function Interfaces</a><br>
+<a href="sec5.html">5. Memory Management</a><br>
+<a href="sec6.html">6. Sharing</a><br>
+<a href="sec7.html">7. Value Constraints</a><br>
+</td>
+<td valign=top>
+<a href="sec8.html">8. Macros</a><br>
+<a href="sec9.html">9. Naming Conventions</a><br>
+<a href="sec10.html">10. Other Checks</a><br>
+Contact: <a href="mailto:lclint@cs.virginia.edu"><em>lclint@cs.virginia.edu</em></a>
+</td>
+</tr>
+</table>
+<blockquote>
+
+<a name="references"></a>
+<h2>
+References
+</h2>
+<h4>
+<a name="RTFToC89">LCLint</a></h4>
+<a name="ref-Evans94">
+[Evans94]
+David Evans. <a href="http://www.cs.virginia.edu/~evans/tr-628.html"><i>Using specifications to check source code</i></a>.
+MIT/LCS/TR 628, Laboratory for Computer Science, MIT, June 1994.<p>
+<blockquote>
+SM Thesis.  Describes research behind LCLint, focusing on how specifications
+can be exploited to do lightweight checking.  Includes case studies using
+LCLint.
+</blockquote>
+<p>
+<a name="ref-EGHT94">
+[EGHT94]
+David Evans, John Guttag, Jim Horning and Yang Meng Tan.  
+<a href="http://www.cs.virginia.edu/~evans/sigsoft94.html"><i>LCLint: A
+tool for using specifications to check code</i></a>.  SIGSOFT Symposium on the
+Foundations of Software Engineering, December 1994.<p>
+<blockquote>
+Introduction to LCLint.  Shows how LCLint is used to find errors in a sample
+program.
+</blockquote>
+<p>
+<a name="ref-Evans96">
+[Evans96]
+David Evans.  
+<a href="http://www.cs.virginia.edu/~evans/pldi96-abstract.html">
+<i>Static Detection of Dynamic Memory Errors</i></a>.  In SIGPLAN Conference on Programming Language Design and Implementation
+(PLDI '96), Philadelphia, PA., May 1996.<p>
+<blockquote>
+Describes approach for exploiting annotations added to code to detect a wide
+class of errors.  Focuses on checks described in Sections 5-7 of this guide.  
+</blockquote>
+
+<a name="ref-Evans00"> [Evans00] David Evans. <a
+href="http://www.cs.virginia.edu/~evans/icse-position.html">
+<em>Annotation-Assisted Lightweight Static Checking</em></a>. In <a
+href="http://ase.arc.nasa.gov/icse2000/">The First International
+Workshop on Automated Program Analysis, Testing and Verification</a>
+(ICSE 2000).  Feb 25, 2000.
+
+<blockquote>
+A short position paper describing the research agenda behind LCLint.
+</blockquote>
+
+
+<h4>
+<a name="RTFToC90">Larch</a></h4>
+<a name="ref-GH93">
+[GH93] Guttag, John V. and Horning, James J., with Stephen J. Garland, Kevin D.
+Jones, Andr&eacute;s Modet, and Jeannette M. Wing, <u>Larch: Languages and
+Tools for Formal Specification</u>, Springer-Verlag, Texts and Monographs in
+Computer Science, 1993.<p>
+<blockquote>
+Overview of the Larch family of specification languages and related tools.
+Includes a chapter on LCL, the Larch C interface language, on which LCLint is
+based.
+</blockquote>
+<p>
+<a name="ref-Tan94">
+[Tan95] Tan, Yang Meng.  <u>Formal Specification Techniques for
+Engineering Modular C</u>, Kluwer International Series in Software
+Engineering, Volume 1, Kluwer Academic Publishers, Boston, 1995.<p>
+<blockquote>
+Modified and updated version of MIT Ph. D. dissertation, previously
+published as MIT/LCS/TR-619, 1994.  Includes presentation of the
+semantics of LCL and a case study using LCL.
+</blockquote>
+<h4>
+<a name="RTFToC91">C</a></h4>
+<a name="ref-ANSI">
+[ANSI] American National Standard for Information Systems, Programming
+Language, C.  ANSI X3.159-1989.  (Believed to be identical to ISO/IEC
+9899:1990).  
+<blockquote>
+Specification for C programming language.  LCLint aims to be consistent with
+this
+document.
+</blockquote>
+
+<a name="ref-Hat95">
+[Hat95] Hatton, Les.  <u>Safer C: Developing Software for High-integrity and
+Safety-critical
+Systems.</u>
+McGraw-Hill International Series in Software Engineering, 1995.
+<blockquote>
+A broad work on all aspects of developing safety-critical software, focusing on
+the C language.  Provides good justification for the use of C in
+safety-critical systems, and the necessity of tool-supported programming
+standards.  LCLint users will be interested to see how many of the errors
+listed as only being dynamically detectable can be detected statically by
+LCLint.
+</blockquote>
+
+<a name="ref-KR88">
+[KR88] Kernighan, Brian W. and Ritchie, Dennis M.  <u>The C Programming
+Language</u>, second edition.  Prentice Hall, New Jersey, 1988.
+<blockquote>
+Standard reference for ANSI C.  If you haven't heard of this one, you probably
+didn't get this far (unless you started at the back).
+</blockquote>
+<a name="ref-vdL94">
+[vdL94] Van der Linden, Peter.  <u>Expert C Programming:  Deep C Secrets</u>.
+SunSoft Press, Prentice Hall, New Jersey,  1994.
+<blockquote>
+Filled with useful information on the darker corners of C, as well as lots of
+industry anecdotes and humor.  LCLint's reserved name checking is loosely based
+on the list of reserved names in this book.
+</blockquote>
+<h4>
+<a name="RTFToC92">Abstract
+Types
+</a></h4>
+<a name="ref-LG86">
+[LG86] Liskov, Barbara. and Guttag, John V.  <u>Abstraction and Specification
+in
+Program Development</u>, MIT Press, Cambridge, MA, 1986.
+<blockquote>
+Describes a programming methodology using abstract types and specified
+interfaces.  Much of the methodology upon which LCLint is based comes from this
+book.
+Uses the CLU programming language.
+</blockquote>
+
+
+<a href="index.html">Contents</a>
+
+<p>
+</blockquote>
+
+<table border="0" rules="none" bgcolor="#FFFFBD" width=100% cellpadding=6 cellspacing=2>
+<tr>
+<td valign=top align=center width=5%>
+<a href="http://lclint.cs.virginia.edu/"><img border=0 align=center width=129 height=86 src="lclint-logo1.gif"></a><br>
+</td>
+<td valign=top>
+<b><a href="index.html">Guide Contents</a></b><br>
+<a href="sec1.html">1. Overview</a><br>
+<a href="sec2.html">2. Operation</a><br>
+<a href="sec3.html">3. Abstract Types</a><br>
+</td>
+<td valign=top>
+<a href="sec4.html">4. Function Interfaces</a><br>
+<a href="sec5.html">5. Memory Management</a><br>
+<a href="sec6.html">6. Sharing</a><br>
+<a href="sec7.html">7. Value Constraints</a><br>
+</td>
+<td valign=top>
+<a href="sec8.html">8. Macros</a><br>
+<a href="sec9.html">9. Naming Conventions</a><br>
+<a href="sec10.html">10. Other Checks</a><br>
+Contact: <a href="mailto:lclint@cs.virginia.edu"><em>lclint@cs.virginia.edu</em></a>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+

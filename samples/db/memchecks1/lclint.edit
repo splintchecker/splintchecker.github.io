@@ -1,0 +1,26 @@
+ <HTML>
+<PRE>
+lclint -allimponly +showscan +showfunc +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.0 --- 11 Feb 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 14 code errors found
+391 spec, 2852 source (1195 before pre-processing) lines in 7.58 s.
+</PRE>

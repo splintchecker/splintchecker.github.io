@@ -1,0 +1,1842 @@
+
+index.html,40
+anomalies and runs LCLint again 29,917
+
+allmacros/bool.h.html,51
+<A NAME="line12"></A>typedef int bool;bool17,429
+
+allmacros/dbase.c.html,98
+<A NAME="line11"></A>} employeeKinds;employeeKinds16,502
+<A NAME="line44"></A>      if 49,1620
+
+allmacros/dbase.h.html,0
+
+allmacros/dbase.lcl.html,566
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,243
+<A NAME="line5"></A>              duplERR, missERR} db_status;db_status10,384
+<A NAME="line9"></A>claims UniqueKeys 14,544
+<A NAME="line17"></A>db_status hire(22,871
+<A NAME="line32"></A>void uncheckedHire(37,1562
+<A NAME="line41"></A>bool fire(46,1963
+<A NAME="line49"></A>int query(54,2258
+<A NAME="line57"></A>bool promote(62,2562
+<A NAME="line68"></A>db_status setSalary(73,3028
+<A NAME="line83"></A>void db_print(88,3658
+<A NAME="line92"></A>void db_initMod(97,4017
+
+allmacros/dbase.lh.html,160
+<A NAME="line15"></A>    } db_q;db_q20,678
+<A NAME="line20"></A>typedef enum {db_OK, salERR, genderERR, jobERR, duplERR, missERR} db_status;db_status25,839
+
+allmacros/diffs.html,0
+
+allmacros/drive.c.html,0
+
+allmacros/employee.c.html,38
+<A NAME="line11"></A>      if 16,515
+
+allmacros/employee.h.html,55
+<A NAME="line10"></A># define employee_initMod(15,499
+
+allmacros/employee.lcl.html,207
+<A NAME="line6"></A>typedef enum { MALE, FEMALE, gender_ANY } gender;gender11,297
+<A NAME="line7"></A>typedef enum { MGR, NONMGR, job_ANY } job;job12,367
+<A NAME="line16"></A>} employee;employee21,696
+
+allmacros/employee.lh.html,208
+<A NAME="line8"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;gender13,377
+<A NAME="line13"></A>typedef enum {MGR, NONMGR, job_ANY} job;job18,566
+<A NAME="line24"></A>    } employee;employee29,988
+
+allmacros/empset.c.html,57
+<A NAME="line132"></A>      if (!empset_member(137,5026
+
+allmacros/empset.h.html,100
+<A NAME="line8"></A>typedef erc empset;empset13,412
+<A NAME="line37"></A>   erc_elements(42,1784
+
+allmacros/empset.lcl.html,0
+
+allmacros/empset.lh.html,0
+
+allmacros/erc.c.html,0
+
+allmacros/erc.h.html,378
+<A NAME="line7"></A>typedef struct _elem _elem12,315
+<A NAME="line7"></A>typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;ercElem12,315
+<A NAME="line8"></A>typedef ercElem *ercList;ercList13,410
+<A NAME="line9"></A>typedef struct { /*@null@*/ ercList vals; int size; } ercInfo;ercInfo14,456
+<A NAME="line10"></A>typedef ercInfo *erc;erc15,539
+
+allmacros/erc.lcl.html,0
+
+allmacros/erc.lh.html,0
+
+allmacros/eref.c.html,39
+<A NAME="line45"></A>  return 50,2027
+
+allmacros/eref.h.html,180
+<A NAME="line6"></A>typedef int eref;eref11,280
+<A NAME="line9"></A>typedef enum { used, avail } eref_status;eref_status14,399
+<A NAME="line14"></A>} eref_ERP;eref_ERP19,651
+
+allmacros/eref.lcl.html,230
+<A NAME="line9"></A>eref eref_alloc(14,393
+<A NAME="line15"></A>void eref_free(20,608
+<A NAME="line22"></A>void eref_assign(27,880
+<A NAME="line29"></A>employee eref_get(34,1169
+<A NAME="line40"></A>void eref_initMod(45,1591
+
+allmacros/eref.lh.html,0
+
+allmacros/ereftab.c.html,39
+<A NAME="line35"></A>      if 40,1386
+
+allmacros/ereftab.h.html,111
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,405
+<A NAME="line12"></A># define ereftab_elements(17,542
+
+allmacros/ereftab.lcl.html,0
+
+allmacros/ereftab.lh.html,0
+
+allmacros/index.html,95
+macros 45,1663
+# define firstERC 87,3337
+# define lastERC 90,3407
+# define numERCS 93,3465
+
+allmacros/lclint-nomacros.out.html,31
+391 spec, 3008 source 30,1407
+
+allmacros/lclint.out.html,31
+391 spec, 2935 source 43,2367
+
+checkchecks1/bool.h.html,51
+<A NAME="line12"></A>typedef int bool;bool17,429
+
+checkchecks1/dbase-next.c.html,161
+<A NAME="line7"></A>} employeeKinds;employeeKinds12,331
+<A NAME="line18"></A>typedef /*@only@*/ erc o_erc;o_erc23,830
+<A NAME="line56"></A>      if 61,2355
+
+checkchecks1/dbase.c.html,97
+<A NAME="line7"></A>} employeeKinds;employeeKinds12,331
+<A NAME="line49"></A>      if 54,1855
+
+checkchecks1/dbase.h.html,0
+
+checkchecks1/dbase.lcl.html,566
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,243
+<A NAME="line5"></A>              duplERR, missERR} db_status;db_status10,384
+<A NAME="line9"></A>claims UniqueKeys 14,544
+<A NAME="line17"></A>db_status hire(22,871
+<A NAME="line32"></A>void uncheckedHire(37,1562
+<A NAME="line41"></A>bool fire(46,1963
+<A NAME="line49"></A>int query(54,2258
+<A NAME="line57"></A>bool promote(62,2562
+<A NAME="line68"></A>db_status setSalary(73,3028
+<A NAME="line83"></A>void db_print(88,3658
+<A NAME="line92"></A>void db_initMod(97,4017
+
+checkchecks1/dbase.lh.html,160
+<A NAME="line15"></A>    } db_q;db_q20,678
+<A NAME="line20"></A>typedef enum {db_OK, salERR, genderERR, jobERR, duplERR, missERR} db_status;db_status25,839
+
+checkchecks1/diffs.html,0
+
+checkchecks1/drive.c.html,0
+
+checkchecks1/employee.c.html,38
+<A NAME="line11"></A>      if 16,515
+
+checkchecks1/employee.h.html,55
+<A NAME="line13"></A># define employee_initMod(18,584
+
+checkchecks1/employee.lcl.html,207
+<A NAME="line6"></A>typedef enum { MALE, FEMALE, gender_ANY } gender;gender11,297
+<A NAME="line7"></A>typedef enum { MGR, NONMGR, job_ANY } job;job12,367
+<A NAME="line16"></A>} employee;employee21,696
+
+checkchecks1/employee.lh.html,208
+<A NAME="line8"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;gender13,377
+<A NAME="line13"></A>typedef enum {MGR, NONMGR, job_ANY} job;job18,566
+<A NAME="line24"></A>    } employee;employee29,988
+
+checkchecks1/empset.c.html,57
+<A NAME="line132"></A>      if (!empset_member(137,5026
+
+checkchecks1/empset.h.html,100
+<A NAME="line8"></A>typedef erc empset;empset13,412
+<A NAME="line37"></A>   erc_elements(42,1784
+
+checkchecks1/empset.lcl.html,0
+
+checkchecks1/empset.lh.html,0
+
+checkchecks1/erc.c.html,0
+
+checkchecks1/erc.h.html,378
+<A NAME="line7"></A>typedef struct _elem _elem12,315
+<A NAME="line7"></A>typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;ercElem12,315
+<A NAME="line8"></A>typedef ercElem *ercList;ercList13,410
+<A NAME="line9"></A>typedef struct { /*@null@*/ ercList vals; int size; } ercInfo;ercInfo14,456
+<A NAME="line10"></A>typedef ercInfo *erc;erc15,539
+
+checkchecks1/erc.lcl.html,0
+
+checkchecks1/erc.lh.html,0
+
+checkchecks1/eref.c.html,39
+<A NAME="line45"></A>  return 50,2027
+
+checkchecks1/eref.h.html,180
+<A NAME="line6"></A>typedef int eref;eref11,280
+<A NAME="line9"></A>typedef enum { used, avail } eref_status;eref_status14,399
+<A NAME="line14"></A>} eref_ERP;eref_ERP19,651
+
+checkchecks1/eref.lcl.html,230
+<A NAME="line9"></A>eref eref_alloc(14,393
+<A NAME="line15"></A>void eref_free(20,608
+<A NAME="line22"></A>void eref_assign(27,880
+<A NAME="line29"></A>employee eref_get(34,1169
+<A NAME="line40"></A>void eref_initMod(45,1591
+
+checkchecks1/eref.lh.html,0
+
+checkchecks1/ereftab.c.html,39
+<A NAME="line35"></A>      if 40,1386
+
+checkchecks1/ereftab.h.html,111
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,405
+<A NAME="line12"></A># define ereftab_elements(17,542
+
+checkchecks1/ereftab.lcl.html,0
+
+checkchecks1/ereftab.lh.html,0
+
+checkchecks1/index.html,341
+<A HREF="dbase.c.html#line37">dbase.c:37,22</A>: Operands of <= have incompatible types 93,3743
+# define employeeKinds_all(employeeKinds_all130,6078
+# define end_employeeKinds_all 133,6187
+# define numERCS 147,6617
+We add globals lists 216,9992
+typedef /*@observer@*/ char *obscharp;obscharp259,12363
+void employee_sprint 261,12403
+
+checkchecks1/lclint-enumindex.out.html,31
+391 spec, 2967 source 84,5563
+
+checkchecks1/lclint-enumtype.out.html,113
+<A HREF="dbase.c.html#line37" target="source">dbase.c:37,22</A>: Operands of <= have incompatible types 32,1724
+
+checkchecks1/lclint-nomacros.out.html,0
+
+checkchecks1/lclint-standard.out.html,31
+391 spec, 2967 source 32,1524
+
+checkchecks1/lclint.out.html,516
+    eref_Pool.conts = (employee *)realloc(52,3768
+<A HREF="dbase.c.html#line37" target="source">dbase.c:37,22</A>: Operands of <= have incompatible types 126,9868
+<A HREF="dbase.c.html#line132" target="source">dbase.c:132,22</A>: Operands of <= have incompatible types 162,12960
+<A HREF="dbase.c.html#line222" target="source">dbase.c:222,23</A>: Operands of <= have incompatible types 189,15206
+<A HREF="dbase.c.html#line268" target="source">dbase.c:268,22</A>: Operands of <= have incompatible types 237,19325
+
+checkchecks2/bool.h.html,51
+<A NAME="line12"></A>typedef int bool;bool17,429
+
+checkchecks2/dbase.c.html,161
+<A NAME="line7"></A>} employeeKinds;employeeKinds12,331
+<A NAME="line18"></A>typedef /*@only@*/ erc o_erc;o_erc23,830
+<A NAME="line56"></A>      if 61,2355
+
+checkchecks2/dbase.h.html,0
+
+checkchecks2/dbase.lcl.html,566
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,243
+<A NAME="line5"></A>              duplERR, missERR} db_status;db_status10,384
+<A NAME="line9"></A>claims UniqueKeys 14,544
+<A NAME="line17"></A>db_status hire(22,871
+<A NAME="line32"></A>void uncheckedHire(37,1562
+<A NAME="line41"></A>bool fire(46,1963
+<A NAME="line49"></A>int query(54,2258
+<A NAME="line57"></A>bool promote(62,2562
+<A NAME="line68"></A>db_status setSalary(73,3028
+<A NAME="line83"></A>void db_print(88,3658
+<A NAME="line92"></A>void db_initMod(97,4017
+
+checkchecks2/dbase.lh.html,160
+<A NAME="line15"></A>    } db_q;db_q20,678
+<A NAME="line20"></A>typedef enum {db_OK, salERR, genderERR, jobERR, duplERR, missERR} db_status;db_status25,839
+
+checkchecks2/diffs.html,139
+&gt; typedef /*@only@*/ erc o_erc;o_erc9,584
+&gt; typedef /*@observer@*/ char *obscharp;obscharp223,13969
+&gt;       return 284,17629
+
+checkchecks2/drive.c.html,0
+
+checkchecks2/employee.c.html,115
+<A NAME="line11"></A>      if 16,515
+<A NAME="line27"></A>typedef /*@observer@*/ char *obscharp;obscharp32,1218
+
+checkchecks2/employee.h.html,55
+<A NAME="line13"></A># define employee_initMod(18,584
+
+checkchecks2/employee.lcl.html,207
+<A NAME="line6"></A>typedef enum { MALE, FEMALE, gender_ANY } gender;gender11,297
+<A NAME="line7"></A>typedef enum { MGR, NONMGR, job_ANY } job;job12,367
+<A NAME="line16"></A>} employee;employee21,696
+
+checkchecks2/employee.lh.html,208
+<A NAME="line8"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;gender13,377
+<A NAME="line13"></A>typedef enum {MGR, NONMGR, job_ANY} job;job18,566
+<A NAME="line24"></A>    } employee;employee29,988
+
+checkchecks2/empset-mod.c.html,57
+<A NAME="line140"></A>      if (!empset_member(145,5380
+
+checkchecks2/empset.c.html,57
+<A NAME="line138"></A>      if (!empset_member(143,5283
+
+checkchecks2/empset.h.html,100
+<A NAME="line8"></A>typedef erc empset;empset13,412
+<A NAME="line35"></A>   erc_elements(40,1669
+
+checkchecks2/empset.lcl.html,0
+
+checkchecks2/empset.lh.html,0
+
+checkchecks2/erc.c.html,42
+<A NAME="line13"></A>      return 18,561
+
+checkchecks2/erc.h.html,378
+<A NAME="line7"></A>typedef struct _elem _elem12,315
+<A NAME="line7"></A>typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;ercElem12,315
+<A NAME="line8"></A>typedef ercElem *ercList;ercList13,410
+<A NAME="line9"></A>typedef struct { /*@null@*/ ercList vals; int size; } ercInfo;ercInfo14,456
+<A NAME="line10"></A>typedef ercInfo *erc;erc15,539
+
+checkchecks2/erc.lcl.html,0
+
+checkchecks2/erc.lh.html,0
+
+checkchecks2/eref.c.html,39
+<A NAME="line47"></A>  return 52,2124
+
+checkchecks2/eref.h.html,180
+<A NAME="line6"></A>typedef int eref;eref11,280
+<A NAME="line9"></A>typedef enum { used, avail } eref_status;eref_status14,399
+<A NAME="line14"></A>} eref_ERP;eref_ERP19,651
+
+checkchecks2/eref.lcl.html,230
+<A NAME="line9"></A>eref eref_alloc(14,393
+<A NAME="line15"></A>void eref_free(20,608
+<A NAME="line22"></A>void eref_assign(27,880
+<A NAME="line29"></A>employee eref_get(34,1169
+<A NAME="line40"></A>void eref_initMod(45,1591
+
+checkchecks2/eref.lh.html,0
+
+checkchecks2/ereftab.c.html,39
+<A NAME="line35"></A>      if 40,1386
+
+checkchecks2/ereftab.h.html,111
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,405
+<A NAME="line12"></A># define ereftab_elements(17,542
+
+checkchecks2/ereftab.lcl.html,0
+
+checkchecks2/ereftab.lh.html,0
+
+checkchecks2/index.html,118
+<A HREF="empset.c.html#line155">empset.c:155,3</A>: Only storage assigned to static: known = ereftab_create(118,4990
+
+checkchecks2/lclint-enumindex.out.html,31
+391 spec, 2868 source 43,2050
+
+checkchecks2/lclint-enumtype.out.html,31
+391 spec, 2868 source 43,2055
+
+checkchecks2/lclint-nomacros.out.html,0
+
+checkchecks2/lclint-standard.out.html,31
+391 spec, 2868 source 43,2035
+
+checkchecks2/lclint.out.html,31
+391 spec, 2985 source 62,3448
+
+final/bool.h.html,102
+<A NAME="line13"></A>typedef int bool;bool18,476
+<A NAME="line24"></A># define bool_initMod(29,991
+
+final/bool.lcl.html,183
+<A NAME="line1"></A>void bool_initMod 6,96
+<A NAME="line2"></A>observer char *bool_unparse 7,184
+<A NAME="line3"></A>bool bool_not 8,264
+<A NAME="line4"></A>bool bool_equal 9,329
+
+final/bool.lh.html,0
+
+final/check.lcl.html,47
+<A NAME="line1"></A>falseexit void check 6,97
+
+final/check.lh.html,0
+
+final/dbase.c.html,58
+<A NAME="line7"></A>} employeeKinds;employeeKinds12,347
+
+final/dbase.h.html,0
+
+final/dbase.lcl.html,594
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,242
+<A NAME="line5"></A>               DBS_DUPLERR, DBS_MISSERR } db_status;db_status10,397
+<A NAME="line9"></A>claims UniqueKeys 14,567
+<A NAME="line17"></A>db_status db_hire 22,894
+<A NAME="line32"></A>void db_uncheckedHire 37,1612
+<A NAME="line41"></A>bool db_fire 46,2040
+<A NAME="line49"></A>int db_query 54,2368
+<A NAME="line57"></A>bool db_promote 62,2729
+<A NAME="line68"></A>db_status db_setSalary 73,3222
+<A NAME="line83"></A>void db_print(88,3856
+<A NAME="line92"></A>void db_initMod(97,4239
+
+final/dbase.lh.html,181
+<A NAME="line15"></A>    } db_q;db_q20,677
+<A NAME="line20"></A>typedef enum {DBS_OK, DBS_SALERR, DBS_GENDERERR, DBS_JOBERR, DBS_DUPLERR, DBS_MISSERR} db_status;db_status25,838
+
+final/diffs.html,79
+&lt; typedef /*@only@*/ erc o_erc;o_erc7,587
+&lt; db_status db_hire 28,1791
+
+final/drive.c.html,0
+
+final/employee.c.html,77
+<A NAME="line30"></A>typedef /*@observer@*/ char *obscharp;obscharp35,1291
+
+final/employee.h.html,55
+<A NAME="line13"></A># define employee_initMod(18,584
+
+final/employee.lcl.html,267
+<A NAME="line6"></A>typedef enum { MALE, FEMALE, GENDER_UNKNOWN } gender;gender11,297
+<A NAME="line7"></A>typedef enum { MGR, NONMGR, JOB_UNKNOWN } job;job12,371
+<A NAME="line16"></A>} employee;employee21,704
+<A NAME="line49"></A>void employee_initMod(54,2258
+
+final/employee.lh.html,216
+<A NAME="line8"></A>typedef enum {MALE, FEMALE, GENDER_UNKNOWN} gender;gender13,377
+<A NAME="line13"></A>typedef enum {MGR, NONMGR, JOB_UNKNOWN} job;job18,570
+<A NAME="line24"></A>    } employee;employee29,996
+
+final/empset.c.html,0
+
+final/empset.h.html,100
+<A NAME="line8"></A>typedef erc empset;empset13,412
+<A NAME="line33"></A>   erc_elements(38,1599
+
+final/empset.lcl.html,265
+<A NAME="line4"></A>only empset empset_create(9,248
+<A NAME="line29"></A>void empset_insertUnique 34,1237
+<A NAME="line57"></A>void empset_intersect 62,2540
+<A NAME="line84"></A>only char *empset_sprint(89,3605
+<A NAME="line90"></A>void empset_initMod 95,3867
+
+final/empset.lh.html,0
+
+final/erc.c.html,42
+<A NAME="line14"></A>      return 19,669
+
+final/erc.h.html,379
+<A NAME="line8"></A>typedef struct _elem _elem13,419
+<A NAME="line8"></A>typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;ercElem13,419
+<A NAME="line9"></A>typedef ercElem *ercList;ercList14,514
+<A NAME="line10"></A>typedef struct { /*@null@*/ ercList vals; int size; } ercInfo;ercInfo15,560
+<A NAME="line13"></A>typedef ercInfo *erc;erc18,706
+
+final/erc.lcl.html,236
+<A NAME="line5"></A>only erc erc_create(10,253
+<A NAME="line18"></A>void erc_insert(23,742
+<A NAME="line49"></A>void erc_join(54,1997
+<A NAME="line56"></A>only char *erc_sprint(61,2305
+<A NAME="line68"></A>void erc_initMod 73,2765
+
+final/erc.lh.html,0
+
+final/eref.c.html,175
+<A NAME="line5"></A>typedef enum { ST_USED, ST_AVAIL } erefStatus;erefStatus10,272
+<A NAME="line10"></A>} erefTable;erefTable15,524
+<A NAME="line59"></A>  return 64,2636
+
+final/eref.h.html,50
+<A NAME="line6"></A>typedef int eref;eref11,280
+
+final/eref.lcl.html,281
+<A NAME="line10"></A>eref eref_alloc(15,437
+<A NAME="line16"></A>bool eref_isDefined 21,676
+<A NAME="line18"></A>void eref_free(23,761
+<A NAME="line25"></A>void eref_assign(30,1033
+<A NAME="line32"></A>employee eref_get(37,1322
+<A NAME="line43"></A>void eref_initMod(48,1744
+
+final/eref.lh.html,0
+
+final/ereftab.c.html,0
+
+final/ereftab.h.html,111
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,405
+<A NAME="line12"></A># define ereftab_elements(17,542
+
+final/ereftab.lcl.html,156
+<A NAME="line5"></A>only ereftab ereftab_create(10,293
+<A NAME="line11"></A>void ereftab_insert(16,522
+<A NAME="line29"></A>void ereftab_initMod 34,1288
+
+final/ereftab.lh.html,0
+
+final/index.html,0
+
+final/lclint.out.html,136
+<A HREF="dbase.c.html#line45" target="source">dbase.c:45,7</A>: Only storage assigned to unqualified: db[(int)ek] = erc_create(27,1399
+
+memchecks1/bool.h.html,51
+<A NAME="line12"></A>typedef int bool;bool17,429
+
+memchecks1/dbase.c.html,98
+<A NAME="line11"></A>} employeeKinds;employeeKinds16,502
+<A NAME="line44"></A>      if 49,1620
+
+memchecks1/dbase.h.html,0
+
+memchecks1/dbase.lcl.html,566
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,243
+<A NAME="line5"></A>              duplERR, missERR} db_status;db_status10,384
+<A NAME="line9"></A>claims UniqueKeys 14,544
+<A NAME="line17"></A>db_status hire(22,871
+<A NAME="line32"></A>void uncheckedHire(37,1562
+<A NAME="line41"></A>bool fire(46,1963
+<A NAME="line49"></A>int query(54,2258
+<A NAME="line57"></A>bool promote(62,2562
+<A NAME="line68"></A>db_status setSalary(73,3028
+<A NAME="line83"></A>void db_print(88,3658
+<A NAME="line92"></A>void db_initMod(97,4017
+
+memchecks1/dbase.lh.html,160
+<A NAME="line15"></A>    } db_q;db_q20,678
+<A NAME="line20"></A>typedef enum {db_OK, salERR, genderERR, jobERR, duplERR, missERR} db_status;db_status25,839
+
+memchecks1/diffs.html,0
+
+memchecks1/drive.c.html,0
+
+memchecks1/employee.c.html,38
+<A NAME="line11"></A>      if 16,515
+
+memchecks1/employee.h.html,55
+<A NAME="line10"></A># define employee_initMod(15,499
+
+memchecks1/employee.lcl.html,207
+<A NAME="line6"></A>typedef enum { MALE, FEMALE, gender_ANY } gender;gender11,297
+<A NAME="line7"></A>typedef enum { MGR, NONMGR, job_ANY } job;job12,367
+<A NAME="line16"></A>} employee;employee21,696
+
+memchecks1/employee.lh.html,208
+<A NAME="line8"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;gender13,377
+<A NAME="line13"></A>typedef enum {MGR, NONMGR, job_ANY} job;job18,566
+<A NAME="line24"></A>    } employee;employee29,988
+
+memchecks1/empset.c.html,57
+<A NAME="line132"></A>      if (!empset_member(137,5026
+
+memchecks1/empset.h.html,100
+<A NAME="line8"></A>typedef erc empset;empset13,412
+<A NAME="line37"></A>   erc_elements(42,1784
+
+memchecks1/empset.lcl.html,0
+
+memchecks1/empset.lh.html,0
+
+memchecks1/erc-next.c.html,0
+
+memchecks1/erc.c.html,0
+
+memchecks1/erc.h.html,355
+<A NAME="line6"></A>typedef struct _elem _elem11,268
+<A NAME="line6"></A>typedef struct _elem { eref val; struct _elem *next; } ercElem;ercElem11,268
+<A NAME="line7"></A>typedef ercElem *ercList;ercList12,352
+<A NAME="line8"></A>typedef struct { ercList vals; int size; } ercInfo;ercInfo13,398
+<A NAME="line9"></A>typedef ercInfo *erc;erc14,470
+
+memchecks1/erc.lcl.html,0
+
+memchecks1/erc.lh.html,0
+
+memchecks1/eref.c.html,39
+<A NAME="line45"></A>  return 50,2027
+
+memchecks1/eref.h.html,180
+<A NAME="line6"></A>typedef int eref;eref11,280
+<A NAME="line9"></A>typedef enum { used, avail } eref_status;eref_status14,399
+<A NAME="line14"></A>} eref_ERP;eref_ERP19,616
+
+memchecks1/eref.lcl.html,230
+<A NAME="line9"></A>eref eref_alloc(14,393
+<A NAME="line15"></A>void eref_free(20,608
+<A NAME="line22"></A>void eref_assign(27,880
+<A NAME="line29"></A>employee eref_get(34,1169
+<A NAME="line40"></A>void eref_initMod(45,1591
+
+memchecks1/eref.lh.html,0
+
+memchecks1/ereftab.c.html,39
+<A NAME="line35"></A>      if 40,1385
+
+memchecks1/ereftab.h.html,111
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,405
+<A NAME="line12"></A># define ereftab_elements(17,542
+
+memchecks1/ereftab.lcl.html,0
+
+memchecks1/ereftab.lh.html,0
+
+memchecks1/index.html,434
+typedef struct { /*@null@*/ ercList vals; int size; } *erc;erc76,3337
+<A HREF="erc.c.html#line39" target="source">erc.c:39,10</A>: Fresh storage returned as unqualified 88,3684
+} eref_ERP;eref_ERP147,6929
+<A HREF="erc.c.html#line60" target="source">erc.c:60,9</A>: Implicitly temp storage c passed as only param: free 155,7091
+<A HREF="eref.c.html#line84">eref.c:84,2</A>: Global storage 203,9072
+} eref_ERP;eref_ERP221,9929
+
+memchecks1/lclint-imp.out.html,89
+<A HREF="employee.c.html#line14" target="source">employee.c:14,11</A>: Parameter 20,906
+
+memchecks1/lclint-nomemchecks.out.html,31
+392 spec, 3011 source 30,1407
+
+memchecks1/lclint.out.html,89
+<A HREF="employee.c.html#line14" target="source">employee.c:14,11</A>: Parameter 20,906
+
+memchecks2/bool.h.html,51
+<A NAME="line12"></A>typedef int bool;bool17,429
+
+memchecks2/dbase.c.html,98
+<A NAME="line11"></A>} employeeKinds;employeeKinds16,502
+<A NAME="line44"></A>      if 49,1620
+
+memchecks2/dbase.h.html,0
+
+memchecks2/dbase.lcl.html,566
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,243
+<A NAME="line5"></A>              duplERR, missERR} db_status;db_status10,384
+<A NAME="line9"></A>claims UniqueKeys 14,544
+<A NAME="line17"></A>db_status hire(22,871
+<A NAME="line32"></A>void uncheckedHire(37,1562
+<A NAME="line41"></A>bool fire(46,1963
+<A NAME="line49"></A>int query(54,2258
+<A NAME="line57"></A>bool promote(62,2562
+<A NAME="line68"></A>db_status setSalary(73,3028
+<A NAME="line83"></A>void db_print(88,3658
+<A NAME="line92"></A>void db_initMod(97,4017
+
+memchecks2/dbase.lh.html,160
+<A NAME="line15"></A>    } db_q;db_q20,678
+<A NAME="line20"></A>typedef enum {db_OK, salERR, genderERR, jobERR, duplERR, missERR} db_status;db_status25,839
+
+memchecks2/diffs.html,157
+&lt; typedef struct { ercList vals; int size; } ercInfo;ercInfo48,3001
+&gt; typedef struct { /*@null@*/ ercList vals; int size; } ercInfo;ercInfo50,3062
+
+memchecks2/drive.c.html,0
+
+memchecks2/employee.c.html,38
+<A NAME="line11"></A>      if 16,515
+
+memchecks2/employee.h.html,55
+<A NAME="line10"></A># define employee_initMod(15,499
+
+memchecks2/employee.lcl.html,207
+<A NAME="line6"></A>typedef enum { MALE, FEMALE, gender_ANY } gender;gender11,297
+<A NAME="line7"></A>typedef enum { MGR, NONMGR, job_ANY } job;job12,367
+<A NAME="line16"></A>} employee;employee21,696
+
+memchecks2/employee.lh.html,208
+<A NAME="line8"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;gender13,377
+<A NAME="line13"></A>typedef enum {MGR, NONMGR, job_ANY} job;job18,566
+<A NAME="line24"></A>    } employee;employee29,988
+
+memchecks2/empset-next.lcl.html,0
+
+memchecks2/empset.c.html,57
+<A NAME="line132"></A>      if (!empset_member(137,5026
+
+memchecks2/empset.h.html,100
+<A NAME="line8"></A>typedef erc empset;empset13,412
+<A NAME="line37"></A>   erc_elements(42,1784
+
+memchecks2/empset.lcl.html,0
+
+memchecks2/empset.lh.html,0
+
+memchecks2/erc.c.html,0
+
+memchecks2/erc.h.html,367
+<A NAME="line7"></A>typedef struct _elem _elem12,315
+<A NAME="line7"></A>typedef struct _elem { eref val; struct _elem *next; } ercElem;ercElem12,315
+<A NAME="line8"></A>typedef ercElem *ercList;ercList13,399
+<A NAME="line9"></A>typedef struct { /*@null@*/ ercList vals; int size; } ercInfo;ercInfo14,445
+<A NAME="line10"></A>typedef ercInfo *erc;erc15,528
+
+memchecks2/erc.lcl.html,0
+
+memchecks2/erc.lh.html,0
+
+memchecks2/eref.c.html,39
+<A NAME="line45"></A>  return 50,2027
+
+memchecks2/eref.h.html,180
+<A NAME="line6"></A>typedef int eref;eref11,280
+<A NAME="line9"></A>typedef enum { used, avail } eref_status;eref_status14,399
+<A NAME="line14"></A>} eref_ERP;eref_ERP19,651
+
+memchecks2/eref.lcl.html,230
+<A NAME="line9"></A>eref eref_alloc(14,393
+<A NAME="line15"></A>void eref_free(20,608
+<A NAME="line22"></A>void eref_assign(27,880
+<A NAME="line29"></A>employee eref_get(34,1169
+<A NAME="line40"></A>void eref_initMod(45,1591
+
+memchecks2/eref.lh.html,0
+
+memchecks2/ereftab-next.lcl.html,0
+
+memchecks2/ereftab.c.html,39
+<A NAME="line35"></A>      if 40,1385
+
+memchecks2/ereftab.h.html,111
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,405
+<A NAME="line12"></A># define ereftab_elements(17,542
+
+memchecks2/ereftab.lcl.html,0
+
+memchecks2/ereftab.lh.html,0
+
+memchecks2/index.html,225
+typedef struct _elem _elem68,2686
+typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;ercElem68,2686
+<A HREF="empset.c.html#line83">empset.c:83,10</A>: Fresh storage returned as unqualified 93,3798
+
+memchecks2/lclint.out.html,54
+    eref_Pool.status = (eref_status *)malloc(22,1084
+
+memchecks3/bool.h.html,51
+<A NAME="line12"></A>typedef int bool;bool17,429
+
+memchecks3/dbase.c.html,98
+<A NAME="line11"></A>} employeeKinds;employeeKinds16,502
+<A NAME="line44"></A>      if 49,1620
+
+memchecks3/dbase.h.html,0
+
+memchecks3/dbase.lcl.html,566
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,243
+<A NAME="line5"></A>              duplERR, missERR} db_status;db_status10,384
+<A NAME="line9"></A>claims UniqueKeys 14,544
+<A NAME="line17"></A>db_status hire(22,871
+<A NAME="line32"></A>void uncheckedHire(37,1562
+<A NAME="line41"></A>bool fire(46,1963
+<A NAME="line49"></A>int query(54,2258
+<A NAME="line57"></A>bool promote(62,2562
+<A NAME="line68"></A>db_status setSalary(73,3028
+<A NAME="line83"></A>void db_print(88,3658
+<A NAME="line92"></A>void db_initMod(97,4017
+
+memchecks3/dbase.lh.html,160
+<A NAME="line15"></A>    } db_q;db_q20,678
+<A NAME="line20"></A>typedef enum {db_OK, salERR, genderERR, jobERR, duplERR, missERR} db_status;db_status25,839
+
+memchecks3/diffs.html,263
+&lt; typedef struct _elem _elem35,2055
+&lt; typedef struct _elem { eref val; struct _elem *next; } ercElem;ercElem35,2055
+&gt; typedef struct _elem _elem37,2128
+&gt; typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;ercElem37,2128
+
+memchecks3/drive.c.html,0
+
+memchecks3/employee.c.html,38
+<A NAME="line11"></A>      if 16,515
+
+memchecks3/employee.h.html,55
+<A NAME="line10"></A># define employee_initMod(15,499
+
+memchecks3/employee.lcl.html,207
+<A NAME="line6"></A>typedef enum { MALE, FEMALE, gender_ANY } gender;gender11,297
+<A NAME="line7"></A>typedef enum { MGR, NONMGR, job_ANY } job;job12,367
+<A NAME="line16"></A>} employee;employee21,696
+
+memchecks3/employee.lh.html,208
+<A NAME="line8"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;gender13,377
+<A NAME="line13"></A>typedef enum {MGR, NONMGR, job_ANY} job;job18,566
+<A NAME="line24"></A>    } employee;employee29,988
+
+memchecks3/empset.c.html,57
+<A NAME="line132"></A>      if (!empset_member(137,5026
+
+memchecks3/empset.h.html,100
+<A NAME="line8"></A>typedef erc empset;empset13,412
+<A NAME="line37"></A>   erc_elements(42,1784
+
+memchecks3/empset.lcl.html,0
+
+memchecks3/empset.lh.html,0
+
+memchecks3/erc.c.html,0
+
+memchecks3/erc.h.html,378
+<A NAME="line7"></A>typedef struct _elem _elem12,315
+<A NAME="line7"></A>typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;ercElem12,315
+<A NAME="line8"></A>typedef ercElem *ercList;ercList13,410
+<A NAME="line9"></A>typedef struct { /*@null@*/ ercList vals; int size; } ercInfo;ercInfo14,456
+<A NAME="line10"></A>typedef ercInfo *erc;erc15,539
+
+memchecks3/erc.lcl.html,0
+
+memchecks3/erc.lh.html,0
+
+memchecks3/eref.c.html,39
+<A NAME="line45"></A>  return 50,2027
+
+memchecks3/eref.h.html,180
+<A NAME="line6"></A>typedef int eref;eref11,280
+<A NAME="line9"></A>typedef enum { used, avail } eref_status;eref_status14,399
+<A NAME="line14"></A>} eref_ERP;eref_ERP19,651
+
+memchecks3/eref.lcl.html,230
+<A NAME="line9"></A>eref eref_alloc(14,393
+<A NAME="line15"></A>void eref_free(20,608
+<A NAME="line22"></A>void eref_assign(27,880
+<A NAME="line29"></A>employee eref_get(34,1169
+<A NAME="line40"></A>void eref_initMod(45,1591
+
+memchecks3/eref.lh.html,0
+
+memchecks3/ereftab.c.html,39
+<A NAME="line35"></A>      if 40,1386
+
+memchecks3/ereftab.h.html,111
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,405
+<A NAME="line12"></A># define ereftab_elements(17,542
+
+memchecks3/ereftab.lcl.html,0
+
+memchecks3/ereftab.lh.html,0
+
+memchecks3/index.html,48
+                   em1 = empset_create(85,3501
+
+memchecks3/lclint.out.html,48
+                   em1 = empset_create(40,2312
+
+namechecks/bool.h.html,51
+<A NAME="line12"></A>typedef int bool;bool17,429
+
+namechecks/dbase.c.html,161
+<A NAME="line7"></A>} employeeKinds;employeeKinds12,331
+<A NAME="line18"></A>typedef /*@only@*/ erc o_erc;o_erc23,830
+<A NAME="line56"></A>      if 61,2355
+
+namechecks/dbase.h.html,0
+
+namechecks/dbase.lcl.html,566
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,243
+<A NAME="line5"></A>              duplERR, missERR} db_status;db_status10,384
+<A NAME="line9"></A>claims UniqueKeys 14,544
+<A NAME="line17"></A>db_status hire(22,871
+<A NAME="line32"></A>void uncheckedHire(37,1562
+<A NAME="line41"></A>bool fire(46,1963
+<A NAME="line49"></A>int query(54,2258
+<A NAME="line57"></A>bool promote(62,2562
+<A NAME="line68"></A>db_status setSalary(73,3028
+<A NAME="line83"></A>void db_print(88,3658
+<A NAME="line92"></A>void db_initMod(97,4017
+
+namechecks/dbase.lh.html,160
+<A NAME="line15"></A>    } db_q;db_q20,678
+<A NAME="line20"></A>typedef enum {db_OK, salERR, genderERR, jobERR, duplERR, missERR} db_status;db_status25,839
+
+namechecks/diffs.html,18
+&lt;   if 10,864
+
+namechecks/drive.c.html,0
+
+namechecks/employee.c.html,115
+<A NAME="line11"></A>      if 16,515
+<A NAME="line27"></A>typedef /*@observer@*/ char *obscharp;obscharp32,1218
+
+namechecks/employee.h.html,55
+<A NAME="line13"></A># define employee_initMod(18,584
+
+namechecks/employee.lcl.html,207
+<A NAME="line6"></A>typedef enum { MALE, FEMALE, gender_ANY } gender;gender11,297
+<A NAME="line7"></A>typedef enum { MGR, NONMGR, job_ANY } job;job12,367
+<A NAME="line16"></A>} employee;employee21,696
+
+namechecks/employee.lh.html,208
+<A NAME="line8"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;gender13,377
+<A NAME="line13"></A>typedef enum {MGR, NONMGR, job_ANY} job;job18,566
+<A NAME="line24"></A>    } employee;employee29,988
+
+namechecks/empset.c.html,57
+<A NAME="line142"></A>      if (!empset_member(147,5474
+
+namechecks/empset.h.html,100
+<A NAME="line8"></A>typedef erc empset;empset13,412
+<A NAME="line33"></A>   erc_elements(38,1599
+
+namechecks/empset.lcl.html,0
+
+namechecks/empset.lh.html,0
+
+namechecks/erc.c.html,42
+<A NAME="line13"></A>      return 18,561
+
+namechecks/erc.h.html,378
+<A NAME="line7"></A>typedef struct _elem _elem12,315
+<A NAME="line7"></A>typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;ercElem12,315
+<A NAME="line8"></A>typedef ercElem *ercList;ercList13,410
+<A NAME="line9"></A>typedef struct { /*@null@*/ ercList vals; int size; } ercInfo;ercInfo14,456
+<A NAME="line10"></A>typedef ercInfo *erc;erc15,539
+
+namechecks/erc.lcl.html,0
+
+namechecks/erc.lh.html,0
+
+namechecks/eref.c.html,39
+<A NAME="line47"></A>  return 52,2124
+
+namechecks/eref.h.html,180
+<A NAME="line6"></A>typedef int eref;eref11,280
+<A NAME="line9"></A>typedef enum { used, avail } eref_status;eref_status14,399
+<A NAME="line14"></A>} eref_ERP;eref_ERP19,651
+
+namechecks/eref.lcl.html,230
+<A NAME="line9"></A>eref eref_alloc(14,393
+<A NAME="line15"></A>void eref_free(20,608
+<A NAME="line22"></A>void eref_assign(27,880
+<A NAME="line29"></A>employee eref_get(34,1169
+<A NAME="line40"></A>void eref_initMod(45,1591
+
+namechecks/eref.lh.html,0
+
+namechecks/ereftab.c.html,39
+<A NAME="line35"></A>      if 40,1386
+
+namechecks/ereftab.h.html,111
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,405
+<A NAME="line12"></A># define ereftab_elements(17,542
+
+namechecks/ereftab.lcl.html,0
+
+namechecks/ereftab.lh.html,0
+
+namechecks/index.html,23
+  Function or 76,3201
+
+namechecks/lclint-checks.out.html,31
+392 spec, 2986 source 30,1404
+
+namechecks/lclint-enumindex.out.html,31
+392 spec, 2840 source 27,1093
+
+namechecks/lclint-enumtype.out.html,31
+392 spec, 2840 source 27,1098
+
+namechecks/lclint-external.out.html,67
+                      gender_ANY in the first 6 characters 13,562
+
+namechecks/lclint-externallen.out.html,72
+                  from empset_insert in the first 12 characters 15,732
+
+namechecks/lclint-externallen14.out.html,31
+392 spec, 2986 source 30,1450
+
+namechecks/lclint-internal.out.html,31
+392 spec, 2986 source 30,1496
+
+namechecks/lclint-nomacros.out.html,0
+
+namechecks/lclint-prefixes.out.html,31
+392 spec, 2840 source 70,3767
+
+namechecks/lclint-standard.out.html,31
+392 spec, 2840 source 27,1078
+
+namechecks/lclint.out.html,54
+  Function or 23,1254
+392 spec, 2986 source 69,4111
+
+original/CTrait.lsl.html,0
+
+original/bool.h.html,50
+<A NAME="line5"></A>typedef int bool;bool10,247
+
+original/dbase.c.html,601
+<A NAME="line8"></A>typedef enum {mMGRS, fMGRS, mNON, fNON} employeeKinds;employeeKinds13,395
+<A NAME="line14"></A>void db_initMod(19,620
+<A NAME="line27"></A>eref _db_ercKeyGet(32,1140
+<A NAME="line36"></A>eref _db_keyGet(41,1501
+<A NAME="line46"></A>int _db_addEmpls(51,1913
+<A NAME="line62"></A>db_status hire(67,2551
+<A NAME="line72"></A>void uncheckedHire(77,3022
+<A NAME="line85"></A>bool fire(90,3596
+<A NAME="line99"></A>bool promote(104,4170
+<A NAME="line124"></A>db_status setSalary(129,5219
+<A NAME="line136"></A>int query(141,5736
+<A NAME="line186"></A>void db_print(191,8205
+
+original/dbase.h.html,0
+
+original/dbase.lcl.html,427
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,264
+<A NAME="line5"></A>              duplERR, missERR} db_status;db_status10,405
+<A NAME="line11"></A>claims UniqueKeys(16,701
+<A NAME="line17"></A>db_status hire(22,981
+<A NAME="line29"></A>void uncheckedHire(34,1603
+<A NAME="line35"></A>bool fire(40,1929
+<A NAME="line40"></A>int query(45,2153
+<A NAME="line45"></A>bool promote(50,2392
+
+original/dbase.lh.html,160
+<A NAME="line15"></A>    } db_q;db_q20,698
+<A NAME="line20"></A>typedef enum {db_OK, salERR, genderERR, jobERR, duplERR, missERR} db_status;db_status25,859
+
+original/dbase.lsl.html,51
+<A NAME="line24"></A>         then insert(29,1376
+
+original/dbaseAssumptions.lsl.html,0
+
+original/drive.c.html,38
+<A NAME="line11"></A>int main(16,637
+
+original/employee.c.html,149
+<A NAME="line4"></A>bool employee_setName(9,240
+<A NAME="line12"></A>bool employee_equal(17,593
+<A NAME="line20"></A>void employee_sprint(25,1078
+
+original/employee.h.html,54
+<A NAME="line10"></A>#define employee_initMod(15,500
+
+original/employee.lcl.html,274
+<A NAME="line4"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;gender9,228
+<A NAME="line5"></A>typedef enum {MGR, NONMGR, job_ANY} job;job10,296
+<A NAME="line10"></A>                job j;} employee;employee15,564
+<A NAME="line14"></A>void employee_sprint(19,807
+
+original/employee.lh.html,208
+<A NAME="line6"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;gender11,309
+<A NAME="line11"></A>typedef enum {MGR, NONMGR, job_ANY} job;job16,496
+<A NAME="line22"></A>    } employee;employee27,918
+
+original/employee.lsl.html,0
+
+original/employeeConstants.lsl.html,0
+
+original/empset.c.html,505
+<A NAME="line5"></A>eref _empset_get(10,258
+<A NAME="line17"></A>void empset_clear(22,723
+<A NAME="line21"></A>bool empset_insert(26,857
+<A NAME="line28"></A>void empset_insertUnique(33,1168
+<A NAME="line39"></A>bool empset_delete(44,1635
+<A NAME="line46"></A>empset empset_disjointUnion(51,1939
+<A NAME="line63"></A>empset empset_union(68,2633
+<A NAME="line81"></A>void empset_intersect(86,3359
+<A NAME="line94"></A>bool empset_subset(99,3933
+<A NAME="line105"></A>void empset_initMod(110,4377
+
+original/empset.h.html,54
+<A NAME="line8"></A>typedef erc empset;empset13,416
+
+original/empset.lcl.html,701
+<A NAME="line6"></A>empset empset_create(11,381
+<A NAME="line9"></A>void empset_final(14,518
+<A NAME="line13"></A>void empset_clear(18,674
+<A NAME="line17"></A>bool empset_insert(22,829
+<A NAME="line21"></A>void empset_insertUnique(26,1031
+<A NAME="line26"></A>bool empset_delete(31,1261
+<A NAME="line30"></A>empset empset_union(35,1460
+<A NAME="line33"></A>empset empset_disjointUnion(38,1622
+<A NAME="line37"></A>void empset_intersect(42,1843
+<A NAME="line41"></A>int empset_size(46,2023
+<A NAME="line44"></A>bool empset_member(49,2149
+<A NAME="line47"></A>bool empset_subset(52,2290
+<A NAME="line50"></A>employee empset_choose(55,2440
+<A NAME="line54"></A>char *empset_sprint(59,2615
+
+original/empset.lh.html,0
+
+original/erc.c.html,459
+<A NAME="line3"></A>erc erc_create(8,175
+<A NAME="line15"></A>void erc_clear(20,626
+<A NAME="line26"></A>void erc_final(31,1051
+<A NAME="line31"></A>bool erc_member(36,1212
+<A NAME="line38"></A>void erc_insert(43,1531
+<A NAME="line51"></A>bool erc_delete(56,2098
+<A NAME="line70"></A>ercIter erc_iterStart(75,2884
+<A NAME="line81"></A>eref erc_yield(86,3349
+<A NAME="line92"></A>void erc_join(97,3753
+<A NAME="line98"></A>char * erc_sprint(103,4024
+
+original/erc.h.html,412
+<A NAME="line6"></A>typedef struct _elem{_elem11,272
+<A NAME="line6"></A>typedef struct _elem{eref val; struct _elem *next;} ercElem;ercElem11,272
+<A NAME="line7"></A>typedef ercElem *ercList;ercList12,353
+<A NAME="line8"></A>typedef struct {ercList vals; int size;} ercInfo;ercInfo13,399
+<A NAME="line9"></A>typedef ercInfo *erc;erc14,469
+<A NAME="line10"></A>typedef ercList *ercIter;ercIter15,511
+
+original/erc.lcl.html,410
+<A NAME="line8"></A>erc erc_create(13,430
+<A NAME="line11"></A>void erc_clear(16,562
+<A NAME="line16"></A>void erc_insert(21,764
+<A NAME="line21"></A>bool erc_delete(26,1015
+<A NAME="line27"></A>bool erc_member(32,1299
+<A NAME="line30"></A>eref erc_choose(35,1436
+<A NAME="line34"></A>int erc_size(39,1613
+<A NAME="line37"></A>ercIter erc_iterStart(42,1737
+<A NAME="line42"></A>eref erc_yield(47,1971
+
+original/erc.lh.html,0
+
+original/erc.lsl.html,0
+
+original/eref.c.html,92
+<A NAME="line7"></A>eref eref_alloc(12,376
+<A NAME="line38"></A>void eref_initMod(43,1859
+
+original/eref.h.html,203
+<A NAME="line6"></A>typedef int eref;eref11,284
+<A NAME="line9"></A>typedef enum {used, avail} eref_status;eref_status14,403
+<A NAME="line12"></A>                int size;} eref_ERP;eref_ERP17,575
+
+original/eref.lcl.html,45
+<A NAME="line11"></A>eref eref_alloc(16,510
+
+original/eref.lh.html,0
+
+original/ereftab.c.html,250
+<A NAME="line8"></A>ereftab ereftab_create(13,406
+<A NAME="line12"></A>void ereftab_insert(17,547
+<A NAME="line17"></A>bool ereftab_delete(22,753
+<A NAME="line25"></A>eref ereftab_lookup(30,1054
+<A NAME="line37"></A>void ereftab_initMod(42,1527
+
+original/ereftab.h.html,56
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,409
+
+original/ereftab.lcl.html,249
+<A NAME="line7"></A>ereftab ereftab_create(12,380
+<A NAME="line10"></A>void ereftab_insert(15,504
+<A NAME="line15"></A>bool ereftab_delete(20,753
+<A NAME="line19"></A>eref ereftab_lookup(24,954
+<A NAME="line22"></A>void ereftab_initMod(27,1103
+
+original/ereftab.lh.html,0
+
+original/ereftab.lsl.html,0
+
+original/file.lsl.html,0
+
+original/imports-stdio.lcl.html,116
+<A NAME="line16"></A>typedef void *va_list;va_list21,646
+<A NAME="line17"></A>typedef void *fpos_t;fpos_t22,690
+
+original/index.html,43
+                   erc_iterStart 100,4079
+
+original/lclint.out.html,42
+                   erc_iterStart 34,1820
+
+original/refTable.lsl.html,36
+<A NAME="line1"></A>refTable(6,103
+
+original/sprint.lsl.html,34
+<A NAME="line1"></A>sprint(6,100
+
+original/stdio.lcl.html,60
+<A NAME="line12"></A>typedef char ioStream ioStream17,536
+
+original/stdio.lh.html,60
+<A NAME="line10"></A>typedef char ioStream[ioStream15,470
+
+standardchecks/bool.h.html,51
+<A NAME="line12"></A>typedef int bool;bool17,429
+
+standardchecks/dbase.c.html,98
+<A NAME="line11"></A>} employeeKinds;employeeKinds16,502
+<A NAME="line44"></A>      if 49,1620
+
+standardchecks/dbase.h.html,0
+
+standardchecks/dbase.lcl.html,566
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,243
+<A NAME="line5"></A>              duplERR, missERR} db_status;db_status10,384
+<A NAME="line9"></A>claims UniqueKeys 14,544
+<A NAME="line17"></A>db_status hire(22,871
+<A NAME="line32"></A>void uncheckedHire(37,1562
+<A NAME="line41"></A>bool fire(46,1963
+<A NAME="line49"></A>int query(54,2258
+<A NAME="line57"></A>bool promote(62,2562
+<A NAME="line68"></A>db_status setSalary(73,3028
+<A NAME="line83"></A>void db_print(88,3658
+<A NAME="line92"></A>void db_initMod(97,4017
+
+standardchecks/dbase.lh.html,160
+<A NAME="line15"></A>    } db_q;db_q20,678
+<A NAME="line20"></A>typedef enum {db_OK, salERR, genderERR, jobERR, duplERR, missERR} db_status;db_status25,839
+
+standardchecks/diffs.html,135
+&gt;       if 16,764
+&gt;       if (!empset_member(131,6832
+&lt; typedef ercList *ercIter;ercIter196,9679
+&gt;       if 269,13118
+
+standardchecks/drive.c.html,0
+
+standardchecks/employee.c.html,38
+<A NAME="line11"></A>      if 16,515
+
+standardchecks/employee.h.html,55
+<A NAME="line10"></A># define employee_initMod(15,499
+
+standardchecks/employee.lcl.html,207
+<A NAME="line6"></A>typedef enum { MALE, FEMALE, gender_ANY } gender;gender11,297
+<A NAME="line7"></A>typedef enum { MGR, NONMGR, job_ANY } job;job12,367
+<A NAME="line16"></A>} employee;employee21,696
+
+standardchecks/employee.lh.html,208
+<A NAME="line8"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;gender13,377
+<A NAME="line13"></A>typedef enum {MGR, NONMGR, job_ANY} job;job18,566
+<A NAME="line24"></A>    } employee;employee29,988
+
+standardchecks/empset.c.html,57
+<A NAME="line132"></A>      if (!empset_member(137,4996
+
+standardchecks/empset.h.html,100
+<A NAME="line8"></A>typedef erc empset;empset13,412
+<A NAME="line37"></A>   erc_elements(42,1784
+
+standardchecks/empset.lcl.html,0
+
+standardchecks/empset.lh.html,0
+
+standardchecks/erc.c.html,0
+
+standardchecks/erc.h.html,355
+<A NAME="line6"></A>typedef struct _elem _elem11,268
+<A NAME="line6"></A>typedef struct _elem { eref val; struct _elem *next; } ercElem;ercElem11,268
+<A NAME="line7"></A>typedef ercElem *ercList;ercList12,352
+<A NAME="line8"></A>typedef struct { ercList vals; int size; } ercInfo;ercInfo13,398
+<A NAME="line9"></A>typedef ercInfo *erc;erc14,470
+
+standardchecks/erc.lcl.html,0
+
+standardchecks/erc.lh.html,0
+
+standardchecks/eref.c.html,39
+<A NAME="line45"></A>  return 50,2005
+
+standardchecks/eref.h.html,180
+<A NAME="line6"></A>typedef int eref;eref11,280
+<A NAME="line9"></A>typedef enum { used, avail } eref_status;eref_status14,399
+<A NAME="line14"></A>} eref_ERP;eref_ERP19,616
+
+standardchecks/eref.lcl.html,230
+<A NAME="line9"></A>eref eref_alloc(14,393
+<A NAME="line15"></A>void eref_free(20,608
+<A NAME="line22"></A>void eref_assign(27,880
+<A NAME="line29"></A>employee eref_get(34,1169
+<A NAME="line40"></A>void eref_initMod(45,1591
+
+standardchecks/eref.lh.html,0
+
+standardchecks/ereftab.c.html,39
+<A NAME="line35"></A>      if 40,1385
+
+standardchecks/ereftab.h.html,111
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,405
+<A NAME="line12"></A># define ereftab_elements(17,542
+
+standardchecks/ereftab.lcl.html,0
+
+standardchecks/ereftab.lh.html,0
+
+standardchecks/index.html,74
+<A HREF="empset.c.html#line104">empset.c:104,2</A>: Return value 54,1767
+
+standardchecks/lclint-weak.out.html,31
+388 spec, 3011 source 30,1406
+
+standardchecks/lclint.out.html,101
+<A HREF="eref.c.html#line53" target="source">eref.c:53,7</A>: Use of == with bool variables 26,1348
+
+strictchecks/bool.h.html,51
+<A NAME="line12"></A>typedef int bool;bool17,429
+
+strictchecks/dbase-next.c.html,58
+<A NAME="line7"></A>} employeeKinds;employeeKinds12,345
+
+strictchecks/dbase.c.html,161
+<A NAME="line7"></A>} employeeKinds;employeeKinds12,347
+<A NAME="line18"></A>typedef /*@only@*/ erc o_erc;o_erc23,854
+<A NAME="line56"></A>      if 61,2379
+
+strictchecks/dbase.h.html,0
+
+strictchecks/dbase.lcl.html,594
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,243
+<A NAME="line5"></A>               DBS_DUPLERR, DBS_MISSERR } db_status;db_status10,398
+<A NAME="line9"></A>claims UniqueKeys 14,568
+<A NAME="line17"></A>db_status db_hire 22,895
+<A NAME="line32"></A>void db_uncheckedHire 37,1590
+<A NAME="line41"></A>bool db_fire 46,1995
+<A NAME="line49"></A>int db_query 54,2294
+<A NAME="line57"></A>bool db_promote 62,2602
+<A NAME="line68"></A>db_status db_setSalary 73,3072
+<A NAME="line83"></A>void db_print(88,3706
+<A NAME="line92"></A>void db_initMod(97,4065
+
+strictchecks/dbase.lh.html,181
+<A NAME="line15"></A>    } db_q;db_q20,678
+<A NAME="line20"></A>typedef enum {DBS_OK, DBS_SALERR, DBS_GENDERERR, DBS_JOBERR, DBS_DUPLERR, DBS_MISSERR} db_status;db_status25,839
+
+strictchecks/diffs.html,595
+&lt;               duplERR, missERR} db_status;db_status197,11958
+&gt;                DBS_DUPLERR, DBS_MISSERR } db_status;db_status200,12077
+&lt; db_status hire(202,12266
+&lt; typedef enum { MALE, FEMALE, gender_ANY } gender;gender274,16785
+&lt; typedef enum { MGR, NONMGR, job_ANY } job;job275,16840
+&gt; typedef enum { MALE, FEMALE, GENDER_UNKNOWN } gender;gender277,16892
+&gt; typedef enum { MGR, NONMGR, JOB_UNKNOWN } job;job278,16951
+&lt; typedef enum { used, avail } eref_status;eref_status342,20884
+&gt; typedef enum { ST_USED, ST_AVAIL } erefStatus;erefStatus344,20935
+
+strictchecks/drive-next.c.html,0
+
+strictchecks/drive.c.html,0
+
+strictchecks/employee.c.html,115
+<A NAME="line11"></A>      if 16,515
+<A NAME="line27"></A>typedef /*@observer@*/ char *obscharp;obscharp32,1218
+
+strictchecks/employee.h.html,55
+<A NAME="line13"></A># define employee_initMod(18,584
+
+strictchecks/employee.lcl.html,215
+<A NAME="line6"></A>typedef enum { MALE, FEMALE, GENDER_UNKNOWN } gender;gender11,297
+<A NAME="line7"></A>typedef enum { MGR, NONMGR, JOB_UNKNOWN } job;job12,371
+<A NAME="line16"></A>} employee;employee21,704
+
+strictchecks/employee.lh.html,216
+<A NAME="line8"></A>typedef enum {MALE, FEMALE, GENDER_UNKNOWN} gender;gender13,377
+<A NAME="line13"></A>typedef enum {MGR, NONMGR, JOB_UNKNOWN} job;job18,570
+<A NAME="line24"></A>    } employee;employee29,996
+
+strictchecks/empset.c.html,57
+<A NAME="line143"></A>      if (!empset_member(148,5483
+
+strictchecks/empset.h.html,100
+<A NAME="line8"></A>typedef erc empset;empset13,412
+<A NAME="line33"></A>   erc_elements(38,1599
+
+strictchecks/empset.lcl.html,0
+
+strictchecks/empset.lh.html,0
+
+strictchecks/erc.c.html,42
+<A NAME="line13"></A>      return 18,561
+
+strictchecks/erc.h.html,378
+<A NAME="line7"></A>typedef struct _elem _elem12,315
+<A NAME="line7"></A>typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;ercElem12,315
+<A NAME="line8"></A>typedef ercElem *ercList;ercList13,410
+<A NAME="line9"></A>typedef struct { /*@null@*/ ercList vals; int size; } ercInfo;ercInfo14,456
+<A NAME="line10"></A>typedef ercInfo *erc;erc15,539
+
+strictchecks/erc.lcl.html,0
+
+strictchecks/erc.lh.html,0
+
+strictchecks/eref-next.c.html,175
+<A NAME="line5"></A>typedef enum { ST_USED, ST_AVAIL } erefStatus;erefStatus10,246
+<A NAME="line10"></A>} erefTable;erefTable15,498
+<A NAME="line59"></A>  return 64,2558
+
+strictchecks/eref.c.html,39
+<A NAME="line47"></A>  return 52,2132
+
+strictchecks/eref.h.html,186
+<A NAME="line6"></A>typedef int eref;eref11,280
+<A NAME="line9"></A>typedef enum { ST_USED, ST_AVAIL } erefStatus;erefStatus14,399
+<A NAME="line14"></A>} erefTable;erefTable19,655
+
+strictchecks/eref.lcl.html,280
+<A NAME="line10"></A>eref eref_alloc(15,422
+<A NAME="line16"></A>bool eref_isDefined 21,638
+<A NAME="line18"></A>void eref_free(23,723
+<A NAME="line25"></A>void eref_assign(30,995
+<A NAME="line32"></A>employee eref_get(37,1284
+<A NAME="line43"></A>void eref_initMod(48,1706
+
+strictchecks/eref.lh.html,0
+
+strictchecks/ereftab.c.html,39
+<A NAME="line35"></A>      if 40,1386
+
+strictchecks/ereftab.h.html,110
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,405
+<A NAME="line12"></A>#define ereftab_elements(17,542
+
+strictchecks/ereftab.lcl.html,0
+
+strictchecks/ereftab.lh.html,0
+
+strictchecks/index.html,19
+The other 88,3662
+
+strictchecks/lclint-blocks.out.html,128
+<A HREF="empset.c.html#line115" target="source">empset.c:115,2</A>: Body of if statement is not a block: empset_insert(35,1857
+
+strictchecks/lclint-checks.out.html,31
+396 spec, 3040 source 30,1384
+
+strictchecks/lclint-exportlocal.out.html,31
+396 spec, 3040 source 50,3377
+
+strictchecks/lclint-exports.out.html,31
+396 spec, 3040 source 66,3984
+
+strictchecks/lclint-internalstate.edit.html,51
+                bool_initMod: bool_initMod(15,568
+
+strictchecks/lclint-mods.edit.html,49
+                  erc_insert: erc_insert(10,223
+
+strictchecks/lclint-moduncon.out.html,721
+                   function empset_get:23,1157
+                   function empset_get:30,1621
+                  function empset_get:33,1836
+                 function int_toSize:38,2169
+                  function db_ercKeyGet:42,2440
+                   function db_keyGet:49,2906
+                  function db_ercKeyGet:52,3115
+                   function db_ercKeyGet:54,3296
+                  function db_keyGet:57,3513
+                 function check:61,3777
+                 function check:63,3940
+                 function check:65,4103
+                  function check:67,4268
+                  function check:69,4434
+                  function check:71,4600
+                  function check:73,4766
+
+strictchecks/lclint.out.html,750
+                   function empset_get:116,8417
+                   function empset_get:123,8881
+                  function empset_get:130,9497
+                 function int_toSize:154,11252
+                  function db_ercKeyGet:182,13606
+                   function db_keyGet:192,14441
+                  function db_ercKeyGet:219,16662
+                   function db_ercKeyGet:221,16843
+                  function db_keyGet:233,17922
+                 function check:253,19550
+                 function check:255,19713
+                 function check:257,19876
+                  function check:264,20583
+                  function check:266,20749
+                  function check:268,20915
+                  function check:274,21489
+
+strictlib/bool.h.html,102
+<A NAME="line12"></A>typedef int bool;bool17,429
+<A NAME="line23"></A># define bool_initMod(28,944
+
+strictlib/bool.lcl.html,183
+<A NAME="line1"></A>void bool_initMod 6,96
+<A NAME="line2"></A>observer char *bool_unparse 7,184
+<A NAME="line3"></A>bool bool_not 8,264
+<A NAME="line4"></A>bool bool_equal 9,329
+
+strictlib/bool.lh.html,0
+
+strictlib/check.lcl.html,47
+<A NAME="line1"></A>falseexit void check 6,97
+
+strictlib/check.lh.html,0
+
+strictlib/dbase.c.html,58
+<A NAME="line7"></A>} employeeKinds;employeeKinds12,345
+
+strictlib/dbase.h.html,0
+
+strictlib/dbase.lcl.html,594
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,240
+<A NAME="line5"></A>               DBS_DUPLERR, DBS_MISSERR } db_status;db_status10,395
+<A NAME="line9"></A>claims UniqueKeys 14,565
+<A NAME="line17"></A>db_status db_hire 22,891
+<A NAME="line32"></A>void db_uncheckedHire 37,1585
+<A NAME="line41"></A>bool db_fire 46,1989
+<A NAME="line49"></A>int db_query 54,2317
+<A NAME="line57"></A>bool db_promote 62,2654
+<A NAME="line68"></A>db_status db_setSalary 73,3124
+<A NAME="line83"></A>void db_print(88,3757
+<A NAME="line92"></A>void db_initMod(97,4116
+
+strictlib/dbase.lh.html,181
+<A NAME="line15"></A>    } db_q;db_q20,674
+<A NAME="line20"></A>typedef enum {DBS_OK, DBS_SALERR, DBS_GENDERERR, DBS_JOBERR, DBS_DUPLERR, DBS_MISSERR} db_status;db_status25,835
+
+strictlib/diffs.html,561
+&gt; # define bool_initMod(10,654
+&lt;       if 28,1955
+&lt; bool db_fire 111,7157
+&lt;       if 164,9642
+&gt; void employee_initMod(175,10124
+&lt;       if (!empset_member(200,11991
+&gt; | bool : void | empset_insert 211,12493
+&gt; void erc_initMod 283,16769
+&gt; typedef enum { ST_USED, ST_AVAIL } erefStatus;erefStatus287,17113
+&gt; } erefTable;erefTable292,17290
+&lt; typedef enum { ST_USED, ST_AVAIL } erefStatus;erefStatus331,19954
+&lt; } erefTable;erefTable336,20131
+&lt; void eref_initMod(341,20427
+&gt; void ereftab_initMod 363,21512
+
+strictlib/drive.c.html,0
+
+strictlib/employee.c.html,77
+<A NAME="line30"></A>typedef /*@observer@*/ char *obscharp;obscharp35,1276
+
+strictlib/employee.h.html,55
+<A NAME="line13"></A># define employee_initMod(18,584
+
+strictlib/employee.lcl.html,267
+<A NAME="line6"></A>typedef enum { MALE, FEMALE, GENDER_UNKNOWN } gender;gender11,295
+<A NAME="line7"></A>typedef enum { MGR, NONMGR, JOB_UNKNOWN } job;job12,369
+<A NAME="line16"></A>} employee;employee21,702
+<A NAME="line49"></A>void employee_initMod(54,2239
+
+strictlib/employee.lh.html,216
+<A NAME="line8"></A>typedef enum {MALE, FEMALE, GENDER_UNKNOWN} gender;gender13,374
+<A NAME="line13"></A>typedef enum {MGR, NONMGR, JOB_UNKNOWN} job;job18,567
+<A NAME="line24"></A>    } employee;employee29,993
+
+strictlib/empset.c.html,0
+
+strictlib/empset.h.html,100
+<A NAME="line8"></A>typedef erc empset;empset13,412
+<A NAME="line33"></A>   erc_elements(38,1597
+
+strictlib/empset.lcl.html,334
+<A NAME="line21"></A>| bool : void | empset_insert 26,829
+<A NAME="line27"></A>void empset_insertUnique 32,1119
+<A NAME="line40"></A>only empset empset_union(45,1686
+<A NAME="line46"></A>only empset empset_disjointUnion 51,1961
+<A NAME="line53"></A>void empset_intersect 58,2301
+<A NAME="line85"></A>void empset_initMod 90,3549
+
+strictlib/empset.lh.html,0
+
+strictlib/erc.c.html,42
+<A NAME="line14"></A>      return 19,587
+
+strictlib/erc.h.html,419
+<A NAME="line8"></A>typedef struct _elem _elem13,417
+<A NAME="line8"></A>typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;ercElem13,417
+<A NAME="line9"></A>typedef ercElem *ercList;ercList14,512
+<A NAME="line10"></A>typedef struct { /*@null@*/ ercList vals; int size; } ercInfo;ercInfo15,558
+<A NAME="line13"></A>typedef ercInfo *erc;erc18,704
+<A NAME="line25"></A>    while 30,1270
+
+strictlib/erc.lcl.html,47
+<A NAME="line66"></A>void erc_initMod 71,2592
+
+strictlib/erc.lh.html,0
+
+strictlib/eref.c.html,175
+<A NAME="line5"></A>typedef enum { ST_USED, ST_AVAIL } erefStatus;erefStatus10,268
+<A NAME="line10"></A>} erefTable;erefTable15,520
+<A NAME="line59"></A>  return 64,2580
+
+strictlib/eref.h.html,50
+<A NAME="line6"></A>typedef int eref;eref11,280
+
+strictlib/eref.lcl.html,280
+<A NAME="line10"></A>eref eref_alloc(15,422
+<A NAME="line16"></A>bool eref_isDefined 21,638
+<A NAME="line18"></A>void eref_free(23,723
+<A NAME="line25"></A>void eref_assign(30,995
+<A NAME="line32"></A>employee eref_get(37,1284
+<A NAME="line43"></A>void eref_initMod(48,1706
+
+strictlib/eref.lh.html,0
+
+strictlib/ereftab.c.html,0
+
+strictlib/ereftab.h.html,111
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,405
+<A NAME="line12"></A># define ereftab_elements(17,542
+
+strictlib/ereftab.lcl.html,51
+<A NAME="line28"></A>void ereftab_initMod 33,1210
+
+strictlib/ereftab.lh.html,0
+
+strictlib/index.html,21
+function to 55,2332
+
+strictlib/lclint-checks.out.html,31
+396 spec, 2886 source 35,1608
+
+strictlib/lclint-enumindex.out.html,31
+392 spec, 2840 source 27,1093
+
+strictlib/lclint-enumtype.out.html,31
+392 spec, 2840 source 27,1098
+
+strictlib/lclint-io.out.html,31
+              fprintf(49,2858
+
+strictlib/lclint-ioprop.edit.html,51
+                   eref_alloc: eref_alloc(30,1453
+
+strictlib/lclint-nomacros.out.html,0
+
+strictlib/lclint-retval.out.html,67
+<A HREF="eref.c.html#line36">eref.c:36,4</A>: Return value 23,934
+
+strictlib/lclint-standard.out.html,31
+392 spec, 2840 source 27,1078
+
+strictlib/lclint-strict.out.html,31
+402 spec, 2984 source 32,1265
+
+strictlib/lclint.out.html,68
+<A HREF="eref.c.html#line36">eref.c:36,4</A>: Return value 35,1747
+
+useiters/bool.h.html,51
+<A NAME="line12"></A>typedef int bool;bool17,429
+
+useiters/dbase.c.html,59
+<A NAME="line11"></A>} employeeKinds;employeeKinds16,502
+
+useiters/dbase.h.html,0
+
+useiters/dbase.lcl.html,566
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,243
+<A NAME="line5"></A>              duplERR, missERR} db_status;db_status10,384
+<A NAME="line9"></A>claims UniqueKeys 14,544
+<A NAME="line17"></A>db_status hire(22,871
+<A NAME="line32"></A>void uncheckedHire(37,1562
+<A NAME="line41"></A>bool fire(46,1963
+<A NAME="line49"></A>int query(54,2258
+<A NAME="line57"></A>bool promote(62,2562
+<A NAME="line68"></A>db_status setSalary(73,3028
+<A NAME="line83"></A>void db_print(88,3658
+<A NAME="line92"></A>void db_initMod(97,4017
+
+useiters/dbase.lh.html,160
+<A NAME="line15"></A>    } db_q;db_q20,678
+<A NAME="line20"></A>typedef enum {db_OK, salERR, genderERR, jobERR, duplERR, missERR} db_status;db_status25,839
+
+useiters/diffs.html,23
+&lt;       if 98,5680
+
+useiters/drive.c.html,0
+
+useiters/employee.c.html,38
+<A NAME="line11"></A>      if 16,515
+
+useiters/employee.h.html,55
+<A NAME="line10"></A># define employee_initMod(15,499
+
+useiters/employee.lcl.html,207
+<A NAME="line6"></A>typedef enum { MALE, FEMALE, gender_ANY } gender;gender11,297
+<A NAME="line7"></A>typedef enum { MGR, NONMGR, job_ANY } job;job12,367
+<A NAME="line16"></A>} employee;employee21,696
+
+useiters/employee.lh.html,208
+<A NAME="line8"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;gender13,377
+<A NAME="line13"></A>typedef enum {MGR, NONMGR, job_ANY} job;job18,566
+<A NAME="line24"></A>    } employee;employee29,988
+
+useiters/empset.c.html,37
+<A NAME="line151"></A>  if 156,5670
+
+useiters/empset.h.html,54
+<A NAME="line8"></A>typedef erc empset;empset13,412
+
+useiters/empset.lcl.html,0
+
+useiters/empset.lh.html,0
+
+useiters/erc.c.html,0
+
+useiters/erc.h.html,417
+<A NAME="line6"></A>typedef struct _elem _elem11,268
+<A NAME="line6"></A>typedef struct _elem { eref val; struct _elem *next; } ercElem;ercElem11,268
+<A NAME="line7"></A>typedef ercElem *ercList;ercList12,352
+<A NAME="line8"></A>typedef struct { ercList vals; int size; } ercInfo;ercInfo13,398
+<A NAME="line9"></A>typedef ercInfo *erc;erc14,470
+<A NAME="line10"></A>typedef ercList *ercIter;ercIter15,512
+
+useiters/erc.lcl.html,0
+
+useiters/erc.lh.html,0
+
+useiters/eref.c.html,39
+<A NAME="line45"></A>  return 50,2005
+
+useiters/eref.h.html,180
+<A NAME="line6"></A>typedef int eref;eref11,280
+<A NAME="line9"></A>typedef enum { used, avail } eref_status;eref_status14,399
+<A NAME="line14"></A>} eref_ERP;eref_ERP19,616
+
+useiters/eref.lcl.html,230
+<A NAME="line9"></A>eref eref_alloc(14,393
+<A NAME="line15"></A>void eref_free(20,608
+<A NAME="line22"></A>void eref_assign(27,880
+<A NAME="line29"></A>employee eref_get(34,1169
+<A NAME="line40"></A>void eref_initMod(45,1591
+
+useiters/eref.lh.html,0
+
+useiters/ereftab.c.html,0
+
+useiters/ereftab.h.html,56
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,405
+
+useiters/ereftab.lcl.html,0
+
+useiters/ereftab.lh.html,0
+
+useiters/index.html,144
+eref _db_ercKeyGet 77,3176
+static eref _db_ercKeyGet(95,3406
+# define erc_elements(erc_elements108,3674
+# define end_erc_elements 113,3877
+
+useiters/lclint.out.html,31
+407 spec, 3093 source 32,1526
+
+weakchecks/bool-next.h.html,51
+<A NAME="line12"></A>typedef int bool;bool17,429
+
+weakchecks/bool.h.html,51
+<A NAME="line12"></A>typedef int bool;bool17,429
+
+weakchecks/dbase.c.html,59
+<A NAME="line11"></A>} employeeKinds;employeeKinds16,502
+
+weakchecks/dbase.h.html,0
+
+weakchecks/dbase.lcl.html,566
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;db_q8,243
+<A NAME="line5"></A>              duplERR, missERR} db_status;db_status10,384
+<A NAME="line9"></A>claims UniqueKeys 14,544
+<A NAME="line17"></A>db_status hire(22,871
+<A NAME="line32"></A>void uncheckedHire(37,1562
+<A NAME="line41"></A>bool fire(46,1963
+<A NAME="line49"></A>int query(54,2258
+<A NAME="line57"></A>bool promote(62,2562
+<A NAME="line68"></A>db_status setSalary(73,3028
+<A NAME="line83"></A>void db_print(88,3658
+<A NAME="line92"></A>void db_initMod(97,4017
+
+weakchecks/dbase.lh.html,160
+<A NAME="line15"></A>    } db_q;db_q20,678
+<A NAME="line20"></A>typedef enum {db_OK, salERR, genderERR, jobERR, duplERR, missERR} db_status;db_status25,839
+
+weakchecks/diffs.html,128
+&lt; typedef enum {mMGRS, fMGRS, mNON, fNON} employeeKinds;employeeKinds41,2148
+&gt;gt44,2230
+&lt; void db_initMod(48,2461
+
+weakchecks/drive-next.c.html,0
+
+weakchecks/drive.c.html,0
+
+weakchecks/employee.c.html,38
+<A NAME="line11"></A>      if 16,512
+
+weakchecks/employee.h.html,55
+<A NAME="line10"></A># define employee_initMod(15,499
+
+weakchecks/employee.lcl.html,206
+<A NAME="line4"></A>typedef enum { MALE, FEMALE, gender_ANY } gender;gender9,228
+<A NAME="line5"></A>typedef enum { MGR, NONMGR, job_ANY } job;job10,298
+<A NAME="line14"></A>} employee;employee19,625
+
+weakchecks/employee.lh.html,208
+<A NAME="line6"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;gender11,309
+<A NAME="line11"></A>typedef enum {MGR, NONMGR, job_ANY} job;job16,496
+<A NAME="line22"></A>    } employee;employee27,918
+
+weakchecks/empset.c.html,37
+<A NAME="line148"></A>  if 153,5550
+
+weakchecks/empset.h.html,54
+<A NAME="line8"></A>typedef erc empset;empset13,412
+
+weakchecks/empset.lcl.html,0
+
+weakchecks/empset.lh.html,0
+
+weakchecks/erc.c.html,0
+
+weakchecks/erc.h.html,417
+<A NAME="line6"></A>typedef struct _elem _elem11,268
+<A NAME="line6"></A>typedef struct _elem { eref val; struct _elem *next; } ercElem;ercElem11,268
+<A NAME="line7"></A>typedef ercElem *ercList;ercList12,352
+<A NAME="line8"></A>typedef struct { ercList vals; int size; } ercInfo;ercInfo13,398
+<A NAME="line9"></A>typedef ercInfo *erc;erc14,470
+<A NAME="line10"></A>typedef ercList *ercIter;ercIter15,512
+
+weakchecks/erc.lcl.html,0
+
+weakchecks/erc.lh.html,0
+
+weakchecks/eref.c.html,39
+<A NAME="line45"></A>  return 50,2005
+
+weakchecks/eref.h.html,180
+<A NAME="line6"></A>typedef int eref;eref11,280
+<A NAME="line9"></A>typedef enum { used, avail } eref_status;eref_status14,399
+<A NAME="line14"></A>} eref_ERP;eref_ERP19,616
+
+weakchecks/eref.lcl.html,230
+<A NAME="line9"></A>eref eref_alloc(14,393
+<A NAME="line15"></A>void eref_free(20,608
+<A NAME="line22"></A>void eref_assign(27,880
+<A NAME="line29"></A>employee eref_get(34,1169
+<A NAME="line40"></A>void eref_initMod(45,1591
+
+weakchecks/eref.lh.html,0
+
+weakchecks/ereftab.c.html,39
+<A NAME="line37"></A>      if 42,1457
+
+weakchecks/ereftab.h.html,56
+<A NAME="line9"></A>typedef erc ereftab;ereftab14,405
+
+weakchecks/ereftab.lcl.html,0
+
+weakchecks/ereftab.lh.html,0
+
+weakchecks/imports-stdio.lcl.html,116
+<A NAME="line16"></A>typedef void *va_list;va_list21,646
+<A NAME="line17"></A>typedef void *fpos_t;fpos_t22,690
+
+weakchecks/index.html,15
+traits 22,591
+
+weakchecks/lclint.out.html,42
+                   erc_iterStart 32,1696

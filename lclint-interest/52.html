@@ -1,0 +1,56 @@
+<h3>lclint-interest message 52</h3>
+<pre>
+From mikee@rd.bbc.co.uk Thu Mar 21 12:01:23 1996
+From: mikee@rd.bbc.co.uk (Mike Ellis)
+Date: Thu, 21 Mar 96 08:06:32 GMT
+To: lclint-interest@larch.lcs.mit.edu
+Subject: Enumerated boolean types and printf("%lX", foo)
+
+Hiya!
+
+I normally use the following boolean type:
+
+typedef enum { false = (0==1), true } bool;
+
+However,  LCLint reports this as an error every time I use a bool 
+variable or the enumerated names true and false.  It also claims
+that I can use the +boolint flag to eliminate these errors,  but
+this doesn't appear to be the case.  Does anyone else have a suggestion?
+
+On a slightly different note,  the following code:
+
+unsigned long foo = 0;
+
+(void)printf("%08lX", foo);
+
+generates the warning "Format argument 1 to printf (%X) expects long int 
+gets unsignedlong int".  According to my copy of the ISO standard,
+raw %X expects an unsigned int,  while %lX expects an unsigned long int.
+Any suggestions?
+
+Cheers,
+
+Mike.
+
+          Mike Ellis,  Research and Development Engineer,  BBC R & D
+Email: mike.ellis@rd.bbc.co.uk   DDI:(+44) 1737 836663   Fax:(+44) 1737 836667
+Smail: BBC R&D, Kingswood Warren, Woodland Way, Tadworth, Surrey, KT20 6NP, UK
+ ** Any opinions expressed are my own and may not reflect those of the BBC **
+
+
+</pre>
+<A HREF="51.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="53.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

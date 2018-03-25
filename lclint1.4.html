@@ -1,0 +1,89 @@
+<html>
+<head>
+<title> LCLint </title>
+</head>
+<body>
+
+<h1>
+LCLint <BR>
+</h1>
+
+LCLint is a lint-like tool for ANSI C.  It can be used like a traditional
+lint to detect certain classes of C errors statically; if formal
+specifications are also supplied, it can do more powerful checking to
+detect inconsistencies between specifications and code.
+
+<P>
+
+Without specifications, LCLint does many of the checks done by a
+traditional lint.  It reports unused declarations, type inconsistencies,
+use-before-definition, unreachable code, ignored return values,
+execution paths with no return, likely infinite loops, and fall-through
+cases.  It provides options for stricter type-checking than standard C
+(e.g., char and bool types can be treated as distinct from ints.).  It
+does not do much of the portability checking (e.g., pointer alignment)
+done by typical lints.
+
+<P>
+
+With partial specifications, written in the Larch interface language,
+<A HREF="lcl.html">LCL</A>, LCLint does stronger checking.  For
+example, a one-line specification file can declare a type as abstract;
+LCLint checks that the data abstraction barrier is maintained in clients
+of the type.  This provides the advantages of data encapsulation, making
+programs easier to understand and maintain.
+
+<P>
+
+Adding more specifications enables further checking, including the
+detection of:
+
+<UL>
+
+<LI> inconsistent use of global variables
+<LI> undocumented modification of client-visible state
+<LI> inconsistent use of an uninitialized formal parameter or failure to initialize an actual parameter
+<LI> code with undefined behavior
+<LI> macros specified as functions that do not behave functionally
+
+</UL>
+
+LCLint can be customized to a particular coding style using command line
+flags.  Stylized comments may be used to suppress messages and control
+checking at a local level.
+
+<P>
+
+Available Documentation:
+<UL>
+
+<LI> <A HREF="http://www.sds.lcs.mit.edu/~evs/userguide/userguide.html">
+LCLint User's Guide Version 1.4c</A> (in html format), David Evans,
+January 1995.  Manual for using LCLint.
+
+ (<A HREF="ftp://ftp.sds.lcs.mit.edu/pub/lclint/userguide.ps.Z">postscript</A>,
+<A HREF="http://www.sds.lcs.mit.edu/~evs/userguide/userguide.html"> html</A>)
+
+<LI> LCLint: A Tool for Using Specifications to Check Code, David Evans,
+John Guttag, Jim Horning and Yang Meng Tan, SIGSOFT Symposium on the
+Foundations of Software Engineering, December 1994.  A brief
+introduction to LCLint, including a small example. (<A
+HREF="ftp://ftp.sds.lcs.mit.edu/pub/lclint/fse.ps.Z">postscript</A>,
+<A HREF="ftp://larch.lcs.mit.edu/pub/evs/slides.ps.Z">slides for FSE talk</A>.)
+
+<LI> Using Specifications to Check Source Code, David Evans,
+MIT/LCS/TR-628 (<A HREF="http://www.sds.lcs.mit.edu/~evs/abstract.html">abstract</A>, <A
+HREF="ftp://ftp.sds.lcs.mit.edu/pub/lclint/tr.ps.Z"> postscript</A>) June
+1994, SM Thesis.  Includes descriptions of checking done by LCLint, a
+case study using LCLint on the dbase example, a case study using LCLint
+on legacy code, and conclusions from experience using LCLint.
+</UL>
+<P>
+<A HREF="http://www.sds.lcs.mit.edu/~evs/install.html">
+Click here for information on installing LCLint.</A>
+
+
+
+
+
+

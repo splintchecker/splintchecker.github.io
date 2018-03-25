@@ -1,0 +1,112 @@
+<A NAME="line73"></A><html><head>
+<title>employee.lcl</title>
+</head><body>
+<h3>employee.lcl</h3>
+<PRE>
+<A NAME="line1"></A>constant int maxEmployeeName;
+<A NAME="line2"></A>constant int employeePrintSize;
+<A NAME="line3"></A> 
+<A NAME="line4"></A>typedef enum {MALE, FEMALE, gender_ANY} gender;
+<A NAME="line5"></A>typedef enum {MGR, NONMGR, job_ANY} job;
+<A NAME="line6"></A>typedef struct {int ssNum;
+<A NAME="line7"></A>                char name[maxEmployeeName];
+<A NAME="line8"></A>                int salary;
+<A NAME="line9"></A>                gender gen;
+<A NAME="line10"></A>                job j;} employee;
+<A NAME="line11"></A> 
+<A NAME="line12"></A>uses <A HREF="employeeConstants.lsl.html">employeeConstants</A>, <A HREF="sprint.lsl.html">sprint</A>(employee, char[]);
+<A NAME="line13"></A> 
+<A NAME="line14"></A>void employee_sprint(char s[], employee e) {
+<A NAME="line15"></A>    requires maxIndex(s) &gt;= employeePrintSize;
+<A NAME="line16"></A>    modifies s;
+<A NAME="line17"></A>    ensures isSprint(s', e)
+<A NAME="line18"></A>      /\ lenStr(s') = employeePrintSize;
+<A NAME="line19"></A>    }
+<A NAME="line20"></A>bool employee_equal(employee *e1, employee *e2) {
+<A NAME="line21"></A>   ensures result = sameStr(e1-&gt;name^, e2-&gt;name^)
+<A NAME="line22"></A>           /\ (e1-&gt;ssNum^ = e2-&gt;ssNum^)
+<A NAME="line23"></A>           /\ (e1-&gt;salary^ = e2-&gt;salary^)
+<A NAME="line24"></A>           /\ (e1-&gt;gen^ = e2-&gt;gen^)
+<A NAME="line25"></A>           /\ (e1-&gt;j^ = e2-&gt;j^);
+<A NAME="line26"></A>   }
+<A NAME="line27"></A>bool employee_setName(employee *e, char na[]) {
+<A NAME="line28"></A>   requires nullTerminated(na^);
+<A NAME="line29"></A>   modifies e-&gt;name;
+<A NAME="line30"></A>   ensures result = lenStr(na^) &lt; maxEmployeeName
+<A NAME="line31"></A>           /\ (if result
+<A NAME="line32"></A>               then sameStr(e-&gt;name', na^)
+<A NAME="line33"></A>                     /\ nullTerminated(e-&gt;name')
+<A NAME="line34"></A>               else e-&gt;name' = e-&gt;name^);
+<A NAME="line35"></A>   }
+<A NAME="line36"></A>void employee_initMod(void) {
+<A NAME="line37"></A>   ensures true;
+<A NAME="line38"></A>   }
+<A NAME="line39"></A> 
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

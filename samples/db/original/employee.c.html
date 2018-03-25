@@ -1,0 +1,105 @@
+<A NAME="line117"></A><html><head>
+<title>employee.c</title>
+</head><body>
+<h3>employee.c</h3>
+<PRE>
+<A NAME="line1"></A>#include &lt;stdio.h&gt;
+<A NAME="line2"></A>#include "<A HREF="employee.h.html">employee.h</A>"
+<A NAME="line3"></A> 
+<A NAME="line4"></A>bool employee_setName(employee *e, char na []) {
+<A NAME="line5"></A>    int i;
+<A NAME="line6"></A> 
+<A NAME="line7"></A>    for (i = 0; na[i] != '\0'; i++)
+<A NAME="line8"></A>      if (i == maxEmployeeName) return FALSE;
+<A NAME="line9"></A>    strcpy(e-&gt;name, na);
+<A NAME="line10"></A>    return TRUE;
+<A NAME="line11"></A>}
+<A NAME="line12"></A>bool employee_equal(employee * e1, employee * e2) {
+<A NAME="line13"></A>    return ((e1-&gt;ssNum == e2-&gt;ssNum)
+<A NAME="line14"></A>            && (e1-&gt;salary == e2-&gt;salary)
+<A NAME="line15"></A>            && (e1-&gt;gen == e2-&gt;gen)
+<A NAME="line16"></A>            && (e1-&gt;j == e2-&gt;j)
+<A NAME="line17"></A>            && (strncmp(e1-&gt;name, e2-&gt;name, 
+<A NAME="line18"></A>                maxEmployeeName) == 0));
+<A NAME="line19"></A>}
+<A NAME="line20"></A>void employee_sprint(char s[], employee e) {
+<A NAME="line21"></A>   static char *gender[] ={"male", "female", "?"};
+<A NAME="line22"></A>   static char *jobs[] = {"manager", "non-manager", "?"};
+<A NAME="line23"></A>   
+<A NAME="line24"></A>   (void) sprintf(s,
+<A NAME="line25"></A>                  employeeFormat,
+<A NAME="line26"></A>                  e.ssNum,
+<A NAME="line27"></A>                  e.name,
+<A NAME="line28"></A>                  gender[e.gen],
+<A NAME="line29"></A>                  jobs[e.j],
+<A NAME="line30"></A>                  e.salary);
+<A NAME="line31"></A>}
+<A NAME="line32"></A> 
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

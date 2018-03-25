@@ -1,0 +1,100 @@
+<h3>lclint-interest message 59</h3>
+<pre>
+From eric@rrinc.com Fri Mar 22 16:06:38 1996
+Sender: eric@access.rrinc.com
+Date: Fri, 22 Mar 1996 14:19:12 -0500
+From: Eric Bloodworth <eric@rrinc.com>
+Organization: Recognition Research, Inc
+X-Mailer: Mozilla 2.0 (X11; I; AIX 2)
+Mime-Version: 1.0
+To: David Evans <evans@cs.virginia.edu>
+Cc: lclint-interest@larch.lcs.mit.edu
+Subject: Re: problems with lclint, gcc, unixware (solaris too)
+References: <9603221749.AA09103@larch.lcs.mit.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+David Evans wrote:
+> 
+> > 1. lclint seems to look in /usr/include for its headers files.
+> > Since gcc supplies its own system header files elsewhere, this
+> > leads to parsing errors and other troubles.  I frankly don't
+> > understand why lclint doesn't use gcc to do its preprocessing, but
+> > I dutifully set BASEPATH and DEFAULT_SYSTEMDIR in constants.h and
+> > SYSTEM_LIBDIR in Makefile to the location of gcc's header files.
+> > This seems to cure the problem, but it will require the update of a symlink
+> > for every new release of gcc we install (small maintenance headache).
+> 
+
+[deleted - stuff I alreay knew :)]
+
+> > 2. lclint barfs (unrecoverable parse error) on gcc's __asm__ statement.
+> > Unfortunately, this is used in an inline function in one of
+> > gcc's header files (sys/byteorder.h).  I'm loath to
+> > change gcc's header files because of the maintenance headache,
+> > so we managed to keep that file from being included for now.
+> > Is there a way to get lclint to understand __asm__?  If not,
+> > I hereby request this feature for the next release. :-)
+> 
+> I'm reluctant to start adding complier-specific syntax to lclint, and
+> there doesn't appear to be any real consensus as to the syntax for
+> including assembly in C programs.  The hope is that most compiler's that
+> add language extensions will do so in a way that they can be hidden by a
+> macro definition, and you could do something like,
+> 
+>         # ifdef __LCLINT__
+>         # define asm(x) ()
+>         # endif
+> 
+> to at least hide the syntax problems.  Unfortunately, this doesn't work
+> for gcc's __asm__.
+
+[deleted - point taken]
+
+> 
+> --- Dave
+
+Problem 1:
+
+OK, let me be more specific.  I'm now trying this on a solaris machine with the same 
+(similiar) results:
+
+1.  the makefile _is_ setting gcc -E.  configure set it this way. 
+2.  using the -I setting just changes the location of the parse error from the system 
+includes to gcc's includes.  It's in <sys/stat.h>. 
+3.  I ran truss on lclint's processing of a file with a single line: #include <sys/stat.h>
+   What appears to happen is lclint pre-preprocesses (!) the source file using the headers
+in /usr/include, stores a temporary file, it then runs gcc -E on the temporary file, which 
+of course, uses gcc's header files. 
+4.  When I set BASEPATH and DEFAULT_SYSTEMDIR in constants.h and SYSTEM_LIBDIR in the Makefile
+to gnu's directories, the problem goes away. 
+
+My conclusion is that lclint assumes that system header files are in /usr/include for this 
+pre-preprocess step.  This isn't a good assumption, IMHO.   Why does it need to 
+side-step gcc -E?  
+
+Problem 2:
+
+- defining __asm__ as nothing seems to work, or we can patch gcc's header file for i86 
+machines, I guess. 
+
+
+-- Eric
+
+
+</pre>
+<A HREF="58.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="60.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

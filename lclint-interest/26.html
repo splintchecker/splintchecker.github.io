@@ -1,0 +1,60 @@
+<h3>lclint-interest message 26</h3>
+<pre>
+Date: 08 Feb 95 17:02:35 EST
+From: "JR (John Rogers)" <72634.2402@compuserve.com>
+To: "INTERNET:evans@cs.virginia.edu" <evans@cs.virginia.edu>
+Cc: LCLint interest list <lclint-interest@larch.lcs.mit.edu>,
+        John Gerard Malecki <johnm@vlibs.com>
+Subject: LCLint initialization vs. sequence checking
+
+Hi all!  Back in November, there was some discussion on this email list
+about whether it was useful to check for certain required sequences of
+operations (as opposed to a single initialization).  I think that being
+able to check module initialization/deinitialization is good; the same
+goes for object initialization/deinitialization.  Dave
+(evans@cs.virginia.edu) was wondering if anything more complicated is
+useful:
+
+> Olender and Osterweil ("Interprocedural Static Analysis of Sequencing
+> Constraints", ACM Transactions on Software Engineering and Methodology,
+> Jan 1992) have done some work on allowing programmers to specify more
+> general sequencing constraints using regular expressions and detecting
+> violations of the constraints statically.  From my own experience, I
+> think it is very unusal to have code which depends on sequencing
+> constraints other than initialization before use.  
+>
+> Does anyone have any conflicting experience suggesting more general
+> sequencing constraints are useful in real programs?
+
+Since you asked, I just thought of a situation where sequencing contraints
+might be nice.  This example is second-hand and perhaps decades out of
+date, but it will give you the general idea.  I don't consider this a
+good design, either.  My understanding is that in FORTRAN, after doing
+an open of a file, the "seek" location is undefined or implementation
+dependent.  Thus, an application would have to "open" and then "seek",
+presumably via calls to 2 different routines.
+
+Perhaps someone could handle this particular requirement by having two
+nested objects, each with a init/deinit required checks.
+
+I'm not asking you to implement checks for this sequence checking.  But
+I thought I'd pass along this example so you could make that decision.
+
+Happy hacking!
+--JR (John Rogers)
+</pre>
+<A HREF="25.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="27.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

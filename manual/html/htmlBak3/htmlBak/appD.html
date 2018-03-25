@@ -1,0 +1,563 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - Appendix D. Specifications</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+
+<p class=MsoHeading7 style='margin-left:0in;text-indent:0in'><a
+name="_Toc534975075"></a><a name="_Ref397875216"></a><a name="_Ref350066976"></a><a
+name="_Ref348788300">Appendix D<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Specifications</a></p>
+
+<p class=TextFontCX>Another way of providing more
+information about programs is to use formal specifications.  Although this
+document has largely ignored specifications, Splint was originally designed to
+use the information in LCL specifications instead of source-code annotations. 
+This document focuses on annotations since it takes less effort to add
+annotations to source code than to maintain an additional specification file. 
+Annotations can express everything that can be expressed in LCL specifications
+that is relevant to Splint checking.  However, LCL specifications can provide
+more precise documentation on program interfaces than is possible with Splint
+annotations.  This appendix (extracted from [Evans94]) is a very brief introduction
+to LCL Specifications.  For more information, consult [GH93].      </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>The Larch family of languages
+is a two-tiered approach to formal specification. A specification is built
+using two languages — the <i>Larch Shared Language</i> (LSL), which is
+independent of the implementation language, and a <i>Larch Interface Language</i>
+designed for the specific implementation language.  An LSL specification
+defines <i>sorts</i>, analogous to abstract types in a programming language,
+and <i>operators</i>, analogous to procedures.  It expresses the underlying
+semantics of an abstraction.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>The interface language
+specifies an interface to an abstraction in a particular programming language. 
+It captures the details of the interface needed by a client using the
+abstraction and places constraints on both correct implementations and uses of
+the module.  The semantics of the interface are described using primitives and
+sorts and operators defined in LSL specifications.  Interface languages have
+been designed for several programming languages.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>LCL [GH93, Tan95] is a Larch
+interface language for Standard C.  LCL uses a C-like syntax.  Traditionally, a
+C module <span class=Keyword><i><span style='font-size:10.0pt;font-family:Arial;
+color:windowtext'>M</span></i></span> consists of a source file, <span
+class=Keyword><i><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>M</span></i></span><span
+class=Keyword><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>.c</span></span>,
+and a header file, <span class=Keyword><i><span style='font-size:10.0pt;
+font-family:Arial;color:windowtext'>M</span></i></span><span class=Keyword><span
+style='font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>. 
+The header file contains prototype declarations for functions, variables and
+constants exported by <span class=Keyword><i><span style='font-size:10.0pt;
+font-family:Arial;color:windowtext'>M</span></i></span>, as well as those macro
+definitions that implement exported functions or constants, and definitions of
+exported types. When using LCL, a module includes two additional files — <span
+class=Keyword><i><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>M</span></i></span><span
+class=Keyword><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>.lcl</span></span>,
+a formal specification of <span class=Keyword><i><span style='font-size:10.0pt;
+font-family:Arial;color:windowtext'>M</span></i></span>, and <span
+class=Keyword><i><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>M</span></i></span><span
+class=Keyword><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>.lh</span></span>, which is derived by Splint (if the <span
+class=Flag><span style='font-size:10.0pt'>lh</span></span> flag is on) from <span
+class=Keyword><i><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>M</span></i></span><span
+class=Keyword><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>.lcl</span></span>. 
+Clients use <span class=Keyword><i><span style='font-size:10.0pt;font-family:
+Arial;color:windowtext'>M</span></i></span><span class=Keyword><span
+style='font-size:10.0pt;font-family:Arial;color:windowtext'>.lcl</span></span>
+for documentation, and should not need to look at any implementation file.  The
+derived file, <span class=Keyword><i><span style='font-size:10.0pt;font-family:
+Arial;color:windowtext'>M</span></i></span><span class=Keyword><span
+style='font-size:10.0pt;font-family:Arial;color:windowtext'>.lh</span></span>,
+contains include directives (if <span class=Keyword><i><span style='font-size:
+10.0pt;font-family:Arial;color:windowtext'>M</span></i></span> depends on other
+specified modules), prototypes of functions and declarations of variables as
+specified in <span class=Keyword><i><span style='font-size:10.0pt;font-family:
+Arial;color:windowtext'>M</span></i></span><span class=Keyword><span
+style='font-size:10.0pt;font-family:Arial;color:windowtext'>.lcl</span></span>. 
+The file <span class=Keyword><i><span style='font-size:10.0pt;font-family:Arial;
+color:windowtext'>M</span></i></span><span class=Keyword><span
+style='font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>
+should include <span class=Keyword><i><span style='font-size:10.0pt;font-family:
+Arial;color:windowtext'>M</span></i></span><span class=Keyword><span
+style='font-size:10.0pt;font-family:Arial;color:windowtext'>.lh</span></span>
+and retain the implementation aspects of the old <span class=Keyword><i><span
+style='font-size:10.0pt;font-family:Arial;color:windowtext'>M</span></i></span><span
+class=Keyword><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>,
+but is no longer used for c<a name="_Ref348845779">lient documentation.</a></p>
+
+<p class=MsoHeading9 style='margin-left:0in;text-indent:0in'><a
+name="_Toc534975076">Specification Flags</a></p>
+
+<p class=TextFontCX>These flags are relevant only
+when Splint is used with LCL specifications. </p>
+
+<p class=Heading10>Global Flags</p>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>lcs</span></span></p>
+
+<p class=IndentText>Generate <span class=Keyword><span style='font-size:10.0pt;
+font-family:Arial;color:windowtext'>.lcs</span></span> files containing symbolic state of <span
+class=Keyword><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>.lcl</span></span>
+files (used for imports).  By default <span class=Keyword><span
+style='font-size:10.0pt;font-family:Arial;color:windowtext'>.lcs</span></span>
+files are generated for each <span class=Keyword><span style='font-size:10.0pt;
+font-family:Arial;color:windowtext'>.lcl</span></span> file processed.  Use <span
+class=Flag><span style='font-size:10.0pt'>-lcs</span></span> to prevent
+generation of <span class=Keyword><span style='font-size:10.0pt;font-family:
+Arial;color:windowtext'>.lcs</span></span> files.</p>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>lh</span></span></p>
+
+<p class=IndentText>Generate <span class=Keyword><span style='font-size:10.0pt;
+font-family:Arial;color:windowtext'>.lh</span></span> files.  By default, <span
+class=Flag><span style='font-size:10.0pt'>-lh</span></span> is set and no <span
+class=Keyword><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>.lh</span></span>
+files are generated.  Use <span class=Flag><span style='font-size:10.0pt'>+lh</span></span>
+to enable <span class=Flag><span style='font-size:10.0pt'>.lh</span></span>
+file generation.  </p>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>i </span></span><span
+class=Flag><span style='font-size:10.0pt'>&lt;file&gt;</span></span></p>
+
+<p class=IndentText>Set LCL initialization file to <span class=Flag><i><span
+style='font-size:10.0pt'>&lt;file&gt;</span></i></span>.  The LCL
+initialization file is read if any <span class=Keyword><span style='font-size:
+10.0pt;font-family:Arial;color:windowtext'>.lcl</span></span> files are listed
+on the command line.  The default file is <span class=Keyword><span
+style='font-size:10.0pt;font-family:Arial;color:windowtext'>lclinit.lci</span></span>, found on the <span class=Keyword><span style='font-size:10.0pt;font-family:
+Arial;color:windowtext'>LARCH_PATH</span></span>. </p>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>lclexpect </span></span><span
+class=Flag><span style='font-size:10.0pt'><i>&lt;number&gt;</i></span></span></p>
+
+<p class=IndentText>Exactly <span class=Flag><i><span style='font-size:10.0pt'>&lt;number&gt;</span></i></span>
+specification errors are expected.  Specification errors are errors detected
+when checking the specifications.  They do not depend on the source code.</p>
+
+<p class=Heading10>Implicit Globals Checking Qualifiers</p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>m:</span><span
+  class=Keyword><span style='font-size:10.0pt'>-++-</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>imp-checked-spec-globs</span></span></p>
+
+<p class=IndentText>Implicit <span class=Annot><span style='font-size:10.0pt'>checked</span></span>
+qualifier on global variables specified in an LCL file with no checking
+annotation.</p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>m:</span><span
+  class=Keyword><span style='font-size:10.0pt'>----</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>imp-checkmod-spec-globs</span></span></p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>m:</span><span
+  class=Keyword><span style='font-size:10.0pt'>---+</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=IndentText>Implicit <span class=Annot><span style='font-size:10.0pt'>checkmod</span></span>
+qualifier on global variables specified in an LCL file with no checking
+annotation.</p>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>imp-checkedstrict-spec-globs</span></span></p>
+
+<p class=IndentText>Implicit <span class=Annot><span style='font-size:10.0pt'>checked</span></span>
+qualifier on global variables specified in an LCL file with no checking
+annotation. </p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>P:
+  </span><span class=Keyword><span style='font-size:10.0pt'>-</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=Heading10>Implicit Annotations</p>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>spec-glob-imp-only</span></span></p>
+
+<p class=IndentText>Implicit <span class=Annot><span style='font-size:10.0pt'>only</span></span>
+annotation on global variable declaration in an LCL file with no allocation
+annotation.</p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>P:
+  </span><span class=Keyword><span style='font-size:10.0pt'>-</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>spec-ret-imp-only</span></span></p>
+
+<p class=IndentText>Implicit <span class=Annot><span style='font-size:10.0pt'>only</span></span>
+annotation on return value declaration in an LCL file with no allocation
+annotation.</p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>P:
+  </span><span class=Keyword><span style='font-size:10.0pt'>-</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>spec-struct-imp-only</span></span></p>
+
+<p class=IndentText>Implicit <span class=Annot><span style='font-size:10.0pt'>only</span></span>
+annotation on structure field declarations in an LCL file with no allocation
+annotation.</p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>shortcut</span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>spec-imp-only</span></span></p>
+
+<p class=IndentText>Sets <span class=Flag><span style='font-size:10.0pt'>spec-glob-imp-only</span></span>,
+<span class=Flag><span style='font-size:10.0pt'>spec-ret-imp-only</span></span>
+and <span class=Flag><span style='font-size:10.0pt'>spec-struct-imp-only</span></span>.</p>
+
+<p class=Heading10>Macro Expansion</p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>P:
+  </span><span class=Keyword><span style='font-size:10.0pt'>+</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>spec-macros</span></span></p>
+
+<p class=IndentText>Macros defining specified identifiers are not expanded and
+are checked according to the specification.<span class=Flag><span
+style='font-size:10.0pt'>  </span></span></p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>m:</span><span
+  class=Keyword><span style='font-size:10.0pt'>-+++</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=Heading10>Complete Programs and Specifications</p>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>spec-undef</span></span></p>
+
+<p class=IndentText>Function, variable, iterator or constant specified but
+never defined.</p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>P:
+  </span><span class=Keyword><span style='font-size:10.0pt'>-</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>spec-undecl</span></span></p>
+
+<p class=IndentText>Function, variable, iterator or constant specified but
+never declared.</p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>P:
+  </span><span class=Keyword><span style='font-size:10.0pt'>-</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>need-spec</span></span></p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>shortcut</span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=IndentText>There is information in the specification that is not
+duplicated in syntactic comments.  Normally, this is not an error, but it may
+be useful to detect it to make sure checking incomplete systems without the
+specifications will still use this information.</p>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>export-any</span></span></p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>m:</span><span
+  class=Keyword><span style='font-size:10.0pt'>---+</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=IndentText>An error is reported for any identifier that is exported
+but not specified.  (Sets all export flags below.)</p>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>export-const</span></span></p>
+
+<p class=IndentText>Constant exported but not specified.</p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>m:</span><span
+  class=Keyword><span style='font-size:10.0pt'>---+</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>export-var</span></span></p>
+
+<p class=IndentText>Variable exported but not specified.</p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>m:</span><span
+  class=Keyword><span style='font-size:10.0pt'>---+</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>export-fcn</span></span></p>
+
+<p class=IndentText>Function exported but not specified.</p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>m:</span><span
+  class=Keyword><span style='font-size:10.0pt'>---+</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>export-iter</span></span></p>
+
+<p class=IndentText>Iterator exported but not specified.</p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>m:</span><span
+  class=Keyword><span style='font-size:10.0pt'>---+</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>export-macro</span></span></p>
+
+<p class=IndentText>An expanded macro exported but not specified</p>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  height=14
+ align=left>
+ <tr>
+  <td valign=top align=left height=14 style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center;background:#CCCCCC'><span style='font-size:10.0pt'>m:</span><span
+  class=Keyword><span style='font-size:10.0pt'>---+</span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=TextFontCX><span class=Flag><span
+style='font-size:10.0pt'>export-type</span></span></p>
+
+<p class=IndentText>Type definition exported but not specified </p>
+
+<p>
+<a href="appE.html"><b>Next:</b> Appendix E. Annotated Bibliography</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

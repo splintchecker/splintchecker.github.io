@@ -1,0 +1,86 @@
+<p><h4>Changes in <A HREF="empset.lcl.html">empset.lcl</A> (<A HREF="../memchecks2/empset.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../memchecks2/empset.lcl.html#line4">line 4</A> with <A HREF="empset.lcl.html#line4">line 4</A><pre>
+&lt; empset empset_create(void) 
+---
+&gt; only empset empset_create(void) 
+</pre><br>Replaced <A HREF="../memchecks2/empset.lcl.html#line9">line 9</A> with <A HREF="empset.lcl.html#line9">line 9</A><pre>
+&lt; void empset_final(empset s) 
+---
+&gt; void empset_final (only empset s) 
+</pre><br>Replaced <A HREF="../memchecks2/empset.lcl.html#line40">line 40</A> with <A HREF="empset.lcl.html#line40">line 40</A><pre>
+&lt; empset empset_union(empset s1, empset s2) 
+---
+&gt; only empset empset_union(empset s1, empset s2) 
+</pre><br>Replaced <A HREF="../memchecks2/empset.lcl.html#line45">line 45</A> with <A HREF="empset.lcl.html#line45">line 45</A><pre>
+&lt; empset empset_disjointUnion(empset s1, empset s2) 
+---
+&gt; only empset empset_disjointUnion(empset s1, empset s2) 
+</pre><br>Replaced <A HREF="../memchecks2/empset.lcl.html#line78">line 78</A> with <A HREF="empset.lcl.html#line78">line 78</A><pre>
+&lt; char *empset_sprint(empset s) 
+---
+&gt; only char *empset_sprint(empset s) 
+</pre><br>Deleted <A HREF="../memchecks2/empset.lcl.html#line90">line 90</A> (matches <A HREF="empset.lcl.html#line89">line 89</A>)<pre>
+&lt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.c.html">erc.c</A> (<A HREF="../memchecks2/erc.c.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="erc.c.html#line159">line 159</A> to <A HREF="erc.c.html#line163">line 163</A> (was <A HREF="../memchecks2/erc.c.html#line158">line 158</A>)<pre>
+&gt; eref erc_choose (erc c) 
+&gt; {
+&gt;   assert (c-&gt;vals != NULL);
+&gt;   return c-&gt;vals-&gt;val;
+&gt; }
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.h.html">erc.h</A> (<A HREF="../memchecks2/erc.h.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../memchecks2/erc.h.html#line7">line 7</A> with <A HREF="erc.h.html#line7">line 7</A><pre>
+&lt; typedef struct _elem { eref val; struct _elem *next; } ercElem;
+---
+&gt; typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;
+</pre><br>Replaced <A HREF="../memchecks2/erc.h.html#line15">line 15</A> with <A HREF="erc.h.html#line15">line 15</A><pre>
+&lt; # define erc_choose(c) (((c)-&gt;vals)-&gt;val)
+---
+&gt; 
+</pre><br>Replaced <A HREF="../memchecks2/erc.h.html#line23">line 23</A> with <A HREF="erc.h.html#line23">line 23</A><pre>
+&lt;       eref m_x = m_ec-&gt;val; m_ec = m_ec-&gt;next; m_i++; 
+---
+&gt;       eref m_x; assert (m_ec != NULL); m_x = m_ec-&gt;val; m_ec = m_ec-&gt;next; m_i++; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.c.html">eref.c</A> (<A HREF="../memchecks2/eref.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../memchecks2/eref.c.html#line5">line 5</A> with <A HREF="eref.c.html#line5">line 5</A><pre>
+&lt; eref_ERP eref_Pool;            /* private */
+---
+&gt; static eref_ERP eref_Pool;     /* private */
+</pre><br>Added <A HREF="eref.c.html#line49">line 49</A> (was <A HREF="../memchecks2/eref.c.html#line48">line 48</A>)<pre>
+&gt;    /*@globals undef eref_Pool@*/
+</pre><br>Added <A HREF="eref.c.html#line89">line 89</A> to <A HREF="eref.c.html#line102">line 102</A> (was <A HREF="../memchecks2/eref.c.html#line87">line 87</A>)<pre>
+&gt; void eref_free (eref er)
+&gt; {
+&gt;   eref_Pool.status[er] = avail;
+&gt; }
+&gt; 
+&gt; void eref_assign (eref er, employee e) 
+&gt; {
+&gt;   eref_Pool.conts[er] = e;
+&gt; }
+&gt; 
+&gt; employee eref_get (eref er) 
+&gt; {
+&gt;   return eref_Pool.conts[er];
+&gt; }
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.h.html">eref.h</A> (<A HREF="../memchecks2/eref.h.html">previous version</A>)</h4><pre>
+</pre><br>Deleted <A HREF="../memchecks2/eref.h.html#line16">line 16</A> to <A HREF="../memchecks2/eref.h.html#line18">line 18</A> (matches <A HREF="eref.h.html#line15">line 15</A>)<pre>
+&lt; /* Declared here so that macros can use it  */
+&lt; extern eref_ERP eref_Pool;
+&lt; 
+</pre><br>Deleted <A HREF="../memchecks2/eref.h.html#line22">line 22</A> to <A HREF="../memchecks2/eref.h.html#line25">line 25</A> (matches <A HREF="eref.h.html#line18">line 18</A>)<pre>
+&lt; 
+&lt; # define eref_free(er)        (eref_Pool.status[er] = avail)
+&lt; # define eref_assign(er, e)   (eref_Pool.conts[er] = (e))
+&lt; # define eref_get(er)         (eref_Pool.conts[er])
+</pre><p><p>
+<p><h4>Changes in <A HREF="ereftab.lcl.html">ereftab.lcl</A> (<A HREF="../memchecks2/ereftab.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../memchecks2/ereftab.lcl.html#line5">line 5</A> with <A HREF="ereftab.lcl.html#line5">line 5</A><pre>
+&lt; ereftab ereftab_create(void) 
+---
+&gt; only ereftab ereftab_create(void) 
+</pre><p><p>

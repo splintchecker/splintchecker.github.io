@@ -1,0 +1,479 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>Splint - Bugs</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<center><h1>
+Splint Bugs
+</h1></center>
+
+This page documents reported bugs in Splint 3.1.2
+<p>
+
+
+Please check this page and make sure you are using the latest release
+(Splint 3.1.2) before submitting a bug report.  If you discover a
+bug that is not documented here, please report it to <a
+href="mailto:splint-bug@cs.virginia.edu"><em>splint-bug@cs.virginia.edu</em></a>.
+We prefer to receive bug reports by email, but you may also use the <a
+href="http://sourceforge.net/tracker/?group_id=9538&atid=109538">web
+form</a> on the <a href="http://sourceforge.net">SourceForge</a> <a
+href="http://sourceforge.net/projects/splint/">project page</a>.
+Include enough information and relevant files so that the bug may be
+reproduced.  See <a
+href="changes.html"><em>http://www.splint.org/changes.html</em></a>
+for a detailed change log.
+
+<p>
+<h4>Confirmed Bugs</h4>
+<p>
+
+<b>osd.c does not support Apple</b>
+<blockquote>
+Patched osd.c to support Apple.
+<p>
+(Reported by Rob Cas, fixed in cvs code and build 3 distribution, 8
+August 2007)
+</blockquote>
+
+<b>Function Pointers and memory management</b>
+<blockquote>
+Splint reports spurious errors for memory allocation concerning function
+pointers.  Types declared as function pointers should not default to
+only storage.
+<p>
+(Reported by Brian Quinlan, 26 Oct 2004.)
+</blockquote>
+
+<b>Unrelease fresh owned storage not reported</b>
+<blockquote>
+Splint does not report memory leaks for freshly allocated owned storage
+that is not released:
+<pre>
+#include <stdlib.h>
+
+typedef struct
+{
+  /*@owned@*/ int *pOwned;                
+} TestStruct;
+
+void testSplint(void)
+{
+  TestStruct myStruct;
+  myStruct.pOwned = (int*)malloc(sizeof(int));
+} /* No warning: should report memory leak. */
+</pre>
+<p>
+(Reported by Brian Quinlan, 26 Oct 2004.)
+</blockquote>
+
+<b>Multi-line comments in macros and line numbers</b>
+<blockquote>
+Splint will miscalculate line numbers after multi-line comments in macro
+definitions.  For example,
+<pre>
+#define FOO     /* a macro with a multiline comment
+                 * gets the linecount wrong
+                 */
+</pre>
+(Reported by Kevin Broadey, 17 September 2004.)
+</blockquote>
+
+<b>Definitions in switches</b>
+<blockquote>
+Splint incorrectly misses undefined variables on switch paths involving
+default cases:
+<pre>
+static int foo (int a)
+{
+  int i, j;
+  switch (a) {
+    case 0: /* j not set on this path */
+      i = 3;
+      break;
+    default: /* i not set on this path */
+      j = 0;
+      break;
+    }
+  return i + j;  /* no error for j */
+}
+</pre>
+(Reported by Kevin Broadey, 17 September 2004.)
+</blockquote>
+
+<b>Parsing Syntactic comments</b>
+<blockquote>
+Splint will report an internal error for unbalanced syntactic comments
+like
+<pre>
+void foo(/*@only*/ /*@null@*/ int*) {}
+</pre>
+<p>
+(Reported by Tim Sylvester, 28 Jan 2004.)
+</blockquote>
+
+<b>--mode flags</b>
+<blockquote>
+Splint will report an internal error if a mode flag is used with
+<tt>--</tt> (e.g., <tt>--strict</tt>).
+<p>
+(Reported by Toralf Foerster, 18 Dec 2003.)
+</blockquote>
+
+<b>Parsing Casts</b>
+<blockquote>
+Splint cannot parse the statement <tt>(int) x += 18;</tt>.
+<p>
+(Reported by Scott Simon, 23 Oct 2003)
+</blockquote>
+
+<b>Unsigned Promotion</b>
+<blockquote>
+Splint incorrectly types arithmetic expressions involving unsigned and
+signed expressions (e.g., unsigned + signed is typed as unsigned).
+<p>
+(Reported by Cat Zimmermann, 21 August 2003.  Fixed in CVS 24 August
+2003.)
+<p>
+<b>Correction: (1 November 2003)</b>: This is not a correct
+interpretation of the ISO standard.  The type of unsigned + signed
+should be unsigned.
+</blockquote>
+
+<b>Initializations Order</b>
+<blockquote>
+Splint doesn't analyze variable initializations in order.  For example,
+it will report that <tt>pointer1</tt> is uninitialized in
+<pre>
+ char *pointer1=(char*)malloc(strlen(line)+1), *pointer2=pointer1;
+</pre>
+<p>
+(Reported by Andrew Bishop.)
+</blockquote>
+
+
+<b>Spliced Macros</b>
+<blockquote>
+If a string literal is spliced that involves a macro constant (that is
+not expanded), splint will produce a parse error.  e.g., <tt>"__"
+TARGET_CPU</tt>.
+</blockquote>
+
+<b>boolean names with -nolib</b>
+<blockquote>
+Splint reports an internal error if -booltrue or -boolfalse are defined
+with -nolib.  Reported by Anders B&auml;ck.
+</blockquote>
+
+
+<b>Unbraced Switch Statements</b>
+<blockquote>
+Splint produces an internal error for unbraced switch statements (which
+are permitted by ISO C99).  For example, 
+<pre>
+switch(2) 
+  case 1: 
+  case 3: 
+    return(1);
+  return(0);
+</pre>
+(Reported by Dirk Noss)
+</blockquote>
+
+<h4>Bugs Fixed in 3.1.1</h4>
+<b>Splint does not build on OS X</b>
+<blockquote>
+<p>
+Splint 3.0.1.6 does not build on OS X.  This should be fixed in CVS.
+<br>
+We believe this was a problem with automake.
+We are now using a new version of automake and this seems to have fixed the problem.
+
+ We have successfully compiled the CVS version on SourceForge's compile farm's Mac OS X server.
+</p>
+</blockquote>
+
+<b>Multiple passes on type definitions with /*@alt@*/</b>
+<blockquote>
+Splint will produce a parse error if a type definition like,
+<pre>
+typedef long /*@alt int@*/ newtype;
+</pre>
+is processed twice (for example if it is in a header file included
+multiple times).
+<p>
+Reorted by Simon Hosie, fixed in CVS (2002-12-12).
+</blockquote>
+
+<b>Include flag handling</b>
+<blockquote>
+Splint now support -I &lt;dir&gt;, -i &lt;dir&gt; as well as the original -I&lt;dir&gt;.
+<p>
+Changed in CVS (2002-12-12) will be in 3.0.1.7.
+</blockquote>
+
+<b>Multiple globals clauses</b>
+
+<blockquote>
+Splint will produce a warning message, but then crash on an internal
+error if multiple globals clauses are used. Reported by Gayath Ratnayaka.
+<p>
+Fixed in CVS (2002-12-04) will be in 3.0.1.7.
+</blockquote>
+
+<b>Spurious bounds errors in for loops</b>
+
+<blockquote>
+A bug caused Splint to spuriously report bounds errors in certain for loops such as:
+<pre>
+	int a[12];
+	for (i = 0; i < 12; i++)
+	  a[i] = 0;
+</pre>
+
+Fixed in CVS (2002-09-05) will be in 3.0.1.7.
+</blockquote>
+
+<b>Spurious bounds errors in if-else statements</b>
+<blockquote>
+Constraints were not generated correctly from the if statement test for each branch of an if-else statement.  This caused spurious bounds erros.
+<br>
+Fixed in CVS (2002-10-10) will be in 3.0.1.7.  Reported by Xiaolan Zhang.  
+</blockquote>
+
+<b>Incorrect Path Displayed</b>
+<blockquote>
+Splint incorrectly reported the file name path in error messages when it was given the absolute path  name of a file outside of the current directory and the subdirectories below the current directory.
+<br>
+e.g. after cd /home/; splint /tmp/prog.c   Splint will report tmp/prog.c instead of /tmp/prog.c
+<br>
+Fixed in CVS (2002-10-14) will be in 3.0.1.7.
+</blockquote>
+
+<b>Crashes if started with -i instead of -I</b>
+<blockquote>
+Splint crashed if it was started with the -i flags and given an invalid argument.
+This was problematic because -i is easily confused with -I.
+<br>
+Fixed in CVS (2002-10-21) will be in 3.0.1.7.  Bug reported by Jesse Laird.
+</blockquote>
+
+<b>sizeof </b>
+<blockquote>
+Splint did not correctly handle code in which sizeof is applied to a string literal.  
+e.g. malloc (sizeof ("abcd") );  This caused Splint to report spurious bounds errors.
+<br>
+Fixed in CVS (2002-11-29) will be in 3.0.1.7. 
+Bug was reported by Xiaolan Zhang 
+</blockquote>
+
+<b>Directories in file list</b>
+<blockquote>
+Splint produces an internal bug report when directories are listed as
+source files (e.g., splint .).  Reportes by Ullrich von Bassewitz.
+Fixed in development code (2002-07-17), not yet in CVS.
+</blockquote>
+
+<b>emptyreturn flag</b>
+<blockquote>
+
+The emptyreturn flag doesn't work (it should be "emptyret" in
+flags.def).  Reported by Adam Clarke.  Fixed in CVS (2002-07-08), will
+be in 3.0.1.7.  (This is a temporary fix; a better solution to
+canonicalizing flag names will be incorporated into a later release.)
+
+</blockquote>
+<p>
+<b>getgrgid, getgrnam, getpwnam</b>
+<blockquote>
+These functions from grp.h in the Posix and Unix libraries should be
+declared to return /*@observer@*/ references.  Reported by Enrico
+Scholz.  Fixed in CVS (2002-07-08), will be in 3.0.1.7.
+</blockquote>
+
+<b>sys/resource.h</b>
+<blockquote>
+The sys/resource.h segment of the Unix library was not updated to
+SUSv3.  The type of rlim_t, struct rlimit and struct rusage have been
+updated.  Reported by Enrico Scholz.  Fixed in CVS (2002-07-08), will be
+in 3.0.1.7.
+</blockquote>
+
+<b>Standard library missing snprintf</b>
+<blockquote>
+snprintf is in the unix library, but not the standard library.  It was
+added to ISO C99, so should be in the standard library.  Reported by
+Olivier L'Heureux.  Fixed in CVS (2002-07-08), will be in 3.0.1.7.
+</blockquote>
+
+<b>Char literal initializers</b>
+<blockquote>
+Splint misinterprets initializations of char arrays with string
+literals (see ISO 6.7.8, Example 8):
+<pre>
+    char s[] = "abc";
+    char *p = "abc";
+</pre>
+s is modifiable (not an observer); p is an observer.  Reported by
+Olivier L'Heureux.  Fixed in CVS (before 2002-07-05), will be in 3.0.1.7.
+</blockquote>
+
+<P>
+<b>pre-processor macros</b>
+<blockquote>
+The pre-processor will lose necessary whitespace before an identifier
+that corresponds to the name of a parameterized macro inside a macro
+expansion.  For example,
+<pre>
+   typedef void (*ErrorProc_t)( void ); 
+   typedef void (*WriteProc_t)( int, ErrorProc_t);
+   #define ErrorProc_t(name) void (name) ( void )
+   #define PrintProc_t(name) void (name) ( int Num, ErrorProc_t /*<- this whitespace is lost!->*/ errorProc )
+   static PrintProc_t (foo1); 
+</pre>
+Fixed in CVS (2002-07-03), will be in 3.0.1.7.  Reported by Adam Clarke.
+</blockquote>
+<p>
+<b>offsetof syntax</b>
+<blockquote>
+Splint cannot parse offsetof expressions where the field designator is
+an array fetch: <tt>offsetof(some_struct_t,d[index])</tt>.  
+Fixed in CVS (2002-07-02), will be in 3.0.1.7.  Reported by Asger Overby.
+</blockquote>
+
+<b>struct iovec and struct msghdr declarations</b>
+<blockquote>
+The unix.h library declares the struct iovec and struct msghdr
+structures without /*@dependent@*/ annotations on their pointer fields;
+the implicit only annotations are incorrect for these.  The library
+declarations were changed to:
+<pre>
+struct iovec {
+  /*@dependent@*/ void *iov_base;
+  size_t iov_len; /*: maxSet(iov_base) = iov_len */
+};
+
+struct msghdr {
+  /*@dependent@*/ void *msg_name;		
+  socklen_t msg_namelen;	/*: maxSet (msg_name) >= msg_namelen */
+  /*@dependent@*/ struct iovec *msg_iov;	/* scatter/gather array */
+  int msg_iovlen;		/* # elements in msg_iov */ /*: maxSet (msg_iov) >= msg_iovlen */
+  /*@dependent@*/ void *msg_control;		/* ancillary data, see below */
+  socklen_t msg_controllen;     /*: maxSet (msg_control) >= msg_controllen */
+  int msg_flags;		/* flags on received message */
+} ;
+</pre>
+Fixed in CVS (2002-07-02), will be in 3.0.1.7.  Reported by Enrico Scholz.
+</blockquote>
+
+<b>forward enum tags</b>
+<blockquote>
+Splint reports spurious redeclartion warnings for forward enum tags.
+Fixed in CVS, will be in 3.0.1.7.
+</blockquote>
+
+<b>Line Numbers after multi-line macro instantiations</b>
+<blockquote>
+Splint will report the wrong line number after a multi-line macro
+instantiation (it only counts as one line).  Reported by Andreas
+Rasmusson.  Fixed in CVS, will be in 3.0.1.7.
+</blockquote>
+
+<b>GCC_INCLUDE_DIR definition</b>
+<blockquote>
+<tt>GCC_INCLUDE_DIR</tt> is not defined properly by configure on systems where
+<tt>gcc</tt> is not found.  If you build on such a system, you need to
+manually edit config.h to include the definition:
+<blockquote>
+<pre>
+/* system include directory */
+#define GCC_INCLUDE_DIR "/usr/include"
+</pre>
+</blockquote>
+Fixed in CVS, will be in 3.0.1.7 release.
+</blockquote>
+
+<b>Array Initializers</b>
+<blockquote>
+Splint does not handle array initializations with missing values
+correctly, for example <tt>int a[][2] = {{1,2},{3,4},{5,6}}</tt>.
+(Reported by Ka-Liong Lau)
+</blockquote>
+
+<B>Warning message for -shiftsigned</b>
+<blockquote>
+The warning message for shiftsigned flag referse to the
+<tt>shiftsize</tt> flag which does not exist.  It should be
+<tt>shiftimplementation</tt> instead.  Reported by Melson Beebe.
+Fixed in CVS, 13 Feb 2002.
+</blockquote>
+<b>-skipisoheaders</b>
+<blockquote>
+The skipisoheaders flag does not work as documented.  (It should be the
+same as skipansiheaders.)  Reported by Jeroen Ruigrok van der Werven.
+Fixed in CVS, will be in 3.0.1.7.
+</blockquote>
+<p>
+<b>BUFSIZ</b>
+<blockquote>
+The standard library declares <tt>BUFSIZ</tt> as <tt>int</tt>, but it should be
+<tt>size_t</tt>.  Reported by Walter Briscoe.  Fixed in CVS, will be in
+3.0.1.7.
+
+</blockquote>
+<p>
+<p>
+<b>Types with fixed sized arrays</b>
+<blockquote>
+Splint may crash if there is a typedef involving a fixed size array.  For example: typedef int Buf[5];
+
+This problem will only occur if the flags <b>bounds, boundsread, or boundswrite</b> are set.
+
+A message like:
+<blockquote>
+*** Internal Bug at ctype.c:2687: llassert failed:
+    (ctentry_getKind (cte) == CTK_COMPLEX) || (ctentry_getKind (cte) ==
+    CTK_ARRAY) [errno: 25]
+</blockquote>
+will be printed before splint crashes.
+
+(Reported by Jim Francis ) Fixed in CVS, 25 Jan 2002.
+</blockquote>
+<br><p>
+<!--
+<b>Nested Array Sizes</b>
+<blockquote>
+Splint reports incorred messages for initialization blocks for
+multi-dimensional arrays, e.g.:
+
+static char daytab[2][13] = {
+        {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
+        {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+    };
+
+since the C syntax puts the array dimensions backwards.  (Reported by
+Randi J. Relander) [evans - Fixed in CVS, 16 Jan 2002 and release 3.0.1.4]
+</blockquote>
+-->
+
+
+<b>Char array initialized with strings containing escape sequences</b>
+
+<blockquote>
+Splint may erroneously warn that a "string literal is assigned to a char array too small to hold it" if an array is initialized with a string containing escape sequences.  (Reported by Jeff Johnson) Fixed in CVS, 22 Jan 2002.
+</blockquote>
+<p>
+
+<b>Double Compilations</b> 
+<blockquote>
+On some platforms, if <tt>-j</tt> is used to do a parallel make, Splint will
+compile some files more than once.  We're not sure why this happens, but
+recommend not using the <tt>-j</tt> option to make.
+<p>
+(Reported by Matthias Andree, 14 Jan 2002.)
+</blockquote>
+
+<!--#include virtual="footer.html"-->

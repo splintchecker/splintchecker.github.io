@@ -1,0 +1,284 @@
+<p><h4>Changes in <A HREF="dbase.c.html">dbase.c</A> (<A HREF="../useiters/dbase.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../useiters/dbase.c.html#line42">line 42</A> to <A HREF="../useiters/dbase.c.html#line45">line 45</A> with <A HREF="dbase.c.html#line42">line 42</A><pre>
+&lt;   eref er;
+&lt;   ercIter it;
+&lt;   
+&lt;   for_ercElems (er, it, c)
+---
+&gt;   erc_elements(c, er)
+</pre><br>Replaced <A HREF="../useiters/dbase.c.html#line47">line 47</A> to <A HREF="../useiters/dbase.c.html#line51">line 51</A> with <A HREF="dbase.c.html#line44">line 44</A> to <A HREF="dbase.c.html#line45">line 45</A><pre>
+&lt;       if (eref_get (er).ssNum == key)
+&lt;         {
+&lt;           erc_iterReturn (it, er);
+&lt;         }
+&lt;     }
+---
+&gt;       if (eref_get(er).ssNum == key) return (er);
+&gt;     } end_erc_elements ;
+</pre><br>Deleted <A HREF="../useiters/dbase.c.html#line75">line 75</A> to <A HREF="../useiters/dbase.c.html#line76">line 76</A> (matches <A HREF="dbase.c.html#line68">line 68</A>)<pre>
+&lt;   eref er;
+&lt;   ercIter it;
+</pre><br>Replaced <A HREF="../useiters/dbase.c.html#line81">line 81</A> with <A HREF="dbase.c.html#line73">line 73</A><pre>
+&lt;   for_ercElems (er, it, c)
+---
+&gt;   erc_elements (c, er) 
+</pre><br>Replaced <A HREF="../useiters/dbase.c.html#line89">line 89</A> with <A HREF="dbase.c.html#line81">line 81</A><pre>
+&lt;     }
+---
+&gt;     } end_erc_elements ;
+</pre><br>Deleted <A HREF="../useiters/dbase.c.html#line134">line 134</A> to <A HREF="../useiters/dbase.c.html#line135">line 135</A> (matches <A HREF="dbase.c.html#line125">line 125</A>)<pre>
+&lt;   eref er;
+&lt;   ercIter it;
+</pre><br>Replaced <A HREF="../useiters/dbase.c.html#line138">line 138</A> with <A HREF="dbase.c.html#line128">line 128</A> to <A HREF="dbase.c.html#line130">line 130</A><pre>
+&lt;     for_ercElems (er, it, db[i])
+---
+&gt;     {
+&gt;       erc_elements(db[i], er)
+&gt;         {
+</pre><br>Deleted <A HREF="../useiters/dbase.c.html#line141">line 141</A> (matches <A HREF="dbase.c.html#line132">line 132</A>)<pre>
+&lt;           erc_iterFinal (it);
+</pre><br>Added <A HREF="dbase.c.html#line135">line 135</A> to <A HREF="dbase.c.html#line136">line 136</A> (was <A HREF="../useiters/dbase.c.html#line143">line 143</A>)<pre>
+&gt;             } 
+&gt;         } end_erc_elements ;
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset.c.html">empset.c</A> (<A HREF="../useiters/empset.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../useiters/empset.c.html#line7">line 7</A> to <A HREF="../useiters/empset.c.html#line11">line 11</A> with <A HREF="empset.c.html#line7">line 7</A><pre>
+&lt;   eref er;
+&lt;   ercIter it;
+&lt;   employee e1;
+&lt; 
+&lt;   for_ercElems (er, it, s) 
+---
+&gt;   erc_elements(s, er)
+</pre><br>Replaced <A HREF="../useiters/empset.c.html#line13">line 13</A> with <A HREF="empset.c.html#line9">line 9</A><pre>
+&lt;       e1 = eref_get (er);
+---
+&gt;       employee e1 = eref_get(er);
+</pre><br>Replaced <A HREF="../useiters/empset.c.html#line15">line 15</A> to <A HREF="../useiters/empset.c.html#line16">line 16</A> with <A HREF="empset.c.html#line11">line 11</A> to <A HREF="empset.c.html#line12">line 12</A><pre>
+&lt;         erc_iterReturn (it, er);
+&lt;     }
+---
+&gt;         return er;
+&gt;     } end_erc_elements ;
+</pre><br>Deleted <A HREF="../useiters/empset.c.html#line69">line 69</A> to <A HREF="../useiters/empset.c.html#line70">line 70</A> (matches <A HREF="empset.c.html#line64">line 64</A>)<pre>
+&lt;   ercIter it;
+&lt;   eref er;
+</pre><br>Deleted <A HREF="../useiters/empset.c.html#line83">line 83</A> to <A HREF="../useiters/empset.c.html#line86">line 86</A> (matches <A HREF="empset.c.html#line76">line 76</A>)<pre>
+&lt;   /*@-mods@*/
+&lt;   for_ercElems (er, it, s2)
+&lt;     empset_insertUnique (result, eref_get (er));
+&lt;   /*@=mods@*/
+</pre><br>Added <A HREF="empset.c.html#line78">line 78</A> to <A HREF="empset.c.html#line82">line 82</A> (was <A HREF="../useiters/empset.c.html#line87">line 87</A>)<pre>
+&gt;   empset_elements(s2, emp)
+&gt;     {
+&gt;       empset_insertUnique(result, emp);
+&gt;     } end_empset_elements ;
+&gt; 
+</pre><br>Deleted <A HREF="../useiters/empset.c.html#line93">line 93</A> to <A HREF="../useiters/empset.c.html#line94">line 94</A> (matches <A HREF="empset.c.html#line87">line 87</A>)<pre>
+&lt;   eref er;
+&lt;   ercIter it;
+</pre><br>Replaced <A HREF="../useiters/empset.c.html#line108">line 108</A> to <A HREF="../useiters/empset.c.html#line112">line 112</A> with <A HREF="empset.c.html#line101">line 101</A> to <A HREF="empset.c.html#line105">line 105</A><pre>
+&lt;   /*@-mods@*/
+&lt;   for_ercElems (er, it, s1) 
+&lt;     if (!empset_member (eref_get (er), s2))
+&lt;       erc_insert (result, er);
+&lt;   /*@=mods@*/
+---
+&gt;   empset_elements (s1, emp)
+&gt;     {
+&gt;       if (!empset_member(emp, s2))
+&gt;         empset_insert(result, emp);
+&gt;     } end_empset_elements ;
+</pre><br>Replaced <A HREF="../useiters/empset.c.html#line119">line 119</A> to <A HREF="../useiters/empset.c.html#line121">line 121</A> with <A HREF="empset.c.html#line112">line 112</A><pre>
+&lt;   eref er;
+&lt;   ercIter it;
+&lt;   erc toDelete;
+---
+&gt;   erc toDelete = erc_create();
+</pre><br>Replaced <A HREF="../useiters/empset.c.html#line123">line 123</A> with <A HREF="empset.c.html#line114">line 114</A> to <A HREF="empset.c.html#line118">line 118</A><pre>
+&lt;   toDelete = erc_create ();
+---
+&gt;   empset_elements (s2, emp)
+&gt;     {
+&gt;       if (!empset_member(emp, s2))
+&gt;         empset_insert(toDelete, emp);
+&gt;     } end_empset_elements ;
+</pre><br>Replaced <A HREF="../useiters/empset.c.html#line125">line 125</A> to <A HREF="../useiters/empset.c.html#line127">line 127</A> with <A HREF="empset.c.html#line120">line 120</A> to <A HREF="empset.c.html#line123">line 123</A><pre>
+&lt;   for_ercElems (er, it, s1)
+&lt;     if (!empset_member (eref_get (er), s2))
+&lt;       erc_insert (toDelete, er);
+---
+&gt;   empset_elements (toDelete, emp)
+&gt;     {
+&gt;       empset_delete(s1, emp);
+&gt;     } end_empset_elements;
+</pre><br>Deleted <A HREF="../useiters/empset.c.html#line129">line 129</A> to <A HREF="../useiters/empset.c.html#line131">line 131</A> (matches <A HREF="empset.c.html#line124">line 124</A>)<pre>
+&lt;   for_ercElems (er, it, toDelete)
+&lt;     erc_delete (s1, er);
+&lt; 
+</pre><br>Replaced <A HREF="../useiters/empset.c.html#line137">line 137</A> to <A HREF="../useiters/empset.c.html#line144">line 144</A> with <A HREF="empset.c.html#line130">line 130</A> to <A HREF="empset.c.html#line133">line 133</A><pre>
+&lt;   eref er;
+&lt;   ercIter it;
+&lt; 
+&lt;   /*@-mods@*/  
+&lt;   for_ercElems (er, it, s1) 
+&lt;     if (!empset_member (eref_get (er), s2))
+&lt;       erc_iterReturn (it, FALSE);
+&lt;   /*@=mods@*/
+---
+&gt;   empset_elements(s1, emp)
+&gt;     {
+&gt;       if (!empset_member(emp, s2)) return FALSE;
+&gt;     } end_empset_elements ;
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset.h.html">empset.h</A> (<A HREF="../useiters/empset.h.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="empset.h.html#line36">line 36</A> to <A HREF="empset.h.html#line39">line 39</A> (was <A HREF="../useiters/empset.h.html#line35">line 35</A>)<pre>
+&gt; #define empset_elements(e, m_x) \
+&gt;    erc_elements(e, m_y) { employee m_x = eref_get(m_y);
+&gt; #define end_empset_elements        } end_erc_elements
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset.lcl.html">empset.lcl</A> (<A HREF="../useiters/empset.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="empset.lcl.html#line87">line 87</A> to <A HREF="empset.lcl.html#line89">line 89</A> (was <A HREF="../useiters/empset.lcl.html#line86">line 86</A>)<pre>
+&gt; 
+&gt; iter empset_elements (empset s, yield employee x);
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.c.html">erc.c</A> (<A HREF="../useiters/erc.c.html">previous version</A>)</h4><pre>
+</pre><br>Deleted <A HREF="../useiters/erc.c.html#line115">line 115</A> to <A HREF="../useiters/erc.c.html#line145">line 145</A> (matches <A HREF="erc.c.html#line114">line 114</A>)<pre>
+&lt; ercIter erc_iterStart (erc c) 
+&lt; {
+&lt;   ercIter result;
+&lt; 
+&lt;   result = (ercIter) malloc (sizeof (ercList));
+&lt; 
+&lt;   if (result == 0) 
+&lt;     {
+&lt;       printf ("Malloc returned null in erc_iterStart\n");
+&lt;       exit (1);
+&lt;     }
+&lt;   
+&lt;   *result = c-&gt;vals;
+&lt;   return result;
+&lt; } 
+&lt; 
+&lt; eref erc_yield (ercIter it) 
+&lt; {
+&lt;   eref result;
+&lt; 
+&lt;   if (*it == 0) 
+&lt;     {
+&lt;       return erefNIL;
+&lt;       free (it); 
+&lt;     }
+&lt;   
+&lt;   result = (*it)-&gt;val;
+&lt;   *(it) = (*it)-&gt;next;
+&lt;   return result;
+&lt; }
+&lt; 
+</pre><br>Deleted <A HREF="../useiters/erc.c.html#line157">line 157</A> to <A HREF="../useiters/erc.c.html#line158">line 158</A> (matches <A HREF="erc.c.html#line125">line 125</A>)<pre>
+&lt;   eref er;
+&lt;   ercIter it;
+</pre><br>Replaced <A HREF="../useiters/erc.c.html#line172">line 172</A> to <A HREF="../useiters/erc.c.html#line173">line 173</A> with <A HREF="erc.c.html#line139">line 139</A><pre>
+&lt;   /*@-mods@*/
+&lt;   for_ercElems (er, it, c) 
+---
+&gt;   erc_elements(c, er)
+</pre><br>Replaced <A HREF="../useiters/erc.c.html#line178">line 178</A> to <A HREF="../useiters/erc.c.html#line179">line 179</A> with <A HREF="erc.c.html#line144">line 144</A><pre>
+&lt;     }
+&lt;   /*@=mods@*/  
+---
+&gt;     } end_erc_elements;
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.h.html">erc.h</A> (<A HREF="../useiters/erc.h.html">previous version</A>)</h4><pre>
+</pre><br>Deleted <A HREF="../useiters/erc.h.html#line10">line 10</A> (matches <A HREF="erc.h.html#line9">line 9</A>)<pre>
+&lt; typedef ercList *ercIter;
+</pre><br>Replaced <A HREF="../useiters/erc.h.html#line20">line 20</A> with <A HREF="erc.h.html#line19">line 19</A> to <A HREF="erc.h.html#line22">line 22</A><pre>
+&lt; # define erc_iterFinal(it) (free(it)) 
+---
+&gt; # define erc_elements(c, m_x) \
+&gt;   { erc m_c = (c); ercElem *m_ec = (m_c)-&gt;vals; int m_i = 0; \
+&gt;     while (m_i &lt; (m_c)-&gt;size) { \
+&gt;       eref m_x = m_ec-&gt;val; m_ec = m_ec-&gt;next; m_i++; 
+</pre><br>Replaced <A HREF="../useiters/erc.h.html#line22">line 22</A> to <A HREF="../useiters/erc.h.html#line28">line 28</A> with <A HREF="erc.h.html#line24">line 24</A><pre>
+&lt; # define erc_iterReturn(it, result) \
+&lt;     do { erc_iterFinal(it); return result; } while (0)
+&lt; 
+&lt; # define for_ercElems(er, it, c)\
+&lt;     for (er = erc_yield (it = erc_iterStart (c)); \
+&lt;          !eref_equal (er, erefNIL); \
+&lt;          er = erc_yield (it))
+---
+&gt; # define end_erc_elements }}
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.lcl.html">erc.lcl</A> (<A HREF="../useiters/erc.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Deleted <A HREF="../useiters/erc.lcl.html#line4">line 4</A> (matches <A HREF="erc.lcl.html#line3">line 3</A>)<pre>
+&lt; mutable type ercIter;
+</pre><br>Deleted <A HREF="../useiters/erc.lcl.html#line49">line 49</A> to <A HREF="../useiters/erc.lcl.html#line75">line 75</A> (matches <A HREF="erc.lcl.html#line47">line 47</A>)<pre>
+&lt; ercIter erc_iterStart(erc c) 
+&lt; {
+&lt;   modifies c;
+&lt;   /* ensures fresh(result) /\ result' = [c^.val, c]
+&lt;         /\ c' = startIter(c^);
+&lt;   */
+&lt; }
+&lt; 
+&lt; eref erc_yield(ercIter it) 
+&lt; {
+&lt;   modifies it; /* , it^.eObj */ 
+&lt;   /* ensures if it^.toYield \neq { }
+&lt;      then yielded(result, it^, it')
+&lt;        /\ (it^.eObj)' = (it^.eObj)^
+&lt;      else result = erefNIL /\ trashed(it)
+&lt;        /\ (it^.eObj)' = endIter((it^.eObj)^);
+&lt;  */
+&lt; }
+&lt; 
+&lt; void erc_iterFinal(ercIter it) 
+&lt; {
+&lt;   modifies it; /* , it^.eObj; */
+&lt;   /* ensures trashed(it)
+&lt;      /\ (it^.eObj)' = endIter((it^.eObj)^);
+&lt;   */
+&lt; }
+&lt; 
+</pre><br>Added <A HREF="erc.lcl.html#line70">line 70</A> to <A HREF="erc.lcl.html#line71">line 71</A> (was <A HREF="../useiters/erc.lcl.html#line97">line 97</A>)<pre>
+&gt; 
+&gt; iter erc_elements (erc c, yield eref el);  
+</pre><p><p>
+<p><h4>Changes in <A HREF="ereftab.c.html">ereftab.c</A> (<A HREF="../useiters/ereftab.c.html">previous version</A>)</h4><pre>
+</pre><br>Deleted <A HREF="../useiters/ereftab.c.html#line30">line 30</A> (matches <A HREF="ereftab.c.html#line29">line 29</A>)<pre>
+&lt;   eref er;
+</pre><br>Deleted <A HREF="../useiters/ereftab.c.html#line32">line 32</A> (matches <A HREF="ereftab.c.html#line30">line 30</A>)<pre>
+&lt;   ercIter it;
+</pre><br>Replaced <A HREF="../useiters/ereftab.c.html#line34">line 34</A> to <A HREF="../useiters/ereftab.c.html#line35">line 35</A> with <A HREF="ereftab.c.html#line32">line 32</A><pre>
+&lt;   /*@-mods@*/
+&lt;   for_ercElems (er, it, t) 
+---
+&gt;   ereftab_elements(t, er)
+</pre><br>Replaced <A HREF="../useiters/ereftab.c.html#line38">line 38</A> to <A HREF="../useiters/ereftab.c.html#line44">line 44</A> with <A HREF="ereftab.c.html#line35">line 35</A> to <A HREF="ereftab.c.html#line36">line 36</A><pre>
+&lt;       if (employee_equal (&e, &e1))
+&lt;         {
+&lt;           erc_iterReturn (it, er);
+&lt;         }
+&lt;     }
+&lt;   /*@=mods@*/
+&lt; 
+---
+&gt;       if (employee_equal(&e, &e1)) return er;
+&gt;     } end_ereftab_elements ;
+</pre><p><p>
+<p><h4>Changes in <A HREF="ereftab.h.html">ereftab.h</A> (<A HREF="../useiters/ereftab.h.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="ereftab.h.html#line12">line 12</A> to <A HREF="ereftab.h.html#line14">line 14</A> (was <A HREF="../useiters/ereftab.h.html#line11">line 11</A>)<pre>
+&gt; # define ereftab_elements(s, m_x) erc_elements(s, m_x)
+&gt; # define end_ereftab_elements     end_erc_elements
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="ereftab.lcl.html">ereftab.lcl</A> (<A HREF="../useiters/ereftab.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="ereftab.lcl.html#line32">line 32</A> to <A HREF="ereftab.lcl.html#line35">line 35</A> (was <A HREF="../useiters/ereftab.lcl.html#line31">line 31</A>)<pre>
+&gt; 
+&gt; iter ereftab_elements(ereftab s, yield eref x);
+&gt; 
+&gt; 
+</pre><p><p>

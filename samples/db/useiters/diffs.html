@@ -1,0 +1,106 @@
+<p><h4>Changes in <A HREF="bool.h.html">bool.h</A> (<A HREF="../weakchecks/bool.h.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="bool.h.html#line34">line 34</A> to <A HREF="bool.h.html#line37">line 37</A> (was <A HREF="../weakchecks/bool.h.html#line33">line 33</A>)<pre>
+&gt; extern /*@falseexit@*/ void check (bool x);
+&gt; # define check(x) \
+&gt;   do { bool m_res = x; assert (m_res); } while (FALSE)
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="dbase.c.html">dbase.c</A> (<A HREF="../weakchecks/dbase.c.html">previous version</A>)</h4><pre>
+</pre><br>Deleted <A HREF="../weakchecks/dbase.c.html#line210">line 210</A> to <A HREF="../weakchecks/dbase.c.html#line211">line 211</A> (matches <A HREF="dbase.c.html#line209">line 209</A>)<pre>
+&lt;   eref er;             
+&lt;   employee e;           
+</pre><p><p>
+<p><h4>Changes in <A HREF="drive.c.html">drive.c</A> (<A HREF="../weakchecks/drive.c.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="drive.c.html#line6">line 6</A> (was <A HREF="../weakchecks/drive.c.html#line5">line 5</A>)<pre>
+&gt; # include &lt;assert.h&gt;
+</pre><br>Replaced <A HREF="../weakchecks/drive.c.html#line123">line 123</A> with <A HREF="drive.c.html#line124">line 124</A><pre>
+&lt;           hire(e); 
+---
+&gt;           check (hire(e) == db_OK); 
+</pre><p><p>
+<p><h4>Changes in <A HREF="employee.c.html">employee.c</A> (<A HREF="../weakchecks/employee.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../weakchecks/employee.c.html#line7">line 7</A> with <A HREF="employee.c.html#line7">line 7</A><pre>
+&lt;   int i;
+---
+&gt;   size_t i;
+</pre><p><p>
+<p><h4>Changes in <A HREF="employee.lcl.html">employee.lcl</A> (<A HREF="../weakchecks/employee.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../weakchecks/employee.lcl.html#line1">line 1</A> with <A HREF="employee.lcl.html#line1">line 1</A> to <A HREF="employee.lcl.html#line3">line 3</A><pre>
+&lt; constant int maxEmployeeName;
+---
+&gt; imports &lt;stdio&gt; ;
+&gt; 
+&gt; constant size_t maxEmployeeName;
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset.c.html">empset.c</A> (<A HREF="../weakchecks/empset.c.html">previous version</A>)</h4><pre>
+</pre><br>Deleted <A HREF="../weakchecks/empset.c.html#line28">line 28</A> to <A HREF="../weakchecks/empset.c.html#line29">line 29</A> (matches <A HREF="empset.c.html#line27">line 27</A>)<pre>
+&lt;   eref er; 
+&lt;   
+</pre><br>Added <A HREF="empset.c.html#line83">line 83</A> (was <A HREF="../weakchecks/empset.c.html#line84">line 84</A>)<pre>
+&gt;   /*@-mods@*/
+</pre><br>Added <A HREF="empset.c.html#line86">line 86</A> (was <A HREF="../weakchecks/empset.c.html#line86">line 86</A>)<pre>
+&gt;   /*@=mods@*/
+</pre><br>Added <A HREF="empset.c.html#line108">line 108</A> (was <A HREF="../weakchecks/empset.c.html#line107">line 107</A>)<pre>
+&gt;   /*@-mods@*/
+</pre><br>Added <A HREF="empset.c.html#line112">line 112</A> (was <A HREF="../weakchecks/empset.c.html#line110">line 110</A>)<pre>
+&gt;   /*@=mods@*/
+</pre><br>Deleted <A HREF="../weakchecks/empset.c.html#line135">line 135</A> (matches <A HREF="empset.c.html#line136">line 136</A>)<pre>
+&lt;   employee e; 
+</pre><br>Added <A HREF="empset.c.html#line140">line 140</A> (was <A HREF="../weakchecks/empset.c.html#line138">line 138</A>)<pre>
+&gt;   /*@-mods@*/  
+</pre><br>Added <A HREF="empset.c.html#line144">line 144</A> (was <A HREF="../weakchecks/empset.c.html#line141">line 141</A>)<pre>
+&gt;   /*@=mods@*/
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.c.html">erc.c</A> (<A HREF="../weakchecks/erc.c.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="erc.c.html#line4">line 4</A> to <A HREF="erc.c.html#line24">line 24</A> (was <A HREF="../weakchecks/erc.c.html#line3">line 3</A>)<pre>
+&gt; static size_t int_toSize (int x)
+&gt; {
+&gt;   if (x &lt; 0)
+&gt;     {
+&gt;       fprintf (stderr, "Error: int_toSize is negative: %d", x);
+&gt;       return 0;
+&gt;     }
+&gt;   else
+&gt;     {
+&gt;       size_t s = (size_t) x;
+&gt; 
+&gt;       if ((int) s != x)
+&gt;         {
+&gt;           fprintf (stderr, "Error: int_toSize is inconsistent: %d", x);
+&gt;           return 0;
+&gt;         }
+&gt; 
+&gt;       return s;
+&gt;     }
+&gt; }
+&gt; 
+</pre><br>Replaced <A HREF="../weakchecks/erc.c.html#line47">line 47</A> with <A HREF="erc.c.html#line68">line 68</A><pre>
+&lt;     if (tmpc-&gt;val == er) return TRUE; 
+---
+&gt;     if (eref_equal (tmpc-&gt;val, er)) return TRUE; 
+</pre><br>Replaced <A HREF="../weakchecks/erc.c.html#line78">line 78</A> with <A HREF="erc.c.html#line99">line 99</A><pre>
+&lt;       if (elem-&gt;val == er) 
+---
+&gt;       if (eref_equal (elem-&gt;val, er))
+</pre><br>Replaced <A HREF="../weakchecks/erc.c.html#line141">line 141</A> with <A HREF="erc.c.html#line162">line 162</A><pre>
+&lt;     malloc (erc_size (c) * (employeePrintSize + 1) + 1);
+---
+&gt;     malloc (int_toSize (erc_size (c) * (employeePrintSize + 1) + 1));
+</pre><br>Added <A HREF="erc.c.html#line172">line 172</A> (was <A HREF="../weakchecks/erc.c.html#line150">line 150</A>)<pre>
+&gt;   /*@-mods@*/
+</pre><br>Added <A HREF="erc.c.html#line179">line 179</A> (was <A HREF="../weakchecks/erc.c.html#line156">line 156</A>)<pre>
+&gt;   /*@=mods@*/  
+</pre><p><p>
+<p><h4>Changes in <A HREF="ereftab.c.html">ereftab.c</A> (<A HREF="../weakchecks/ereftab.c.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="ereftab.c.html#line34">line 34</A> (was <A HREF="../weakchecks/ereftab.c.html#line33">line 33</A>)<pre>
+&gt;   /*@-mods@*/
+</pre><br>Replaced <A HREF="../weakchecks/ereftab.c.html#line37">line 37</A> with <A HREF="ereftab.c.html#line38">line 38</A> to <A HREF="ereftab.c.html#line40">line 40</A><pre>
+&lt;       if (employee_equal (&e, &e1)) return er;
+---
+&gt;       if (employee_equal (&e, &e1))
+&gt;         {
+&gt;           erc_iterReturn (it, er);
+</pre><br>Added <A HREF="ereftab.c.html#line42">line 42</A> to <A HREF="ereftab.c.html#line43">line 43</A> (was <A HREF="../weakchecks/ereftab.c.html#line38">line 38</A>)<pre>
+&gt;     }
+&gt;   /*@=mods@*/
+</pre><p><p>

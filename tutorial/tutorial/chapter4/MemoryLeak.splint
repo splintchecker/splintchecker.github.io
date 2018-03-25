@@ -1,0 +1,12 @@
+Splint 3.0.1.4 --- 19 Jan 2002
+
+MemoryLeak.c: (in function main)
+MemoryLeak.c:6:3: Fresh storage ip (type void *) not released before
+                     assignment: ip = ig
+  A memory leak has been detected. Storage allocated locally is not released
+  before the last reference to it is lost. (Use -mustfreefresh to inhibit
+  warning)
+   MemoryLeak.c:4:3: Fresh storage ip allocated
+
+Finished checking --- 1 code warning
+10 source lines in 0.01 s.

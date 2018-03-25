@@ -1,0 +1,44 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>Splint Borland C++Builder Instructions</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+
+<center><h2>
+Borland C++Builder Instructions
+</h2>
+<b>Contributed by Scott Frazer</b>
+</center>
+
+<p> 
+
+<pre>
+Building the Win32 version of Splint:
+
+1) Download Borland C++Builder (BCC32) from:
+   http://www.borland.com/products/downloads/download_cbuilder.html
+
+2) Install BCC32, put it in your PATH, etc.
+
+3) Make sure when you type 'make' at a command prompt it uses the one that was
+   just installed with BCC32.
+
+4) Make sure when you type 'find' at a command prompt it uses the DOS program,
+   *NOT* some Unix-y thing you may have on your machine.  It should say
+   something like:
+
+   FIND: Parameter format not correct
+
+5) Now you're ready.  Do a 'make' in the 'bcc32' subdirectory of wherever you
+   unzipped Splint.  It will spit out a bunch of warnings as it compiles, but
+   when it's done you should have a 'splint.exe' in the 'bin' directory.
+
+NOTE: All the Splint version info is hard-coded into the 'bcc_config.h' file,
+      which stinks, but there's no easy way around it.
+</pre>
+
+<p>
+<!--#include virtual="footer.html"-->

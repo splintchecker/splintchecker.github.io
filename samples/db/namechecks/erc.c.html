@@ -1,0 +1,229 @@
+<A NAME="line164"></A><html><head>
+<title>erc.c</title>
+</head><body>
+<h3>erc.c</h3>
+<PRE>
+<A NAME="line1"></A># include &lt;stdlib.h&gt;
+<A NAME="line2"></A>#include "<A HREF="erc.h.html">erc.h</A>"
+<A NAME="line3"></A> 
+<A NAME="line4"></A>static size_t int_toSize (int x)
+<A NAME="line5"></A>{
+<A NAME="line6"></A>  if (x &lt; 0)
+<A NAME="line7"></A>    {
+<A NAME="line8"></A>      fprintf (stderr, "Error: int_toSize is negative: %d", x);
+<A NAME="line9"></A>      return 0;
+<A NAME="line10"></A>    }
+<A NAME="line11"></A>  else
+<A NAME="line12"></A>    {
+<A NAME="line13"></A>      return (size_t) x;
+<A NAME="line14"></A>    }
+<A NAME="line15"></A>}
+<A NAME="line16"></A> 
+<A NAME="line17"></A>erc erc_create (void) 
+<A NAME="line18"></A>{
+<A NAME="line19"></A>  erc c;
+<A NAME="line20"></A> 
+<A NAME="line21"></A>  c = (erc) malloc (sizeof (ercInfo));
+<A NAME="line22"></A> 
+<A NAME="line23"></A>  if (c == 0) 
+<A NAME="line24"></A>    {
+<A NAME="line25"></A>      printf ("Malloc returned null in erc_create\n");
+<A NAME="line26"></A>      exit (EXIT_FAILURE);
+<A NAME="line27"></A>    }
+<A NAME="line28"></A>  
+<A NAME="line29"></A>  c-&gt;vals = 0;
+<A NAME="line30"></A>  c-&gt;size = 0;
+<A NAME="line31"></A>  return c;
+<A NAME="line32"></A>}
+<A NAME="line33"></A> 
+<A NAME="line34"></A>void erc_clear (erc c) 
+<A NAME="line35"></A>{
+<A NAME="line36"></A>  ercList elem;
+<A NAME="line37"></A>  ercList next;
+<A NAME="line38"></A> 
+<A NAME="line39"></A>  for (elem = c-&gt;vals; elem != 0; elem = next) 
+<A NAME="line40"></A>    {
+<A NAME="line41"></A>      next = elem-&gt;next;
+<A NAME="line42"></A>      free (elem);
+<A NAME="line43"></A>    }
+<A NAME="line44"></A>  
+<A NAME="line45"></A>  c-&gt;vals = 0;
+<A NAME="line46"></A>  c-&gt;size = 0;
+<A NAME="line47"></A>}
+<A NAME="line48"></A> 
+<A NAME="line49"></A>void erc_final (erc c) 
+<A NAME="line50"></A>{
+<A NAME="line51"></A>  erc_clear (c);
+<A NAME="line52"></A>  free (c); 
+<A NAME="line53"></A>}
+<A NAME="line54"></A> 
+<A NAME="line55"></A>bool erc_member (eref er, erc c) 
+<A NAME="line56"></A>{
+<A NAME="line57"></A>  ercList tmpc;
+<A NAME="line58"></A> 
+<A NAME="line59"></A>  for (tmpc = c-&gt;vals; tmpc != 0; tmpc = tmpc-&gt;next)
+<A NAME="line60"></A>    if (eref_equal (tmpc-&gt;val, er)) return TRUE; 
+<A NAME="line61"></A> 
+<A NAME="line62"></A>  return FALSE;
+<A NAME="line63"></A>}
+<A NAME="line64"></A> 
+<A NAME="line65"></A>void erc_insert (erc c, eref er) 
+<A NAME="line66"></A>{
+<A NAME="line67"></A>  ercList newElem;
+<A NAME="line68"></A>  newElem = (ercElem *) malloc (sizeof (ercElem));
+<A NAME="line69"></A> 
+<A NAME="line70"></A>  if (newElem == 0) 
+<A NAME="line71"></A>    {
+<A NAME="line72"></A>      printf ("Malloc returned null in erc_insert\n");
+<A NAME="line73"></A>      exit (EXIT_FAILURE);
+<A NAME="line74"></A>    }
+<A NAME="line75"></A> 
+<A NAME="line76"></A>  newElem-&gt;val = er;
+<A NAME="line77"></A>  newElem-&gt;next = c-&gt;vals;
+<A NAME="line78"></A>  c-&gt;vals = newElem;
+<A NAME="line79"></A>  c-&gt;size++;
+<A NAME="line80"></A>}
+<A NAME="line81"></A> 
+<A NAME="line82"></A>bool erc_delete (erc c, eref er) 
+<A NAME="line83"></A>{
+<A NAME="line84"></A>  ercList elem = c-&gt;vals;
+<A NAME="line85"></A> 
+<A NAME="line86"></A>  if (elem != NULL)
+<A NAME="line87"></A>    {
+<A NAME="line88"></A>      if (eref_equal (elem-&gt;val, er))
+<A NAME="line89"></A>	{
+<A NAME="line90"></A>	  c-&gt;vals = elem-&gt;next;
+<A NAME="line91"></A>	  free (elem);
+<A NAME="line92"></A>	  c-&gt;size--;
+<A NAME="line93"></A>	  return TRUE;
+<A NAME="line94"></A>	}
+<A NAME="line95"></A>      else
+<A NAME="line96"></A>	{
+<A NAME="line97"></A>	  ercList prev = elem;
+<A NAME="line98"></A>	  elem = elem-&gt;next;
+<A NAME="line99"></A> 
+<A NAME="line100"></A>	  for (; elem != 0; prev = elem, elem = elem-&gt;next) 
+<A NAME="line101"></A>	    {
+<A NAME="line102"></A>	      if (eref_equal (elem-&gt;val, er))
+<A NAME="line103"></A>		{ 
+<A NAME="line104"></A>		  assert (prev != NULL);
+<A NAME="line105"></A>		  prev-&gt;next = elem-&gt;next;
+<A NAME="line106"></A>		  free (elem); 
+<A NAME="line107"></A>		  c-&gt;size--;
+<A NAME="line108"></A>		  return TRUE;
+<A NAME="line109"></A>		}
+<A NAME="line110"></A>	    }
+<A NAME="line111"></A>	}
+<A NAME="line112"></A>    }
+<A NAME="line113"></A>  
+<A NAME="line114"></A>  return FALSE;
+<A NAME="line115"></A>}
+<A NAME="line116"></A> 
+<A NAME="line117"></A>void erc_join (erc c1, erc c2) 
+<A NAME="line118"></A>{
+<A NAME="line119"></A>  ercList tmpc;
+<A NAME="line120"></A> 
+<A NAME="line121"></A>  for (tmpc = c2-&gt;vals; tmpc != 0; tmpc = tmpc-&gt;next)
+<A NAME="line122"></A>    erc_insert (c1, tmpc-&gt;val);
+<A NAME="line123"></A>}
+<A NAME="line124"></A> 
+<A NAME="line125"></A>char *erc_sprint (erc c)
+<A NAME="line126"></A>{
+<A NAME="line127"></A>  int len;
+<A NAME="line128"></A>  char *result;
+<A NAME="line129"></A> 
+<A NAME="line130"></A>  result = (char *) 
+<A NAME="line131"></A>    malloc (int_toSize (erc_size (c) * (employeePrintSize + 1) + 1));
+<A NAME="line132"></A> 
+<A NAME="line133"></A>  if (result == 0) 
+<A NAME="line134"></A>    {
+<A NAME="line135"></A>      printf ("Malloc returned null in erc_sprint\n");
+<A NAME="line136"></A>      exit (EXIT_FAILURE);
+<A NAME="line137"></A>    }
+<A NAME="line138"></A> 
+<A NAME="line139"></A>  len = 0;
+<A NAME="line140"></A> 
+<A NAME="line141"></A>  erc_elements(c, er)
+<A NAME="line142"></A>    {
+<A NAME="line143"></A>      employee_sprint(&(result[len]), eref_get(er));
+<A NAME="line144"></A>      len += employeePrintSize;
+<A NAME="line145"></A>      result[len++] = '\n';
+<A NAME="line146"></A>    } end_erc_elements;
+<A NAME="line147"></A> 
+<A NAME="line148"></A>  result[len] = '\0';
+<A NAME="line149"></A>  return result;
+<A NAME="line150"></A>}
+<A NAME="line151"></A> 
+<A NAME="line152"></A>eref erc_choose (erc c) 
+<A NAME="line153"></A>{
+<A NAME="line154"></A>  assert (c-&gt;vals != NULL);
+<A NAME="line155"></A>  return c-&gt;vals-&gt;val;
+<A NAME="line156"></A>}
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

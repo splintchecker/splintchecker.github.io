@@ -1,0 +1,67 @@
+<h3>lclint-interest message 73</h3>
+<pre>
+From evans@cs.virginia.edu Wed May  8 15:16:49 1996
+Date: Wed, 8 May 96 15:11:05 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: bill@ellie.etec.com
+In-Reply-To: Bill Margolis's message of Tue, 7 May 96 17:08:17 PDT <9605080008.AA23062@mailboy>
+Subject: Re: Conformance checking capabilities?
+
+
+> However, a useful, immediate task that we are currently facing is
+> to see how legacy and currently developing source code could be
+> checked against the various posix, svid 3(whatever that is), and
+> other standards of orthodoxy.  I think the usual type of messages with 
+> hints that are currently in lclint is the kind of aid that we would 
+> want to accept.  (People in our group have been visited by the 
+> electronic fairies from Abraxas and MKS Code Integrity).
+>
+> Are there libraries that do these things on the agenda?  
+> Perhaps they are already available, if only I were to key in the proper
+> netscape location, or make and install the right library?
+
+It would be very useful to have libraries like this, but as far as I
+know they don't exist and we have no plans (or resources) to create
+them.  Currently, only the ANSI Standard library (two versions,
+depending on the strictness of checking desired) and a UNIX library
+(based on what is available on *most* unixes) included in the lclint
+distribution are available.  I hope lclint users will provide annotated
+versions of various standards and system header files, and I'll add
+these to the lclint releases if they become available.
+
+Adding appropriate lclint annotations to the header files for a given
+standard should be fairly painless, as long as reasonable header files
+and documentation can be found.  I'm not sure about the posix and svid 3
+standards, but a major difficulty in creating the ANSI standard version
+of the library is that the documentation (in this case, the ANSI
+Standard) is often very unclear about interfaces for these functions
+(e.g., which pointer parameters can be null, does the return value point
+to storage that must be deallocated or is it a local buffer, what
+parameters are valid).  One hopes eventually standards will be
+documented in a more precise way, but I'm not counting on this happening
+anytime soon.
+
+--- Dave
+
+
+
+
+
+
+</pre>
+<A HREF="72.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="74.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

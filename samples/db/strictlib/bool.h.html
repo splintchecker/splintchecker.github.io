@@ -1,0 +1,115 @@
+<A NAME="line51"></A><html><head>
+<title>bool.h</title>
+</head><body>
+<h1>bool.h</h1>
+<PRE>
+<A NAME="line1"></A>#ifndef BOOL_H
+<A NAME="line2"></A>#define BOOL_H
+<A NAME="line3"></A> 
+<A NAME="line4"></A>#ifndef FALSE
+<A NAME="line5"></A>#define FALSE 0
+<A NAME="line6"></A>#endif
+<A NAME="line7"></A> 
+<A NAME="line8"></A>#ifndef TRUE
+<A NAME="line9"></A>#define TRUE (!FALSE)
+<A NAME="line10"></A>#endif
+<A NAME="line11"></A> 
+<A NAME="line12"></A>typedef int bool;
+<A NAME="line13"></A> 
+<A NAME="line14"></A>/*
+<A NAME="line15"></A>** bool_initMod has no real effect
+<A NAME="line16"></A>** Declared with modifies internalState, so no noeffect errors are 
+<A NAME="line17"></A>** reported when it is called.)
+<A NAME="line18"></A>*/
+<A NAME="line19"></A> 
+<A NAME="line20"></A>extern /*@unused@*/ void bool_initMod (void)
+<A NAME="line21"></A>  /*@globals internalState@*/ /*@modifies internalState@*/ ;
+<A NAME="line22"></A>/*@-mustmod@*/
+<A NAME="line23"></A># define bool_initMod() do { ; } while (FALSE)
+<A NAME="line24"></A>/*@=mustmod@*/
+<A NAME="line25"></A> 
+<A NAME="line26"></A>extern /*@unused@*/ /*@observer@*/ char *bool_unparse (bool b) /*@*/ ;
+<A NAME="line27"></A># define bool_unparse(b) ((b) ? "true" : "false" )
+<A NAME="line28"></A> 
+<A NAME="line29"></A>extern /*@unused@*/ bool bool_not (bool b) /*@*/ ;
+<A NAME="line30"></A># define bool_not(b) ((b) ? FALSE : TRUE)
+<A NAME="line31"></A> 
+<A NAME="line32"></A>extern /*@unused@*/ bool bool_equal (bool b1, bool b2) /*@*/ ;
+<A NAME="line33"></A># define bool_equal(a,b) ((a) ? (b) : !(b))
+<A NAME="line34"></A> 
+<A NAME="line35"></A>/*@noaccess bool@*/
+<A NAME="line36"></A>extern /*@falseexit@*/ void check (bool x);
+<A NAME="line37"></A># define check(x) \
+<A NAME="line38"></A>  do { bool m_res = x; assert (m_res); } while (FALSE)
+<A NAME="line39"></A> 
+<A NAME="line40"></A># endif
+</pre>
+<P>
+<HR>
+<A HREF="index.html">Return to Index</A> | <A HREF="http://lclint.cs.virginia.edu/index.html">LCLint Home Page</A> <BR> <BR>
+<author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+<pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

@@ -1,0 +1,1052 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - Appendix C. Annotations</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+
+<p class="MsoHeading7" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975062"></a><a name="_Ref348845752">Appendix
+C<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a id="annotations" name="annotations">
+Annotations</a></a></p>
+<p class="MsoHeading9" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975063"></a><a name="_Ref348010146">Suppressin</a>g
+Warnings</p>
+<p class="beforelist">Several annotations are provided for
+suppressing messages.&nbsp; In general, it is usually better to use
+specific flags to suppress a particular error permanently, but the
+general error suppression flags may be more convenient for quickly
+suppressing messages for code that will be corrected or documented
+later.</p>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>ignore</span></span></p>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>end</span></span></p>
+<p class="IndentText">No errors will be reported in code regions
+between <span class="Annot"><span style=
+'font-size:10.0pt'>/*@ignore@*/</span></span> and
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>/*@end@*/</span></span>.&nbsp; These
+      comments can be used to easily suppress an unlimited number
+      of messages, but are dangerous since if real errors are
+      introduced in the <span class="Flag"><span style=
+      'font-size:10.0pt'>ignore</span></span>&#8230;<span class=
+      "Flag"><span style='font-size:10.0pt'>end</span></span>
+      region they will not be reported. The <span class=
+      "Annot"><span style='font-size:10.0pt'>ignore</span></span>
+      and <span class="Annot"><span style=
+      'font-size:10.0pt'>end</span></span> comments must be matched
+      &#8212; a warning is printed if the file ends in an ignore
+      region or if <span class="Flag"><span style=
+      'font-size:10.0pt'>ignore</span></span> is used inside ignore
+      region.</p>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>i</span></span></p>
+<p class="IndentText">No errors will be reported from an
+<span class="Annot"><span style=
+'font-size:10.0pt'>/*@i@*/</span></span> comment to the end of the
+line.</p>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>i</span></span><span class=
+      "Flag"><span style='font-size:10.0pt'><i>&lt;n&gt;</i></span></span></p>
+<p class="IndentText">No errors will be reported from an
+<span class="Annot"><span style=
+'font-size:10.0pt'>/*@i<i>&lt;n&gt;</i>@*/</span></span> (e.g.,
+<span class="Annot"><span style=
+'font-size:10.0pt'>/*@i3@*/</span></span>) comment to the end of
+the line.&nbsp; If there are not exactly <i>n</i> errors suppressed
+from the comment point to the end of the line, Splint will report
+an error.&nbsp; This is more robust than <span class=
+"Annot"><span style='font-size:10.0pt'>i</span></span> or
+<span class="Annot"><span style=
+'font-size:10.0pt'>ignore</span></span> since a message is
+generated if the expected number errors is not present.&nbsp; Since
+errors are not necessarily detected until after this file is
+processed (for example, and unused variable error), suppress count
+errors are reported after all files have been processed. &nbsp;The
+<span class="Flag"><span style=
+'font-size: 10.0pt'>&#8209;supcounts</span></span> flag may be used
+to suppress these errors.&nbsp; This is useful when a system if
+being rechecked with different flag settings.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>t</span></span></p>
+<p class="TextFontCX"><span class="Flag"><span style=
+'font-size:10.0pt'>t<i>&lt;n&gt;</i></span></span></p>
+<p class="IndentText">Like <span class="Annot"><span style=
+'font-size:10.0pt'>i</span></span> and <span class=
+"Annot"><span style=
+'font-size:10.0pt'>i<i>&lt;n&gt;</i></span></span>, except
+controlled by <span class="Flag"><span style=
+'font-size:10.0pt'>+tmpcomments</span></span> flag.&nbsp; These can
+be used to temporarily suppress certain errors.&nbsp; Then,
+<span class="Flag"><span style=
+'font-size:10.0pt'>-tmpcomments</span></span> can be set to find
+them again.</p>
+<p class="MsoHeading8" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975064">Syntactic Annotations</a></p>
+<p class="TextFontCX">The grammar below is the C syntax from
+[K&amp;R,A13] modified to show the syntax of syntactic
+comments.&nbsp; Only productions effected by Splint annotations are
+shown.&nbsp; In the annotations, the <span class=
+"Annot"><span style='font-size:10.0pt'>@</span></span> represents
+the comment marker char, set by <span class=
+      "Flag"><span style='font-size:10.0pt'>-commentchar</span></span>&nbsp;(default
+      is <span class="Annot"><span style=
+      'font-size:10.0pt'>@</span></span>).</p>
+<p class="MsoHeading9" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975065">Functions</a></p>
+<p class="TextFontCX"><i>direct-declarator</i> <span style=
+'font-family:Symbol'>&#222;</span></p>
+<p class="TextFontCX" style='text-indent:.5in'><i>&nbsp;&nbsp;
+direct-declarator</i> <span class="Annot"><span style=
+'font-size:10.0pt'>(</span></span><i>parameter-type-list<sub>opt</sub></i>
+<span class="Annot"><span style='font-size: 10.0pt'>)</span></span>
+<i>stateClause*<sub>opt</sub> globals<sub>opt</sub>
+modifies<sub>opt</sub></i></p>
+<p class="TextFontCX" style='text-indent:.5in'><i>|&nbsp;
+direct-declarator</i> <span class="Annot"><span style=
+'font-size:10.0pt'>(</span></span><i>identifier-list<sub>opt</sub></i>
+<span class="Annot"><span style='font-size: 10.0pt'>)</span></span>
+<i>stateClause*<sub>opt</sub> globals<sub>opt</sub>
+modifies<sub>opt</sub></i></p>
+<p class="TextFontCX"><i>&nbsp;</i></p>
+<p class="TextFontCX"><i>stateClause</i> <span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size:10.0pt'>/*@</span></span> (
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>uses</span></span> <i>|</i> <span class=
+      "Annot"><span style='font-size:10.0pt'>sets</span></span>
+      <i>|</i> <span class="Annot"><span style=
+      'font-size:10.0pt'>defines</span></span> <i>|</i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>allocates</span></span> <i>|</i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>releases</span></span>)
+      <i>reference,<sup>+</sup></i> <span class=
+      "Annot"><span style='font-size:10.0pt'>;</span></span><i><sub>opt</sub></i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>@*/</span></span></p>
+<p class="TextFontCX" align="right" style='text-align: right'>
+<i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp; |</i> <span class="Annot"><span style=
+'font-size:10.0pt'>/*@</span></span> ( <span class=
+"Annot"><span style='font-size:10.0pt'>ensures</span></span> |
+<span class="Annot"><span style=
+'font-size:10.0pt'>requires</span></span> ) <i>stateTag</i>
+<i>reference,<sup>+</sup></i> <span class=
+      "Annot"><span style='font-size:10.0pt'>;</span></span><i><sub>opt</sub></i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>@*/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+      (Section 7.4)</p>
+<p class="TextFontCX"><i>&nbsp;</i></p>
+<p class="TextFontCX"><i>stateTag</i> <span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>only</span></span>
+      <i>|</i> <span class="Annot"><span style=
+      'font-size: 10.0pt'>shared</span></span> <i>|</i>
+      <span class="Annot"><span style=
+      'font-size: 10.0pt'>owned</span></span> <i>|</i> <span class=
+      "Annot"><span style=
+      'font-size: 10.0pt'>dependent</span></span> <i>|</i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>observer</span></span> <i>|</i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>exposed</span></span> <i>|</i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>isnull</span></span> <i>|</i> <span class=
+      "Annot"><span style=
+      'font-size:10.0pt'>notnull</span></span></p>
+<p class="TextFontCX" align="right" style=
+'text-align: right;text-indent:.5in'><i>&nbsp;&nbsp;&nbsp;&nbsp; |
+identifier&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i>
+(Annotation defined by metastate definition, Section 10)</p>
+<p class="TextFontCX" style='text-indent:.5in'>
+<i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i></p>
+<p class="TextFontCX"><i>globals</i> <span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>/*@globals</span></span>
+      <i>globitem,<sup>+</sup></i> <span class="Annot"><span style=
+      'font-size:10.0pt'>;</span></span><i><sub>opt</sub></i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>@*/</span></span> <i>|</i> <span class=
+      "Annot"><span style=
+      'font-size:10.0pt'>/*@globals</span></span><i>declaration-list<sub>opt&nbsp;</sub></i>
+      <span class="Annot"><span style=
+      'font-size: 10.0pt'>;</span></span><i><sub>opt</sub></i><span class="Annot">
+<span style='font-size:10.0pt'>@*/</span></span><span class=
+"Keyword"><span style='font-size:10.0pt'>&nbsp;</span></span></p>
+<p class="TextFontCX"><i>globitem</i> <span style=
+'font-family:Symbol'>&#222;</span> [ ( <span class=
+"Annot"><span style='font-size:10.0pt'>undef</span></span> |
+<span class="Annot"><span style=
+'font-size:10.0pt'>killed</span></span> )* ] <span class=
+"Keyword"><i><sub><span style=
+'font-size:10.5pt;font-family:"Times New Roman"'>&nbsp;</span></sub></i></span><i>
+&nbsp;identifier |&nbsp;</i> <span class="Annot"><span style=
+'font-size:10.0pt'>internalState</span></span><i>|&nbsp;</i>
+<span class="Annot"><span style=
+'font-size:10.0pt'>fileSystem</span></span></p>
+<p class="TextFontCX"><i>&nbsp;</i></p>
+<p class="TextFontCX"><i>modifies</i> <span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size:10.0pt'>/*@modifies</span></span>
+      (<span class="Annot"><span style=
+      'font-size:10.0pt'>nothing</span></span> <i>|</i>
+      (<i>expression</i> | <span class="Annot"><span style=
+      'font-size:10.0pt'>internalState</span></span> | <span class=
+      "Annot"><span style=
+      'font-size:10.0pt'>fileSystem</span></span>)<i><sup>+</sup></i><span class="Annot">
+<span style=
+'font-size:10.0pt'>;</span></span><i><sub>opt</sub></i>)
+<span class="Annot"><span style=
+'font-size:10.0pt'>@*/</span></span><span class=
+"Keyword"><span style=
+'font-size:10.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></p>
+<p class="TextFontCX" align="right" style='text-align: right'>
+<span class="Keyword"><span style=
+'font-size:10.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;</span></span> <i>|</i>
+<span class="Annot"><span style=
+'font-size:10.0pt'>/*@*/</span></span><span class=
+"Keyword"><span style='font-size:10.0pt'>&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>(Abbreviation for
+no globals and modifies nothing.)</p>
+<p class="MsoHeading9" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975066">Iterators</a> <span class=
+"TextFontCXChar"><span style=
+'font-size:11.0pt; font-weight:normal'>(Section
+11.4)</span></span></p>
+<p class="beforelist">The globals and modifies clauses for an
+iterator are the same as those for a function, except they are not
+enclosed by a comment, since the iterator is already a comment.</p>
+<p class="TextFontCX"><i>direct-declarator</i></p>
+<p class="TextFontCX" style='text-indent:.5in'><span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>/*@iter</span></span>
+      <i>identifier</i> <span class="Annot"><span style=
+      'font-size:10.0pt'>(</span></span><i>parameter-type-list<sub>opt</sub></i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>)</span></span>
+      <i>iterGlobals<sub>opt</sub> iterModifies<sub>opt</sub></i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>@*/</span></span></p>
+<p class="TextFontCX"><i>&nbsp;</i></p>
+<p class="TextFontCX"><i>iter-globals</i> <span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>globals</span></span>
+      <i>declaration-list<sub>opt</sub></i> <span class=
+      "Annot"><span style=
+      'font-size:10.0pt'>;</span></span><i><sub>opt</sub></i></p>
+<p class="TextFontCX"><i>iter-modifies</i> <span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>modifies</span></span><i>&nbsp;
+      moditem,+</i><span class="Annot"><span style=
+      'font-size:10.0pt'>;</span></span><i><sub>opt</sub></i><i>|</i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>&nbsp;modifies
+      nothing</span></span><span class="Annot"><span style=
+      'font-size:10.0pt'>;</span></span><i><sub>opt</sub></i></p>
+<p class="MsoHeading9" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975067">Constants</a> <span class=
+"TextFontCXChar"><span style=
+'font-size:11.0pt; font-weight:normal'>(Section
+11.1)</span></span></p>
+<p class="TextFontCX"><i>external-declaration</i>
+      <span style='font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style=
+      'font-size: 10.0pt'>/*@constant</span></span> <i>declaration
+      <sub>&nbsp;</sub></i><span class="Annot"><span style=
+      'font-size:10.0pt'>;</span></span><i><sub>opt</sub></i><span class="Annot">
+<span style='font-size:10.0pt'>@*/</span></span></p>
+<p class="MsoHeading9" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975068"></a><a name="_Ref344807420">Alternate
+Types</a> <span class="TextFontCXChar"><span style=
+'font-size:11.0pt; font-weight:normal'>(Section
+4.4)</span></span></p>
+<p class="beforelist">Alternate types may be used in the type
+specification of parameters and return values.</p>
+<p class="TextFontCX" align="left" style='text-align: left'>
+<i>extended-type</i><span style='font-family:Symbol'>&#222;</span>
+<i>type-specifier alt-type <sub>opt</sub></i></p>
+<p class="TextFontCX"><i>alt-type</i> <span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>/*@alt</span></span>
+      <i>basic-type,<sup>+</sup></i> <span class=
+      "Annot"><span style='font-size:10.0pt'>@*/</span></span></p>
+<p class="MsoHeading9" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975069">Declarator Annotations</a></p>
+<p class="TextFontCX">General annotations appear after
+<i>storage-class-specifier</i>s and before
+<i>type-specifier</i>s.&nbsp; Multiple annotations may be used in
+any order.&nbsp; Here, annotations are without the surrounding
+comment.&nbsp; In a declaration, the annotation would be surrounded
+by <span class="Annot"><span style=
+'font-size:10.0pt'>/*@</span></span> and <span class=
+"Annot"><span style='font-size:10.0pt'>@*/</span></span>.&nbsp; In
+a globals or modifies clause or iterator or constant declaration,
+no surrounding comments would be used since they are within a
+comment.</p>
+<p class="Heading10" align="left" style='text-align:left'>Type
+Definitions <span class="TextFontCXChar"><span style=
+'font-size:11.0pt; font-weight:normal'>(Section
+4.3)</span></span></p>
+<p class="beforelist">A type definition may use any either
+<span class="Annot"><span style=
+'font-size:10.0pt'>abstract</span></span> or <span class=
+"Annot"><span style='font-size:10.0pt'>concrete</span></span>,
+either <span class="Annot"><span style=
+'font-size:10.0pt'>mutable</span></span>&nbsp;or <span class=
+"Annot"><span style='font-size:10.0pt'>immutable</span></span>, and
+<span class="Annot"><span style=
+'font-size:10.0pt'>refcounted</span></span>.&nbsp; Only a pointer
+to a <span class="Annot"><span style=
+'font-size:10.0pt'>struct</span></span> may be declared with
+<span class="Annot"><span style=
+'font-size:10.0pt'>refcounted</span></span>.&nbsp; Mutability
+annotations may not be used with concrete types since concrete
+types inherit their mutability from the actual type.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>abstract</span></span></p>
+<p class="MsoNormal" style='margin-left:13.5pt'>Type is abstraction
+(representation is hidden from clients.)</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>concrete</span></span></p>
+<p class="MsoNormal" style='margin-left:13.5pt'>Type is concrete
+(representation is visible to clients.)</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>immutable</span></span></p>
+<p class="MsoNormal" style='margin-left:13.5pt'>Instances of the
+type cannot change value.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>mutable</span></span></p>
+<p class="MsoNormal" style='margin-left:13.5pt'>Instances of the
+type can change value.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>refcounted</span></span></p>
+<p class="IndentText">Reference counted (Section 5.4).</p>
+<p class="MsoHeading9" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975070">Type Access</a></p>
+<p class="TextFontCX">Control comments may also be used to override
+type access settings.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>&nbsp;</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>/*@access
+<i>&lt;type&gt;</i>,<sup>+</sup>@*/</span></span><span class=
+"Annot"><span style='font-size:10.0pt'>&nbsp;</span></span></p>
+<p class="IndentText">Allows the following code to access the
+representation of <span class="Annot"><i><span style=
+'font-size:10.0pt'>&lt;type&gt;</span></i></span>.&nbsp; Type
+access applies from the point of the comment to the end of the file
+or the next access control comment for this type.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>/*@noaccess</span></span> <span class=
+"Annot"><span style=
+'font-size:10.0pt'><i>&lt;type&gt;</i>,<sup>+</sup>@*/</span></span></p>
+<p class="IndentText">Restricts access to the representation of
+<span class="Annot"><i><span style=
+'font-size:10.0pt'>&lt;type&gt;</span></i></span>.&nbsp; The type
+in a <span class="Annot"><span style=
+'font-size:10.0pt'>noaccess</span></span> comment must have been
+declared as an abstract type.&nbsp;</p>
+<p class="Heading10">Global Variables&nbsp; <span class=
+"HeadingNote"><span style=
+'font-size:10.5pt;font-weight:normal;font-style:normal'>(Section</span></span>
+<span class="HeadingNote"><span style=
+'font-size:10.5pt;font-weight:normal;font-style: normal'>7.2</span></span><span class="HeadingNote">
+<span style=
+'font-size:10.5pt;font-weight:normal;font-style: normal'>)</span></span></p>
+<p class="beforelist">One check annotation may be used on a global
+or file-static variable declaration.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>unchecked</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Weakest checking
+for global use.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>checkmod</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Check
+modification by not use of global.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>checked</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Check use and
+modification of global.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>checkedstrict</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Check use of
+global, even in functions with no global list.</span></span></p>
+<p class="Heading10">Memory Management&nbsp; <span class=
+"HeadingNote"><span style=
+'font-size:10.5pt;font-weight:normal;font-style:normal'>(Section</span></span>
+<span class="HeadingNote"><span style=
+'font-size:10.5pt;font-weight:normal;font-style: normal'>3</span></span><span class="HeadingNote">
+<span style=
+'font-size:10.5pt; font-weight:normal;font-style:normal'>)</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>dependent</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>A reference to
+externally-owned storage.&nbsp; (Section</span></span>
+      <span class="Annot"><span style=
+      'font-size:10.0pt;font-family:"Times New Roman"'>5.2.2</span></span><span class="Annot">
+<span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>)</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>keep</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>A parameter that
+is kept by the called function.&nbsp; The caller may use the
+storage after the call, but the called function is responsible for
+making sure it is deallocated.&nbsp; (Section</span></span>
+<span class="Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>5.2.4</span></span><span class="Annot">
+<span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>)</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>killref</span></span></p>
+<p class="IndentText">A <span class="Annot"><span style=
+'font-size:10.0pt'>refcounted</span></span> parameter.&nbsp; This
+reference is killed by the call. (Section 5.4)</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>only</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>An unshared
+reference.&nbsp; Associated memory must be released before
+reference is lost.&nbsp;
+      (Section&nbsp;</span></span><span class="Annot"><span style=
+      'font-size:10.0pt;font-family:"Times New Roman"'>5.2</span></span><span class="Annot">
+<span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>)</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>owned</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Storage may be
+shared by dependent references, but associated memory must be
+released before this reference is lost.&nbsp;
+(Section</span></span> <span class="Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>5.2.2</span></span><span class="Annot">
+<span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>)</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>shared</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Shared reference
+that is never deallocated.&nbsp; (Section</span></span>
+      <span class="Annot"><span style=
+      'font-size:10.0pt;font-family:"Times New Roman"'>5.2.5</span></span><span class="Annot">
+<span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>)</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>temp</span></span></p>
+<p class="IndentText">A temporary parameter.&nbsp; May not be
+released, and new aliases to it may not be created.&nbsp; (Section
+5.2.2)</p>
+<p class="Heading10">Aliasing&nbsp; <span class=
+"HeadingNote"><span style=
+'font-size: 10.5pt;font-weight:normal;font-style:normal'>(Section</span></span>
+<span class="HeadingNote"><span style=
+'font-size:10.5pt;font-weight:normal;font-style: normal'>6</span></span><span class="HeadingNote">
+<span style=
+'font-size:10.5pt; font-weight:normal;font-style:normal'>)</span></span></p>
+<p class="beforelist">Both alias annotations may be used on a
+parameter declaration.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>unique</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Parameter that
+may not be aliased by any other reference visible to the function.
+(Section&nbsp;</span></span><span class="Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>6.1.1</span></span><span class="Annot">
+<span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>)</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>returned</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Parameter that
+may be aliased by the return value.&nbsp; (Section</span></span>
+<span class="Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>6.1.2</span></span><span class="Annot">
+<span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>)</span></span></p>
+<p class="Heading10">Exposure&nbsp; <span class=
+"HeadingNote"><span style=
+'font-size: 10.5pt;font-weight:normal;font-style:normal'>(Section</span></span>
+<span class="HeadingNote"><span style=
+'font-size:10.5pt;font-weight:normal;font-style: normal'>6.2</span></span><span class="HeadingNote">
+<span style=
+'font-size:10.5pt; font-weight:normal;font-style:normal'>)</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>observer</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Reference that
+cannot be modified.&nbsp; (Section</span></span> <span class=
+"Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>6.2.1</span></span><span class="Annot">
+<span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>)</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>exposed</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Exposed reference
+to storage in another object. (Section</span></span>
+      <span class="Annot"><span style=
+      'font-size:10.0pt;font-family:"Times New Roman"'>6.2</span></span><span class="Annot">
+<span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>)</span></span></p>
+<p class="Heading10">Definition State <span class=
+"HeadingNote"><span style=
+'font-size:10.5pt;font-weight:normal;font-style:normal'>(Section</span></span>
+<span class="HeadingNote"><span style=
+'font-size:10.5pt;font-weight:normal;font-style: normal'>3</span></span><span class="HeadingNote">
+<span style=
+'font-size:10.5pt;font-weight:normal;font-style: normal'>)</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>out</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Storage reachable
+from reference need not be defined.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>in</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>All storage
+reachable from reference must be defined.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>partial</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Partially
+defined.&nbsp; A structure may have undefined fields.&nbsp; No
+errors reported when fields are used.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>reldef</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Relax definition
+checking.&nbsp; No errors when reference is not defined, or when it
+is used.</span></span></p>
+<p class="Heading10">Global State <span class=
+"TextFontCXChar"><span style=
+'font-size:11.0pt; font-weight:normal'>(Section
+7.2.2)</span></span></p>
+<p class="TextFontCX">These annotations may only be used in globals
+lists.&nbsp; Both annotations may be used for the same variable, to
+mean the variable is undefined before and after the call.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>undef</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Variable is
+undefined before the call.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>killed</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Variable is
+undefined after the call.</span></span></p>
+<p class="Heading10">Null State <span class=
+"HeadingNote"><span style=
+'font-size: 10.5pt;font-weight:normal;font-style:normal'>(Section</span></span>
+<span class="HeadingNote"><span style=
+'font-size:10.5pt;font-weight:normal;font-style: normal'>2</span></span><span class="HeadingNote">
+<span style=
+'font-size:10.5pt;font-weight:normal;font-style: normal'>)</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>null</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Possibly null
+pointer.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>notnull</span></span><span class=
+"Annot"><span style=
+'font-size:10.0pt'>&nbsp;&nbsp;</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Non-null
+pointer.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>relnull</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Relax null
+checking.&nbsp; No errors when</span></span> <span class=
+"CodeText"><span style=
+'font-size:10.0pt'>NULL</span></span><span class=
+"Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>is assigned to it,
+or when it is used as a non-null pointer.</span></span></p>
+<p class="Heading10">Null Predicates <span class=
+"HeadingNote"><span style=
+'font-size:10.5pt;font-weight:normal;font-style:normal'>(Section</span></span>
+<span class="HeadingNote"><span style=
+'font-size:10.5pt;font-weight:normal;font-style: normal'>2.1.1</span></span><span class="HeadingNote">
+<span style=
+'font-size:10.5pt; font-weight:normal;font-style:normal'>)</span></span></p>
+<p class="beforelist">A null predicate annotation may be used of
+the return value of a function returning a Boolean type, taking a
+possibly-null pointer for its first argument.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>nullwhentrue</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>If result is
+true, first parameter is</span></span> <span class=
+"CodeText"><span style=
+'font-size:10.0pt'>NULL</span></span><span class=
+"Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>falsewhennull</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>If result
+is</span></span> <span class="CodeText"><span style=
+'font-size:10.0pt'>TRUE</span></span><span class=
+"Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>, first parameter
+is not</span></span> <span class="CodeText"><span style=
+'font-size:10.0pt'>NULL</span></span><span class=
+"Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>.</span></span></p>
+<p class="Heading10">Execution&nbsp; <span class=
+"HeadingNote"><span style=
+'font-size: 10.5pt;font-weight:normal;font-style:normal'>(Section</span></span>
+<span class="HeadingNote"><span style=
+'font-size:10.5pt;font-weight:normal;font-style: normal'>8.1</span></span><span class="HeadingNote">
+<span style=
+'font-size:10.5pt; font-weight:normal;font-style:normal'>)</span></span></p>
+<p class="beforelist">The <span class="Annot"><span style=
+'font-size:10.0pt'>noreturn</span></span>, <span class=
+"Annot"><span style='font-size:10.0pt'>maynotreturn</span></span>
+and <span class="Annot"><span style=
+'font-size:10.0pt'>alwaysreturn</span></span> annotations may be
+used on any function.&nbsp; The <span class=
+      "Annot"><span style='font-size:10.0pt'>noreturnwhentrue</span></span>
+      and <span class="Annot"><span style=
+      'font-size:10.0pt'>noreturnwhenfalse</span></span>
+      annotations may only be used on functions whose first
+      argument is a Boolean.&nbsp;&nbsp;</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>noreturn</span></span><span class=
+"Annot"><span style=
+'font-size:10.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Function never
+returns.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>maynotreturn</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Function may or
+may not return.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>noreturnwhentrue</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Function does not
+return if first parameter is</span></span> <span class=
+"Keyword"><span style=
+'font-size:10.0pt'>TRUE</span></span><span class=
+"Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>noreturnwhenfalse</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Function does not
+return if first parameter if</span></span> <span class=
+"Keyword"><span style=
+'font-size:10.0pt'>FALSE</span></span><span class=
+"Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>alwaysreturn</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Function always
+returns.</span></span></p>
+<p class="Heading10">Side Effects <span style=
+'font-size:10.5pt;font-weight: normal'>(Section 11.2.1)</span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>sef</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>Corresponding
+actual parameter has no side effects.</span></span></p>
+<p class="Heading10">Declarations</p>
+<p class="beforelist">These annotations can be used on a
+declaration to control unused or undefined error reporting.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>unused</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Identifier need
+not be used (no unused errors reported.)&nbsp;
+(Section</span></span> <span class="Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>13.1</span></span><span class="Annot">
+<span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>)</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>external</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Identifier is
+defined externally (no undefined error reported.)
+(Section</span></span> <span class="Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>13.2</span></span><span class="Annot">
+<span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>)</span></span></p>
+<p class="Heading10">Switch Statements</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>fallthrough</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>Fall through
+case.&nbsp; No message is reported if the previous case may fall
+through into the one immediately after the</span></span>
+<span class="Annot"><span style=
+'font-size:10.0pt'>fallthrough</span></span><span class=
+"Annot"><span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>.</span></span></p>
+<p class="Heading10">Break and Continue Statements
+      <span class="TextFontCXChar"><span style=
+      'font-size:11.0pt; font-weight:normal'>(Section
+      8.3.3)</span></span></p>
+<p class="beforelist">These annotations are used before a
+<span class="CodeText"><span style=
+'font-size:10.0pt'>break</span></span> or <span class=
+"CodeText"><span style='font-size:10.0pt'>continue</span></span>
+statement.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>innerbreak</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Break is breaking
+an inner loop or switch.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>loopbreak</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Break is breaking
+a loop.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>switchbreak</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Break is breaking
+a switch.</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>innercontinue</span></span><span class=
+"Annot"><span style=
+'font-size:10.0pt'><i>&nbsp;</i></span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Continue is
+continuing an inner loop.</span></span></p>
+<p class="Heading10">Unreachable Code</p>
+<p class="beforelist">This annotation is used before a statement to
+prevent unreachable code errors.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>notreached</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Statement may be
+unreachable.</span></span></p>
+<p class="Heading10">Format String Arguments&nbsp;</p>
+<p class="beforelist">These annotations are used immediately before
+a function declaration.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>printflike</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Check variable
+arguments like</span></span> <span class=
+      "CodeText"><span style='font-size:10.0pt'>printf</span></span><span class="Annot">
+<span style=
+'font-size:10.0pt;font-family:"Times New Roman"'>library
+function.&nbsp;&nbsp;</span></span></p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>scanflike</span></span></p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt;font-family: "Times New Roman"'>Check variable
+arguments like</span></span> <span class=
+      "CodeText"><span style='font-size:10.0pt'>scanf</span></span><a name="_Toc344355453">
+</a><a name="_Ref343091002"></a><a name=
+      "_Ref343065628"><span class="Annot"><span style=
+      'font-size:10.0pt;font-family:"Times New Roman"'>library
+      function.</span></span></a></p>
+<p class="Heading10"><a name="_Ref348789839">Use Warnings</a></p>
+<p class="beforelist">These annotations are used immediately before
+a function, variable or type declaration.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>warn <i>&lt;flag-specifier&gt;</i>
+<i>&lt;message&gt;</i></span></span></p>
+<p class="IndentText">Issue a warning (controlled by
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>flag-specifier</span></span>) where this
+      declarator is used.</p>
+<p class="MsoHeading9" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975071">Macro Expansion</a></p>
+<p class="TextFontCX"><a href=
+"mailto:/*@notfunction@*/"><span class="Annot"><span style=
+'font-size:10.0pt'>/*@notfunction@*/</span></span></a></p>
+<p class="IndentText">The next macro definition is not intended to
+be a function, and should be expanded in line instead of checked as
+a macro function definition.</p>
+<p class="MsoHeading9" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975072">Arbitrary Integral Types</a></p>
+<p class="TextFontCX">These annotations are used to represent
+arbitrary integral types.&nbsp; Syntactically, they replace the
+implicit <span class="Flag"><span style=
+'font-size:10.0pt'>int</span></span> type.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>/*@integraltype@*/</span></span></p>
+<p class="IndentText">An arbitrary integral type.&nbsp; The actual
+type may be any one of <span class="CodeText"><span style=
+'font-size:10.0pt'>short</span></span>, <span class=
+"CodeText"><span style='font-size:10.0pt'>int</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>long</span></span>, <span class=
+"CodeText"><span style='font-size:10.0pt'>unsigned
+short</span></span>, <span class="CodeText"><span style=
+'font-size:10.0pt'>unsigned</span></span>, or <span class=
+"CodeText"><span style='font-size:10.0pt'>unsigned
+long</span></span>.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>/*@unsignedintegraltype@*/</span></span></p>
+<p class="IndentText">An arbitrary unsigned integral type.&nbsp;
+The actual type may be any one of <span class=
+"CodeText"><span style='font-size:10.0pt'>unsigned
+short</span></span>, <span class="CodeText"><span style=
+'font-size:10.0pt'>unsigned</span></span>, or <span class=
+"CodeText"><span style='font-size:10.0pt'>unsigned
+long</span></span>.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>/*@signedintegraltype@*/</span></span></p>
+<p class="IndentText">An arbitrary signed integral type.&nbsp; The
+actual type may be any one of <span class=
+      "CodeText"><span style='font-size:10.0pt'>short</span></span>,
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span>, or <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>long</span></span>.</p>
+<p class="MsoHeading9" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975073"></a><a name="_Ref347471625">Traditional
+Lint Comments</a></p>
+<p class="TextFontCX">Some of the control comments supported by
+most standard UNIX lints are supported by Splint so legacy systems
+can be checked more easily.&nbsp; These comments are not lexically
+consistent with Splint comments, and their meanings are less
+precise (and may vary between different lint programs), so we
+recommend that Splint comments are used instead except for checking
+legacy systems already containing standard lint comments.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="beforelist">These standard lint comments supported by
+Splint:</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>/*FALLTHROUGH*/</span></span> (alternate
+misspelling, <span class="Annot"><span style=
+'font-size:10.0pt'>/*FALLTHRU*/</span></span>)</p>
+<p class="IndentText">Prevents errors for fall through cases.&nbsp;
+Same meaning as <span class="Annot"><span style=
+'font-size:10.0pt'>/*@fallthrough@*/</span></span>.</p>
+<p class="MsoListBullet"><span class="Annot"><span style=
+'font-size:10.0pt'>/*NOTREACHED*/</span></span></p>
+<p class="IndentText">Prevents errors about unreachable code (until
+the end of the function).&nbsp; Same meaning as <span class=
+"Annot"><span style=
+'font-size:10.0pt'>/*@notreached@*/</span></span>.&nbsp;&nbsp;</p>
+<p class="MsoListBullet"><span class="Annot"><span style=
+'font-size:10.0pt'>/*PRINTFLIKE*/</span></span></p>
+<p class="indentbefore">Arguments similar to the <span class=
+"CodeText"><span style='font-size:10.0pt'>printf</span></span>
+library function (there didn&#8217;t seem to be much of a consensus
+among standard lints as to exactly what this means).&nbsp; Splint
+supports:</p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt'>/*@printflike@*/</span></span></p>
+<p class="IndentText" style='margin-left:.5in'>Function takes zero
+or more arguments of any type, an unmodified <span class=
+"CodeText"><span style='font-size:10.0pt'>char *</span></span>
+format string argument and zero of more arguments of type and
+number dictated by the format string.&nbsp; Format codes are
+interpreted identically to the <span class=
+      "CodeText"><span style='font-size:10.0pt'>printf</span></span>
+      standard library function.&nbsp; May return a result of any
+      type.&nbsp; (Splint interprets <span class=
+      "Annot"><span style=
+      'font-size:10.0pt'>/*PRINTFLIKE*/</span></span> as
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>/*@printflike@*/</span></span>.)</p>
+<p class="IndentText"><span class="Annot"><span style=
+'font-size:10.0pt'>/*@scanflike@*/</span></span></p>
+<p class="IndentText" style='margin-left:.5in'>Like
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>printflike</span></span>, except format
+      codes are interpreted as in the <span class=
+      "CodeText"><span style='font-size:10.0pt'>scanf</span></span>
+      library function.</p>
+<p class="IndentText">&nbsp;</p>
+<p class="MsoListBullet" style='margin-left:0in;text-indent:0in'>
+<span class="Annot"><span style=
+'font-size:10.0pt'>/*ARGSUSED*/</span></span></p>
+<p class="IndentText">Turns off unused parameter messages for this
+function.&nbsp; The control comment, <span class=
+"Annot"><span style=
+'font-size:10.0pt'>/*@&#8209;paramuse</span></span><span class="Annot">
+<span style='font-size:10.0pt'>@*/</span></span> can be used to the
+same effect, or <span class="Annot"><span style=
+'font-size:10.0pt'>/*@unused@*/</span></span>&nbsp;can be used in
+individual parameter declarations.</p>
+<p class="IndentText">&nbsp;</p>
+<p class="TextFontCX">Splint will ignore standard lint comments if
+<span class="Flag"><span style=
+'font-size:10.0pt'>-lint-comments</span></span> is used.&nbsp; If
+<span class="Flag"><span style=
+'font-size:10.0pt'>+warn-lint-comments</span></span> is used,
+Splint generates a message for standard lint comments and suggest
+replacements<a name="_Ref348801565">.</a></p>
+<p class="MsoHeading8" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975074">Metastate Definitions</a></p>
+<p class="TextFontCX">The grammar for <span class=
+"ProgramNameChar">.mts</span> files is shown below.</p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">metastate</span></i> <span lang="FR">&nbsp;&nbsp;</span>
+<span style='font-family:Symbol'>&#222;</span> <span lang=
+"FR">[</span> <span class="Annot"><span style=
+'font-size:10.0pt'>global</span></span> <span lang="FR">]</span>
+<span class="Annot"><span style=
+'font-size:10.0pt'>attribute</span></span> <i><span lang=
+"FR">identifier clause*</span></i> <span class=
+      "Annot"><span style='font-size: 10.0pt'>end</span></span></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">clause</span></i> <span lang=
+"FR">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style=
+'font-family:Symbol'>&#222;</span> <i><span lang=
+"FR">contextClause</span></i> <span lang="FR">| <i>valuesClause</i>
+| <i>defaultClause | defaultsClause</i></span></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .75in;text-align:left;text-indent:.25in'>
+<i><span lang="FR">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></i>
+<span lang="FR">| <i>annotationsClause</i> | <i>mergeClause |
+transfersClause | loserefClause</i></span></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: 1.25in;text-align:left'><i><span lang="FR">|
+preconditionsClause | postconditionsClause</span></i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">contextClause</span></i><span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>context</span></span>
+      <i><span lang="FR">contextSelector</span></i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">contextSelector</span></i> <span style=
+'font-family:Symbol'>&#222;</span> <span lang="FR">(</span>
+<span class="Annot"><span style=
+'font-size:10.0pt'>parameter</span></span> <span lang="FR">|</span>
+<span class="Annot"><span style=
+'font-size:10.0pt'>reference</span></span> <span lang="FR">|</span>
+<span class="Annot"><span style=
+'font-size:10.0pt'>result</span></span> <span lang="FR">|</span>
+<span class="Annot"><span style=
+'font-size:10.0pt'>clause</span></span> <span lang="FR">|</span>
+<span class="Annot"><span style=
+'font-size:10.0pt'>literal</span></span> <span lang="FR">|</span>
+<span class="Annot"><span style=
+'font-size:10.0pt'>null</span></span> <span lang="FR">) [
+<i>type</i> ]</span></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">valuesClause</span></i><span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>oneof</span></span>
+      <i>valueChoice</i>,*</p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'>&nbsp;</p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">defaultClause</span></i> <span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>default</span></span>
+      <i>valueChoide</i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">defaultsClause</span></i><span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>defaults</span></span>
+      <span lang="FR">( <i>contextSelector</i></span> <span class=
+      "Annot"><span style='font-size:10.0pt'>==&gt;</span></span>
+      <i>valueChoice</i> <span lang="FR">)*</span></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">&nbsp;</span></i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">annotationsClause</span></i><span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>annotations</span></span>
+      &nbsp;( <i>identifier</i> [ <i><span lang=
+      "FR">contextSelector</span></i> <span lang="FR">]</span>
+      <span class="Annot"><span style=
+      'font-size: 10.0pt'>==&gt;</span></span> <i>valueChoice</i>
+      )<i><span lang="FR">*</span></i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">&nbsp;</span></i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">mergeClause</span></i><span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>merge</span></span> (
+      <i>mergeItem</i> <span class="Annot"><span style=
+      'font-size:10.0pt'>+</span></span> <i>mergeItem</i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>==&gt;</span></span> <i>transferAction</i>
+      )<i><span lang="FR">*</span></i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">mergeItem</span></i><span style=
+'font-family:Symbol'>&#222;</span> <i>valueChoice |</i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>*</span></span></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">&nbsp;</span></i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">transfersClause</span></i><span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>transfers</span></span>
+      ( <i>valueChoice</i> <span class="Annot"><span style=
+      'font-size:10.0pt'>as</span></span>
+      <i>valueChoice</i><span class="Annot"><span style=
+      'font-size:10.0pt'>==&gt;</span></span> <i>transferAction</i>
+      )<i><span lang="FR">*</span></i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">loserefClause</span></i><span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>losereference</span></span>
+      ( <i>valueChoice</i> <span class="Annot"><span style=
+      'font-size:10.0pt'>==&gt;</span></span> <i>errorAction</i>
+      )<i><span lang="FR">*</span></i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">&nbsp;</span></i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">transferAction</span></i><span style=
+'font-family:Symbol'>&#222;</span> <i>valueChoice |
+errorAction</i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'>
+      <i>errorAction</i><span style='font-family:Symbol'>&#222;</span>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>error</span></span> [ <i>stringLiteral</i>
+      ]</p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">&nbsp;</span></i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: .25in;text-align:left'><i><span lang=
+"FR">valueChoice</span></i><span style=
+'font-family:Symbol'>&#222;</span>
+<i>identifier</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p>
+<a href="appD.html"><b>Next:</b> Appendix D. Specifications</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

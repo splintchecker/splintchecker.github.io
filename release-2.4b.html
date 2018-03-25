@@ -1,0 +1,128 @@
+<html>
+<head>
+<title> LCLint Version 2.4b - Release Notes</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<table cellspacing=0 cellpadding=10>
+<tr valign=top>
+<td valign = top width=20% bgcolor="#44BBFF">
+<p>
+<br><center>
+<IMG ALIGN=center SRC = "lclint-home-small.jpg" ALT="LCLint Home Page">
+</center>
+<br>
+<center><a href="index.html"><b>LCLint Home</b></a></center>
+<br>
+<center><b><A href="download.html">Download</a></b><br></center>
+<p>
+<a href="linux.html">Linux</a><br>
+<a href="win32.html">Windows 95/NT</a><br>
+<a href="source.html">Source</a>
+<p>
+<p>
+<center><b>Documentation</b></center>
+<p>
+<b>Release Notes</b><br>
+
+<A href="guide/index.html">User's Guide</a><br>
+&nbsp;&nbsp; &nbsp; &nbsp; <A HREF="guide/guide.html">HTML Online</A><br>
+<A HREF="pubs.html">Publications</A><br>
+<A HREF="samples/index.html">Samples</A><br>
+<p>
+<p>
+<center><b>Other Sources</b></center><br>
+<p>
+<A HREF="links.html">Links</A><br>
+<A HREF="lists.html">Mailing Lists</A><br>
+<A HREF="bugs.html">Bugs</A><br>
+<p>
+<p>
+<br><br>
+<A HREF="acknowledgements.html">Credits</A><br>
+<p>
+</td>
+<td>
+<br><p>
+<h2>
+LCLint Release 2.4b
+</h2>
+<em>18 April 1998</em>
+<p>
+Release 2.4b fixes some simple <a href="bugs.html">bugs</a> reported in
+Release 2.4a was release.
+
+<p>
+Release 2.4 is a minor upgrads to the last public release, <a href="release2.3i.html">Version 2.3i</a>.
+<p>
+<h3>Bug Fixes</h3>
+All known bugs in Version 2.3i have been fixed.  If you discover a bug,
+please send a bug report to <a
+href="mailto:lclint-bug@sds.lcs.mit.edu"><em>lclint-bug@sds.lcs.mit.edu</em></a>.  Try to include enough
+information so that the bug may be reproduced.
+<p>
+<h3>Integrated Pre-processor</h3>
+LCLint now incorporates a C pre-processor, based on the GNU
+pre-processor.  This eliminates the need to invoke a C pre-processor in
+a command shell, the need to pre-pre-process the input to support macro
+checking, and prevents previous problems with conditional code.
+<p>
+<h3>Win32 Version</h3>
+LCLint 2.4 is available for Win32 (Windows 95 and Windows NT). 
+
+<h3>Parser Extensions</h3>
+LCLint has been extended to support non-ANSI grammar extensions commonly
+used in system files.  These include unnamed structures and special
+syntax (such as <tt>__asm__</tt>).  The <tt>+gnuextensions</tt> flag
+turns support for language extensions on; this is now set by default.
+
+<h3>Boolean Type</h3>
+The <tt>bool</tt> type is no longer built in to avoid conflicts with
+code that uses <tt>bool</tt>.  To get the original behavior, use
+<tt>-booltype bool</tt> in your <tt>.lclintrc</tt> file.
+
+<p>
+<p>
+<h3>Thanks</h3>
+
+Many people have contributed to this release by suggesting changes,
+reporting bugs, and contributing code.  The Win32 version benefited
+especially from the Win32 port of LCLint 2.3i by Mike Smith, the OS/2
+port by Herbert Dietze, and Jacob Navia's work with lcc.
+
+
+<HR>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+
+</td>
+</tr>
+</table>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

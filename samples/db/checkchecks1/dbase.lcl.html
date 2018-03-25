@@ -1,0 +1,169 @@
+<A NAME="line12"></A><html><head>
+<title>dbase.lcl</title>
+</head><body>
+<h3>dbase.lcl</h3>
+<PRE>
+<A NAME="line1"></A>imports <A HREF="employee.lcl.html">employee</A>, <A HREF="empset.lcl.html">empset</A>, &lt;stdio&gt;;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;
+<A NAME="line4"></A>typedef enum {db_OK, salERR, genderERR, jobERR,
+<A NAME="line5"></A>              duplERR, missERR} db_status;
+<A NAME="line6"></A>spec immutable type db;
+<A NAME="line7"></A>spec db d;
+<A NAME="line8"></A> 
+<A NAME="line9"></A>claims UniqueKeys (employee e1, employee e2) db d; 
+<A NAME="line10"></A>{	
+<A NAME="line11"></A> /* ensures
+<A NAME="line12"></A>     (e1 \in d\any /\ e2 \in d\any  /\ e1.ssNum = e2.ssNum)
+<A NAME="line13"></A>       =&gt; (e1 = e2);
+<A NAME="line14"></A> */
+<A NAME="line15"></A>}	
+<A NAME="line16"></A> 
+<A NAME="line17"></A>db_status hire(employee e) db d; 
+<A NAME="line18"></A>{
+<A NAME="line19"></A>  modifies d;
+<A NAME="line20"></A>  /* ensures
+<A NAME="line21"></A>     (if result = db_OK
+<A NAME="line22"></A>      then d' = hire(e, d^) else d' = d^)
+<A NAME="line23"></A>        /\ result =
+<A NAME="line24"></A>          (if e.gen = gender_ANY then genderERR
+<A NAME="line25"></A>           else if e.j = job_ANY then jobERR
+<A NAME="line26"></A>           else if e.salary &lt; 0 then salERR
+<A NAME="line27"></A>           else if employed(d^, e.ssNum) then duplERR
+<A NAME="line28"></A>           else db_OK);
+<A NAME="line29"></A>  */
+<A NAME="line30"></A>}
+<A NAME="line31"></A> 
+<A NAME="line32"></A>void uncheckedHire(employee e) db d; 
+<A NAME="line33"></A>{
+<A NAME="line34"></A>  /* requires e.gen \neq gender_ANY /\ e.j \neq job_ANY
+<A NAME="line35"></A>            /\ e.salary &gt;= 0 /\ ~employed(d^, e.ssNum);
+<A NAME="line36"></A>  */
+<A NAME="line37"></A>  modifies d;
+<A NAME="line38"></A>  /* ensures d' = hire(e, d^); */
+<A NAME="line39"></A>}
+<A NAME="line40"></A> 
+<A NAME="line41"></A>bool fire(int ssNum) db d; 
+<A NAME="line42"></A>{
+<A NAME="line43"></A>  modifies d;
+<A NAME="line44"></A>  /* ensures result = employed(d^, ssNum)
+<A NAME="line45"></A>       /\ d' = fire(d^, ssNum);
+<A NAME="line46"></A>  */
+<A NAME="line47"></A>}
+<A NAME="line48"></A> 
+<A NAME="line49"></A>int query(db_q q, empset s) db d; 
+<A NAME="line50"></A>{
+<A NAME="line51"></A>  modifies s;
+<A NAME="line52"></A>  /* ensures s' = s^ \U query(d^, q)
+<A NAME="line53"></A>       /\ result = size(query(d^, q));
+<A NAME="line54"></A>  */
+<A NAME="line55"></A>}
+<A NAME="line56"></A> 
+<A NAME="line57"></A>bool promote(int ssNum) db d; 
+<A NAME="line58"></A>{
+<A NAME="line59"></A>  modifies d;
+<A NAME="line60"></A>  /* ensures
+<A NAME="line61"></A>       result = (employed(d^, ssNum)
+<A NAME="line62"></A>                /\ find(d^, ssNum).j = NONMGR)
+<A NAME="line63"></A>          /\ (if result then d' = promote(d^, ssNum)
+<A NAME="line64"></A>              else d' = d^);
+<A NAME="line65"></A>  */
+<A NAME="line66"></A>}
+<A NAME="line67"></A> 
+<A NAME="line68"></A>db_status setSalary(int ssNum, int sal) db d; 
+<A NAME="line69"></A>{
+<A NAME="line70"></A>  modifies d;
+<A NAME="line71"></A>  /* 
+<A NAME="line72"></A>  ensures
+<A NAME="line73"></A>      result =
+<A NAME="line74"></A>        (if employed(d^, ssNum)
+<A NAME="line75"></A>           then (if sal &lt; 0 then salERR else db_OK)
+<A NAME="line76"></A>           else missERR)
+<A NAME="line77"></A>      /\ (if result = db_OK
+<A NAME="line78"></A>            then d' = setSal(d^, ssNum, sal)
+<A NAME="line79"></A>            else d' = d^);
+<A NAME="line80"></A>  */
+<A NAME="line81"></A>}
+<A NAME="line82"></A> 
+<A NAME="line83"></A>void db_print(void) db d; FILE *stdout; 
+<A NAME="line84"></A>{
+<A NAME="line85"></A>  modifies *stdout^;
+<A NAME="line86"></A>  /*
+<A NAME="line87"></A>  ensures 
+<A NAME="line88"></A>    \exists s:ioStream ((*stdout^)' = write((*stdout^)^, s) /\ isSprint(d^, s));
+<A NAME="line89"></A>  */
+<A NAME="line90"></A>}
+<A NAME="line91"></A> 
+<A NAME="line92"></A>void db_initMod(void) db d; 
+<A NAME="line93"></A>{
+<A NAME="line94"></A>  modifies d;
+<A NAME="line95"></A>  /* ensures d' = new; */
+<A NAME="line96"></A>}
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

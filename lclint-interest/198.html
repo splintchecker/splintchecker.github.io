@@ -1,0 +1,172 @@
+<h3>lclint-interest message 198</h3>
+<pre>
+From 100566.1506@csi.com Fri Feb 27 14:10:45 1998
+X-Authentication-Warning: opto4l.default.com: 100566.1506 owned process doing -bs
+Date: Fri, 27 Feb 1998 14:17:20 +0100 (CET)
+From: Hermann Kleier <100566.1506@csi.com>
+X-Sender: 100566.1506@opto4l.default.com
+Reply-To: Hermann Kleier <100566.1506@csi.com>
+To: David Evans <evans@cs.virginia.edu>
+Cc: lclint-interest@larch.lcs.mit.edu, HermannK@compuserve.com, weco@csi.com
+Subject: Re: signal function interface
+In-Reply-To: <9802261752.AA24516@larch.lcs.mit.edu>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Dave,
+
+On Thu, 26 Feb 1998, David Evans wrote:
+
+> > In contradiction to LcLint, Flexelint 7.5 did not report that `fa' in line 13
+> > has not been initialized. I feel that `fa' is an undefined variable there and
+> > NOT an external function.  Is this a bug in FlexeLint?
+> 
+> I didn't mean to suggest that it is okay for LCLint to typecheck
+> standard C programs differently than C does.  But, I do need to
+> understand what the rules are before I can implement this correctly.
+
+I opened another thread of discussion in my reply.  I know that this is not 
+a good style.  But I feel that this thread should be very tiny.  In order
+to understand your test program I passed it through my compilers and lints.  And
+then I stumbled over a diagnostic from LcLint that FlexeLint did not report.  In
+my opinion LcLint is right and I just wanted to know whether there is somebody
+out there who argues against it.
+
+> As far as I can find, the standard doesn't have any explanation of
+> implicit function pointers, it just seems to be something
+> implementations have adopted because of traditions.  I must be missing
+> something, but nothing I can find in the standard indicates that func1
+> and func1 * should be the same type.  In fact, it seems to directly
+> contradict what I read in Sec 3.5.4.1: "For two pointer types to be
+> compatible, both shall be identically qualified and both shall be
+> pointers to compatible types."  
+
+I must admit that I do not have an access to the CURRENT definition of ANSI C.
+There are some hints in `Harbison, Samuel P.; Steele, Guy S.: C AReference
+Manual. 1987'  (I have got a newer ed. of this book and will verify the info
+there):
+
+  6.3.2 The Assignment Conversions (pg 135):  A Right Side Type ``function'' is
+    converted to a Left Side Type ``pointer to function''.
+
+This is just an intermediate step while doing any assignments.  But any
+assignment of function names has to come through this needle hole.
+ 
+  6.3.3 The Usual Unary Conversions (pg 135):  ``function returning T'' is
+     converted to ``pointer to function returning T''.
+  
+This means that in respect to unary operators there are no ``function'' types.
+There are only ``pointer to function'' types  .
+
+  6.2.7 Conversion to Pointer Types (pg 133):  An expression of the type
+     ``function returning T'' for some type T is converted to a value of type
+     ``pointer to function T'' by substituting a pointer to the function for the
+     function itself. The conversion occurs implicitly in all context except the
+     function expression in a function call.
+
+And more explicitly:
+
+  7.3.1 Names (pg 144): The name of a function evaluates to that function
+     evaluates to that function; it is not an lvalue. In contexts where the
+     result is subject to the usual conversions, the function value is
+     immediately converted to a pointer to the function.  This occurs in all
+     contexts but two: as the argument to the sizeof operator, where the
+     function is illegal, and as the function in a function call expression, in
+     which case the function itself is desired, and not a pointer to it.
+
+To say it with my own words: Don't care about whether a variable is typed
+``function returning T'' or ``pointer to function returning T''.  (Almost)
+anything you are going to do with it, hides the difference.   The only exception
+is the sizeof-operator.  Lets have a look at an example:
+
+    #include <stdio.h>
+
+    typedef void Fun       (const char *);
+    typedef void (*FunPtr) (const char *);
+
+    int main (void);
+    static Fun say;                 // declare say: value is assigned later
+
+    int main ()
+
+    {
+    FunPtr sayptr;                  // declare sayptr
+
+    sayptr = say;                   // assignment o.k.  This does not work
+                                    // the other way around, because say is
+                                    // no lvalue
+    say       ("say\n");            // standard call
+    sayptr    ("sayptr\n");         // a pointer is mapped to the function
+                                    // itself
+    (*say)    ("(*say)\n");         // The unary operator `*' causes say to
+                                    // be converted to a pointer.  This
+                                    // conversion is reversed by the `*'.
+    (*sayptr) ("(*sayptr)\n");      // standard call
+    printf ("%d\n",
+             (int) sizeof sayptr);  // yields the size of the pointer
+    printf ("%d\n",
+                (int) sizeof say);  // ILLEGAL
+    return 0;
+    }
+
+    static void say (const char *msg)  // the ONLY way to assign a value
+                                    // to a variable typed ``function
+                                    // returning T''.
+
+    {
+    (void) fputs (msg, stdout);
+    }
+
+I think the comments stand for themselves.  The only illegal point is the
+`sizeof' operator applied to `say' (a variable typed ``function returning T''.
+FlexeLint (Ver 7.50d) reports
+
+               (int) sizeof say);  // ILLEGAL
+   t.c  27  Error 139: Can't take sizeof function
+
+which is o.k. GNU's cc (version 2.7.2.1) reports
+
+    t.c: In function `main':
+    t.c:27: warning: sizeof applied to a function type
+
+Again, this is o.k.  IMHO LCLint (2.3i --- 15 Sep 97) incorrectly reports:
+
+    t.c:31,13: Variable say redefined
+      A function or variable is redefined. One of the declarations should use
+      extern. (-redef will suppress message)
+       t.c:7,12: Previous definition of say
+    t.c:31,13: Variable say inconsistently redeclared as function
+      A function, variable or constant is redefined with a different type.
+      (-incondefs will suppress message)
+      t.c:7,12: Previous definition of say: Fun
+    t.c:31,13: File static function say declared but not used
+      A function is declared but not used. Use /*@unused@*/ in front of function
+      header to suppress message. (-fcnuse will suppress message)
+       t.c:35,1: Definition of say
+ 
+But LcLint does not worry about the error in line 27.
+
+Again, I feel that the definition of C is unnecessary complex here.  And
+searching for a formal specification of this setup is hard.
+
+Hermann
+
+
+
+
+</pre>
+<A HREF="197.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="199.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

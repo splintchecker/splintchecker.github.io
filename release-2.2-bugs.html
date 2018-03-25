@@ -1,0 +1,211 @@
+<html>
+<head>
+<title> Bugs Fixed</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<h1>
+Bugs Fixed<BR>
+</h1>
+
+This page documents reported bugs in LCLint 2.1b that are (believed to
+be) fixed in LCLint 2.2.
+
+<p>
+
+<h4>inner enum declarations</h4>
+<blockquote>
+<b>Bug:</b> Enum declarations inside a function may produce an lclint
+internal inconsistency message.
+</blockquote>
+
+<h4><tt>scanf</tt> arguments</h4>
+<blockquote>
+<b>Bug:</b> The expected types of <tt>%f</tt> and <tt>%lf</tt> are
+wrong.  LCLint expects <tt>double</tt> and <tt>long double</tt>, but
+they should be <tt>float</tt> and <tt>double</tt>.  (Note this is
+different from <tt>printf</tt>.)
+</blockquote>
+
+<h4>Boolean operators</h4>
+<blockquote>
+<b>Bug:</b> Type-checking for && and initializations break when the type
+is a user-defined boolean type.
+</blockquote>
+
+<h4>Casting structures</h4>
+<blockquote>
+<b>Bug:</b> If a structure is cast to another structure, and then a
+field (that is not part of the original structure type) is selected, lclint
+will report an internal error.
+</blockquote>
+
+<h4>Initialization</h4>
+<blockquote>
+<b>Bug:</b> LCLint reports an internal bug and spurious message for
+some global initializations.
+<b>Example:</b>
+<blockquote>
+<pre>
+static int G = 1;
+int *P = &G;
+</pre>
+</blockquote>
+</blockquote>
+
+<h4>nested extern declarations</h4>
+<blockquote>
+<b>Bugs:</b> LCLint will report spurious use-before-definition errors
+for extern declarations within functions.
+<p>
+</blockquote>
+
+<h4>inner <tt>enum</tt> declarations</h4>
+<blockquote>
+<b>Bug:</b> LCLint doesn't parse declarations within functions correctly.
+<b>Example:</b>
+<pre>
+void f ()
+{
+   enum { one, two } val;
+}
+</pre>
+<p>
+</blockquote>
+
+<p>
+<h4><tt>offsetof</tt>...<em>typename</em></h4>
+<blockquote>
+<b>Bug:</b> (cause not completely confirmed, believed to involve type
+name being processed as undefined identifier after offsetof)<br>
+<b>Example:</b>
+<pre>
+void f1 (int n_bytes)
+{
+    f2 ((int) offsetof (some_struct, sf3));
+    f3 (0, 0, (U_type *)&x, 0);
+}
+</pre> <!-- see bugs/temp.c --!>
+<p>
+</blockquote>
+
+<h4>parsing function macros</h4>
+<blockquote>
+<b>Bugs:</b> LCLint may crash when checking the definition of a constant
+function macro.
+<p>
+</blockquote>
+
+<h4>index modifications</h4>
+<blockquote>
+<b>Bug:</b> LCLint does not recognize a modification of <tt>*x</tt> as
+changing the value of <tt>x[0]</tt>.  This means incorrect infinite loop
+messages may be reported, and certain other errors may be missed.  <br>
+<b>Example:</b>
+<pre>
+int main(void) {
+    char buffer[6];
+    ...
+    while (buffer[0] != 'x') {
+	if (fgets(buffer, (int)sizeof buffer, stdin) != buffer) abort();
+    }
+</pre>
+</blockquote>
+
+<p>
+<h4>array/function</h4>
+<blockquote>
+<b>Bug:</b> LCLint assertion fails when a variable declared as a
+function is used to index an array:
+<blockquote>
+<pre>
+char *text(int i);
+
+...
+printf("%s",text[1]);
+...
+</pre>
+</blockquote>
+</blockquote>
+
+<p>
+<h4>#define type</h4>
+<blockquote>
+<b>Bug:</b> If a library type is implemented using a macro, lclint
+reports an internal error. 
+</blockquote>
+
+<p>
+<h4>gnu extension <tt>__extension__</tt></h4>
+<blockquote>
+<b>Bug:</b> LCLint chokes on the gnu extensions __extension__ macro with
+bizarre syntax (even with <tt>+gnuextensions</tt>).
+</blockquote>
+
+<p>
+<h4>mispellings in error messages</h4>
+<blockquote>
+<b>Bug:</b> Message says: "<tt>Body of for statement is
+<em>empy</em></tt>".  Should be "<tt>empty</tt>".
+</blockquote>
+
+<p>
+<h4>enumerated boolean types</h4>
+<blockquote>
+<b>Bug:</b> LCLint does not handle <tt>enum</tt> definitions of the
+boolean type correctly (e.g., <pre>
+   typedef enum { false, true } bool;
+</pre>
+</blockquote>
+
+<p>
+<h4>break/continue semantics</h4>
+<blockquote>
+<b>Bug:</b> LCLint does not interpret <tt>break</tt> and
+<tt>continue</tt> statements in control flow analysis.  This means code
+like,
+<pre>
+	if (x != NULL) break;
+	*x = 3;
+</pre>
+will produce spurious messages.<br>
+<b>Workaround:</b> If <tt>else</tt> is used for the other branch,
+checking works correctly.<br>
+</blockquote>
+
+<p>
+<h4>braketed string literals</h4>
+<blockquote>
+<b>Bug:</b> LCLint interprets <tt>{ "hullo" }</tt> as an array who's
+first element is an array of chars.  It should be the same as
+<tt>"hullo"</tt>.<br>
+</blockquote>
+
+<P>
+<h4>standard library tags take precedence</h4>
+<blockquote>
+<b>Bug:</b> If a structure tag is declared in a system header file and
+a user file, the system header version takes precedence, and no error is
+reported.  An error should be reported, and (perhaps) the new
+declaration should be used.<br>
+</blockquote>
+
+
+<p>
+<a href="release2.1b-bugs.html">Bugs in Version 2.1a that are fixed in Version
+2.1b</a>
+
+<HR>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

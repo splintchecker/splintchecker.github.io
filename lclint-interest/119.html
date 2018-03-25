@@ -1,0 +1,56 @@
+<h3>lclint-interest message 119</h3>
+<pre>
+From seebs@solon.com Tue Nov  5 16:17:53 1996
+Date: Fri, 1 Nov 1996 19:18:50 -0600 (CST)
+From: Peter Seebach <seebs@solon.com>
+To: lclint-interest@larch.lcs.mit.edu
+Subject: a kind of memory leak...
+
+I'm wondering if anyone can suggest a good way to track the following
+special case of "memory leak".
+
+I have a library implementing objects.  The objects act vaguely like
+"strings" in C, and are intended to have semantics similar to pointer-to-char,
+but can contain null bytes safely.  The end result is that the analogue
+to strchr() returns an *allocated* object.  The object is tracked; a
+reference to it is kept by the string into which it "points", so changes
+can be correctly propagated.  So...
+
+When the "parent" string is freed, all of the children produced by the
+strchr() analogue are freed.  Thus, At The End Of Time, I can determine
+that no memory has been leaked...
+
+But at runtime I can easily have many megabytes of unused objects to
+which I have no user-visible references.
+
+I did track this down and eliminate it, but I'm wondering if anyone can
+suggest a method to track it.  What did was run a program using the
+library on two data files, one much larger than the other.  I track
+memory allocation, and if the bug is manifesting, the processing of
+the larger file has larger peak memory usage.
+
+However, this is far from optimal, of course.  The bug survived for nearly
+two days, because intutively, I don't expect to need to free the results
+of strchr() or any similar function.  (And technically, I don't, but I
+don't want to leave them around if they're allocated, even if they will
+be freed eventually.)
+
+-s
+
+
+</pre>
+<A HREF="118.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="120.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

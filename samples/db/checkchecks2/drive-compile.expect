@@ -1,0 +1,17 @@
+gmake[3]: Entering directory `/u/evs/lclint/web/sample/checkchecks2'
+lclint -specundef +lh +quiet -nof employee.lcl
+lclint -specundef +lh +quiet -nof empset.lcl
+lclint -specundef +lh +quiet -nof dbase.lcl
+lclint -specundef +lh +quiet -nof eref.lcl
+lclint -specundef +lh +quiet -nof erc.lcl
+lclint -specundef +lh +quiet -nof ereftab.lcl
+gcc -c dbase.c 
+gcc -c employee.c 
+gcc -c empset.c 
+gcc -c erc.c 
+gcc -c eref.c 
+gcc -c ereftab.c 
+gcc -c drive.c 
+gcc -o drive dbase.o employee.o empset.o erc.o eref.o ereftab.o  drive.o
+rm  erc.lh eref.lh ereftab.lh empset.lh dbase.lh employee.lh
+gmake[3]: Leaving directory `/u/evs/lclint/web/sample/checkchecks2'

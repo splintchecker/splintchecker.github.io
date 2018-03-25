@@ -1,0 +1,43 @@
+<h3>lclint-interest message 93</h3>
+<pre>
+From evans@cs.virginia.edu Fri Jul 19 10:31:46 1996
+Date: Fri, 19 Jul 96 10:18:20 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: oh@cis.ohio-state.edu
+In-Reply-To: David Evans's message of Thu, 18 Jul 96 22:10:30 -0400 <9607190210.AA19945@larch.lcs.mit.edu>
+Subject: Initialising arrays in loops
+
+
+> The parameter to MARK_DEFINED is annotated with /*@out@*/.  This means
+> it need not be defined before the call, but is completely defined after
+> the call returns.  (This version of MARK_DEFINED only works for
+> pointers;  if we need to make it work for other types as well, we could
+> use alternate types, e.g., /*@alt int@*/, in the declaration.)
+
+Opps, what I meant to say is: one wouldn't be able to do this for an int
+directly (since one can't have scalar out parameters), but instead would
+need to take the address.  So, if we just wanted to say the x field is
+defined, we could do,
+
+	MARK_DEFINED (&st->x);
+
+--- Dave
+
+
+</pre>
+<A HREF="92.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="94.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

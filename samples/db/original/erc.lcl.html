@@ -1,0 +1,142 @@
+<A NAME="line59"></A><html><head>
+<title>erc.lcl</title>
+</head><body>
+<h3>erc.lcl</h3>
+<PRE>
+<A NAME="line1"></A>imports <A HREF="eref.lcl.html">eref</A>;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>mutable type erc;
+<A NAME="line4"></A>mutable type ercIter;
+<A NAME="line5"></A> 
+<A NAME="line6"></A>uses <A HREF="erc.lsl.html">erc</A>(obj erc for ercObj), <A HREF="sprint.lsl.html">sprint</A>(erc, char[]);
+<A NAME="line7"></A> 
+<A NAME="line8"></A>erc erc_create(void) {
+<A NAME="line9"></A>   ensures fresh(result) /\ result' = { };
+<A NAME="line10"></A>   }
+<A NAME="line11"></A>void erc_clear(erc c) {
+<A NAME="line12"></A>   requires c^.activeIters = 0;
+<A NAME="line13"></A>   modifies c;
+<A NAME="line14"></A>   ensures c' = { };
+<A NAME="line15"></A>   }
+<A NAME="line16"></A>void erc_insert(erc c, eref er) {
+<A NAME="line17"></A>   requires c^.activeIters = 0 /\ er \neq erefNIL;
+<A NAME="line18"></A>   modifies c;
+<A NAME="line19"></A>   ensures c' = [insert(er, c^.val), 0];
+<A NAME="line20"></A>   }
+<A NAME="line21"></A>bool erc_delete(erc c, eref er) {
+<A NAME="line22"></A>   requires c^.activeIters = 0;
+<A NAME="line23"></A>   modifies c;
+<A NAME="line24"></A>   ensures result = er \in c^.val
+<A NAME="line25"></A>     /\ c' = [delete(er, c^.val), 0];
+<A NAME="line26"></A>   }
+<A NAME="line27"></A>bool erc_member(eref er, erc c) {
+<A NAME="line28"></A>   ensures result = er \in c^.val;
+<A NAME="line29"></A>   }
+<A NAME="line30"></A>eref erc_choose(erc c) {
+<A NAME="line31"></A>   requires size(c^.val) \neq 0;
+<A NAME="line32"></A>   ensures result \in c^.val;
+<A NAME="line33"></A>   }
+<A NAME="line34"></A>int erc_size(erc c) {
+<A NAME="line35"></A>   ensures result = size(c^.val);
+<A NAME="line36"></A>   }
+<A NAME="line37"></A>ercIter erc_iterStart(erc c) {
+<A NAME="line38"></A>   modifies c;
+<A NAME="line39"></A>   ensures fresh(result) /\ result' = [c^.val, c]
+<A NAME="line40"></A>     /\ c' = startIter(c^);
+<A NAME="line41"></A>   }
+<A NAME="line42"></A>eref erc_yield(ercIter it) {
+<A NAME="line43"></A>   modifies it, it^.eObj;
+<A NAME="line44"></A>   ensures if it^.toYield \neq { }
+<A NAME="line45"></A>     then yielded(result, it^, it')
+<A NAME="line46"></A>       /\ (it^.eObj)' = (it^.eObj)^
+<A NAME="line47"></A>     else result = erefNIL /\ trashed(it)
+<A NAME="line48"></A>       /\ (it^.eObj)' = endIter((it^.eObj)^);
+<A NAME="line49"></A>   }
+<A NAME="line50"></A>void erc_iterFinal(ercIter it) {
+<A NAME="line51"></A>   modifies it, it^.eObj;
+<A NAME="line52"></A>   ensures trashed(it)
+<A NAME="line53"></A>     /\ (it^.eObj)' = endIter((it^.eObj)^);
+<A NAME="line54"></A>   }
+<A NAME="line55"></A>void erc_join(erc c1, erc c2) {
+<A NAME="line56"></A>   requires c1^.activeIters = 0;
+<A NAME="line57"></A>   modifies c1;
+<A NAME="line58"></A>   ensures c1' = [c1^.val \U c2^.val, 0];
+<A NAME="line59"></A>   }
+<A NAME="line60"></A>char *erc_sprint(erc c) {
+<A NAME="line61"></A>   ensures isSprint(result[]', c^) /\ fresh(result[]);
+<A NAME="line62"></A>   }
+<A NAME="line63"></A>void erc_final(erc c) {
+<A NAME="line64"></A>   modifies c;
+<A NAME="line65"></A>   ensures trashed(c);
+<A NAME="line66"></A>   }
+<A NAME="line67"></A>void erc_initMod(void) {
+<A NAME="line68"></A>   ensures true;
+<A NAME="line69"></A>   }
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

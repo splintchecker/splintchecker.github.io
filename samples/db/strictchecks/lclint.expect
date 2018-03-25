@@ -1,0 +1,321 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/strictchecks'
+lclint +lh +strict +showsummary +repeatunrecog +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec employee.lcl >
+employee.lcl:49: Modifies list for employee_initMod uses global internal state,
+                    not included in globals list.
+  A global variable is used in the modifies clause, but it not listed in the
+  globals list.  The variable will be added to the globals list. Use
+  -warnmissingglobs to suppress message.
+   employee.lcl:49: Specification of employee_initMod
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+empset.lcl:27: Modifies list for empset_insertUnique uses global internal
+                  state, not included in globals list.
+   empset.lcl:27: Specification of empset_insertUnique
+empset.lcl:45: Modifies list for empset_disjointUnion uses global internal
+                  state, not included in globals list.
+   empset.lcl:45: Specification of empset_disjointUnion
+empset.lcl:84: Modifies list for empset_initMod uses global internal state, not
+                  included in globals list.
+   empset.lcl:84: Specification of empset_initMod
+< reading spec ereftab.lcl >
+ereftab.lcl:28: Modifies list for ereftab_initMod uses global internal state,
+                   not included in globals list.
+   ereftab.lcl:28: Specification of ereftab_initMod
+< reading spec erc.lcl >
+erc.lcl:66: Modifies list for erc_initMod uses global internal state, not
+               included in globals list.
+   erc.lcl:66: Specification of erc_initMod
+< reading spec dbase.lcl >
+< preprocessing >
+employee.h:3: Constant exported, but not specified: EMPLOYEE_H
+  A constant is exported, but not specified. Use -exportconst to suppress
+  message.
+< more preprocessing . >
+bool.h:3: Constant exported, but not specified: BOOL_H
+< more preprocessing . >
+bool.h:23: Function exported, but not specified: bool_initMod
+  A function is exported, but not specified. Use -exportfcn to suppress
+  message.
+< more preprocessing . >
+bool.h:27: Function exported, but not specified: bool_unparse
+< more preprocessing . >
+bool.h:30: Function exported, but not specified: bool_not
+< more preprocessing . >
+bool.h:33: Function exported, but not specified: bool_equal
+< more preprocessing . >
+bool.h:37: Function exported, but not specified: check
+< more preprocessing . >
+eref.h:3: Constant exported, but not specified: EREF_H
+< more preprocessing . >
+empset.h:3: Constant exported, but not specified: EMPSET_H
+< more preprocessing . >
+erc.h:3: Constant exported, but not specified: ERC_H
+< more preprocessing . >
+ereftab.h:5: Constant exported, but not specified: EREFTAB_H
+< more preprocessing . >
+dbase.h:3: Constant exported, but not specified: DBASE_H
+< more preprocessing . >
+< checking employee.c >
+bool.h:20,26: Modifies list for bool_initMod uses global internal state, not
+                 included in globals list.
+   bool.h:20,26: Declaration of bool_initMod
+employee.c: (in function employee_setName)
+employee.c:11,40: Body of if statement is not a block: return FALSE
+  If body is a single statement, not a compound block. Use -ifblock to suppress
+  message.
+< checking eref.c >
+eref.h:9,16: Constant exported, but not specified: ST_USED
+eref.h:9,25: Constant exported, but not specified: ST_AVAIL
+eref.h:9,36: Type exported, but not specified: erefStatus
+  A type is exported, but not specified. Use -exporttype to suppress message.
+eref.h:14,3: Type exported, but not specified: erefTable
+eref.c: (in function eref_alloc)
+eref.c:14,76: Body of for statement is empy
+  For statement has no body. Use -forempty to suppress message.
+eref.c:22,48: Parameter to sizeof is type employee: sizeof(employee)
+  Operand of sizeof operator is a type. (Safer to use expression, int *x =
+  sizeof (*x); instead of sizeof (int).) Use -sizeoftype to suppress message.
+eref.c:32,46: Parameter to sizeof is type erefStatus: sizeof(erefStatus)
+eref.c:43,9: Body of for statement is not a block:
+                eref_Pool.status[i] = ST_AVAIL
+  Loop body is a single statement, not a compound block. Use -forblock to
+  suppress message.
+eref.c: (in function eref_initMod)
+eref.c:63,3: Called procedure bool_initMod may access internal state, but
+                globals list does not include globals internalState
+  A called function uses internal state, but the globals list for the function
+  being checked does not include internalState Use -internalglobs to suppress
+  message.
+eref.c:63,3: Undocumented modification of internal state possible from call to
+                bool_initMod: bool_initMod()
+  An externally-visible object is modified by a function, but not listed in its
+  modifies clause. Use -mods to suppress message.
+eref.c:64,3: Called procedure employee_initMod may access internal state, but
+                globals list does not include globals internalState
+eref.c:64,3: Undocumented modification of internal state possible from call to
+                employee_initMod: employee_initMod()
+eref.c:66,66: Parameter to sizeof is type employee: sizeof(employee)
+eref.c:74,71: Parameter to sizeof is type erefStatus: sizeof(erefStatus)
+< checking empset.c >
+erc.h:7,67: Type exported, but not specified: ercElem
+erc.h:8,18: Type exported, but not specified: ercList
+erc.h:9,55: Type exported, but not specified: ercInfo
+empset.c: (in function empset_get)
+empset.c:12,9: Body of if statement is not a block: return er
+empset.c: (in function empset_member)
+empset.c:20,27: Undetected modification possible from call to unconstrained
+                   function empset_get: empset_get
+  An unconstrained function is called in a function body where modifications
+  are checked. Since the unconstrained function may modify anything, there may
+  be undetected modifications in the checked function. Use -moduncon to
+  suppress message.
+empset.c: (in function empset_insert)
+empset.c:30,23: Undetected modification possible from call to unconstrained
+                   function empset_get: empset_get
+empset.c:35,3: Called procedure empset_insertUnique may access internal state,
+                  but globals list does not include globals internalState
+empset.c:35,3: Undocumented modification of internal state possible from call
+                  to empset_insertUnique: empset_insertUnique(s, e)
+empset.c: (in function empset_delete)
+empset.c:61,8: Undetected modification possible from call to unconstrained
+                  function empset_get: empset_get
+empset.c: (in function empset_union)
+empset.c:115,2: Body of if statement is not a block: empset_insert(result, emp)
+empset.c: (in function empset_intersect)
+empset.c:128,2: Body of if statement is not a block:
+                   empset_insert(toDelete, emp)
+empset.c: (in function empset_subset)
+empset.c:143,43: Body of if statement is not a block: return FALSE
+< checking ereftab.c >
+ereftab.c: (in function ereftab_lookup)
+ereftab.c:35,43: Body of if statement is not a block: return er
+< checking erc.c >
+erc.c: (in function erc_create)
+erc.c:21,37: Parameter to sizeof is type ercInfo: sizeof(ercInfo)
+erc.c: (in function erc_member)
+erc.c:60,44: Body of if statement is not a block: return TRUE
+erc.c:60,9: Body of for statement is not a block:
+               if (eref_equal(tmpc->val, er)) return TRUE
+erc.c: (in function erc_insert)
+erc.c:68,49: Parameter to sizeof is type ercElem: sizeof(ercElem)
+erc.c: (in function erc_join)
+erc.c:122,5: Body of for statement is not a block: erc_insert(c1, tmpc->val)
+erc.c: (in function erc_sprint)
+erc.c:131,13: Undetected modification possible from call to unconstrained
+                 function int_toSize: int_toSize
+< checking dbase.c >
+dbase.c: (in function db_initMod)
+dbase.c:38,3: Called procedure bool_initMod may access internal state, but
+                 globals list does not include globals internalState
+dbase.c:38,3: Undocumented modification of internal state possible from call to
+                 bool_initMod: bool_initMod()
+dbase.c:39,3: Called procedure employee_initMod may access internal state, but
+                 globals list does not include globals internalState
+dbase.c:39,3: Undocumented modification of internal state possible from call to
+                 employee_initMod: employee_initMod()
+dbase.c:41,3: Called procedure erc_initMod may access internal state, but
+                 globals list does not include globals internalState
+dbase.c:41,3: Undocumented modification of internal state possible from call to
+                 erc_initMod: erc_initMod()
+dbase.c:42,3: Called procedure empset_initMod may access internal state, but
+                 globals list does not include globals internalState
+dbase.c:42,3: Undocumented modification of internal state possible from call to
+                 empset_initMod: empset_initMod()
+dbase.c: (in function db_ercKeyGet)
+dbase.c:56,45: Body of if statement is not a block: return (er)
+dbase.c: (in function db_keyGet)
+dbase.c:68,26: Undocumented use of file static db
+  A checked global variable is used in the function, but not listed in its
+  globals clause. By default, only globals specified in .lcl files are checked.
+  To check all globals, use +allglobals. To check globals selectively use
+  /*@checked@*/ in the global declaration. Use -globs to suppress message.
+dbase.c:68,12: Undetected modification possible from call to unconstrained
+                  function db_ercKeyGet: db_ercKeyGet
+  An unconstrained function is called in a function body where modifications
+  are checked. Since the unconstrained function may modify anything, there may
+  be undetected modifications in the checked function. Use -modunconnomods to
+  suppress message.
+dbase.c: (in function db_hire)
+dbase.c:102,12: Body of if statement is not a block: return DBS_GENDERERR
+dbase.c:105,12: Body of if statement is not a block: return DBS_JOBERR
+dbase.c:108,12: Body of if statement is not a block: return DBS_SALERR
+dbase.c:110,23: Undetected modification possible from call to unconstrained
+                   function db_keyGet: db_keyGet
+dbase.c:111,12: Body of if statement is not a block: return DBS_DUPLERR
+dbase.c: (in function db_uncheckedHire)
+dbase.c:127,7: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MMGRS], er)
+dbase.c:129,7: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MNON], er)
+dbase.c:127,7: Body of if clause of if statement is not a block:
+                  erc_insert(db[(int)KND_MMGRS], er)
+dbase.c:129,7: Body of else clause of if statement is not a block:
+                  erc_insert(db[(int)KND_MNON], er)
+dbase.c:132,7: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FMGRS], er)
+dbase.c:134,7: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FNON], er)
+dbase.c:132,7: Body of if clause of if statement is not a block:
+                  erc_insert(db[(int)KND_FMGRS], er)
+dbase.c:134,7: Body of else clause of if statement is not a block:
+                  erc_insert(db[(int)KND_FNON], er)
+dbase.c:129,7: Body of if clause of if statement is not a block:
+    if (e.j == MGR) erc_insert(db[(int)KND_MMGRS], er) else
+    erc_insert(db[(int)KND_MNON], er)
+dbase.c: (in function db_fire)
+dbase.c:146,8: Undocumented modification of db[] possible from call to
+                  erc_delete: erc_delete(db[(int)ek], er)
+dbase.c: (in function db_promote)
+dbase.c:163,8: Undetected modification possible from call to unconstrained
+                  function db_ercKeyGet: db_ercKeyGet
+dbase.c:167,12: Undetected modification possible from call to unconstrained
+                   function db_ercKeyGet: db_ercKeyGet
+dbase.c:169,9: Body of if statement is not a block: return FALSE
+dbase.c:179,7: Undocumented modification of db[] possible from call to
+                  erc_delete: erc_delete(db[(int)KND_MNON], er)
+dbase.c:180,7: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MMGRS], er)
+dbase.c:184,7: Undocumented modification of db[] possible from call to
+                  erc_delete: erc_delete(db[(int)KND_FNON], er)
+dbase.c:185,7: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FMGRS], er)
+dbase.c: (in function db_setSalary)
+dbase.c:201,8: Undetected modification possible from call to unconstrained
+                  function db_keyGet: db_keyGet
+< checking drive.c >
+drive.c: (in function main)
+drive.c:23,3: Called procedure bool_initMod may access internal state, but
+                 globals list does not include globals internalState
+drive.c:23,3: Undocumented modification of internal state possible from call to
+                 bool_initMod: bool_initMod()
+  An externally-visible object is modified by a function with no /*@modifies@*/
+  comment. The /*@modifies ... @*/ control comment can be used to give a
+  modifies list for an unspecified function. Use -modnomods to suppress
+  message.
+drive.c:24,3: Called procedure employee_initMod may access internal state, but
+                 globals list does not include globals internalState
+drive.c:24,3: Undocumented modification of internal state possible from call to
+                 employee_initMod: employee_initMod()
+drive.c:25,3: Called procedure empset_initMod may access internal state, but
+                 globals list does not include globals internalState
+drive.c:25,3: Undocumented modification of internal state possible from call to
+                 empset_initMod: empset_initMod()
+drive.c:50,7: Undetected modification possible from call to unconstrained
+                 function check: check
+drive.c:66,7: Undetected modification possible from call to unconstrained
+                 function check: check
+drive.c:84,7: Undetected modification possible from call to unconstrained
+                 function check: check
+drive.c:118,19: Body of if clause of if statement is not a block: e.gen = MALE
+drive.c:118,38: Body of else clause of if statement is not a block:
+                   e.gen = FEMALE
+drive.c:119,19: Body of if clause of if statement is not a block: e.j = NONMGR
+drive.c:119,38: Body of else clause of if statement is not a block: e.j = MGR
+drive.c:121,7: Undetected modification possible from call to unconstrained
+                  function check: check
+drive.c:125,4: Undetected modification possible from call to unconstrained
+                  function check: check
+drive.c:138,3: Undetected modification possible from call to unconstrained
+                  function check: check
+drive.c:153,9: Called procedure empset_disjointUnion may access internal state,
+                  but globals list does not include globals internalState
+drive.c:153,9: Undocumented modification of internal state possible from call
+                  to empset_disjointUnion: empset_disjointUnion(em2, em1)
+drive.c:165,3: Undetected modification possible from call to unconstrained
+                  function check: check
+< checking macros bool.h >
+bool.h: (in macro bool_initMod)
+bool.h:23,1: Macro definition for bool_initMod is empty
+  A macro definition has no body. Use -macroempty to suppress message.
+< global checks >
+eref.lh:9,13: Function exported but not used outside eref: eref_free
+  A declaration is exported, but not used outside this module. Declaration can
+  use static qualifier. Use -exportlocal to suppress message.
+   eref.c:97,1: Definition of eref_free
+empset.lh:9,13: Function exported but not used outside empset: empset_clear
+   empset.c:26,1: Definition of empset_clear
+empset.lh:11,13: Function exported but not used outside empset:
+                    empset_insertUnique
+   empset.c:55,1: Definition of empset_insertUnique
+empset.lh:17,13: Function exported but not used outside empset: empset_member
+   empset.c:21,1: Definition of empset_member
+empset.lh:18,13: Function exported but not used outside empset: empset_subset
+   empset.c:147,1: Definition of empset_subset
+ereftab.lh:10,13: Function exported but not used outside ereftab:
+                     ereftab_delete
+   ereftab.c:26,1: Definition of ereftab_delete
+dbase.lh:27,13: Function exported but not used outside dbase: db_promote
+   dbase.c:189,1: Definition of db_promote
+dbase.lh:28,18: Function exported but not used outside dbase: db_setSalary
+   dbase.c:213,1: Definition of db_setSalary
+< cleaning .......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+forempty                     1           0
+forblock                     3           0
+ifblock                     22           0
+usedef                       0           1
+exportfcn                    5           0
+exporttype                   5           0
+exportconst                  9           0
+globs                        1           0
+internalglobs               11           0
+warnmissingglobs             7           6
+macroempty                   1           0
+compdef                      0           1
+mods                        16           0
+modnomods                    4           0
+moduncon                     8           0
+modunconnomods               8           0
+sizeoftype                   6           0
+exportlocal                  8           0
+                          ========  =========
+Total:                     115           8
+
+Finished LCLint checking --- 115 code errors found
+396 spec, 3040 source (1283 before pre-processing) lines in 5.62 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/strictchecks'

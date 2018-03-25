@@ -1,0 +1,99 @@
+<h3>lclint-interest message 194</h3>
+<pre>
+From evs Sat Feb 21 18:55:44 1998
+Date: Sat, 21 Feb 98 18:31:00 -0500
+From: evs (David Evans)
+To: 100045.1545@compuserve.com, lclint-interest@larch.lcs.mit.edu,
+        weco@csi.com
+In-Reply-To: David Evans's message of Fri, 20 Feb 98 19:43:43 -0500
+Subject: re: signal function interface
+
+
+I was confused in my last message.  In fact, the problems with lclint
+are not as serious as I had thought.
+
+> I tried to typedef the signal handler function and to use it:
+> 
+> > typedef void SignalHandlerT (int);
+> > void signal (int, SignalHandlerT *);
+> > #define SIG_ERR (SignalHandlerT *) -1
+
+This is indeed a bug in the type system, resulting from lots of
+confusion about when there is an is not an implicit function pointer.  
+
+LCLint will work correctly if you do,
+
+	typedef void (*SignalHandlerT) (int);
+
+instead.  
+
+I still find the C syntax here particularily confusing.  Perhaps one of
+the C standard experts on the list can help clear this up for me:
+
+typedef int func1 (int);
+typedef int (*func2) (int);
+
+int tf (int (p1)(int), int (*p2) (int), func1, func1 *, func2);
+
+int f1 (int);
+
+int f (void)
+{
+  func1 fa;
+  func2 fb;
+  func1 *fap;
+
+  fa (2);
+  fb (3);
+  fap (3);
+
+  return tf (f1, f1, f1, f1, f1);
+}
+
+Is this a conforming program?  (According to all the compilers I try
+there is no type error in it.  LCLint incorrectly reports 2 type errors
+because of the same problem with implicit function pointers.)  
+
+Its seems quite strange to me where you get implicit function pointers
+(i.e., why func1 and func1 * are the same), and where you don't.  (Is
+this explained clearly in the standard somewhere?)
+
+> > LcLint declares `signal'
+> > 
+> > >  void signal (int, void (*) (int));
+> > 
+> > to be a function taking a signal number and a pointer to a signal handler
+> > and RETURNING NOTHING.  What about checking the successfull installation
+> > of signal handlers?  ANSI C declares signal
+> > 
+> > > void (*signal (int sig, void (*func) (int)))(int);
+> 
+> This is also a bug!  The standard library (ansi.h) declares it
+> correctly, but there is a bug in lclint that prevents it from reporting
+> ignored return values for functions returning functions that return
+> void.
+
+Opps, its not a bug in the checking.  The standard library is incorrect,
+and should declare it as Hermann suggests.
+
+--- Dave
+
+
+
+
+</pre>
+<A HREF="193.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="195.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

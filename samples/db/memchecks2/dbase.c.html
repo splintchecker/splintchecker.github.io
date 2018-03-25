@@ -1,0 +1,342 @@
+<A NAME="line0"></A><html><head>
+<title>dbase.c</title>
+</head><body>
+<h3>dbase.c</h3>
+<PRE>
+<A NAME="line1"></A># include &lt;strings.h&gt;
+<A NAME="line2"></A>#include "<A HREF="dbase.h.html">dbase.h</A>"
+<A NAME="line3"></A> 
+<A NAME="line4"></A># define firstERC mMGRS
+<A NAME="line5"></A># define lastERC fNON
+<A NAME="line6"></A># define numERCS (lastERC - firstERC + 1)
+<A NAME="line7"></A> 
+<A NAME="line8"></A>typedef enum
+<A NAME="line9"></A>{
+<A NAME="line10"></A>  mMGRS, fMGRS, mNON, fNON
+<A NAME="line11"></A>} employeeKinds;
+<A NAME="line12"></A> 
+<A NAME="line13"></A>erc db[numERCS];
+<A NAME="line14"></A> 
+<A NAME="line15"></A>bool initDone = FALSE;
+<A NAME="line16"></A> 
+<A NAME="line17"></A>void db_initMod (void)
+<A NAME="line18"></A>{
+<A NAME="line19"></A>  int i;
+<A NAME="line20"></A>  
+<A NAME="line21"></A>  if (initDone)
+<A NAME="line22"></A>    {
+<A NAME="line23"></A>      return;
+<A NAME="line24"></A>    }
+<A NAME="line25"></A>  
+<A NAME="line26"></A>  bool_initMod ();
+<A NAME="line27"></A>  employee_initMod ();
+<A NAME="line28"></A>  eref_initMod ();
+<A NAME="line29"></A>  erc_initMod ();
+<A NAME="line30"></A>  empset_initMod ();
+<A NAME="line31"></A>  
+<A NAME="line32"></A>  for (i = firstERC; i &lt;= lastERC; i++)
+<A NAME="line33"></A>    {
+<A NAME="line34"></A>      db[i] = erc_create ();
+<A NAME="line35"></A>    }
+<A NAME="line36"></A>  
+<A NAME="line37"></A>  initDone = TRUE;
+<A NAME="line38"></A>}
+<A NAME="line39"></A> 
+<A NAME="line40"></A>eref _db_ercKeyGet (erc c, int key) 
+<A NAME="line41"></A>{
+<A NAME="line42"></A>  erc_elements(c, er)
+<A NAME="line43"></A>    {
+<A NAME="line44"></A>      if (eref_get(er).ssNum == key) return (er);
+<A NAME="line45"></A>    } end_erc_elements ;
+<A NAME="line46"></A> 
+<A NAME="line47"></A>  return erefNIL;
+<A NAME="line48"></A>}
+<A NAME="line49"></A> 
+<A NAME="line50"></A>eref _db_keyGet (int key)
+<A NAME="line51"></A>{
+<A NAME="line52"></A>  int i;
+<A NAME="line53"></A>  eref er;
+<A NAME="line54"></A>  
+<A NAME="line55"></A>  for (i = firstERC; i &lt;= lastERC; i++)
+<A NAME="line56"></A>    {
+<A NAME="line57"></A>      er = _db_ercKeyGet (db[i], key);
+<A NAME="line58"></A>      if (!eref_equal (er, erefNIL))
+<A NAME="line59"></A>	{
+<A NAME="line60"></A>	  return er;
+<A NAME="line61"></A>	}
+<A NAME="line62"></A>    }
+<A NAME="line63"></A>  
+<A NAME="line64"></A>  return erefNIL;
+<A NAME="line65"></A>}
+<A NAME="line66"></A> 
+<A NAME="line67"></A>int _db_addEmpls (erc c, int l, int h, empset s)
+<A NAME="line68"></A>{
+<A NAME="line69"></A>  employee e;
+<A NAME="line70"></A>  int numAdded;
+<A NAME="line71"></A>  numAdded = 0;
+<A NAME="line72"></A>  
+<A NAME="line73"></A>  erc_elements (c, er) 
+<A NAME="line74"></A>    {
+<A NAME="line75"></A>      e = eref_get(er);
+<A NAME="line76"></A>      if ((e.salary &gt;= l) && (e.salary &lt;= h)) 
+<A NAME="line77"></A>	{
+<A NAME="line78"></A>	  empset_insert(s, e);
+<A NAME="line79"></A>	  numAdded++;
+<A NAME="line80"></A>	}
+<A NAME="line81"></A>    } end_erc_elements ;
+<A NAME="line82"></A> 
+<A NAME="line83"></A>  return numAdded;
+<A NAME="line84"></A>}
+<A NAME="line85"></A> 
+<A NAME="line86"></A>db_status hire (employee e)
+<A NAME="line87"></A>{
+<A NAME="line88"></A>  if (e.gen == gender_ANY)
+<A NAME="line89"></A>    return genderERR;
+<A NAME="line90"></A> 
+<A NAME="line91"></A>  if (e.j == job_ANY)
+<A NAME="line92"></A>    return jobERR;
+<A NAME="line93"></A> 
+<A NAME="line94"></A>  if (e.salary &lt; 0)
+<A NAME="line95"></A>    return salERR;
+<A NAME="line96"></A> 
+<A NAME="line97"></A>  if (!eref_equal (_db_keyGet (e.ssNum), erefNIL))
+<A NAME="line98"></A>    return duplERR;
+<A NAME="line99"></A> 
+<A NAME="line100"></A>  uncheckedHire (e);
+<A NAME="line101"></A>  return db_OK;
+<A NAME="line102"></A>}
+<A NAME="line103"></A> 
+<A NAME="line104"></A>void uncheckedHire (employee e)
+<A NAME="line105"></A>{
+<A NAME="line106"></A>  eref er;
+<A NAME="line107"></A>  
+<A NAME="line108"></A>  er = eref_alloc ();
+<A NAME="line109"></A>  eref_assign (er, e);
+<A NAME="line110"></A>  
+<A NAME="line111"></A>  if (e.gen == MALE)
+<A NAME="line112"></A>    if (e.j == MGR)
+<A NAME="line113"></A>      erc_insert (db[mMGRS], er);
+<A NAME="line114"></A>    else
+<A NAME="line115"></A>      erc_insert (db[mNON], er);
+<A NAME="line116"></A>  else
+<A NAME="line117"></A>    if (e.j == MGR)
+<A NAME="line118"></A>      erc_insert (db[fMGRS], er);
+<A NAME="line119"></A>    else
+<A NAME="line120"></A>      erc_insert (db[fNON], er);
+<A NAME="line121"></A>}
+<A NAME="line122"></A> 
+<A NAME="line123"></A>bool fire (int ssNum)
+<A NAME="line124"></A>{
+<A NAME="line125"></A>  int i;
+<A NAME="line126"></A>  
+<A NAME="line127"></A>  for (i = firstERC; i &lt;= lastERC; i++)
+<A NAME="line128"></A>    {
+<A NAME="line129"></A>      erc_elements(db[i], er)
+<A NAME="line130"></A>	{
+<A NAME="line131"></A>	  if (eref_get(er).ssNum == ssNum) 
+<A NAME="line132"></A>	    {
+<A NAME="line133"></A>	      erc_delete(db[i], er);
+<A NAME="line134"></A>	      return TRUE;
+<A NAME="line135"></A>	    } 
+<A NAME="line136"></A>	} end_erc_elements ;
+<A NAME="line137"></A>    }
+<A NAME="line138"></A>  
+<A NAME="line139"></A>  return FALSE;
+<A NAME="line140"></A>}
+<A NAME="line141"></A> 
+<A NAME="line142"></A>bool promote (int ssNum)
+<A NAME="line143"></A>{
+<A NAME="line144"></A>  eref er;
+<A NAME="line145"></A>  employee e;
+<A NAME="line146"></A>  gender g;
+<A NAME="line147"></A>  
+<A NAME="line148"></A>  g = MALE;
+<A NAME="line149"></A>  er = _db_ercKeyGet (db[mNON], ssNum);
+<A NAME="line150"></A>  
+<A NAME="line151"></A>  if (eref_equal (er, erefNIL))
+<A NAME="line152"></A>    {
+<A NAME="line153"></A>      er = _db_ercKeyGet (db[fNON], ssNum);
+<A NAME="line154"></A>      if (eref_equal (er, erefNIL))
+<A NAME="line155"></A>	return FALSE;
+<A NAME="line156"></A>      g = FEMALE;
+<A NAME="line157"></A>    }
+<A NAME="line158"></A>  
+<A NAME="line159"></A>  e = eref_get (er);
+<A NAME="line160"></A>  e.j = MGR;
+<A NAME="line161"></A>  eref_assign (er, e);
+<A NAME="line162"></A>  
+<A NAME="line163"></A>  if (g == MALE)
+<A NAME="line164"></A>    {
+<A NAME="line165"></A>      erc_delete (db[mNON], er);
+<A NAME="line166"></A>      erc_insert (db[mMGRS], er);
+<A NAME="line167"></A>    } 
+<A NAME="line168"></A>  else
+<A NAME="line169"></A>    {
+<A NAME="line170"></A>      erc_delete (db[fNON], er);
+<A NAME="line171"></A>      erc_insert (db[fMGRS], er);
+<A NAME="line172"></A>    }
+<A NAME="line173"></A>  
+<A NAME="line174"></A>  return TRUE;
+<A NAME="line175"></A>}
+<A NAME="line176"></A> 
+<A NAME="line177"></A>db_status setSalary (int ssNum, int sal)
+<A NAME="line178"></A>{
+<A NAME="line179"></A>  eref er;
+<A NAME="line180"></A>  employee e;
+<A NAME="line181"></A>  
+<A NAME="line182"></A>  if (sal &lt; 0)
+<A NAME="line183"></A>    {
+<A NAME="line184"></A>      return salERR;
+<A NAME="line185"></A>    }
+<A NAME="line186"></A> 
+<A NAME="line187"></A>  er = _db_keyGet (ssNum);
+<A NAME="line188"></A> 
+<A NAME="line189"></A>  if (eref_equal (er, erefNIL))
+<A NAME="line190"></A>    {
+<A NAME="line191"></A>      return missERR;
+<A NAME="line192"></A>    }
+<A NAME="line193"></A> 
+<A NAME="line194"></A>  e = eref_get (er);
+<A NAME="line195"></A>  e.salary = sal;
+<A NAME="line196"></A>  eref_assign (er, e);
+<A NAME="line197"></A> 
+<A NAME="line198"></A>  return db_OK;
+<A NAME="line199"></A>}
+<A NAME="line200"></A> 
+<A NAME="line201"></A>int query (db_q q, empset s)
+<A NAME="line202"></A>{
+<A NAME="line203"></A>  int numAdded;
+<A NAME="line204"></A>  int l, h;
+<A NAME="line205"></A>  int i;
+<A NAME="line206"></A> 
+<A NAME="line207"></A>  l = q.l;
+<A NAME="line208"></A>  h = q.h;
+<A NAME="line209"></A> 
+<A NAME="line210"></A>  switch (q.g)
+<A NAME="line211"></A>    {
+<A NAME="line212"></A>    case gender_ANY:
+<A NAME="line213"></A>      switch (q.j)
+<A NAME="line214"></A>	{
+<A NAME="line215"></A>	case job_ANY:
+<A NAME="line216"></A>	  numAdded = 0;
+<A NAME="line217"></A>	  for (i = firstERC; i &lt;= lastERC; i++)
+<A NAME="line218"></A>	    numAdded += _db_addEmpls (db[i], l, h, s);
+<A NAME="line219"></A>	  return numAdded;
+<A NAME="line220"></A>	case MGR:
+<A NAME="line221"></A>	  numAdded = _db_addEmpls (db[mMGRS], l, h, s);
+<A NAME="line222"></A>	  numAdded += _db_addEmpls (db[fMGRS], l, h, s);
+<A NAME="line223"></A>	  return numAdded;
+<A NAME="line224"></A>	case NONMGR:
+<A NAME="line225"></A>	  numAdded = _db_addEmpls (db[mNON], l, h, s);
+<A NAME="line226"></A>	  numAdded += _db_addEmpls (db[fNON], l, h, s);
+<A NAME="line227"></A>	  return numAdded;
+<A NAME="line228"></A>	}
+<A NAME="line229"></A>    case MALE:
+<A NAME="line230"></A>      switch (q.j)
+<A NAME="line231"></A>	{
+<A NAME="line232"></A>	case job_ANY:
+<A NAME="line233"></A>	  numAdded = _db_addEmpls (db[mMGRS], l, h, s);
+<A NAME="line234"></A>	  numAdded += _db_addEmpls (db[mNON], l, h, s);
+<A NAME="line235"></A>	  return numAdded;
+<A NAME="line236"></A>	case MGR:
+<A NAME="line237"></A>	  return _db_addEmpls (db[mMGRS], l, h, s);
+<A NAME="line238"></A>	case NONMGR:
+<A NAME="line239"></A>	  return _db_addEmpls (db[mNON], l, h, s);
+<A NAME="line240"></A>	}
+<A NAME="line241"></A>    case FEMALE:
+<A NAME="line242"></A>      switch (q.j)
+<A NAME="line243"></A>	{
+<A NAME="line244"></A>	case job_ANY:
+<A NAME="line245"></A>	  numAdded = _db_addEmpls (db[fMGRS], l, h, s);
+<A NAME="line246"></A>	  numAdded += _db_addEmpls (db[fNON], l, h, s);
+<A NAME="line247"></A>	  return numAdded;
+<A NAME="line248"></A>	case MGR:
+<A NAME="line249"></A>	  return _db_addEmpls (db[fMGRS], l, h, s);
+<A NAME="line250"></A>	case NONMGR:
+<A NAME="line251"></A>	  return _db_addEmpls (db[fNON], l, h, s);
+<A NAME="line252"></A>	}
+<A NAME="line253"></A>    }
+<A NAME="line254"></A>}
+<A NAME="line255"></A> 
+<A NAME="line256"></A>void db_print (void)
+<A NAME="line257"></A>{
+<A NAME="line258"></A>  int i;
+<A NAME="line259"></A>  char *printVal;
+<A NAME="line260"></A>  
+<A NAME="line261"></A>  printf ("Employees:\n");
+<A NAME="line262"></A> 
+<A NAME="line263"></A>  for (i = firstERC; i &lt;= lastERC; i++)
+<A NAME="line264"></A>    {
+<A NAME="line265"></A>      printVal = erc_sprint (db[i]);
+<A NAME="line266"></A>      printf ("%s", printVal);
+<A NAME="line267"></A>      free (printVal);
+<A NAME="line268"></A>    }
+<A NAME="line269"></A>}
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

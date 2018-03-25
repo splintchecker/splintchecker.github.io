@@ -1,0 +1,80 @@
+<h3>lclint-interest message 62</h3>
+<pre>
+From evs Sun Mar 24 14:00:57 1996
+Date: Sun, 24 Mar 96 13:33:31 -0500
+From: evs (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: eric@rrinc.com
+In-Reply-To: Eric Bloodworth's message of Fri, 22 Mar 1996 20:32:57 -0500 <315354C9.5656@rrinc.com>
+Subject: can lclint detect this leak? 
+
+
+Eric,
+
+The reason lclint doesn't detect the error in the code example you sent
+if because it doesn't know anything about the semantics of memset.  
+
+For example, for 
+
+> int frob(booga_s *stuff)
+> {
+>	
+> 	/* 
+>		How do I say storage->bar isn't allocated after the 	
+>		memset? 
+>	*/
+> 	(void)memset(stuff, 0, sizeof(*stuff));  
+>	stuff->bar = malloc(100); 
+
+lclint is (incorrectly) reporting a memory leak when stuff->bar is
+assigned, since it does not know that the memset only assigned all the
+bits in stuff 0 and did not allocate anything.  In this example, of
+course, it would make more sense to just do stuff->foo = 0 (although I
+can understand why you might want to use the memset in some other
+cases).  Then, you would need to use /*@-mustfree@*/ comments around the
+assignment to suppress the error message.
+
+The free_booga_s reveals a limitation of what can be expressed with
+lclint annotations.  If I understand correctly, the intent of this
+function is to deallocate all storage in fields from a struct pointer,
+but not the structure itself.  If the structure were deallocated also,
+you would use /*@only@*/ annotation on the parameter (and an error would
+be reported for the existing implementation since it does not free the
+storage the parameter points to).  
+
+For the storage leak, lclint is unable to detect this since it doesn't
+check storage contained in fields of local structures.  This should
+probably be considered a bug, that will be fixed in an update to lclint
+soon.
+
+In general, lclint will not be able to correctly analyze code that
+depends on functions that deallocate some pointer-to-structure fields
+without deallocating the structure since there is no way to express this
+with the annotations.  So, short of restructuring the code to avoid
+this, the only thing I can recommend is to use syntactic comments to
+suppress the relevant messages.
+
+--- Dave
+
+
+
+
+
+
+
+</pre>
+<A HREF="61.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="63.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

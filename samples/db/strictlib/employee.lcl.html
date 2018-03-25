@@ -1,0 +1,129 @@
+<A NAME="line97"></A><html><head>
+<title>employee.lcl</title>
+</head><body>
+<h1>employee.lcl</h1>
+<PRE>
+<A NAME="line1"></A>imports &ltstdio&gt ;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>constant size_t maxEmployeeName;
+<A NAME="line4"></A>constant int employeePrintSize;
+<A NAME="line5"></A> 
+<A NAME="line6"></A>typedef enum { MALE, FEMALE, GENDER_UNKNOWN } gender;
+<A NAME="line7"></A>typedef enum { MGR, NONMGR, JOB_UNKNOWN } job;
+<A NAME="line8"></A> 
+<A NAME="line9"></A>typedef struct 
+<A NAME="line10"></A>{
+<A NAME="line11"></A>  int ssNum;
+<A NAME="line12"></A>  char name[maxEmployeeName];
+<A NAME="line13"></A>  int salary;
+<A NAME="line14"></A>  gender gen;
+<A NAME="line15"></A>  job j;
+<A NAME="line16"></A>} employee;
+<A NAME="line17"></A> 
+<A NAME="line18"></A>void employee_sprint (out char s[], employee e) 
+<A NAME="line19"></A>{
+<A NAME="line20"></A>  /* requires maxIndex(s) &gt= employeePrintSize; */
+<A NAME="line21"></A>  modifies s;
+<A NAME="line22"></A>  /* ensures isSprint(s', e)
+<A NAME="line23"></A>        /\ lenStr(s') = employeePrintSize;
+<A NAME="line24"></A>  */
+<A NAME="line25"></A>}
+<A NAME="line26"></A> 
+<A NAME="line27"></A>bool employee_equal (employee *e1, employee *e2) 
+<A NAME="line28"></A>{
+<A NAME="line29"></A>  /* ensures result = sameStr(e1-&gtname^, e2-&gtname^)
+<A NAME="line30"></A>           /\ (e1-&gtssNum^ = e2-&gtssNum^)
+<A NAME="line31"></A>           /\ (e1-&gtsalary^ = e2-&gtsalary^)
+<A NAME="line32"></A>           /\ (e1-&gtgen^ = e2-&gtgen^)
+<A NAME="line33"></A>           /\ (e1-&gtj^ = e2-&gtj^);
+<A NAME="line34"></A>  */
+<A NAME="line35"></A>}
+<A NAME="line36"></A> 
+<A NAME="line37"></A>bool employee_setName (employee *e, unique char na[]) 
+<A NAME="line38"></A>{
+<A NAME="line39"></A>  /* requires nullTerminated(na^); */
+<A NAME="line40"></A>  modifies e-&gtname;
+<A NAME="line41"></A>  /* ensures result = lenStr(na^) &lt maxEmployeeName
+<A NAME="line42"></A>           /\ (if result
+<A NAME="line43"></A>               then sameStr(e-&gtname', na^)
+<A NAME="line44"></A>                     /\ nullTerminated(e-&gtname')
+<A NAME="line45"></A>               else e-&gtname' = e-&gtname^);
+<A NAME="line46"></A>  */
+<A NAME="line47"></A>}
+<A NAME="line48"></A> 
+<A NAME="line49"></A>void employee_initMod(void) internalState;
+<A NAME="line50"></A>{
+<A NAME="line51"></A>  modifies internalState;
+<A NAME="line52"></A>  ensures true;
+<A NAME="line53"></A>}
+<A NAME="line54"></A> 
+</pre>
+<P>
+<HR>
+<A HREF="index.html">Return to Index</A> | <A HREF="http://lclint.cs.virginia.edu/index.html">LCLint Home Page</A> <BR> <BR>
+<author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+<pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

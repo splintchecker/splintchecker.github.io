@@ -1,0 +1,9 @@
+Splint 3.0.1.4 --- 19 Jan 2002
+
+DivisionMistake.c: (in function main)
+DivisionMistake.c:7:15: Variable avg initialized to type int, expects float:
+                           (a + b + c) / 3
+  To allow all numeric types to match, use +relaxtypes.
+
+Finished checking --- 1 code warning
+10 source lines in 0.01 s.

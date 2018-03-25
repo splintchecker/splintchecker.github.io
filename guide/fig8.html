@@ -1,0 +1,20 @@
+<A NAME="line13"></A><html><head>
+<title>Figure 8.  Implicit Annotations.</title>
+</head>
+<body>
+<h3>implicit.c</h3>
+<pre>
+<A NAME="line1"></A>typedef struct {
+<A NAME="line2"></A>  /* only */ char *name;  /* implicit only annotation if <a href="appC.html#flag-structimponly">+structimponly</a> */
+<A NAME="line3"></A>  int val;
+<A NAME="line4"></A>} *rec;
+<A NAME="line5"></A> 
+<A NAME="line6"></A>extern /* only */ rec rec_last ; /* implicit only
+annotation if <a href="appC.html#flag-globimponly">+globimponly</a> */
+<A NAME="line7"></A> 
+<A NAME="line8"></A>extern /* only */ rec   /* implicit if <a href="appC.html#flag-retimponly">+retimponly</a> */
+<A NAME="line9"></A>  rec_create (/* temp */ char *name, /* implicit if <a href="appC.html#flag-paramimptemp">+paramimptemp</a> */ 
+<A NAME="line10"></A>	      int val);
+</pre>
+</body>
+</html> 

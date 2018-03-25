@@ -1,0 +1,15 @@
+<h3>LCLint Output</h3>
+<pre>
+LCLint 2.2 --- 25 Aug 96
+
+returned.c: (in function intSet_singleton2)
+<A HREF="returned.c.html#line25" target="source">returned.c:25,27</A>: New fresh storage passed as
+    implicitly temp (not released): intSet_new()
+  A memory leak has been detected. Newly-allocated or
+  only-qualified storage is not released before the
+  last reference to it is lost. (-mustfree will
+  suppress message)
+
+Finished LCLint checking --- 1 code error found
+</pre>
+</html>

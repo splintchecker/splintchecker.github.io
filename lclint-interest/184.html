@@ -1,0 +1,65 @@
+<h3>lclint-interest message 184</h3>
+<pre>
+From davidv@hsa.com.au Thu Feb  5 19:53:57 1998
+Sender: davidv@stimpy
+To: lclint-interest@larch.lcs.mit.edu
+Subject: systemState anomaly
+X-Face: #1jPhTl4Z])\d):;KBYaC_+6'h"JFu>eQ:"AE2D`h7(7[dwPE`lK+*K.m)s0m
+        O_qcZvZNj_a[nMN_HA>b_<Q0"YU)h-OL-Y`F~?Bb`U5`~afCz~tl)&n3
+From: David A Vincent <davidv@hsa.com.au>
+Date: 06 Feb 1998 10:23:04 +1100
+Lines: 36
+
+I have the one-line file test.h as follows:
+
+    void foo(void)/*@globals systemState ; @*/;
+
+Column 37 of this file is above this   (*) asterisk.  
+The output when I run lclint on this file is as follows:
+
+    LCLint 2.3i --- 15 Sep 97
+
+    test.h:1,37: Unrecognized identifier in globals list: systemState
+      Identifier used in code has not been declared. (-unrecog will suppress
+      message)
+
+    Finished LCLint checking --- 1 code error found
+
+    Compilation finished at Fri Feb  6 10:16:57
+
+The output when I run 'lclint -help annotations' reads, in part:
+
+    Globals: (in function declarations)
+       /*@globals <globitem>,+ @*/
+          globitem is an identifier, internalState or systemState
+
+The documentation at
+<http://lclint.cs.virginia.edu/guide/appD.html> also
+seems to agree with this.  
+
+Why does my test file generate the error?
+
+...dav
+-- 
+David A Vincent   <mailto:davidv@hsa.com.au>    JUNK E-MAIL NOT WELCOME
+Working (not speaking) for      Hydrographic Sciences Australia Pty Ltd
+HSA phone extension number 27    within HSA, web site <http://marilyn/>
+GCS C++++$ US++$ P+$ E++$ W++ N+++ w--- M++ Y+ PGP+ t-- G e++ h--- b+++
+
+
+</pre>
+<A HREF="183.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="185.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

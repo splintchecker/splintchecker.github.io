@@ -1,0 +1,3 @@
+FixMalloc.c:194:30: Possibly null storage fp passed as non-null param:
+                       fgets (..., fp)
+   FixMalloc.c:187:14: Storage fp may become null

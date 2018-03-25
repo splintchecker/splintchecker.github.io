@@ -1,0 +1,32 @@
+<h3>LCLint Output</h3>
+<pre>
+LCLint 2.2 --- 25 Aug 96
+
+globals.c: (in function f)
+<A HREF="globals.c.html#line5" target="source">globals.c:5,11</A>: Undocumented use of global glob2
+  A checked global variable is used in the function,
+  but not listed in its globals clause. By default,
+  only globals specified in .lcl files are checked. To
+  check all globals, use +allglobals. To check globals
+  selectively use /*@checked@*/ in the global
+  declaration. (-globs will suppress message)
+<A HREF="globals.c.html#line3" target="source">globals.c:3,5</A>: Global glob1 listed but not used
+  A global variable listed in the function's globals
+  list is not used in the body of the function.
+  (-globuse will suppress message)
+<A HREF="globals.c.html#line1" target="source">globals.c:1,5</A>: Variable glob1 exported but not
+                  declared in header file
+  A variable declaration is exported, but does not
+  appear in a header file. (Used with exportheader.)
+  (-exportheadervar will suppress message)
+<A HREF="globals.c.html#line1" target="source">globals.c:1,12</A>: Variable glob2 exported but not
+                   declared in header file
+<A HREF="globals.c.html#line3" target="source">globals.c:3,5</A>: Function f exported but not declared in
+                  header file
+  A declaration is exported, but does not appear in a
+  header file. (-exportheader will suppress message)
+   <A HREF="globals.c.html#line6" target="source">globals.c:6,1</A>: Definition of f
+
+Finished LCLint checking --- 5 code errors found
+</pre>
+</html>

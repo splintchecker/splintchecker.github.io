@@ -1,0 +1,1342 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - Appendix D. Specifications</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+<p class=Appendix><a name="_Toc534975078">Index</a></p>
+
+<p class=IndentText></p>
+
+</div>
+
+<span style='font-size:11.0pt;font-family:"Times New Roman"'><br clear=all
+style='page-break-before:auto'>
+</span>
+
+<div class=Section7>
+
+<p class=MsoIndex1>.splintrc, 73</p>
+
+<p class=MsoIndex1>/*@*/, 36</p>
+
+<p class=MsoIndex1>@, 12, 95, 97</p>
+
+<p class=MsoIndex1>abstract types, 15, <b>21</b>, 22, 24, 31, 32, 33, 39, 58,
+60, 61, 66, 78, 80, 87, 88, 99, 104, 108</p>
+
+<p class=MsoIndex1>access control, 22</p>
+
+<p class=MsoIndex1>aliasing, 9, 27, 31, 82, 85, 99</p>
+
+<p class=MsoIndex1>alternate types, 48, 75, 98</p>
+
+<p class=MsoIndex1>annotations, 9, 10, <b>13</b>, 26, 27, 42, 97, 98</p>
+
+<p class=MsoIndex2>abstract, 21, 30, 80, 98</p>
+
+<p class=MsoIndex2>access, 23, 99</p>
+
+<p class=MsoIndex2>allocates, 39</p>
+
+<p class=MsoIndex2>alt, 57, 92</p>
+
+<p class=MsoIndex2>checked, 37, 67, 85, 99</p>
+
+<p class=MsoIndex2>checkedstrict, 37, 67, 84, 85, 99</p>
+
+<p class=MsoIndex2>checkmod, 37, 85, 99</p>
+
+<p class=MsoIndex2>concrete, 80, 98</p>
+
+<p class=MsoIndex2>constant, 86</p>
+
+<p class=MsoIndex2>defines, 39</p>
+
+<p class=MsoIndex2>dependent, <b>27</b>, 42, 81, 99</p>
+
+<p class=MsoIndex2>end, 97</p>
+
+<p class=MsoIndex2>exits, 43, 100</p>
+
+<p class=MsoIndex2>exposed, <b>33</b>, 81, 100</p>
+
+<p class=MsoIndex2>external, 65, 101</p>
+
+<p class=MsoIndex2>fallthrough, 46, 101, 102</p>
+
+<p class=MsoIndex2>falseexit, 43</p>
+
+<p class=MsoIndex2>falsenull, 14, 100</p>
+
+<p class=MsoIndex2>falsewhennull, 14</p>
+
+<p class=MsoIndex2>fileSystem, 36</p>
+
+<p class=MsoIndex2>i, 97</p>
+
+<p class=MsoIndex2>i&lt;n&gt;, 95, 97</p>
+
+<p class=MsoIndex2>ignore, 97</p>
+
+<p class=MsoIndex2>immutable, 23, 98</p>
+
+<p class=MsoIndex2>implicit, 29</p>
+
+<p class=MsoIndex2>in, <b>17</b>, 100</p>
+
+<p class=MsoIndex2>innerbreak, 46, 91, 101</p>
+
+<p class=MsoIndex2>innercontinue, 47, 91, 101</p>
+
+<p class=MsoIndex2>integraltype, 20, 102</p>
+
+<p class=MsoIndex2>internalState, 36, 57</p>
+
+<p class=MsoIndex2>iter, 58, 59, 86, 89</p>
+
+<p class=MsoIndex2>keep, <b>28</b>, 81, 99</p>
+
+<p class=MsoIndex2>killed, 38, 100</p>
+
+<p class=MsoIndex2>killref, 99</p>
+
+<p class=MsoIndex2>loopbreak, 46, 47, 91, 101</p>
+
+<p class=MsoIndex2>misscase, 46</p>
+
+<p class=MsoIndex2>mutable, 23, 98</p>
+
+<p class=MsoIndex2>neverexit, 101</p>
+
+<p class=MsoIndex2>noaccess, 23, 99</p>
+
+<p class=MsoIndex2>notfunction, 58, 68, 86, 102</p>
+
+<p class=MsoIndex2>nothing, 36</p>
+
+<p class=MsoIndex2>notnull, 15, 100</p>
+
+<p class=MsoIndex2>notreached, 101, 102</p>
+
+<p class=MsoIndex2>null, 14, 27, 55, 100</p>
+
+<p class=MsoIndex2>nullwhentrue, 14</p>
+
+<p class=MsoIndex2>observer, 33, 81, 83, 99</p>
+
+<p class=MsoIndex2>only, <b>26</b>, 31, 38, 40, 42, 81, 82, 99</p>
+
+<p class=MsoIndex2>out, <b>17</b>, 100</p>
+
+<p class=MsoIndex2>owned, <b>27</b>, 42, 81, 99</p>
+
+<p class=MsoIndex2>partial, <b>18</b>, 100</p>
+
+<p class=MsoIndex2>printflike, 101, 102</p>
+
+<p class=MsoIndex2>refcounted, <b>30</b>, 98</p>
+
+<p class=MsoIndex2>refs, <b>30</b></p>
+
+<p class=MsoIndex2>reldef, <b>18</b>, 100</p>
+
+<p class=MsoIndex2>releases, 40</p>
+
+<p class=MsoIndex2>relnull, 15, 100</p>
+
+<p class=MsoIndex2>returned, 31, 99</p>
+
+<p class=MsoIndex2>scanflike, 101, 102</p>
+
+<p class=MsoIndex2>sef, 56, 87, 101</p>
+
+<p class=MsoIndex2>sets, 39</p>
+
+<p class=MsoIndex2>shared, <b>28</b>, 42, 81, 99</p>
+
+<p class=MsoIndex2>signedintegraltype, 20, 102</p>
+
+<p class=MsoIndex2>switchbreak, 46, 91, 101</p>
+
+<p class=MsoIndex2>t, 97</p>
+
+<p class=MsoIndex2>t&lt;n&gt;, 97</p>
+
+<p class=MsoIndex2>temp, <b>27</b>, 81, 82, 83, 99</p>
+
+<p class=MsoIndex2>trueexit, 43</p>
+
+<p class=MsoIndex2>truenull, 14, 100</p>
+
+<p class=MsoIndex2>unchecked, 37, 67, 84, 85, 99</p>
+
+<p class=MsoIndex2>undef, 38, 100</p>
+
+<p class=MsoIndex2>unique, 31, 99</p>
+
+<p class=MsoIndex2>unsignedintegraltype, 20, 102</p>
+
+<p class=MsoIndex2>unused, 65, 101, 102</p>
+
+<p class=MsoIndex2>uses, 39</p>
+
+<p class=MsoIndex2>warnuse, 101</p>
+
+<p class=MsoIndex2>yield, 58</p>
+
+<p class=MsoIndex1>ARGSUSED, 102</p>
+
+<p class=MsoIndex1>assert, 43, 67</p>
+
+<p class=MsoIndex1>bool, <b>20</b>, 43, 67, 77, 79, 92, 100</p>
+
+<p class=MsoIndex1>break statements, 46, 91, 101</p>
+
+<p class=MsoIndex1>char, 79</p>
+
+<p class=MsoIndex1>characters, 19</p>
+
+<p class=MsoIndex1>CLU, 25</p>
+
+<p class=MsoIndex1>comparisons, 78</p>
+
+<p class=MsoIndex1>complete logic, 47</p>
+
+<p class=MsoIndex1>complete programs, <b>65</b>, 92, 105</p>
+
+<p class=MsoIndex1>continue statements, 46, 101</p>
+
+<p class=MsoIndex1>control comments, 13</p>
+
+<p class=MsoIndex1>control flow, <b>43</b>, 100</p>
+
+<p class=MsoIndex1>control nesting depth, 94</p>
+
+<p class=MsoIndex1>control structures, 90</p>
+
+<p class=MsoIndex1>czechmacros, 61</p>
+
+<p class=MsoIndex1>declarations, 38, 85, 101</p>
+
+<p class=MsoIndex1>distinct names, 63, 90</p>
+
+<p class=MsoIndex1>enumerators, 19, 94</p>
+
+<p class=MsoIndex1>environment variables</p>
+
+<p class=MsoIndex2>LARCH_PATH, 73</p>
+
+<p class=MsoIndex2>LCLIMPORTDIR, 73</p>
+
+<p class=MsoIndex1>errno, 67</p>
+
+<p class=MsoIndex1>evaluation order, 90</p>
+
+<p class=MsoIndex1>exit, 93</p>
+
+<p class=MsoIndex1>exit status, 75</p>
+
+<p class=MsoIndex1>expected errors, 75</p>
+
+<p class=MsoIndex1>exported declarations, 65</p>
+
+<p class=MsoIndex1>exports, 93</p>
+
+<p class=MsoIndex1>exposure, 83, 99</p>
+
+<p class=MsoIndex1>external names, 65, 90</p>
+
+<p class=MsoIndex1>fall through cases, 9, 46, 101, 102</p>
+
+<p class=MsoIndex1>FALLTHROUGH, 95, 102</p>
+
+<p class=MsoIndex1>fileSystem, 36, 84</p>
+
+<p class=MsoIndex1>flag name abbreviations, 95</p>
+
+<p class=MsoIndex1>flags, 10, 11, <b>12</b></p>
+
+<p class=MsoIndex2>abstract, 79</p>
+
+<p class=MsoIndex2>accessczech, 60, 61, 80, 87</p>
+
+<p class=MsoIndex2>accessczechoslovak, 80, 88</p>
+
+<p class=MsoIndex2>accessfile, 23, 80</p>
+
+<p class=MsoIndex2>accessfunction, 23</p>
+
+<p class=MsoIndex2>accessmodule, 23, 80</p>
+
+<p class=MsoIndex2>accesssall, 80</p>
+
+<p class=MsoIndex2>accessslovak, 61, 80, 87</p>
+
+<p class=MsoIndex2>aliasunique, 82</p>
+
+<p class=MsoIndex2>allblock, 91</p>
+
+<p class=MsoIndex2>allempty, 91</p>
+
+<p class=MsoIndex2>allglobs, 84</p>
+
+<p class=MsoIndex2>allimponly, 29</p>
+
+<p class=MsoIndex2>allmacros, 57, 68, 86</p>
+
+<p class=MsoIndex2>ansilib, 74</p>
+
+<p class=MsoIndex2>ansilimits, 94</p>
+
+<p class=MsoIndex2>ansireserved, 63, 89</p>
+
+<p class=MsoIndex2>ansireservedinternal, 63, 89</p>
+
+<p class=MsoIndex2>ansistrict, 66</p>
+
+<p class=MsoIndex2>array parameters, 78</p>
+
+<p class=MsoIndex2>assignexpose, 32, 83</p>
+
+<p class=MsoIndex2>bitwisesigned, 77</p>
+
+<p class=MsoIndex2>bool, 77</p>
+
+<p class=MsoIndex2>boolcompare, 78</p>
+
+<p class=MsoIndex2>boolfalse, 21, 77</p>
+
+<p class=MsoIndex2>boolint, 13, 79</p>
+
+<p class=MsoIndex2>booltrue, 21, 77</p>
+
+<p class=MsoIndex2>booltype, 20, 77</p>
+
+<p class=MsoIndex2>branchstate, 80</p>
+
+<p class=MsoIndex2>casebreak, 46, 91</p>
+
+<p class=MsoIndex2>castexpose, 32, 83</p>
+
+<p class=MsoIndex2>castfcnptr, 78</p>
+
+<p class=MsoIndex2>charindex, 19, 79</p>
+
+<p class=MsoIndex2>charint, 13, 19, 79</p>
+
+<p class=MsoIndex2>charintliteral, 79</p>
+
+<p class=MsoIndex2>checkedglobalias, 85</p>
+
+<p class=MsoIndex2>checkmodglobalias, 85</p>
+
+<p class=MsoIndex2><i>checks</i>, 36, 76</p>
+
+<p class=MsoIndex2>checkstrictglobalias, 85</p>
+
+<p class=MsoIndex2>checkstrictglobs, 37, 84</p>
+
+<p class=MsoIndex2>codeimponly, 82</p>
+
+<p class=MsoIndex2>commentchar, 12, 95, 97</p>
+
+<p class=MsoIndex2>compdef, 65, 77</p>
+
+<p class=MsoIndex2>compdestroy, 81</p>
+
+<p class=MsoIndex2>compmempass, 82</p>
+
+<p class=MsoIndex2>constmacros, 57, 58, 86</p>
+
+<p class=MsoIndex2>constprefix, 62, 89</p>
+
+<p class=MsoIndex2>constprefixexclude, 89</p>
+
+<p class=MsoIndex2>constuse, 65, 92</p>
+
+<p class=MsoIndex2>continuecomment, 95</p>
+
+<p class=MsoIndex2>controlnestdepth, 94</p>
+
+<p class=MsoIndex2>cppnames, 90</p>
+
+<p class=MsoIndex2>czech, 60, 87</p>
+
+<p class=MsoIndex2>czechconstants, 60</p>
+
+<p class=MsoIndex2>czechconsts, 87</p>
+
+<p class=MsoIndex2>czechfcns, 60, 87</p>
+
+<p class=MsoIndex2>czechmacros, 87</p>
+
+<p class=MsoIndex2>czechoslovak, 88</p>
+
+<p class=MsoIndex2>czechoslovakconstants, 61</p>
+
+<p class=MsoIndex2>czechoslovakconsts, 88</p>
+
+<p class=MsoIndex2>czechoslovakfcns, 61, 88</p>
+
+<p class=MsoIndex2>czechoslovakmacros, 61, 88</p>
+
+<p class=MsoIndex2>czechoslovaktype, 61</p>
+
+<p class=MsoIndex2>czechoslovaktypes, 88</p>
+
+<p class=MsoIndex2>czechoslovakvars, 61, 88</p>
+
+<p class=MsoIndex2>czechtypes, 61, 87</p>
+
+<p class=MsoIndex2>czechvars, 60, 87</p>
+
+<p class=MsoIndex2>D&lt;initializer&gt;, 73</p>
+
+<p class=MsoIndex2>declundef, 92, 93</p>
+
+<p class=MsoIndex2>deepbreak, 47, 91</p>
+
+<p class=MsoIndex2>deparrays, 80</p>
+
+<p class=MsoIndex2>dependenttrans, 81</p>
+
+<p class=MsoIndex2>distinctexternalnames, 63, 90</p>
+
+<p class=MsoIndex2>distinctinternalnames, 90</p>
+
+<p class=MsoIndex2>dump, 67, 73</p>
+
+<p class=MsoIndex2>duplicatequals, 95</p>
+
+<p class=MsoIndex2>elseifcomplete, 47, 90</p>
+
+<p class=MsoIndex2>empty, 86</p>
+
+<p class=MsoIndex2>enumindex, 19, 79</p>
+
+<p class=MsoIndex2>enumint, 19, 79</p>
+
+<p class=MsoIndex2>enummemuse, 65, 92</p>
+
+<p class=MsoIndex2>enumprefix, 62, 88</p>
+
+<p class=MsoIndex2>enumprefixexclude, 88</p>
+
+<p class=MsoIndex2>evalorder, 44, 90</p>
+
+<p class=MsoIndex2>evalorderuncon, 44, 45, 90</p>
+
+<p class=MsoIndex2>exitarg, 93</p>
+
+<p class=MsoIndex2>expect, 75</p>
+
+<p class=MsoIndex2>exportany, 105</p>
+
+<p class=MsoIndex2>exportconst, 105</p>
+
+<p class=MsoIndex2>exportfcn, 105, 106</p>
+
+<p class=MsoIndex2>exportheader, 65, 93</p>
+
+<p class=MsoIndex2>exportheadervar, 93</p>
+
+<p class=MsoIndex2>exportiter, 106</p>
+
+<p class=MsoIndex2>exportlocal, 93</p>
+
+<p class=MsoIndex2>exportmacro, 105, 106</p>
+
+<p class=MsoIndex2>exporttype, 106</p>
+
+<p class=MsoIndex2>exportvar, 105, 106</p>
+
+<p class=MsoIndex2>exposetrans, 81</p>
+
+<p class=MsoIndex2>externalnamecaseinsensitive, 63, 90</p>
+
+<p class=MsoIndex2>externalnamelen, 90</p>
+
+<p class=MsoIndex2>externalprefix, 62, 89</p>
+
+<p class=MsoIndex2>externalprefixexclude, 89</p>
+
+<p class=MsoIndex2>f &lt;file&gt;, 12, 73</p>
+
+<p class=MsoIndex2>fcnmacros, 57, 58, 86</p>
+
+<p class=MsoIndex2>fcnuse, 65, 92</p>
+
+<p class=MsoIndex2>fielduse, 65, 92</p>
+
+<p class=MsoIndex2>filestaticprefix, 62, 88, 89</p>
+
+<p class=MsoIndex2>filestaticprefixexclude, 89</p>
+
+<p class=MsoIndex2>fixedformalarray, 78</p>
+
+<p class=MsoIndex2>floatdouble, 79</p>
+
+<p class=MsoIndex2>forblock, 91</p>
+
+<p class=MsoIndex2>forcehints, 12, 75</p>
+
+<p class=MsoIndex2>forempty, 91</p>
+
+<p class=MsoIndex2>formalarray, 78</p>
+
+<p class=MsoIndex2>formatcode, 78</p>
+
+<p class=MsoIndex2>formattype, 78</p>
+
+<p class=MsoIndex2>forwarddecl, 79</p>
+
+<p class=MsoIndex2>freshtrans, 81</p>
+
+<p class=MsoIndex2>globalias, 85</p>
+
+<p class=MsoIndex2>globalprefix, 89</p>
+
+<p class=MsoIndex2>globalprefixexclude, 89</p>
+
+<p class=MsoIndex2>globimponly, 29, 82</p>
+
+<p class=MsoIndex2>globnoglobs, 37, 84</p>
+
+<p class=MsoIndex2>globs, 84</p>
+
+<p class=MsoIndex2>globsimpmodsnothing, 85, 96</p>
+
+<p class=MsoIndex2>globstate, 84</p>
+
+<p class=MsoIndex2>globuse, 84</p>
+
+<p class=MsoIndex2>globvarprefix, 62</p>
+
+<p class=MsoIndex2>globvarprefixexclude, 62</p>
+
+<p class=MsoIndex2>gnuextensions, 95</p>
+
+<p class=MsoIndex2>hasyield, 87</p>
+
+<p class=MsoIndex2>help, 72</p>
+
+<p class=MsoIndex2>hints, 75</p>
+
+<p class=MsoIndex2>i &lt;file&gt;, 104</p>
+
+<p class=MsoIndex2>I&lt;directory&gt;, 73</p>
+
+<p class=MsoIndex2>ifblock, 47, 91</p>
+
+<p class=MsoIndex2>ifempty, 91</p>
+
+<p class=MsoIndex2>ignorequals, 79</p>
+
+<p class=MsoIndex2>ignoresigns, 19, 79</p>
+
+<p class=MsoIndex2>immediatetrans, 81</p>
+
+<p class=MsoIndex2>impabstract, 22, 80</p>
+
+<p class=MsoIndex2>impcheckedglobs, 85</p>
+
+<p class=MsoIndex2>impcheckedspecglobs, 105</p>
+
+<p class=MsoIndex2>impcheckedstatics, 85</p>
+
+<p class=MsoIndex2>impcheckedstrictglobs, 85</p>
+
+<p class=MsoIndex2>impcheckedstrictspecglobs, 105</p>
+
+<p class=MsoIndex2>impcheckedstrictstatics, 38, 85</p>
+
+<p class=MsoIndex2>impcheckmodglobs, 85</p>
+
+<p class=MsoIndex2>impcheckmodinternals, 85</p>
+
+<p class=MsoIndex2>impcheckmodspecglobs, 105</p>
+
+<p class=MsoIndex2>impcheckmodstatics, 85</p>
+
+<p class=MsoIndex2>impouts, 17, 18, 76</p>
+
+<p class=MsoIndex2>imptype, 79</p>
+
+<p class=MsoIndex2>includenest, 94</p>
+
+<p class=MsoIndex2>incompletetype, 79</p>
+
+<p class=MsoIndex2>incondefs, 85</p>
+
+<p class=MsoIndex2>incondefslib, 85</p>
+
+<p class=MsoIndex2>infloops, 90</p>
+
+<p class=MsoIndex2>infloopsuncon, 45, 90</p>
+
+<p class=MsoIndex2>internalglobs, 84</p>
+
+<p class=MsoIndex2>internalglobsnoglobs, 84</p>
+
+<p class=MsoIndex2>internalnamecaseinsensitive, 64, 90</p>
+
+<p class=MsoIndex2>internalnamelen, 90</p>
+
+<p class=MsoIndex2>internalnamelength, 64</p>
+
+<p class=MsoIndex2>internalnamelookalike, 64, 90</p>
+
+<p class=MsoIndex2>iterprefix, 62, 89</p>
+
+<p class=MsoIndex2>iterprefixexclude, 89</p>
+
+<p class=MsoIndex2>keeptrans, 81</p>
+
+<p class=MsoIndex2>kepttrans, 81</p>
+
+<p class=MsoIndex2>larchpath, 73</p>
+
+<p class=MsoIndex2>lclexpect, 105</p>
+
+<p class=MsoIndex2>lclimportdir, 73</p>
+
+<p class=MsoIndex2>lcs, 104</p>
+
+<p class=MsoIndex2>lh, 104</p>
+
+<p class=MsoIndex2>libmacros, 86</p>
+
+<p class=MsoIndex2>limit, 74, 75</p>
+
+<p class=MsoIndex2>linelen, 12, 75</p>
+
+<p class=MsoIndex2>lintcomments, 95, 103</p>
+
+<p class=MsoIndex2>load, 67, 73</p>
+
+<p class=MsoIndex2>localprefix, 89</p>
+
+<p class=MsoIndex2>localprefixexclude, 89</p>
+
+<p class=MsoIndex2>longintegral, 20, 79</p>
+
+<p class=MsoIndex2>longsignedintegral, 20, 79</p>
+
+<p class=MsoIndex2>longunsignedintegral, 20, 79</p>
+
+<p class=MsoIndex2>longunsignedunsignedintegral, 20, 79</p>
+
+<p class=MsoIndex2>looploopbreak, 46, 91</p>
+
+<p class=MsoIndex2>looploopcontinue, 47, 91</p>
+
+<p class=MsoIndex2>loopswitchbreak, 46, 91</p>
+
+<p class=MsoIndex2>macroassign, 56, 86</p>
+
+<p class=MsoIndex2>macroconstdecl, 57, 86</p>
+
+<p class=MsoIndex2>macrodecl, 86</p>
+
+<p class=MsoIndex2>macrofcndecl, 57, 86</p>
+
+<p class=MsoIndex2>macromatchname, 86</p>
+
+<p class=MsoIndex2>macroparams, 56, 86</p>
+
+<p class=MsoIndex2>macroparens, 56, 86</p>
+
+<p class=MsoIndex2>macroredef, 86</p>
+
+<p class=MsoIndex2>macrostmt, 56, 86</p>
+
+<p class=MsoIndex2>macrounrecog, 86</p>
+
+<p class=MsoIndex2>macrovarprefix, 61, 62, 88</p>
+
+<p class=MsoIndex2>macrovarprefixexclude, 62, 88</p>
+
+<p class=MsoIndex2>maintype, 78</p>
+
+<p class=MsoIndex2>matchanyintegral, 20, 79</p>
+
+<p class=MsoIndex2>matchfields, 85</p>
+
+<p class=MsoIndex2>mayaliasunique, 82</p>
+
+<p class=MsoIndex2>memimp, 82</p>
+
+<p class=MsoIndex2>memtrans, 81</p>
+
+<p class=MsoIndex2>misscase, 91</p>
+
+<p class=MsoIndex2>modfilesys, 84</p>
+
+<p class=MsoIndex2>modfilesystem, 36</p>
+
+<p class=MsoIndex2>modglobs, 84</p>
+
+<p class=MsoIndex2>modglobsnomods, 37, 83, 84</p>
+
+<p class=MsoIndex2>modglobsunchecked, 84</p>
+
+<p class=MsoIndex2>modifies, 13, 83</p>
+
+<p class=MsoIndex2>modinternalstrict, 84</p>
+
+<p class=MsoIndex2>modnomods, 36, 83</p>
+
+<p class=MsoIndex2>modobserver, 83</p>
+
+<p class=MsoIndex2>modobserverstrict, 83</p>
+
+<p class=MsoIndex2>modsimpnoglobs, 85</p>
+
+<p class=MsoIndex2>modstrictglobsnomods, 83, 84</p>
+
+<p class=MsoIndex2>moduncon, 36, 83</p>
+
+<p class=MsoIndex2>modunconnomods, 84</p>
+
+<p class=MsoIndex2>mustdefine, 17, 77</p>
+
+<p class=MsoIndex2>mustfree, 81</p>
+
+<p class=MsoIndex2>mustfreefresh, 11</p>
+
+<p class=MsoIndex2><i>mustmod</i>, 36, 83</p>
+
+<p class=MsoIndex2>mustnotalias, 83</p>
+
+<p class=MsoIndex2>mutrep, 24, 80</p>
+
+<p class=MsoIndex2>namechecks, 87</p>
+
+<p class=MsoIndex2>needspec, 105</p>
+
+<p class=MsoIndex2>nestcomment, 95</p>
+
+<p class=MsoIndex2>neverinclude, 68, 94</p>
+
+<p class=MsoIndex2>newreftrans, 81</p>
+
+<p class=MsoIndex2>nextlinemacros, 87</p>
+
+<p class=MsoIndex2>noaccess, 95</p>
+
+<p class=MsoIndex2>nocomments, 95</p>
+
+<p class=MsoIndex2>noeffect, 47, 48, 92</p>
+
+<p class=MsoIndex2>noeffectuncon, 47, 48, 92</p>
+
+<p class=MsoIndex2>nof, 12, 73</p>
+
+<p class=MsoIndex2>nolib, 67, 74</p>
+
+<p class=MsoIndex2>noparams, 93</p>
+
+<p class=MsoIndex2>noret, 92</p>
+
+<p class=MsoIndex2>null, 76</p>
+
+<p class=MsoIndex2>numenummembers, 94</p>
+
+<p class=MsoIndex2>numliteral, 79</p>
+
+<p class=MsoIndex2>numstructfields, 94</p>
+
+<p class=MsoIndex2>observertrans, 81</p>
+
+<p class=MsoIndex2>oldstyle, 93</p>
+
+<p class=MsoIndex2>onlytrans, 81</p>
+
+<p class=MsoIndex2>onlyunqglobaltrans, 82</p>
+
+<p class=MsoIndex2>overload, 85</p>
+
+<p class=MsoIndex2>ownedtrans, 81</p>
+
+<p class=MsoIndex2>paramimptemp, 29, 82</p>
+
+<p class=MsoIndex2>paramuse, 65, 92, 102</p>
+
+<p class=MsoIndex2>parenfileformat, 12, 75</p>
+
+<p class=MsoIndex2>partial, 65, 93</p>
+
+<p class=MsoIndex2>passunknown, 82</p>
+
+<p class=MsoIndex2>posixlib, 66, 74</p>
+
+<p class=MsoIndex2>posixstrictlib, 66, 74</p>
+
+<p class=MsoIndex2>predassign, 20, 77</p>
+
+<p class=MsoIndex2>predbool, 77</p>
+
+<p class=MsoIndex2>predboolint, 77</p>
+
+<p class=MsoIndex2>predboolothers, 20, 77</p>
+
+<p class=MsoIndex2>predboolptr, 20, 21, 77</p>
+
+<p class=MsoIndex2>protoparammatch, 63, 89</p>
+
+<p class=MsoIndex2>protoparamname, 62, 89</p>
+
+<p class=MsoIndex2>protoparamprefix, 62, 89</p>
+
+<p class=MsoIndex2>protoparamprefixexclude, 89</p>
+
+<p class=MsoIndex2>ptrarith, 77</p>
+
+<p class=MsoIndex2>ptrcompare, 78</p>
+
+<p class=MsoIndex2>ptrnegate, 77</p>
+
+<p class=MsoIndex2>quiet, 74</p>
+
+<p class=MsoIndex2>readonlystrings, 33, 83</p>
+
+<p class=MsoIndex2>readonlytrans, 83</p>
+
+<p class=MsoIndex2>realcompare, 78</p>
+
+<p class=MsoIndex2>redecl, 38, 93</p>
+
+<p class=MsoIndex2>redef, 93</p>
+
+<p class=MsoIndex2>refcounttrans, 81</p>
+
+<p class=MsoIndex2>relaxquals, 19, 79</p>
+
+<p class=MsoIndex2>relaxtypes, 79</p>
+
+<p class=MsoIndex2>repeatunrecog, 93</p>
+
+<p class=MsoIndex2>repexpose, 83</p>
+
+<p class=MsoIndex2>retalias, 31, 83</p>
+
+<p class=MsoIndex2>retexpose, 32, 83</p>
+
+<p class=MsoIndex2>retimponly, 29, 82</p>
+
+<p class=MsoIndex2>retval, 92</p>
+
+<p class=MsoIndex2>retvalbool, 48, 92</p>
+
+<p class=MsoIndex2>retvalint, 48, 92</p>
+
+<p class=MsoIndex2>retvalother, 92</p>
+
+<p class=MsoIndex2>retvalothers, 48</p>
+
+<p class=MsoIndex2>S&lt;directory&gt;, 73</p>
+
+<p class=MsoIndex2>sefparams, 87</p>
+
+<p class=MsoIndex2>sefuncon, 57, 87</p>
+
+<p class=MsoIndex2>shadow, 89</p>
+
+<p class=MsoIndex2>sharedtrans, 81</p>
+
+<p class=MsoIndex2>shiftsigned, 77</p>
+
+<p class=MsoIndex2>showallconjs, 75</p>
+
+<p class=MsoIndex2>showalluses, 74</p>
+
+<p class=MsoIndex2>showcol, 12</p>
+
+<p class=MsoIndex2>showcolumn, 75</p>
+
+<p class=MsoIndex2>showfunc, 12, 13, 75</p>
+
+<p class=MsoIndex2>showscan, 74</p>
+
+<p class=MsoIndex2>showsummary, 74</p>
+
+<p class=MsoIndex2>singleinclude, 68, 94</p>
+
+<p class=MsoIndex2>sizeofformalarray, 78</p>
+
+<p class=MsoIndex2>sizeoftype, 78</p>
+
+<p class=MsoIndex2>skipansiheaders, 68, 94</p>
+
+<p class=MsoIndex2>skipposixheaders, 68, 94</p>
+
+<p class=MsoIndex2>skipsysheaders, 68, 94</p>
+
+<p class=MsoIndex2>slovak, 61, 87</p>
+
+<p class=MsoIndex2>slovakconstants, 61</p>
+
+<p class=MsoIndex2>slovakconsts, 87, 88</p>
+
+<p class=MsoIndex2>slovakfcns, 61, 87, 88</p>
+
+<p class=MsoIndex2>slovakmacros, 61, 87, 88</p>
+
+<p class=MsoIndex2>slovaktypes, 87, 88</p>
+
+<p class=MsoIndex2>slovakvars, 61, 87, 88</p>
+
+<p class=MsoIndex2>specglobimponly, 105</p>
+
+<p class=MsoIndex2>specimponly, 105</p>
+
+<p class=MsoIndex2>specmacros, 105</p>
+
+<p class=MsoIndex2>specretimponly, 105</p>
+
+<p class=MsoIndex2>specstructimponly, 105</p>
+
+<p class=MsoIndex2>specundecl, 105</p>
+
+<p class=MsoIndex2>specundef, 105</p>
+
+<p class=MsoIndex2>stackref, 82</p>
+
+<p class=MsoIndex2>standard, 76</p>
+
+<p class=MsoIndex2>staticinittranc, 82</p>
+
+<p class=MsoIndex2>statictrans, 81</p>
+
+<p class=MsoIndex2>stats, 74</p>
+
+<p class=MsoIndex2>strict, 76</p>
+
+<p class=MsoIndex2>strictbranchstate, 80</p>
+
+<p class=MsoIndex2>strictdestroy, 81</p>
+
+<p class=MsoIndex2>strictlib, 74</p>
+
+<p class=MsoIndex2>strictops, 78</p>
+
+<p class=MsoIndex2>strictusereleased, 80</p>
+
+<p class=MsoIndex2>stringliterallen, 94</p>
+
+<p class=MsoIndex2>structimponly, 29, 82</p>
+
+<p class=MsoIndex2>supcounts, 95, 97</p>
+
+<p class=MsoIndex2>switchloopbreak, 46, 91</p>
+
+<p class=MsoIndex2>switchswitchbreak, 46, 91</p>
+
+<p class=MsoIndex2>syntax, 95</p>
+
+<p class=MsoIndex2>sysdirerrors, 73, 94</p>
+
+<p class=MsoIndex2>sysdirexpandmacros, 94</p>
+
+<p class=MsoIndex2>sysdirs, 68, 73, 94</p>
+
+<p class=MsoIndex2>systemunrecog, 93</p>
+
+<p class=MsoIndex2>tagprefix, 62, 88</p>
+
+<p class=MsoIndex2>tagprefixexclude, 88</p>
+
+<p class=MsoIndex2>temptrans, 81</p>
+
+<p class=MsoIndex2>timedist, 74</p>
+
+<p class=MsoIndex2>tmpcomments, 97</p>
+
+<p class=MsoIndex2>tmpdir, 73</p>
+
+<p class=MsoIndex2>topuse, 65, 92</p>
+
+<p class=MsoIndex2>trytorecover, 95</p>
+
+<p class=MsoIndex2>type, 77</p>
+
+<p class=MsoIndex2>typeprefix, 62, 89</p>
+
+<p class=MsoIndex2>typeprefixexclude, 62, 89</p>
+
+<p class=MsoIndex2>typeuse, 65, 92</p>
+
+<p class=MsoIndex2>U&lt;initializer&gt;, 73</p>
+
+<p class=MsoIndex2>uncheckedglobalias, 85</p>
+
+<p class=MsoIndex2>uncheckedmacroprefix, 62, 89</p>
+
+<p class=MsoIndex2>uncheckedmacroprefixexclude, 89</p>
+
+<p class=MsoIndex2>uniondef, 77</p>
+
+<p class=MsoIndex2>unixlib, 66, 74</p>
+
+<p class=MsoIndex2>unixstrictlib, 66, 74</p>
+
+<p class=MsoIndex2>unqualifiedinititrans, 82</p>
+
+<p class=MsoIndex2>unqualifiedtrans, 82</p>
+
+<p class=MsoIndex2>unreachable, 92</p>
+
+<p class=MsoIndex2>unrecog, 93</p>
+
+<p class=MsoIndex2>unrecogcomments, 95</p>
+
+<p class=MsoIndex2>unusedspecial, 92</p>
+
+<p class=MsoIndex2>usedef, 17, 76</p>
+
+<p class=MsoIndex2>usereleased, 80</p>
+
+<p class=MsoIndex2>usestderr, 74</p>
+
+<p class=MsoIndex2>usevarargs, 93</p>
+
+<p class=MsoIndex2>varuse, 65, 92</p>
+
+<p class=MsoIndex2>voidabstract, 78</p>
+
+<p class=MsoIndex2>warnflags, 12, 72</p>
+
+<p class=MsoIndex2>warnlintcomments, 95, 103</p>
+
+<p class=MsoIndex2>warnmissingglobs, 84</p>
+
+<p class=MsoIndex2>warnmissingglobsnoglobs, 84</p>
+
+<p class=MsoIndex2>warnposixheaders, 94</p>
+
+<p class=MsoIndex2>weak, 11, 76</p>
+
+<p class=MsoIndex2>whichlib, 74</p>
+
+<p class=MsoIndex2>whileblock, 91</p>
+
+<p class=MsoIndex2>whileempty, 91</p>
+
+<p class=MsoIndex2>zeroptr, 79</p>
+
+<p class=MsoIndex1>format codes, 78</p>
+
+<p class=MsoIndex1>free, 26, 27, 66, 81</p>
+
+<p class=MsoIndex1>function interfaces, <b>35</b>, 83</p>
+
+<p class=MsoIndex1>gcc extensions, 95</p>
+
+<p class=MsoIndex1>global variables, 17, 32, 37, 44, 62, 84, 85, 98, 99, 105</p>
+
+<p class=MsoIndex1>globals list, <b>37</b>, 44, 45</p>
+
+<p class=MsoIndex1>GNU extensions, 95</p>
+
+<p class=MsoIndex1>header file inclusion, 94</p>
+
+<p class=MsoIndex1>header files, 65, <b>68</b></p>
+
+<p class=MsoIndex1>help, 72</p>
+
+<p class=MsoIndex1>hints, 12, 75</p>
+
+<p class=MsoIndex1>if bodies, 47</p>
+
+<p class=MsoIndex1>ignored return values, 9, 48, 92</p>
+
+<p class=MsoIndex1>immutable type, <b>23</b></p>
+
+<p class=MsoIndex1>implicit annotations, 37, 82, 85, 105</p>
+
+<p class=MsoIndex1>include file nesting, 94</p>
+
+<p class=MsoIndex1>infinite loops, 9, 37, 45</p>
+
+<p class=MsoIndex1>information hiding, 9, 19, 21, 99</p>
+
+<p class=MsoIndex1>initialization files, <b>12</b>, 73</p>
+
+<p class=MsoIndex2>.splintrc, 12, 73</p>
+
+<p class=MsoIndex2>lclinit.lci, 105</p>
+
+<p class=MsoIndex1>initializers, 82</p>
+
+<p class=MsoIndex1>internalState, 36, 57, 84</p>
+
+<p class=MsoIndex1>isalpha, 67</p>
+
+<p class=MsoIndex1>iscntrl, 67</p>
+
+<p class=MsoIndex1>isdigit, 67</p>
+
+<p class=MsoIndex1>isgraph, 67</p>
+
+<p class=MsoIndex1>islower, 67</p>
+
+<p class=MsoIndex1>isprint, 67</p>
+
+<p class=MsoIndex1>ispunct, 67</p>
+
+<p class=MsoIndex1>isspace, 67</p>
+
+<p class=MsoIndex1>isupper, 67</p>
+
+<p class=MsoIndex1>isxdigit, 67</p>
+
+<p class=MsoIndex1>iterators, <b>58</b>, 86, 87, 98</p>
+
+<p class=MsoIndex1>Larch, 104</p>
+
+<p class=MsoIndex1>LARCH_PATH, 73, 105</p>
+
+<p class=MsoIndex1>LCL, 104</p>
+
+<p class=MsoIndex1>LCLIMPORTDIR, 73</p>
+
+<p class=MsoIndex1>lcs files, 104</p>
+
+<p class=MsoIndex1>lh files, 104</p>
+
+<p class=MsoIndex1>libraries, <b>66</b>, 73, 85</p>
+
+<p class=MsoIndex1>line splitting, 12</p>
+
+<p class=MsoIndex1>lint comments, 102</p>
+
+<p class=MsoIndex1>loop bodies, 47</p>
+
+<p class=MsoIndex1>loopexec, 91</p>
+
+<p class=MsoIndex1>LSL, 104</p>
+
+<p class=MsoIndex1>macros, <b>55</b>, 62, 86, 102, 105</p>
+
+<p class=MsoIndex1>main, 78</p>
+
+<p class=MsoIndex1>malloc, 26</p>
+
+<p class=MsoIndex1>McConnell, Steve, 21</p>
+
+<p class=MsoIndex1>memory leaks, 25, 81, 99</p>
+
+<p class=MsoIndex1>memory management, 9, <b>25</b>, 30, 80</p>
+
+<p class=MsoIndex1>message format, 75</p>
+
+<p class=MsoIndex1>Microsoft VisualStudio, 12, 75</p>
+
+<p class=MsoIndex1>modes, 75</p>
+
+<p class=MsoIndex2><i>checks</i>, 36, 76</p>
+
+<p class=MsoIndex2>standard, 76</p>
+
+<p class=MsoIndex2>strict, 76</p>
+
+<p class=MsoIndex2>weak, 11, 76</p>
+
+<p class=MsoIndex1>modification, 31, 32, 33, <b>35</b>, 44, 56, 57, 83</p>
+
+<p class=MsoIndex1>modifies clause, <b>35</b>, 39, 44, 45, 47, 57, 83, 84, 98</p>
+
+<p class=MsoIndex1>multiple definitions, 93</p>
+
+<p class=MsoIndex1>mutability, <b>23</b>, 32</p>
+
+<p class=MsoIndex1>mutable type, 23</p>
+
+<p class=MsoIndex1>namespaces, 61, 88</p>
+
+<p class=MsoIndex1>naming convention, 23, <b>60</b>, 87</p>
+
+<p class=MsoIndex2>Czech, 60, 63, 80, 87</p>
+
+<p class=MsoIndex2>Czechoslovak, 61, 80, 88</p>
+
+<p class=MsoIndex2>Slovak, 61, 63, 80, 87</p>
+
+<p class=MsoIndex1>naming restrictions, 63, 89</p>
+
+<p class=MsoIndex1>no effects, 47, 92</p>
+
+<p class=MsoIndex1>NOTREACHED, 95, 102</p>
+
+<p class=MsoIndex1>null, 66, 84</p>
+
+<p class=MsoIndex1>null dereferences, <b>14</b>, 76, 100</p>
+
+<p class=MsoIndex1>null predicates, 100</p>
+
+<p class=MsoIndex1>numeric types, 19</p>
+
+<p class=MsoIndex1>output, 74</p>
+
+<p class=MsoIndex1>parse errors, 95</p>
+
+<p class=MsoIndex1>parsing, 95</p>
+
+<p class=MsoIndex1>partial programs, 65</p>
+
+<p class=MsoIndex1>path with no return, 92</p>
+
+<p class=MsoIndex1>pointers, 78</p>
+
+<p class=MsoIndex1>polymorphism, 57, 98</p>
+
+<p class=MsoIndex1>POSIX, 66, 94</p>
+
+<p class=MsoIndex1>predicates, 77</p>
+
+<p class=MsoIndex1>preprocessor, 73</p>
+
+<p class=MsoIndex1>primitive operations, 77</p>
+
+<p class=MsoIndex1>printf, 66, 78, 101</p>
+
+<p class=MsoIndex1>PRINTFLIKE, 95, 102</p>
+
+<p class=MsoIndex1>problematic control structures, <b>45</b></p>
+
+<p class=MsoIndex1>read-only storage, <b>32</b></p>
+
+<p class=MsoIndex1>reference counting, <b>30</b>, 81</p>
+
+<p class=MsoIndex1>reserved names, <b>63</b>, 89</p>
+
+<p class=MsoIndex1>return values, 48</p>
+
+<p class=MsoIndex1>security vulnerabilities, 9</p>
+
+<p class=MsoIndex1>sequence points, 44</p>
+
+<p class=MsoIndex1>Shakespeare, William, 25, 26</p>
+
+<p class=MsoIndex1>shared storage, 27</p>
+
+<p class=MsoIndex1>sharing, <b>31</b>, 82</p>
+
+<p class=MsoIndex1>sharing semantics, 24</p>
+
+<p class=MsoIndex1>side effect free, 87</p>
+
+<p class=MsoIndex1>side effect free parameters, 56</p>
+
+<p class=MsoIndex1>side effects, 101</p>
+
+<p class=MsoIndex1>sizeof, 22, 78</p>
+
+<p class=MsoIndex1>special reward, 76</p>
+
+<p class=MsoIndex1>stack pointers, 25, 28</p>
+
+<p class=MsoIndex1>stack references, 28</p>
+
+<p class=MsoIndex1>standard error, 74</p>
+
+<p class=MsoIndex1>standard libraries, 66</p>
+
+<p class=MsoIndex1>standard library, 26</p>
+
+<p class=MsoIndex1>standard output, 74</p>
+
+<p class=MsoIndex1>static, 65</p>
+
+<p class=MsoIndex1>static variables, 37</p>
+
+<p class=MsoIndex1>stderr, 67</p>
+
+<p class=MsoIndex1>stdin, 67</p>
+
+<p class=MsoIndex1>stdout, 67</p>
+
+<p class=MsoIndex1>storage model, 25</p>
+
+<p class=MsoIndex1>strchr, 67</p>
+
+<p class=MsoIndex1>string literals, <b>33</b>, 83, 94</p>
+
+<p class=MsoIndex1>strrchr, 67</p>
+
+<p class=MsoIndex1>structure fields, 94</p>
+
+<p class=MsoIndex1>suppressing warnings, 97</p>
+
+<p class=MsoIndex1>switch, 101</p>
+
+<p class=MsoIndex1>switch statements, 45, 46</p>
+
+<p class=MsoIndex1>syntactic comment, 95</p>
+
+<p class=MsoIndex1>syntax, 12</p>
+
+<p class=MsoIndex1>tolower, 67</p>
+
+<p class=MsoIndex1>toupper, 67</p>
+
+<p class=MsoIndex1>type, 9, 13, 21, 77, 78</p>
+
+<p class=MsoIndex1>type access, 99</p>
+
+<p class=MsoIndex1>type checking, <b>19</b></p>
+
+<p class=MsoIndex1>type equivalence, 78</p>
+
+<p class=MsoIndex1>types, 102</p>
+
+<p class=MsoIndex1>undefined, 44</p>
+
+<p class=MsoIndex1>undefined behavior, 31, 33, 36, 37, <b>44</b>, 55, 90</p>
+
+<p class=MsoIndex1>undefined values, 9, <b>17</b>, 38, 76, 84, 100</p>
+
+<p class=MsoIndex1>ungetc, 67</p>
+
+<p class=MsoIndex1>unreachable, 9</p>
+
+<p class=MsoIndex1>unreachable code, 92, 101, 102</p>
+
+<p class=MsoIndex1>unrecognized identifiers, 93</p>
+
+<p class=MsoIndex1>unused declarations, 9, 65, 92</p>
+
+<p class=MsoIndex1>use warnings, 101</p>
+
+<p class=MsoIndex1>use-before-definition, 9, <b>17</b>, 38, 76, 91</p>
+
+<p class=MsoIndex1>van der Linden, Peter, 46, 63</p>
+
+<p class=MsoIndex1>varargs, 93</p>
+
+<p class=MsoIndex1>void, 48</p>
+
+</div>
+
+<span style='font-size:11.0pt;font-family:"Times New Roman"'><br clear=all
+style='page-break-before:auto'>
+</span>
+
+<div class=Section8>
+
+<p class=IndentText>&nbsp;</p>
+
+</div>
+
+<div><br clear=all>
+
+<p>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

@@ -1,0 +1,1717 @@
+From evs  Sun Apr 12 11:56:31 1998
+Return-Path: <evs>
+Received: (from evs@localhost)
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) id LAA10353;
+	Sun, 12 Apr 1998 11:56:31 -0400
+Date: Sun, 12 Apr 1998 11:56:31 -0400
+Message-Id: <199804121556.LAA10353@salsa.lcs.mit.edu>
+From: David Evans <evs@salsa.lcs.mit.edu>
+To: lclint-interest@salsa.lcs.mit.edu
+Subject: test
+Reply-to: evs@salsa.lcs.mit.edu
+
+a test indeed
+
+From evs@salsa.lcs.mit.edu  Mon Apr 13 16:14:47 1998
+Return-Path: <evs@salsa.lcs.mit.edu>
+Received: from larch.lcs.mit.edu (larch.lcs.mit.edu [18.26.0.95])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with SMTP id QAA26235
+	for <lclint-interest@salsa.lcs.mit.edu>; Mon, 13 Apr 1998 16:14:47 -0400
+Received: by larch.lcs.mit.edu (5.57/Ultrix3.0-C)
+	id AA01836; Mon, 13 Apr 98 15:42:32 -0400
+Received: (from evs@localhost)
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) id PAA26017;
+	Mon, 13 Apr 1998 15:42:19 -0400
+Date: Mon, 13 Apr 1998 15:42:19 -0400
+Message-Id: <199804131942.PAA26017@salsa.lcs.mit.edu>
+From: David Evans <evs@salsa.lcs.mit.edu>
+To: lclint-interest@larch.lcs.mit.edu
+Subject: test message
+Reply-To: evs@salsa.lcs.mit.edu
+
+test
+
+From evs  Mon Apr 13 17:42:53 1998
+Return-Path: <evs>
+Received: (from evs@localhost)
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) id RAA26809;
+	Mon, 13 Apr 1998 17:42:53 -0400
+Date: Mon, 13 Apr 1998 17:42:53 -0400
+Message-Id: <199804132142.RAA26809@salsa.lcs.mit.edu>
+From: David Evans <evs@salsa.lcs.mit.edu>
+To: lclint-announce
+Subject: LCLint 2.4 now available
+Reply-to: evs@salsa.lcs.mit.edu
+
+
+LCLint Version 2.4 is now available as source code, a linux binary, and
+a Win32 binary.  To download, please visit the LCLint web site at:
+
+	http://lclint.cs.virginia.edu/
+
+(Note the new address.  If you had links to the old site, please update
+them.)
+
+The main changes for Version 2.4 are:
+
+Bug Fixes
+
+All known bugs in Version 2.3i have been fixed.  If you discover a bug,
+please send a bug report to lclint-bug@sds.lcs.mit.edu.  Try to include
+enough information so that the bug may be reproduced.
+
+Integrated Pre-processor
+
+LCLint now incorporates a C pre-processor, based on the GNU
+pre-processor.  This eliminates the need to invoke a C pre-processor in
+a command shell, the need to pre-pre-process the input to support macro
+checking, and prevents previous problems with conditional code.
+
+Parser Extensions
+
+LCLint has been extended to support non-ANSI grammar extensions commonly
+used in system files.  These include unnamed structures and special
+syntax (such as __asm__).  The +gnuextensions flag turns support for
+language extensions on; this is now set by default.
+
+Boolean Type
+
+The bool type is no longer built in to avoid conflicts with code that
+uses bool.  To get the original behavior, use -booltype bool in your
+.lclintrc file.
+
+Thanks
+
+Many people have contributed to this release by suggesting changes,
+reporting bugs, and contributing code.  The Win32 version benefited
+especially from the Win32 port of LCLint 2.3i by Mike Smith, the OS/2
+port by Herbert Dietze, and Jacob Navia's work with lcc.
+
+--- Dave
+
+=================
+To be removed from this list, send a human-readable message to
+lclint-request@sds.lcs.mit.edu. 
+
+From weco@csi.com  Wed Apr 15 13:53:24 1998
+Return-Path: <weco@csi.com>
+Received: from larch.lcs.mit.edu (larch.lcs.mit.edu [18.26.0.95])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with SMTP id NAA16346
+	for <lclint-interest@salsa.lcs.mit.edu>; Wed, 15 Apr 1998 13:53:23 -0400
+Received: by larch.lcs.mit.edu (5.57/Ultrix3.0-C)
+	id AA08218; Wed, 15 Apr 98 13:53:52 -0400
+Received: from localhost (weco@localhost)
+	by opto4l.default.com (8.8.8/8.8.8) with SMTP id TAA10907
+	for <lclint-interest@larch.lcs.mit.edu>; Wed, 15 Apr 1998 19:54:28 +0200
+X-Authentication-Warning: opto4l.default.com: weco owned process doing -bs
+Date: Wed, 15 Apr 1998 19:54:27 +0200 (CEST)
+From: Hermann Kleier <weco@csi.com>
+X-Sender: weco@opto4l.default.com
+To: application LcLint <lclint-interest@larch.lcs.mit.edu>
+Subject: Another hello.c
+Message-Id: <Pine.LNX.3.96.980415192222.10845A-100000@opto4l.default.com>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+I encountered problems in writing a LCLint-clean source of a
+high-tech-version of hello.c.  I am using LCLint 2.4 for Linux.  By now,
+the source reads as follows:
+
++++++++++++++++++++++++++++++++ hello.c ++++++++++++++++++++++++++++++++
+
+ 1  #include <stdio.h>
+ 2
+ 3  static const char Text [] = "hello world\n";
+ 4
+ 5  int main (void)
+ 6  /*@globals Text,fileSystem;@*/
+ 7  /*@modifies Text,fileSystem@*/;
+ 8
+ 9  int main ()
+10
+11      {
+12      size_t i;
+13
+14      Text [0] = 'H';
+15      for (i = 0; i < sizeof (Text) - 1; ++i)
+16          {
+17          (void) putchar (Text [i]);
+18          }
+19      return 0;
+20    }
+
+++++++++++++++++++++++++++++ end of hello.c ++++++++++++++++++++++++++++
+
+
+
+This causes LCLint to give the following diagnostics
+
+
+
++++++++++++++++++++++ output of LCLint 2.4 (Linux) +++++++++++++++++++++
+
+opto4l:~/tmp$ lclint -strict hello.c
+LCLint 2.4 --- 12 Apr 98
+
+/home/hermann/.lclintrc:2:15: Warning:
+    setting +gnuextensions redundant with current value
+Command Line: Setting mode strict after setting mode flags will override set values of flags:
+                 boolcompare
+  warn when command line sets flag to default value in mode (-warnflags will suppress message)
+hello.c:3:29: Read-only string literal storage used as initial value for unqualified storage:
+                 Text = "hello world\n"
+  A read-only string literal is assigned to a non-observer reference. (-readonlytrans will
+  suppress message)
+
+Finished LCLint checking --- 1 code error found
+
++++++++++++++++++ end of output of LCLint 2.4 (Linux) ++++++++++++++++++
+
+My questions are:
+
+(1) What about the message in line 3?  Isn't `static const char Text []'
+    a qualified storage.  It is read-only.  GNU-C compiles the variable
+    `Text' into a read-only segment (immediately after the program
+    instructions).  The utility nm says that `Text' is a `local symbol,
+    which is in a read only data section'.  Trying to start this program
+    ends in a `Segmentation fault'.  There is no doubt, `Text' is
+    read-only.
+
+(2) Even if I mistrust myself and believe LClint, where can I place the
+    /*@observer@*/ to?  Note: I do not want to declare/define a `const
+    char *Text' there, because I want to use `Text' as an argument to
+    `sizeof'.
+
+(3) I was so impudent to annotate `main' with /*@globals
+    Text,fileSystem;@*/ /*@modifies Text,fileSystem@*/.  As stated
+    above, the program contains a SEVERE error.  OK, this example is
+    trivial and the error pops up immediately after the start due to
+    the protected environment of Linux.  But I was told that there are
+    still users of WINDOWS 95, which could not catch the bug. And
+    imagine a really complex critical application, where the error is
+    not so obvious.
+
+    In other words, I feel that the error should not be hidden by the
+    annotation.  The concept of the annotation is to control the
+    modification of global variables and not to move data between
+    segments.
+
+Hermann Kleier
+
+
+From evs  Fri Apr 17 15:08:59 1998
+Return-Path: <evs>
+Received: (from evs@localhost)
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) id PAA09319;
+	Fri, 17 Apr 1998 15:08:59 -0400
+Date: Fri, 17 Apr 1998 15:08:59 -0400
+Message-Id: <199804171908.PAA09319@salsa.lcs.mit.edu>
+From: David Evans <evs@salsa.lcs.mit.edu>
+To: weco@csi.com, lclint-interest
+In-reply-to: <Pine.LNX.3.96.980415192222.10845A-100000@opto4l.default.com>
+	(message from Hermann Kleier on Wed, 15 Apr 1998 19:54:27 +0200
+	(CEST))
+Subject: Re: Another hello.c
+Reply-to: evs@salsa.lcs.mit.edu
+
+
+Hermann Kleier writes,
+
+> I encountered problems in writing a LCLint-clean source of a
+> high-tech-version of hello.c.  I am using LCLint 2.4 for Linux.  By now,
+> the source reads as follows:
+>
+...
+> My questions are:
+>
+> (1) What about the message in line 3?  Isn't `static const char Text []'
+>     a qualified storage.  It is read-only.  GNU-C compiles the variable
+>     `Text' into a read-only segment (immediately after the program
+>     instructions).  The utility nm says that `Text' is a `local symbol,
+>     which is in a read only data section'.  Trying to start this program
+>     ends in a `Segmentation fault'.  There is no doubt, `Text' is
+>    read-only.
+
+LCLint doesn't use the const modifier to mean the same thing as observer
+(and in fact, doesn't interpret const at all).  Since const doesn't mean
+the same thing as observer (or not listing an object in a modifies
+clause), it would be confusing for LCLint to interpret const as one of
+these things, but it would probably be better if LCLint did interpret it
+following the C semantics.
+
+> (2) Even if I mistrust myself and believe LClint, where can I place the
+>     /*@observer@*/ to?  Note: I do not want to declare/define a `const
+>     char *Text' there, because I want to use `Text' as an argument to
+>     `sizeof'.
+
+Unfortunately, there is no way to do this, since LCLint doesn't allow
+observer to be applied to arrays.  This should probably be fixed.
+
+> (3) I was so impudent to annotate `main' with /*@globals
+>     Text,fileSystem;@*/ /*@modifies Text,fileSystem@*/.  As stated
+>     above, the program contains a SEVERE error.  OK, this example is
+>     trivial and the error pops up immediately after the start due to
+>     the protected environment of Linux.  But I was told that there are
+>     still users of WINDOWS 95, which could not catch the bug. And
+>     imagine a really complex critical application, where the error is
+>     not so obvious.
+> 
+>     In other words, I feel that the error should not be hidden by the
+>     annotation.  The concept of the annotation is to control the
+>     modification of global variables and not to move data between
+>     segments.
+
+Fair enough.  In general, you can use annotation to prevent lclint from
+reporting errors (or at least make lclint report them elsewhere).  Here,
+the error is reported when a read-only string literal is assigned to non
+read-only storage (Text).  If you could put an observer annotation on
+Text, then the error would be reported when Text is modified instead.
+
+I agree that lclint should handle this differently, but you do get the
+error when a detect the problem.  At present, there is no way to get
+around the problem, other than making Text a static /*@observer@*/ char
+*, instead of a char array.
+
+--- Dave
+
+
+From evs  Mon Apr 20 16:55:36 1998
+Return-Path: <evs>
+Received: (from evs@localhost)
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) id QAA15073;
+	Mon, 20 Apr 1998 16:55:36 -0400
+Date: Mon, 20 Apr 1998 16:55:36 -0400
+Message-Id: <199804202055.QAA15073@salsa.lcs.mit.edu>
+From: David Evans <evs@salsa.lcs.mit.edu>
+To: lclint-interest, weco@csi.com
+In-reply-to: <Pine.LNX.3.96.980420100149.274C-100000@opto4l.default.com>
+	(message from Hermann Kleier on Mon, 20 Apr 1998 11:58:25 +0200
+	(CEST))
+Subject: Re: Another hello.c
+Reply-to: evs@salsa.lcs.mit.edu
+
+
+Hermann Kleier <weco@csi.com> writes,
+
+>  (1) LCLint is a tool that `understands' the syntax and the static part
+>      of the semantics of ANSI-C.
+> 
+>  (2) ANSI-C is not defined to allow for static verification of programs.
+>      LCLint's `annotations' fill the gap to specify the program more
+>      precisely.
+> 
+>  (3) A program should still be compilable under LCLint-free environments.
+
+This is true, but not in that order of importance.  LCLint is first and
+foremost intended as a research vechicle for investigating what can be
+done with lightweight static checking using supplemental information
+(specifications or annotations).  As LCLint has become more widely used
+in practice, I have added much of the traditional lint checking (and
+some standard C checking not done by traditional lints but not relating
+to annotations), however resources for LCLint development are very
+limited (i.e., me), and duplicating checks done by existing compilers
+and lints is not a high priority.  (On the specific point, though, I
+agree it would be nice if LCLint interpreted const qualifiers and did
+associated checking.)
+
+> This is it!  Making the WHOLE program CONSISTENT!  Express the
+> programmer's idea in terms of annotations. Or, write the program in
+> ANSI-LCLint-C.  This is what I tried to express under point (2).
+> Suppressing messages always tells me that expressing my problem failed
+> in terms of the language.
+
+Exactly!  We use annotations to precisely document the programmers
+intent, and associated checking to make sure the code is consistent with
+that intent.
+
+> Last but not least there is the third point.  Where can we put the
+> extensions (suppressions) too?  Traditional LINTs use command line
+> arguments (configuration files) and structured comments.  On top of that
+> LCLint offers .lcl-files.  My opinion is:
+>
+>   - command line arguments / configuartion file
+>     They are good to handle system specific stuff.  If they contain
+>     project-specific stuff I wonder, how this can be done portably.
+> 
+>   - structured comments
+>     Tightly coupled to the code.  The information is exactly there,
+>     where it cannot be missed.  Moves along to other environments with
+>     the source.  But, alas, makes the code almost unreadable.  This is
+>     mainly due to the overhead (/*@...@*/) of the structured comments.
+> 
+>   - other files (.lcl-files)
+>     Keeps the source readable.  But: LCLint has chosen the easy approach
+>     of deriving the header files from the .lcl-files.  This makes it
+>     impossible to compile a project without LCLint.  This almost
+>     disqualifies the concept of .lcl-files.  In order to port a project,
+>     I generated the .lh-files and moved them.  Where is the source code?
+>     This is why I discontinued to use .lcl-files.
+>
+>     The perfect concept would be to have a file with all annotations,
+>     which is considered by LCLint and ignored by other tools.  All
+>     annotations I used so far are for function-interfaces and variables.
+>     Are there others?  The .lclint-file should have the same structure:
+>     global sections for global variables and function interfaces and
+>     local sections inside functions.
+
+I'm not sure I understand this point.
+
+Anything that relates to checking in an .lcl file could be expressed
+equivalently in comments in the .c and .h files.  If you want to put
+this in .lcl files, you can choose to not produce .lh files (in fact,
+-lh is the default) and there is no dependence on lclint for building.
+.lh files are merely a way to avoid some duplication of typing.  I don't
+understand what would be different about the .lclint file you suggest
+and the current .lcl files, other than not supporting generation of .lh
+files.
+
+--- Dave
+
+From hermannk@csi.com  Tue Apr 21 00:39:46 1998
+Return-Path: <hermannk@csi.com>
+Received: from NIH2WAAE (smtp5.site1.csi.com [149.174.183.74])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id AAA16511;
+	Tue, 21 Apr 1998 00:39:43 -0400
+Received: from mail pickup service by csi.com with Microsoft SMTPSVC;
+	 Tue, 21 Apr 1998 00:40:11 -0400
+Sender: hermannk@csi.com
+Received: from porky4.default.com (md50-192.mun.compuserve.com [195.232.57.192])
+	by hil-img-ims-4.compuserve.com (8.8.6/8.8.6/IMS-1.2) with ESMTP id AAA13090;
+	Tue, 21 Apr 1998 00:40:03 -0400 (EDT)
+Received: from localhost (hermannk@localhost)
+	by porky4.default.com (8.8.8/8.8.8) with SMTP id GAA10900;
+	Tue, 21 Apr 1998 06:37:20 +0200
+X-Authentication-Warning: porky4.default.com: hermannk owned process doing -bs
+Date: Tue, 21 Apr 1998 06:37:20 +0200 (CEST)
+From: Hermann Kleier <hermannk@csi.com>
+X-Sender: hermannk@porky4.default.com
+To: David Evans <evs@salsa.lcs.mit.edu>
+cc: lclint-interest@salsa.lcs.mit.edu, weco@csi.com
+Subject: Re: Another hello.
+In-Reply-To: <199804202055.QAA15073@salsa.lcs.mit.edu>
+Message-ID: <Pine.LNX.3.96.980421062651.10856A-100000@porky4.default.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Dave,
+
+On Mon, 20 Apr 1998, David Evans wrote:
+
+> Anything that relates to checking in an .lcl file could be expressed
+> equivalently in comments in the .c and .h files.
+
+Does this apply vice versa?  I.e.
+
+``Anything that relates to checking and can be expressed in comments in the
+.c and .h files could be expressed equivalently in .lcl-files.''
+
+Is this true?  What about inconsistencies between the program and the
+annotations?  I was so fascinated by the idea of generating the header files
+AND the LCLint information from the same source that I thought, the -lh
+option would be the ONLY reasonable way to include .lcl-files in a project.
+Anyway, I will have a look into LCLint's documentation to see, whether I can
+isolate LCLint's stuff in .lcl-files.
+
+Hermann
+
+
+
+
+From evs  Tue Apr 21 10:44:56 1998
+Return-Path: <evs>
+Received: (from evs@localhost)
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) id KAA18322;
+	Tue, 21 Apr 1998 10:44:56 -0400
+Date: Tue, 21 Apr 1998 10:44:56 -0400
+Message-Id: <199804211444.KAA18322@salsa.lcs.mit.edu>
+From: David Evans <evs@salsa.lcs.mit.edu>
+To: lclint-interest, hermannk@csi.com
+In-reply-to: <Pine.LNX.3.96.980421062651.10856A-100000@porky4.default.com>
+	(message from Hermann Kleier on Tue, 21 Apr 1998 06:37:20 +0200
+	(CEST))
+Subject: Re: Another hello.
+Reply-to: evs@salsa.lcs.mit.edu
+
+
+Hermann Kleier <hermannk@csi.com> writes, 
+
+> Does this apply vice versa?  I.e.
+> 
+> ``Anything that relates to checking and can be expressed in comments in the
+> .c and .h files could be expressed equivalently in .lcl-files.''
+>
+> Is this true?  What about inconsistencies between the program and the
+> annotations?  I was so fascinated by the idea of generating the header files
+> AND the LCLint information from the same source that I thought, the -lh
+> option would be the ONLY reasonable way to include .lcl-files in a project.
+> Anyway, I will have a look into LCLint's documentation to see, whether I can
+> isolate LCLint's stuff in .lcl-files.
+
+Yes, sort of.  You can express anything you put in annotations in the .c
+and .h file in an .lcl file, except for annotations on static functions
+and variables.  Since the static declarations are not part of the
+interface, they aren't in the .lcl file at all, so there is no way to
+put annotations on them.  Conceivably, you could have a tool that
+generates .lcl files from the source.  This would be a nice way to
+produce clean documentation, and avoid the duplication problems (or
+having to rely on .lh files).
+
+Inconsistencies between the code and lcl files are detected the same as
+inconsistencies between code and annotations.  LCLint reads in all the
+.lcl files first, and puts this information into the symbol table for
+checking the source files.  There's no need to use the .lh files (and if
+you look at them, they are just regular C header files.)
+
+--- Dave
+
+
+
+
+
+From evs  Tue Apr 21 11:15:25 1998
+Return-Path: <evs>
+Received: (from evs@localhost)
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) id LAA18559;
+	Tue, 21 Apr 1998 11:15:25 -0400
+Date: Tue, 21 Apr 1998 11:15:25 -0400
+Message-Id: <199804211515.LAA18559@salsa.lcs.mit.edu>
+From: David Evans <evs@salsa.lcs.mit.edu>
+To: christ@stud.fh-heilbronn.de, lclint-interest
+In-reply-to: 
+	<Pine.LNX.3.95.980421102258.31307A-100000@lemming.stud.fh-heilbronn.de>
+	(christ@stud.fh-heilbronn.de)
+Subject: Re: Question
+Reply-to: evs@salsa.lcs.mit.edu
+
+
+"Tilo Christ (MI)" <christ@stud.fh-heilbronn.de> writes,
+
+> This works great for function prototypes (LCLint actually realises
+> somehow, that the index and the returned pointer from DmCreateRecord are
+> aliases), but there is no way it lets me write sth. like this:
+>
+> int /*@only@*/ recordIndex;
+
+The trick is to use an abstract type instead of int.  For instance,
+
+	/*@-mutrep@*/
+	typedef /*@mutable@*/ /*@abstract@*/ int index;
+	/*@=mutrep@*/
+
+	/*@noaccess index@*/
+
+	/*@only@*/ index recordIndex;
+
+	/*@only@*/ index createRecord (...) { ... }
+
+	void releaseRecord (/*@only@*/ index) { ... }
+
+Note that the /*@-mutrep@*/ is required before the typedef, since
+otherwise LCLint will complain that the implementation is not actually
+mutable.  Note also that we need to use /*@noaccess index@*/ in the
+implementation to turn off access to the abstract type (this would be
+unnecessary if the type definition were in a different module);
+otherwise, LCLint would complain about the use of only on unshareable
+storage.
+
+Now, we can ensure that indexes are always created using createRecord,
+and always destroyed using releaseRecord using the regular memory
+checking.  (You'll probably have to use some syntactic comments to turn
+off messages in the implementations of createRecord and releaseRecord,
+since you will need to use the concrete representation and checking will
+know index is not really a fresh object.)
+
+--- Dave
+
+
+
+
+
+
+From hermannk@csi.com  Tue Apr 21 16:57:48 1998
+Return-Path: <hermannk@csi.com>
+Received: from NIH2WAAE (smtp5.site1.csi.com [149.174.183.74])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id QAA20607;
+	Tue, 21 Apr 1998 16:57:48 -0400
+Received: from mail pickup service by csi.com with Microsoft SMTPSVC;
+	 Tue, 21 Apr 1998 16:58:45 -0400
+Sender: hermannk@csi.com
+Received: from porky4.default.com (md48-202.mun.compuserve.com [195.232.56.202])
+	by hil-img-ims-1.compuserve.com (8.8.6/8.8.6/IMS-1.2) with ESMTP id QAA13759;
+	Tue, 21 Apr 1998 16:58:06 -0400 (EDT)
+Received: from localhost (hermannk@localhost)
+	by porky4.default.com (8.8.8/8.8.8) with SMTP id WAA14253;
+	Tue, 21 Apr 1998 22:54:24 +0200
+X-Authentication-Warning: porky4.default.com: hermannk owned process doing -bs
+Date: Tue, 21 Apr 1998 22:54:24 +0200 (CEST)
+From: Hermann Kleier <hermannk@csi.com>
+X-Sender: hermannk@porky4.default.com
+Reply-To: Hermann Kleier <hermannk@csi.com>
+To: David Evans <evs@salsa.lcs.mit.edu>
+cc: lclint-interest@salsa.lcs.mit.edu
+Subject: Re: Another hello.
+In-Reply-To: <199804211444.KAA18322@salsa.lcs.mit.edu>
+Message-ID: <Pine.LNX.3.96.980421222239.14136A-100000@porky4.default.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Dave,
+
+On Tue, 21 Apr 1998, David Evans wrote:
+
+> Hermann Kleier <hermannk@csi.com> writes, 
+
+>> ``Anything that relates to checking and can be expressed in comments in
+>> the .c and .h files could be expressed equivalently in .lcl-files.''
+
+> Yes,
+
+Sounds good,
+
+> sort of.
+
+but not perfect.
+
+> You can express anything you put in annotations in the .c and .h file in
+> an .lcl file,
+
+Sounds really good.
+
+> except for annotations on static functions and variables.
+
+Unluckily I feel that limiting the scope of identifiers (static functions
+and variables) helps me to define clean interfaces.  What about
+
+#ifdef LCLint
+#  define STATIC
+else
+#  define STATIC static
+#endif
+
+and define STATIC functions and variables as global resources (for LCLint
+only).  Is the preprocessor ($LCLINT_CPPCMD) run before LCLint scans the
+text?  If I do that, can I move all information given by annotations to
+.lcl-files?
+
+> Since the static declarations are not part of the interface,
+
+OK, static functions and variables are not seen by the linker.  I.e., they
+are not part of the EXTERNAL interface.  But they define the INTERNAL
+interface.  I'd like to have the internal interfaces clean too.
+
+> they aren't in the .lcl file at all, so there is no way to
+> put annotations on them.
+
+Does this mean that LCLint ignores all symbols with/without a static
+qualifier outside/inside functions?
+
+> Conceivably, you could have a tool that generates .lcl files from the
+> source.
+
+My plan is, to do it the other way around.  I feel that the annotations with
+their six character overhead (/*@@*/) pollute the program.  Even if I could
+get used to it, other programmers reading and maintaining my code would
+still be confused by this.  On the other hand, I feel that the .lcl-files
+are a good documentation, which should be as close to the implementation as
+possible.  Therefore I want to include the whole .lcl-files as ONE monolitic
+structured comment into the source and extract it with a tool to prepare for
+LCLint processing.
+
+Hermann
+
+
+
+
+From evs  Tue Apr 21 19:58:10 1998
+Return-Path: <evs>
+Received: (from evs@localhost)
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) id TAA21662;
+	Tue, 21 Apr 1998 19:58:10 -0400
+Date: Tue, 21 Apr 1998 19:58:10 -0400
+Message-Id: <199804212358.TAA21662@salsa.lcs.mit.edu>
+From: David Evans <evs@salsa.lcs.mit.edu>
+To: hermannk@csi.com, lclint-interest
+In-reply-to: <Pine.LNX.3.96.980421222239.14136A-100000@porky4.default.com>
+	(message from Hermann Kleier on Tue, 21 Apr 1998 22:54:24 +0200
+	(CEST))
+Subject: Re: Another hello.
+Reply-to: evs@salsa.lcs.mit.edu
+
+
+> Unluckily I feel that limiting the scope of identifiers (static functions
+> and variables) helps me to define clean interfaces.  What about
+> 
+> #ifdef LCLint
+> #  define STATIC
+> else
+> #  define STATIC static
+> #endif
+> ...
+
+The reason you can't declare static functions in LCL files is that LCL
+files are meant to describe the interface to a module --- that is, the
+functions and variables that clients of the module can rely on.  Adding
+implementation details to the LCL file would contradict this purpose,
+and reduce its usefullness as client documentation.
+
+Instead, if you want to have annotations for static functions and
+variables, but don't want to clutter your sources, you can put the
+declarations and annotations in a separate .h file.
+
+> My plan is, to do it the other way around.  I feel that the annotations with
+> their six character overhead (/*@@*/) pollute the program.  Even if I could
+> get used to it, other programmers reading and maintaining my code would
+> still be confused by this.  On the other hand, I feel that the .lcl-files
+> are a good documentation, which should be as close to the implementation as
+> possible.  Therefore I want to include the whole .lcl-files as ONE monolitic
+> structured comment into the source and extract it with a tool to prepare for
+> LCLint processing.
+
+You could, of course, use #define's to avoid needing the /*@'s (e.g.,
+#define only /*@only@*/).
+
+I'm not sure I understand what you mean by the rest --- what do you want
+to extract from the .lcl files?
+
+--- Dave
+
+From ok@atlas.otago.ac.nz  Tue Apr 21 21:54:47 1998
+Return-Path: <ok@atlas.otago.ac.nz>
+Received: from kili.otago.ac.nz (kili.otago.ac.nz [139.80.64.197])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id VAA22067;
+	Tue, 21 Apr 1998 21:54:37 -0400
+Received: from atlas.otago.ac.nz by rivendell.otago.ac.nz (PMDF V4.3-7 #2617)
+ id <01IW67OEOHDSDDYLA9@rivendell.otago.ac.nz>; Wed, 22 Apr 1998 13:55:42 -12
+Received: by atlas.otago.ac.nz; id AA29484; Wed, 22 Apr 1998 13:57:52 +1200
+Date: Wed, 22 Apr 1998 13:57:52 +1200
+From: "Richard A. O'Keefe" <ok@atlas.otago.ac.nz>
+Subject: Re: Another hello.c
+To: evs@salsa.lcs.mit.edu, lclint-interest@salsa.lcs.mit.edu, weco@csi.com
+Message-id: <9804220157.AA29484@atlas.otago.ac.nz>
+X-Envelope-to: evs@salsa.lcs.mit.edu, lclint-interest@salsa.lcs.mit.edu
+Content-transfer-encoding: 7BIT
+
+David Evans wrote:
+	LCLint is first and foremost intended as a research vechicle for
+	investigating what can be done with lightweight static checking
+	using supplemental information (specifications or annotations).
+	...
+	resources for LCLint development are very limited (i.e., me),
+	and duplicating checks done by existing compilers and lints is
+	not a high priority.
+
+This really bothers me.  The way I see it, LCLint is almost the only thing
+that lets me continue to write C code and retain any self-respect.  I say
+_almost_ because I aware of a commercial checker whose academic price was
+far outside any realistic Australian/New Zealand university budget, and
+of the 'PASS-C' systems developed at the Australia Software Quality Research
+Institute at Griffith University, which is far less capable than LCLint (but
+I'll return to it in a minute).
+
+LCLint has the potential to be a *major* help to people writing C, except
+for a few things:
+
+ 1. When I asked a student to extend it, he found the source code fairly
+    opaque.  The practical consequence of this is that the *whole* burden
+    of adding *any* check to LCLint must be borne by David Evans.
+
+    This is where PASS-C shines.  Rules are specified in a 'Defect
+    Specification Language', and it is possible for people to add their
+    own rules to the initial catalogue of about 100 checks.
+
+ 2. C9x is nearly here.
+
+    There are some fairly substantial changes.  New libraries are the least
+    of it.  There are Universal Character Names (\uxxxx \Uxxxxxxxx as in
+    Java and draft C++) which mean that tokenising _has_ to be done in
+    terms of 16-bit characters.  There's a lot of new syntax, although
+    much of it is shared with C++ (like 'for (int x = 1; x <= n; x++) ...').
+    And there _are_ new libraries.
+
+    Guess who has to bear the whole burden of migrating LCLint to C9x, if
+    it is to be done at all?
+
+ 3. The existing documentation is very useful, but there really needs to
+    be a book, because a lot of people who ought to be using this tool
+    don't even know how to use 'lint'.  (Just think about the tip given
+    recently about non-pointer 'handles'.  I'd never have thought of that.)
+
+What is there that we who have benefited from LCLint can do to increase
+the resources available for LCLint development?  (I'd gladly pay a
+shareware fee myself, but would that kind of thing actually be enough?)
+
+
+From weco@csi.com  Wed Apr 22 05:09:07 1998
+Return-Path: <weco@csi.com>
+Received: from opto4l.default.com (root@md06-200.mun.compuserve.com [195.232.35.200])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id FAA23168;
+	Wed, 22 Apr 1998 05:09:04 -0400
+Received: from localhost (weco@localhost)
+	by opto4l.default.com (8.8.8/8.8.8) with SMTP id KAA00225;
+	Wed, 22 Apr 1998 10:35:35 +0200
+X-Authentication-Warning: opto4l.default.com: weco owned process doing -bs
+Date: Wed, 22 Apr 1998 10:35:35 +0200 (CEST)
+From: Hermann Kleier <weco@csi.com>
+X-Sender: weco@opto4l.default.com
+Reply-To: Hermann Kleier <weco@csi.com>
+To: "Richard A. O'Keefe" <ok@atlas.otago.ac.nz>
+cc: evs@salsa.lcs.mit.edu, lclint-interest@salsa.lcs.mit.edu
+Subject: Re: Another hello.c
+In-Reply-To: <9804220157.AA29484@atlas.otago.ac.nz>
+Message-ID: <Pine.LNX.3.96.980422093951.214A-100000@opto4l.default.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Richard,
+
+On Wed, 22 Apr 1998, Richard A. O'Keefe wrote:
+
+> David Evans wrote:
+
+> 	resources for LCLint development are very limited (i.e., me),
+> 	and duplicating checks done by existing compilers and lints is
+> 	not a high priority.
+
+> This really bothers me.
+
+I must admit, me too.
+
+> I say _almost_ because I aware of a commercial checker whose academic
+> price was far outside any realistic Australian/New Zealand university
+> budget,
+
+I wonder which system you are talking about.  In our company I have access
+to FlexLint.  I am impressed by the density of the net that they hav spanned
+to filter C (and C++ !)-programs.  There are only rare situations, when
+bogus programs pass FlexeLint without diagnostics.
+
+But their approach is really different.  I can adapt my style of writing to
+the standards of FlexeLint and suppress the rest of the warnings with
+stylized comments.  But the result is simply a program without FlexeLint
+warnings.  No additional, human readable information.  This is the point,
+where LCLint jumps in.
+
+> This is where PASS-C shines.  Rules are specified in a 'Defect
+> Specification Language', and it is possible for people to add their own
+> rules to the initial catalogue of about 100 checks.
+
+I like the high level meta-languages to define rules.  They are easily
+extendable.  But: LCLint's rules are complex.  They have to consider many
+parameters (symbol names), which are supplied by annotations.  And the rules
+may interfere with other rules.  Can you verify that every LCLint rule can
+be (not has been) mapped to PASS-C rules?
+
+> a lot of people who ought to be using this tool don't even know how to use
+> 'lint'.
+
+lot of people?????
+
+I have a long-time experience with LINTs.  The rule is that a good LINT
+finds about 30 % of the bugs before you waste time by debugging.  On top of
+that you get information about how to define smart interfaces (Variable
+could be defined static, unused include, ...).  But against all experience
+it was impossible to force the external programmers to deliver LINT-clean
+code only.
+
+> What is there that we who have benefited from LCLint can do to increase
+> the resources available for LCLint development?  (I'd gladly pay a
+> shareware fee myself, but would that kind of thing actually be enough?)
+
+I am afraid that the market for video games is much larger than the market
+for tools to raise the quality of programs.  I assume that the shareware
+concept works fine for video games, but I guess that there are no more than
+100 users paying 100$s each (I would be one of the 100).  That's not enough
+to start a commercial project.
+
+Hermann
+
+
+
+From weco@csi.com  Wed Apr 22 10:16:27 1998
+Return-Path: <weco@csi.com>
+Received: from opto4l.default.com (root@md02-238.mun.compuserve.com [195.232.33.238])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id KAA24430;
+	Wed, 22 Apr 1998 10:16:19 -0400
+Received: from localhost (weco@localhost)
+	by opto4l.default.com (8.8.8/8.8.8) with SMTP id QAA01416;
+	Wed, 22 Apr 1998 16:13:53 +0200
+X-Authentication-Warning: opto4l.default.com: weco owned process doing -bs
+Date: Wed, 22 Apr 1998 16:13:53 +0200 (CEST)
+From: Hermann Kleier <weco@csi.com>
+X-Sender: weco@opto4l.default.com
+To: David Evans <evs@salsa.lcs.mit.edu>
+cc: lclint-interest@salsa.lcs.mit.edu
+Subject: Re: Another hello.c
+In-Reply-To: <199804202055.QAA15073@salsa.lcs.mit.edu>
+Message-ID: <Pine.LNX.3.96.980422153423.1276C-100000@opto4l.default.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Dave,
+
+On Mon, 20 Apr 1998, David Evans wrote:
+
+> Anything that relates to checking in an .lcl file could be expressed
+> equivalently in comments in the .c and .h files.  If you want to put this
+> in .lcl files
+
+I tried to move annotations into .lcl-files.  Then I recognized that I do
+not have a specification of .lcl-files.  Once I have used your article
+`LCLint: A Tool for Using Specifications to Check Code' as an example to
+create an .lcl file.  The LCLint User's Guide (Appendix G) says: The LCLint
+release package includes a grammar for LCL and examples of LCL
+specifications.
+
+Hermann
+
+
+
+From evs  Wed Apr 22 17:27:49 1998
+Return-Path: <evs>
+Received: (from evs@localhost)
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) id RAA26883;
+	Wed, 22 Apr 1998 17:27:49 -0400
+Date: Wed, 22 Apr 1998 17:27:49 -0400
+Message-Id: <199804222127.RAA26883@salsa.lcs.mit.edu>
+From: David Evans <evs@salsa.lcs.mit.edu>
+To: weco@csi.com, lclint-interest
+In-reply-to: <Pine.LNX.3.96.980422153423.1276C-100000@opto4l.default.com>
+	(message from Hermann Kleier on Wed, 22 Apr 1998 16:13:53 +0200
+	(CEST))
+Subject: Re: Another hello.c
+Reply-to: evs@salsa.lcs.mit.edu
+
+
+Hermann,
+
+> I tried to move annotations into .lcl-files.  Then I recognized that I do
+> not have a specification of .lcl-files.  Once I have used your article
+> `LCLint: A Tool for Using Specifications to Check Code' as an example to
+> create an .lcl file.  The LCLint User's Guide (Appendix G) says: The LCLint
+> release package includes a grammar for LCL and examples of LCL
+> specifications.
+
+Sorry, the LCL grammar is no longer included in the distribution.  You
+can find a slightly out-of-date grammar for LCL in
+ftp://ftp.sds.lcs.mit.edu/pub/lclint/lcl-syntax.ps.gz (postscript only).
+
+The best references for getting more information on LCL are:
+
+Guttag, John V. and Horning, James J., with Stephen J. Garland, Kevin D.
+Jones, Andr&eacute;s Modet, and Jeannette M. Wing. *Larch: Languages and
+Tools for Formal Specification*, Springer-Verlag, Texts and Monographs
+in Computer Science, 1993.
+
+Tan, Yang Meng.  *Formal Specification Techniques for Engineering
+Modular C*, Kluwer International Series in Software Engineering, Volume
+1, Kluwer Academic Publishers, Boston, 1995.  (Earlier version available
+as MIT/LCS/TR-619.)
+
+--- Dave
+
+
+
+
+From evs  Wed Apr 22 17:20:27 1998
+Return-Path: <evs>
+Received: (from evs@localhost)
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) id RAA26856;
+	Wed, 22 Apr 1998 17:20:27 -0400
+Date: Wed, 22 Apr 1998 17:20:27 -0400
+Message-Id: <199804222120.RAA26856@salsa.lcs.mit.edu>
+From: David Evans <evs@salsa.lcs.mit.edu>
+To: ok@atlas.otago.ac.nz, lclint-interest
+In-reply-to: <9804220157.AA29484@atlas.otago.ac.nz> (ok@atlas.otago.ac.nz)
+Subject: Re: Another hello.c
+Reply-to: evs@salsa.lcs.mit.edu
+
+
+"Richard A. O'Keefe" <ok@atlas.otago.ac.nz> writes,
+
+> David Evans wrote:
+> 	LCLint is first and foremost intended as a research vechicle for
+>	investigating what can be done with lightweight static checking
+>	using supplemental information (specifications or annotations).
+>	...
+>	resources for LCLint development are very limited (i.e., me),
+>	and duplicating checks done by existing compilers and lints is
+>	not a high priority.
+>
+> This really bothers me.  The way I see it, LCLint is almost the only thing
+> that lets me continue to write C code and retain any self-respect.  I say
+> _almost_ because I aware of a commercial checker whose academic price was
+> far outside any realistic Australian/New Zealand university budget, and
+> of the 'PASS-C' systems developed at the Australia Software Quality Research
+> Institute at Griffith University, which is far less capable than LCLint (but
+> I'll return to it in a minute).
+>
+> ...
+>
+
+I think the only long-term way to ensure the future of LCLint would be
+if it is taken over by a company with a strong commercial interest in
+developing and marketing it.  (So far, we haven't tried to solicit
+commercial interest, and haven't been seriously approached by anyone
+wanting to do this, but I would be interested in suggestions from
+members of this list if you know of a company that would be good for
+this.)  Even if commercialization is possible, it has some serious
+drawbacks --- the price for LCLint would increase (i.e., it wouldn't be
+free) and source code would probably no longer be distributed.  One
+alternative I'd be happy if a company would want to do, would be to
+continue to provide a free C version, and make a commercial C++
+"professional" version.  Of course, I don't know if there are any
+existing companies that would want to do this.
+
+> 
+> What is there that we who have benefited from LCLint can do to increase
+> the resources available for LCLint development?  (I'd gladly pay a
+> shareware fee myself, but would that kind of thing actually be enough?)
+>
+
+Its a nice offer, but I don't think it would be feasible (since LCLint
+was developed using research grants), and I don't think this would be
+enough to get more LCLint development done.  Currently, there are about
+600 users active enough to be on the lclint-announce list.  I'd guess
+with some minimal marketing effort, this could be doubled or tripled
+fairly easily, but even if everyone paid a typical shareware
+registration fee it still wouldn't be enough to hire a developer.  For
+me personally, its unlikely that shareware fees would increase the time
+I spent on LCLint development and support, since my priority for the
+next year to is finish my thesis.
+
+I think for something like LCLint to make sense commercially, it would
+need to be marketed as a fairly expensive product licensed to
+medium-large development companies and perhaps a less expensive
+single-user product marketed to individual developers.  I'm open to
+suggestions of academic groups that would want to take it over, but
+question if any non-commercial entity could make the kind of commitment
+necessary to ensure continued development and support.
+
+--- Dave
+
+From ok@atlas.otago.ac.nz  Wed Apr 22 20:55:14 1998
+Return-Path: <ok@atlas.otago.ac.nz>
+Received: from kili.otago.ac.nz (kili.otago.ac.nz [139.80.64.197])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id UAA30581;
+	Wed, 22 Apr 1998 20:55:04 -0400
+Received: from atlas.otago.ac.nz by rivendell.otago.ac.nz (PMDF V4.3-7 #2617)
+ id <01IW7JW2ZFKWDDYWGW@rivendell.otago.ac.nz>; Thu, 23 Apr 1998 12:56:17 -12
+Received: by atlas.otago.ac.nz; id AA09487; Thu, 23 Apr 1998 12:58:25 +1200
+Date: Thu, 23 Apr 1998 12:58:25 +1200
+From: "Richard A. O'Keefe" <ok@atlas.otago.ac.nz>
+Subject: Re: Another hello.c
+To: ok@atlas.otago.ac.nz, weco@csi.com
+Cc: evs@salsa.lcs.mit.edu, lclint-interest@salsa.lcs.mit.edu
+Message-id: <9804230058.AA09487@atlas.otago.ac.nz>
+X-Envelope-to: evs@salsa.lcs.mit.edu, lclint-interest@salsa.lcs.mit.edu
+Content-transfer-encoding: 7BIT
+
+	> I say _almost_ because I aware of a commercial checker whose academic
+	> price was far outside any realistic Australian/New Zealand university
+	> budget,
+	
+	I wonder which system you are talking about.
+
+It's called "QA C".  There's a book called "Safer C" which talks about
+writing clean C in general, which mentions it.  There is also a QA C++.
+
+	In our company I have access to FlexLint.
+
+I sent them a FAX once and never got a reply.
+I figured that if they didn't want to sell to me, I didn't want to buy.
+I've always wondered if it was really as good as it sounded.
+The fact that it deals with C++ as well is an advantage;
+I really don't see it as being practical for LCLint to `upgraded'
+to C++ without more people working on it.
+
+	> This is where PASS-C shines.  Rules are specified in a 'Defect
+	> Specification Language', and it is possible for people to add their own
+	> rules to the initial catalogue of about 100 checks.
+	
+	Can you verify that every LCLint rule can
+	be (not has been) mapped to PASS-C rules?
+	
+I did not mean to imply that they can.  It is my belief that some cannot.
+Point is, for what it _can_ do it's easier than getting in and hacking C.
+Again, PASS-C is a university project.
+
+There is also a program 'superlint' that comes with the WildLIFE
+distribution (too bad DEC shut that group down), where the extension
+language is LIFE, which is pretty easy for Prolog/ML/Haskell programmers
+to grasp.  It comes with a very small kit of rules, but the thing is,
+if you want ONE more check, it's easier to extend.
+
+Given that LCLint is part of a research project, I seriously believe
+that there is room for some research on "defect specification languages".
+
+	> a lot of people who ought to be using this tool don't even know how to use
+	> 'lint'.
+	
+	lot of people?????
+	
+Isn't "everyone who uses C" a lot of people?
+
+	I have a long-time experience with LINTs.
+
+One thing I find encouraging is that the Lint that comes in the
+SUNWspro kit for Solaris is significantly improved from the old one.
+They didn't just upgrade it to handle ANSI C; they added some new
+analyses, including a dataflow analysis which unfortunately isn't
+anywhere near as good as LCLint's, but at least they tried.
+
+	But against all experience it was impossible to force the
+	external programmers to deliver LINT-clean code only.
+	
+The book "Safer C" has some advice about that.  It requires a tool
+where you can switch checks on one at a time.  Leaping from "current
+practice" all the way to "lint-free" in one step is a _huge_ jump for
+most C programmers.  But avoiding, say, uninitialised variables, _that_
+they can do.  And then they can do the next thing, and the next thing.
+With external programmers, if you have a continuing relationship with
+them, the thing is to run the code through Lint, find the most serious
+bug caught by Lint, and tell them "you had such-and-such an avoidable
+bug.  In the future, we'll only accept code which doesn't contain such
+bugs, and here is what you switch on to check."  In my case, of course,
+they'd just say "who cares about YOU?".
+
+There was one program I picked up from a professional software engineering
+educator, and lint had more complaints than source lines.  When you fought
+your way through the thicket, it had of course found a number of serious
+mistakes which could indeed cause the program to crash in practice.  Point
+is, people who aren't already sold on Lint will be put off forever by such
+a great list of errors.  They "KNOW" their code is right, so it "MUST" be
+Lint that's wrong.
+
+One of LCLint's best practical features, then, is the ability to set it up
+for a _low_ level of checking, and gradually switch things on.
+
+	> What is there that we who have benefited from LCLint can do to increase
+	> the resources available for LCLint development?  (I'd gladly pay a
+	> shareware fee myself, but would that kind of thing actually be enough?)
+	
+	I am afraid that the market for video games is much larger  than
+	the market for tools to raise the quality of programs.  I assume
+	that  the  shareware  concept  works fine for video games, but I
+	guess that there are no more than 100 users paying 100$s each (I
+	would be one  of  the  100).   That's  not  enough  to  start  a
+	commercial project.
+
+There's a lot more shareware out there than video games.  The Alpha editor,
+for example.  But I take your point about the numbers, which is precisely
+why I doubted whether it would be enough.
+	
+
+From ph@sxb.bsf.alcatel.fr  Thu Apr 23 06:56:09 1998
+Return-Path: <ph@sxb.bsf.alcatel.fr>
+Received: from bsf.alcatel.fr (root@laposte.bsf.alcatel.fr [193.104.128.7])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id GAA32634
+	for <lclint-interest@salsa.lcs.mit.edu>; Thu, 23 Apr 1998 06:56:06 -0400
+Received: from mail (mail.sxb.bsf.alcatel.fr [155.132.20.69])
+	by bsf.alcatel.fr (8.8.8/8.8.8) with SMTP id NAA01718
+	for <lclint-interest@salsa.lcs.mit.edu>; Thu, 23 Apr 1998 13:01:29 +0200 (MET DST)
+Received: from maestro by mail (SMI-8.6/ABS1.4) id MAA15547; Thu, 23 Apr 1998 12:58:41 +0200
+Received: from olfield by maestro (5.x/ABS1.5) id AA27343; Thu, 23 Apr 1998 12:58:39 +0200
+Received: from sxb.bsf.alcatel.fr by olfield (SMI-8.6/ABS1.5) id MAA03751; Thu, 23 Apr 1998 12:58:38 +0200
+Sender: ph@sxb.bsf.alcatel.fr
+Message-Id: <353F1EDC.AA220841@sxb.bsf.alcatel.fr>
+Date: Thu, 23 Apr 1998 12:58:36 +0200
+From: Pierre HANSER <ph@sxb.bsf.alcatel.fr>
+X-Mailer: Mozilla 4.05 [en] (X11; I; SunOS 5.5.1 sun4m)
+Mime-Version: 1.0
+To: lclint-interest@salsa.lcs.mit.edu
+Subject: problem with 'exported but not used outside'
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+hello
+
+I'm using lclint 2.4 on a small project, and currently focusing
+on having cleen interfaces. Poor usage... but:
+
+It's seems that lclint does not always see all the usages
+of a variable and gives erroneous messages: 'variable
+exported but not used outside'.
+I'm quite sure the variable is used outside: from a
+logical point of view, the software must use the variable
+in multiple files, and also if I make it static,
+the linker complains...
+
+Has this problem already been reported?
+
+	pierre
+
+From weco@csi.com  Thu Apr 23 10:08:08 1998
+Return-Path: <weco@csi.com>
+Received: from opto4l.default.com (root@md20-223.mun.compuserve.com [195.232.42.223])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id KAA03784;
+	Thu, 23 Apr 1998 10:08:05 -0400
+Received: from localhost (weco@localhost)
+	by opto4l.default.com (8.8.8/8.8.8) with SMTP id QAA00657;
+	Thu, 23 Apr 1998 16:08:25 +0200
+X-Authentication-Warning: opto4l.default.com: weco owned process doing -bs
+Date: Thu, 23 Apr 1998 16:08:25 +0200 (CEST)
+From: Hermann Kleier <weco@csi.com>
+X-Sender: weco@opto4l.default.com
+Reply-To: Hermann Kleier <weco@csi.com>
+To: "Richard A. O'Keefe" <ok@atlas.otago.ac.nz>
+cc: evs@salsa.lcs.mit.edu, lclint-interest@salsa.lcs.mit.edu
+Subject: Re: Another hello.c
+In-Reply-To: <9804230058.AA09487@atlas.otago.ac.nz>
+Message-ID: <Pine.LNX.3.96.980423084308.226A-100000@opto4l.default.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Richard,
+
+On Thu, 23 Apr 1998, Richard A. O'Keefe wrote:
+
+> I sent them a FAX once and never got a reply.
+> I figured that if they didn't want to sell to me, I didn't want to buy.
+
+Same to me.  But persistency really pays.
+
+> I've always wondered if it was really as good as it sounded.
+
+It is great!  The concept of FlexeLint resembles the concept of traditional
+LINTs.  The idea is that clean code are passed without any diagnostics.  You
+do not have to care about LINT as long as you write clean code.  This is the
+theory.  In practice you spend about 30% of your development time to make
+your code FlexeLint compatible.  This results almost always in cleaner
+interfaces.  FlexeLint is the better LINT.  It is hard to find an example of
+a sloppy program containing a bug that is visible at source code level that
+does not trigger some FlexeLint diagnostics.  On the other hand I cannot
+remember that FlexeLint sent diagnostics w/o a reason for it.  All in all it
+seems to be a stable product.  To give a measure of the complexity: The
+source code of FlexeLint counts about 280,000 lines.  There a two methods to
+live with FlexeLint: Write your sources FlexeLint-compatible or clutter your
+sources with stylized comments.  I have chosen to prefer the first method.
+This is not too hard.
+
+By now, I have almost no experience with LCLint.  I plan to use it in a
+small (estimated 5000 lines) project with lots of cryptical interfaces
+calling for abstract data types.  I am still a newcomer asking myself,
+whether LCLint can support my pedantic style of programming.  The design of
+LCLint is different.  It seems to be much simpler.  The robustness of LCLint
+2.4b is much less than that of FlexeLint 7.50.  But I feel that its concept
+of annotations is superior in terms of documentation (FlexeLint gives some
+documentation too.).
+
+> The fact that it deals with C++ as well is an advantage;
+
+FlexeLint is still one source of information for me to learn C++.
+
+>> Can you verify that every LCLint rule can be (not has been) mapped to
+>> PASS-C rules?
+
+> I did not mean to imply that they can.  It is my belief that some cannot.
+
+You would have to go into details to see which rules cannot be ported and
+whether they are really essential.  I feel that this ends up in modifying
+PASS-C.
+
+> Again, PASS-C is a university project.
+
+Is this an advatage or a disadvantage?
+
+> In my case, of course, they'd just say "who cares about YOU?".
+
+And in my case they ask me, how much faster the implementation will go and how
+much cheaper the development will be.  Maintenance?  Hmmmmh.
+
+> They "KNOW" their code is right, so it "MUST" be Lint that's wrong.
+
+They know what they are doing.  Really?
+
+> One of LCLint's best practical features, then, is the ability to set it up for
+> a _low_ level of checking, and gradually switch things on.
+
+Very useful.  The same applies to FlexeLint.
+
+
+
+From evs  Thu Apr 23 10:14:43 1998
+Return-Path: <evs>
+Received: (from evs@localhost)
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) id KAA03848;
+	Thu, 23 Apr 1998 10:14:43 -0400
+Date: Thu, 23 Apr 1998 10:14:43 -0400
+Message-Id: <199804231414.KAA03848@salsa.lcs.mit.edu>
+From: David Evans <evs@salsa.lcs.mit.edu>
+To: ph@sxb.bsf.alcatel.fr, lclint-interest
+In-reply-to: <353F1EDC.AA220841@sxb.bsf.alcatel.fr> (message from Pierre
+	HANSER on Thu, 23 Apr 1998 12:58:36 +0200)
+Subject: Re: problem with 'exported but not used outside'
+Reply-to: evs@salsa.lcs.mit.edu
+
+
+Pierre HANSER <ph@sxb.bsf.alcatel.fr> writes,
+
+> It's seems that lclint does not always see all the usages
+> of a variable and gives erroneous messages: 'variable
+> exported but not used outside'.
+> I'm quite sure the variable is used outside: from a
+> logical point of view, the software must use the variable
+> in multiple files, and also if I make it static,
+> the linker complains...
+
+Are you sure lclint is seeing all the source files?  If you are just
+checking a few of the files and not the complete program, you can use
+the +partial flag to prevent lclint from checking things like complete
+definition and minimum visibility.
+
+--- Dave
+
+
+
+
+
+From Rick_Farnbach@mentorg.com  Thu Apr 23 16:51:24 1998
+Return-Path: <Rick_Farnbach@mentorg.com>
+Received: from newsgw.mentorg.com (newsgw.mentorg.com [192.94.38.66])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id QAA10348
+	for <lclint-interest@salsa.lcs.mit.edu>; Thu, 23 Apr 1998 16:51:23 -0400
+Received: from exgw.wv.mentorg.com by newsgw.mentorg.com (8.8.8/CF5.40F)
+	id NAA02841; Thu, 23 Apr 1998 13:52:47 -0700 (PDT)
+Received: from svr-orw-exc-01.wv.mentorg.com by exgw.wv.mentorg.com (8.7.5/CF5.33R)
+	id NAA21839; Thu, 23 Apr 1998 13:52:45 -0700 (PDT)
+Received: by svr-orw-exc-01.wv.mentorg.com with Internet Mail Service (5.5.1960.3)
+	id <JD0BY6ZG>; Thu, 23 Apr 1998 13:52:45 -0700
+Message-ID: <B88ACAEE9AD1D1119741006097B5C9300E379E@svr-orw-exc-01.wv.mentorg.com>
+From: "Farnbach, Rick" <Rick_Farnbach@mentorg.com>
+To: "'lclint-interest@salsa.lcs.mit.edu'"
+	 <lclint-interest@salsa.lcs.mit.edu>
+Subject: Can LCLint be used to enforce variable locking?
+Date: Thu, 23 Apr 1998 13:52:44 -0700
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.1960.3)
+Content-Type: text/plain
+
+I have used LCLint off-and-on for some time now, but unfortunately never
+made it very deep into the specification based checking.  This new
+release of LCLint and the renewed mailing list interest have caused me
+to pick it up again and try applying it to a current problem I am trying
+to weed out of some legacy code.
+
+Specifically, I would like to annotate my code to lock and unlock
+variable values, making them constant over a section of code.  This is
+needed, for example, when caching function return values, or in my case,
+when working around a relocating memory manager.
+
+The code fragment:
+  x = f(a) + 1;
+  ... some processing ...
+  y = f(a) + 2;
+is equivalent to the code fragment
+  t = f(a);
+  x = t + 1;
+  ... some processing ...
+  y = t + 2;
+only if the value of a does not change during the "... some processing
+..." step.
+
+Can LCLint be used to enforce this?
+
+What I would like would be something like:
+  /*@Lock a@*/
+  t = f(a);
+  x = t + 1;
+  ... some processing ...
+  y = t + 2;
+  /*@Unlock a@*/
+It would be an error to lock a variable the does not exist, to exit a
+command stream (via break, return, etc.) without unlocking a locked
+variable, to modify a locked variable, or to call a function that may
+modify a variable.
+
+Is there a better way to check for this?  Perhaps some sort of a
+"shared" specifier for a?
+
+Thanks,
+Rick
+
+
+From christ@stud.fh-heilbronn.de  Fri Apr 24 05:41:49 1998
+Return-Path: <christ@stud.fh-heilbronn.de>
+Received: from noc.belwue.de (root@noc.BelWue.DE [129.143.2.1])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id FAA03167
+	for <lclint-interest@salsa.lcs.mit.edu>; Fri, 24 Apr 1998 05:41:49 -0400
+Received: from dns1.rz.fh-heilbronn.de (dns1.rz.fh-heilbronn.de [141.7.1.18])
+	by noc.belwue.de (8.8.8/8.8.8) with ESMTP id LAA20840;
+	Fri, 24 Apr 1998 11:41:13 +0200 (MET DST)
+	env-from (christ@stud.fh-heilbronn.de)
+Received: from lemming.stud.fh-heilbronn.de (root@lemming.stud.fh-heilbronn.de [141.7.11.12])
+	by dns1.rz.fh-heilbronn.de (8.8.5/8.8.5) with ESMTP id LAA09801;
+	Fri, 24 Apr 1998 11:40:23 +0200 (MET DST)
+Received: from lemming.stud.fh-heilbronn.de (christ@lemming.stud.fh-heilbronn.de [141.7.11.12])
+	by lemming.stud.fh-heilbronn.de (8.8.6/8.8.6) with SMTP id LAA00563;
+	Fri, 24 Apr 1998 11:40:56 +0200
+Date: Fri, 24 Apr 1998 11:40:55 +0200 (MEST)
+From: "Tilo Christ (MI)" <christ@stud.fh-heilbronn.de>
+To: "Farnbach, Rick" <Rick_Farnbach@MENTORG.COM>
+cc: "'lclint-interest@salsa.lcs.mit.edu'" <lclint-interest@salsa.lcs.mit.edu>
+Subject: Re: Can LCLint be used to enforce variable locking?
+In-Reply-To: <B88ACAEE9AD1D1119741006097B5C9300E379E@svr-orw-exc-01.wv.mentorg.com>
+Message-ID: <Pine.LNX.3.95.980424111939.32483A-100000@lemming.stud.fh-heilbronn.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Hi Rick!
+
+> needed, for example, when caching function return values, or in my case,
+> when working around a relocating memory manager.
+> 
+I had a similar problem a few days ago and I solved it by declaring an
+abstract data-type that was tailored for linting and by defining that same
+data-type to the original definition, when I was not linting (I use
+conditional compilation for that). It looks sth. like that (this is all
+off the top of my head, I don't have my source handy right now):
+
+#ifdef _LINT
+typedef /*@abstract@*/ struct {
+	/*@only@*/VoidPtr handle;
+	/*@only@*/VoidPtr locked;
+} HandleType;
+#else
+typedef UInt HandleType;
+#endif
+
+Remember to specify -D_LINT on the command-line to lclint for this to
+work. VoidPtr is an arbitrarily chosen pointer-type. 
+
+Now, my function definitions look like that:
+
+/*@special@*/HandleType getNewMem( size_t size )
+	/*@defines result.handle@*/
+	/*@post:isnull result.locked@*/
+;
+
+/*@dependent@*/VoidPtr lockHandle( /*@special@*/HandleType handle )
+	/*@pre:isnull handle.locked@*/
+	/*@defines handle.locked@*/
+	/*@uses handle.handle@*/
+;
+
+void unlockHandle( /*@special@*/HandleType handle )
+	/*@pre:notnull handle.locked@*/
+	/*@post:isnull handle.locked@*/
+	/*@releases handle.locked@*/
+;
+
+void freeMemory( /*@special@*/HandleType handle )
+	/*@pre:isnull handle.locked@*/
+	/*@releases handle.handle@*/
+;
+
+This works ok, except for the fact that I find it very hard to check for a
+NULL-result from getMemory() (i.e. I haven't found a solution for that
+yet).
+
+Cheers,
+Tilo
+
+
+
+From Rick_Farnbach@mentorg.com  Wed Apr 29 14:34:49 1998
+Return-Path: <Rick_Farnbach@mentorg.com>
+Received: from newsgw.mentorg.com (newsgw.mentorg.com [192.94.38.66])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id OAA01148
+	for <lclint-interest@salsa.lcs.mit.edu>; Wed, 29 Apr 1998 14:34:49 -0400
+Received: from exgw.wv.mentorg.com by newsgw.mentorg.com (8.8.8/CF5.40F)
+	id LAA20323; Wed, 29 Apr 1998 11:35:53 -0700 (PDT)
+Received: from svr-orw-exc-01.wv.mentorg.com by exgw.wv.mentorg.com (8.7.5/CF5.33R)
+	id LAA20389; Wed, 29 Apr 1998 11:35:52 -0700 (PDT)
+Received: by svr-orw-exc-01.wv.mentorg.com with Internet Mail Service (5.5.1960.3)
+	id <JYS7JHZ3>; Wed, 29 Apr 1998 11:35:51 -0700
+Message-ID: <B88ACAEE9AD1D1119741006097B5C9300E37A2@svr-orw-exc-01.wv.mentorg.com>
+From: "Farnbach, Rick" <Rick_Farnbach@mentorg.com>
+To: "'Tilo Christ (MI)'" <christ@stud.fh-heilbronn.de>,
+        "Farnbach, Rick"
+	 <Rick_Farnbach@mentorg.com>
+Cc: "'lclint-interest@salsa.lcs.mit.edu'"
+	 <lclint-interest@salsa.lcs.mit.edu>
+Subject: RE: Can LCLint be used to enforce variable locking?
+Date: Wed, 29 Apr 1998 11:35:49 -0700
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.1960.3)
+Content-Type: text/plain
+
+On Friday, April 24, 1998 2:41 AM, Tilo Christ (MI)
+[SMTP:christ@stud.fh-heilbronn.de] wrote:
+> Hi Rick!
+> 
+> > needed, for example, when caching function return values, or in my
+case,
+> > when working around a relocating memory manager.
+> > 
+> I had a similar problem a few days ago and I solved it by declaring an
+> abstract data-type that was tailored for linting and by defining that
+same
+> data-type to the original definition, when I was not linting (I use
+> conditional compilation for that). It looks sth. like that (this is
+all
+> off the top of my head, I don't have my source handy right now):
+> 
+Thanks.  This is a very interesting way of working around the problem.
+I tried an example and it seems to work OK.  Unfortunately, it will not
+work in my case since I am trying to lock and unlock a global variable.
+LCLint does not yet keep track of special conditions on globals.
+
+This is not to say that LCLint offers no help.  I think what I am going
+to have to do is propagate "modifies" information for the globals in
+question and then check by hand that no calls are made to routines that
+modify the global memory pointer pool whenever locations are cached.
+Not entirely automatic, but not entirely manual, either.
+
+In the spirit of the "Hello world" examples that have been used lately,
+I worked up the enclosed hello world program that demonstrates the
+problem I am trying to solve.  LCLint completes without complaint even
+though "madd" may move its memory around.  (The lines marked "BUG" cause
+madd to move memory and cause incorrect behavior.  Without these lines
+the program behaves correctly (on my system), but this behavior is not
+guaranteed.)
+
+What I will be doing by hand is noting that "madd()" modifies "message",
+which is an only pointer, and should therefore invalidate derived
+references, such as "m" in this example.  Is there some other
+combination of checks or modifiers that would further automate this
+checking?
+
+Rick
+
+-------- Begin test.c --------
+
+#include <stdlib.h>
+#include <assert.h>
+
+#define BUG(x) x
+
+#if 0
+static /*@null@*/ void *sem;
+
+extern void lock( void )
+     /*@pre:isnull sem@*/
+     /*@post:notnull sem@*/
+     /*@globals sem@*/
+     /*@modifies sem@*/
+     ;
+
+extern void unlock( void )
+     /*@pre:notnull sem@*/
+     /*@post:isnull sem@*/
+     /*@globals sem@*/
+     /*@modifies sem@*/
+     ;
+
+#endif
+#define lock()
+#define unlock()
+
+static /*@only@*/ /*@null@*/ char *message;
+
+static void madd( char *s )
+     /*@globals message@*/
+     /*@modifies message@*/
+{
+  char *newstr;
+
+  if( message!=0 ) {
+    size_t len = strlen(message);
+    message = realloc( message, len+strlen(s)+2 );
+    assert( message!=0 );
+    newstr = &message[len];
+    *newstr++ = ' ';
+  } else {
+    message = malloc( strlen(s)+1 );
+    assert( message!=0 );
+    newstr = message;
+  }
+  strcpy( newstr, s );
+}
+
+static void mclear( void )
+     /*@globals message@*/
+     /*@modifies message@*/
+{
+  free( message );
+  message = 0;
+}
+
+int
+main(/*@unused@*/ int argc, /*@unused@*/ char *argv[])
+     /*@globals message,fileSystem@*/
+     /*@modifies message,fileSystem@*/
+{
+  char *m;
+  BUG(/*@only@*/ /*@null@*/ char *t;)
+
+  madd( "Hello" );
+  assert( message!=0 );
+  lock();
+  m = message;
+  BUG(t = malloc(10);)
+  madd( "world!" );
+  (void)puts( m );
+  unlock();
+  mclear();
+  BUG(free(t);)
+  return( 0 );
+}
+
+From idr@cs.pdx.edu  Thu May 28 13:31:24 1998
+Return-Path: <idr@cs.pdx.edu>
+Received: from rigel.cs.pdx.edu (root@rigel.cs.pdx.edu [131.252.220.22])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id NAA00417
+	for <lclint-interest@salsa.lcs.mit.edu>; Thu, 28 May 1998 13:31:23 -0400
+Received: from sirius.cs.pdx.edu (idr@sirius.cs.pdx.edu [131.252.220.13])
+	by rigel.cs.pdx.edu (8.8.6/8.8.6) with ESMTP id KAA09724
+	for <lclint-interest@sds.lcs.mit.edu>; Thu, 28 May 1998 10:32:36 -0700 (PDT)
+From: Ian D Romanick <idr@cs.pdx.edu>
+Received: (from idr@localhost)
+	by sirius.cs.pdx.edu (8.8.6/8.8.6) id KAA04721
+	for lclint-interest@sds.lcs.mit.edu; Thu, 28 May 1998 10:32:35 -0700 (PDT)
+Message-Id: <199805281732.KAA04721@sirius.cs.pdx.edu>
+Subject: Re: subscribe
+To: lclint-interest@salsa.lcs.mit.edu
+Date: Thu, 28 May 1998 10:32:35 -0700 (PDT)
+In-Reply-To: <199805271819.OAA12575@oregano.lcs.mit.edu> from "David Evans" at May 27, 98 02:19:00 pm
+X-Mailer: ELM [version 2.4 PL24alpha3]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+I am currently working professionally and "recreationally" in three areas of
+development: real-time control systems, games, distributed computing
+(clustering, etc).  I've also done some work in data compression.
+
+So far, LCLint seems to work pretty well.  I've only had to resort to using
+/*@i@*/ a couple of times.  However, it would be nice if files in big
+projects could be done one at a time.  I've not found a way to do this.  I
+used to have something like the following in my makefiles:
+
+.SUFFIXES: .ln
+.c.ln:
+	$(LINT) $(LINTFLAGS) -c $<
+
+lint : $& $(LINTFILES)
+	$(LINT) $(LINTFLAGS) $(LINTFILES) 
+
+The '$&' tells Sequent's make to build the dependencies in parallel.  Since
+I do most of my work on Sequent machines with 10 or more procs, even huge
+projects used to lint pretty damn fast.
+
+--
+"With a touch more confidence and a liberal helping of ignorance I would have 
+been a famous evangelist."
+                        -- Stranger In A Strange Land
+PLENTY of ignorance at http://www.cs.pdx.edu/~idr
+
+From evs@oregano.lcs.mit.edu  Thu May 28 17:19:11 1998
+Return-Path: <evs@oregano.lcs.mit.edu>
+Received: from oregano.lcs.mit.edu (evs@oregano.lcs.mit.edu [18.31.0.141])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id RAA02441
+	for <lclint-interest@salsa.lcs.mit.edu>; Thu, 28 May 1998 17:19:11 -0400
+Received: (from evs@localhost)
+	by oregano.lcs.mit.edu (8.8.5/8.8.5) id RAA14067;
+	Thu, 28 May 1998 17:20:27 -0400
+Date: Thu, 28 May 1998 17:20:27 -0400
+Message-Id: <199805282120.RAA14067@oregano.lcs.mit.edu>
+From: David Evans <evs@oregano.lcs.mit.edu>
+To: lclint-interest@salsa.lcs.mit.edu
+Subject: [idr@cs.pdx.edu: re: subscribe]
+Reply-to: evs@salsa.lcs.mit.edu
+
+------- Start of forwarded message -------
+From: Ian D Romanick <idr@cs.pdx.edu>
+Subject: re: subscribe
+To: evs@lcs.mit.edu
+Date: Thu, 28 May 1998 10:39:48 -0700 (PDT)
+X-Mailer: ELM [version 2.4 PL24alpha3]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+[I tried to send this directly to the list, but it bounced with a really
+wierd error.  Not the usual unknown user.]
+
+I am currently working professionally and "recreationally" in three areas of
+development: real-time control systems, games, distributed computing
+(clustering, etc).  I've also done some work in data compression.
+
+So far, LCLint seems to work pretty well.  I've only had to resort to using
+/*@i@*/ a couple of times.  However, it would be nice if files in big
+projects could be done one at a time.  I've not found a way to do this.  I
+used to have something like the following in my makefiles:
+
+.SUFFIXES: .ln
+.c.ln:
+	$(LINT) $(LINTFLAGS) -c $<
+
+lint : $& $(LINTFILES)
+	$(LINT) $(LINTFLAGS) $(LINTFILES) 
+
+The '$&' tells Sequent's make to build the dependencies in parallel.  Since
+I do most of my work on Sequent machines with 10 or more procs, even huge
+projects used to lint pretty damn fast.
+
+- -- 
+Famous last words: "The internal works of this software is quite complcated. 
+    The user need not know about this complexity."
+
+My last words are at http://www.cs.pdx.edu/~idr/
+------- End of forwarded message -------
+
+From idr@cs.pdx.edu  Wed Jun  3 17:20:46 1998
+Return-Path: <idr@cs.pdx.edu>
+Received: from rigel.cs.pdx.edu (root@rigel.cs.pdx.edu [131.252.220.22])
+	by salsa.lcs.mit.edu (8.8.5/8.8.5) with ESMTP id RAA27657
+	for <lclint-interest@salsa.lcs.mit.edu>; Wed, 3 Jun 1998 17:20:45 -0400
+Received: from sirius.cs.pdx.edu (idr@sirius.cs.pdx.edu [131.252.220.13])
+	by rigel.cs.pdx.edu (8.8.6/8.8.6) with ESMTP id OAA29704
+	for <lclint-interest@sds.lcs.mit.edu>; Wed, 3 Jun 1998 14:23:44 -0700 (PDT)
+From: Ian D Romanick <idr@cs.pdx.edu>
+Received: (from idr@localhost)
+	by sirius.cs.pdx.edu (8.8.6/8.8.6) id OAA19022
+	for lclint-interest@sds.lcs.mit.edu; Wed, 3 Jun 1998 14:23:44 -0700 (PDT)
+Message-Id: <199806032123.OAA19022@sirius.cs.pdx.edu>
+Subject: Bug with function typedefs?
+To: lclint-interest@salsa.lcs.mit.edu
+Date: Wed, 3 Jun 1998 14:23:43 -0700 (PDT)
+X-Mailer: ELM [version 2.4 PL24alpha3]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+The following code segement incorrectly produces a LCLint warning (at the
+end).  Is there any reasonable workaround?
+
+#include <stdlib.h>
+
+typedef int (foo_t)(int, int);
+/*@external@*/ extern foo_t * v;
+
+int
+main( void )
+{
+    int  g;
+    
+    g = v(1,2);
+    return( EXIT_SUCCESS );
+}
+
+
+~/devel/experiments 14:16:46>lclint +checks function_pointer.c
+LCLint 2.4b --- 18 Apr 98
+
+function_pointer.c: (in function main)
+function_pointer.c:11:9: Call to non-function (type foo_t *): v
+  Types are incompatible. (-type will suppress message)
+  
+Finished LCLint checking --- 1 code error found
+
+  
+-- 
+Undocumented 80x86 instruction for the day:
+        HCF - Halt and catch fire
+
+This data was brought to you by the Dancing Fool - http://www.cs.pdx.edu/~idr
+

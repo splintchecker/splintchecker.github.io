@@ -1,0 +1,341 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 10. Extensible Checking</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+
+
+<h1 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975002"></a><a name="_Ref534642928"></a><a name=
+"_Ref534642285">10<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a id="extensible" name="extensible">
+Extensible Checking</a></a></h1>
+<p class="TextFontCX">Splint provides mechanisms for defining new
+checks and annotations using metastate definitions.&nbsp;
+User-defined checks can be used to check and document properties
+not supported by the provided checks.<a href="appNotes.html#_ftn3" name=
+"_ftnref13" title=""><span class=
+      "MsoFootnoteReference"><span class="MsoFootnoteReference"><span style='font-size:11.0pt;font-family:"Times New Roman"'>
+[13]</span></span></span></a></p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">A large class of useful checks can be
+described as constraints on attributes associated with program
+objects or the global execution state. Unlike types, however, the
+values of these attributes can change along an execution
+path.&nbsp; Splint provides a general language that lets users
+define attributes associated with different kinds of program
+objects as well as rules that both constrain attributes&#8217;
+values at interface points and specify how attributes
+change.&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Because user-defined attribute checking is
+integrated with normal checking, Splint&#8217;s analysis of
+user-defined attributes can take advantage of other analyses, such
+as alias and nullness analysis.</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975003">10.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Defining Attributes</a></h2>
+<p class="TextFontCX">To define an attribute, create a metastate
+file (<span class="ProgramNameChar"><span style=
+'font-size: 10.0pt'>.mts</span></span>) that defined the possible
+values and transfer rules of the attribute.&nbsp; Attributes can
+either be associated with a particular kind of program object (for
+example, all <span class="CodeText"><span style=
+'font-size:10.0pt'>char *</span></span>&#8217;s) or with the global
+state (whether or not the network has been initialized).&nbsp; The
+<span class="Flag"><span style='font-size:10.0pt'>&#8211;mts
+<i>&lt;file&gt;</i></span></span> flag is used to direct Splint to
+read a metastate file (which will be found on the
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>LARCH_PATH</span></span> with default
+      extension <span class="ProgramNameChar"><span style=
+      'font-size:10.0pt'>.mts</span></span>).</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">An example attribute definition is shown in
+Figure 22.&nbsp; It defines the <span class=
+      "Annot"><span style='font-size:10.0pt'>taintedness</span></span>
+      attribute for recording whether or not a <span class=
+      "CodeText"><span style='font-size: 10.0pt'>char
+      *</span></span> came from a possibly untrustworthy
+      source.&nbsp; Knowing whether a value is possibly hostile is
+      useful for preventing several security vulnerabilities
+      including format string bugs.<a href="appNotes.html#_ftn4" name=
+      "_ftnref14" title=""><span class=
+      "MsoFootnoteReference"><span class=
+      "MsoFootnoteReference"><span style=
+      'font-size:11.0pt;font-family:"Times New Roman"'>[14]</span></span></span></a>&nbsp;
+      (A simpler way to detect format vulnerabilities is to warn
+      for any format string that is unknown at compile time. Splint
+      provides this checking, issuing a warning if the <span class=
+      "Flag"><span style=
+      'font-size:10.0pt'>+formatconst</span></span> flag is set and
+      finds any unknown format strings at compile time. This can
+      produce spurious messages, however, because there might be
+      unknown format strings that are not vulnerable to hostile
+      input.)</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The first three lines of the attribute
+definition define the <span class="Annot"><span style=
+'font-size:10.0pt'>taintedness</span></span> attribute associated
+with <span class="CodeText"><span style='font-size:10.0pt'>char
+*</span></span> objects, which can be in one of two states:
+<span class="Annot"><span style=
+'font-size:10.0pt'>untainted</span></span> or <span class=
+"Annot"><span style='font-size:10.0pt'>tainted</span></span>.&nbsp;
+The <span class="Annot"><span style=
+'font-size:10.0pt'>context</span></span> clause gives a context
+selector for which objects have the attribute. &nbsp;&nbsp;In this
+case, <span class="Annot"><span style='font-size:10.0pt'>reference
+char *</span></span> means that every reference that is a
+<span class="CodeText"><span style='font-size:10.0pt'>char
+*</span></span> has an associated <span class=
+      "Annot"><span style='font-size:10.0pt'>taintedness</span></span>
+      attribute.&nbsp; Other contexts include <span class=
+      "Annot"><span style=
+      'font-size: 10.0pt'>parameter</span></span> (only parameter
+      declarations), <span class="Annot"><span style=
+      'font-size:10.0pt'>literal</span></span> (only string or
+      number literals), and <span class="Annot"><span style=
+      'font-size:10.0pt'>null</span></span> (only known
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>NULL</span></span> values).&nbsp;
+      Attribute can also be defined that are not associated with
+      any particular object, but instead are associated with the
+      global state of a program execution.&nbsp; The <span class=
+      "Annot"><span style='font-size:10.0pt'>global</span></span>
+      keyword is used before <span class="Annot"><span style=
+      'font-size:10.0pt'>attribute</span></span> to define a global
+      attribute.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The <span class="Annot"><span style=
+'font-size:10.0pt'>oneof</span></span> clause introduces two
+identifiers for representing the <span class=
+      "Annot"><span style='font-size:10.0pt'>taintedness</span></span>
+      value: <span class="Annot"><span style=
+      'font-size:10.0pt'>untainted</span></span> for references
+      that are not derived from untrustworthy input, and
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>tainted</span></span> for references that
+      may contain hostile data.&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The <span class="Annot"><span style=
+'font-size:10.0pt'>annotations</span></span> clause defines two new
+annotations that may be used to describe <span class=
+"Annot"><span style='font-size:10.0pt'>taintedness</span></span>
+assumptions.&nbsp; In this case, the annotations match the names of
+the value choices, but they may be any identifier.&nbsp; The clause
+<span class="Annot"><span style='font-size:10.0pt'>tainted
+<b>reference ==&gt;</b> tainted</span></span> defines the
+<span class="Annot"><span style=
+'font-size:10.0pt'>tainted</span></span> annotation that may be
+used on a reference to indicate that it has <span class=
+"Annot"><span style='font-size: 10.0pt'>tainted</span></span>
+state.&nbsp;</p>
+<center>
+<table cellspacing="0" cellpadding="0" hspace="0" vspace="0">
+<tr>
+<td valign="top" align="left" height="264" style=
+'padding-top:0in;padding-right: 9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+<p class="Verbatim"><span class="Annot"><b>attribute</b></span>
+<span class="Annot">taintedness</span></p>
+<p class="Verbatim"><span class="Annot">&nbsp;&nbsp; <b>context</b>
+<b>reference</b> char *</span></p>
+<p class="Verbatim"><span class="Annot">&nbsp;&nbsp; <b>oneof</b>
+untainted, tainted</span></p>
+<p class="Verbatim"><span class="Annot">&nbsp;&nbsp;
+<b>annotations</b></span></p>
+<p class="Verbatim"><span class="Annot">&nbsp;&nbsp;&nbsp;&nbsp;
+tainted <b>reference ==&gt;</b> tainted</span></p>
+<p class="Verbatim"><span class="Annot">&nbsp;&nbsp;&nbsp;&nbsp;
+untainted <b>reference ==&gt;</b> untainted</span></p>
+<p class="Verbatim"><span class="Annot">&nbsp;&nbsp;
+<b>transfers</b></span></p>
+<p class="Verbatim"><span class="Annot">&nbsp;&nbsp;&nbsp;&nbsp;
+tainted <b>as</b> untainted <b>==&gt; error</b> "Possibly tainted
+storage used where untainted required."</span></p>
+<p class="Verbatim"><span class="Annot">&nbsp;&nbsp;
+<b>merge</b></span></p>
+<p class="Verbatim"><span class=
+"Annot">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tainted <b>+</b> untainted
+<b>==&gt;</b> tainted</span></p>
+<p class="Verbatim"><span class="Annot">&nbsp;&nbsp;
+<b>defaults</b></span></p>
+<p class="Verbatim"><span class=
+"Annot">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reference <b>==&gt;</b>
+tainted</span></p>
+<p class="Verbatim"><span class="Annot">&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;literal <b>==&gt;</b> untainted</span></p>
+<p class="Verbatim"><span class=
+"Annot">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; null <b>==&gt;</b>
+untainted</span></p>
+<p class="Verbatim"><span class="Annot"><b>end</b></span></p>
+<p class="MsoCaption"><a name="_Ref534921559">Figure 22</a>.&nbsp;
+Taintedness Attribute</p></td></tr></table></center>
+<br clear="all">
+ 
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The <span class="Annot"><span style=
+'font-size:10.0pt'>transfers</span></span> clause defines rules for
+state changes and warning when objects are passed as parameters,
+returned, or assigned to externally visible references.&nbsp; The
+rule, <span class="Annot"><span style='font-size:10.0pt'>tainted
+<b>as</b> untainted <b>==&gt; error</b> "Possibly tainted storage
+used where untainted required."</span></span>, means it is an error
+to pass a <span class="Annot"><span style=
+'font-size:10.0pt'>tainted</span></span> value as a parameter that
+has <span class="Annot"><span style=
+'font-size:10.0pt'>untainted</span></span> taintedness.&nbsp; All
+other transfers are implicitly permitted, and leave the passed
+storage in the same state as before the transfer.&nbsp; We may also
+use a <span class="Annot"><span style=
+'font-size:10.0pt'>transfers</span></span> clause to indicate that
+the reference changes state after a transfer.&nbsp; A
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>losereference</span></span> clause (not
+      used in taintedness) is similar to a <span class=
+      "Annot"><span style=
+      'font-size:10.0pt'>transfers</span></span> clause, except it
+      is used to provide rules for when a reference to storage is
+      lost, either by leaving the scope in which it was declared,
+      returning from a function, or assigning it to a new
+      value.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The <span class="Annot"><span style=
+'font-size:10.0pt'>merge</span></span> clause defined rules for
+combining state along paths.&nbsp; The clause<span class=
+"Annot"><span style='font-size:10.0pt'>merge tainted + untainted
+==&gt; tainted</span></span> indicates that combining
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>tainted</span></span> and <span class=
+      "Annot"><span style=
+      'font-size:10.0pt'>untainted</span></span> objects produces a
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>tainted</span></span> object. Thus, if a
+      reference is <span class="Annot"><span style=
+      'font-size:10.0pt'>tainted</span></span> along one control
+      path and <span class="Annot"><span style=
+      'font-size:10.0pt'>untainted</span></span> along another
+      control path, checking assumes that it is <span class=
+      "Annot"><span style=
+      'font-size:10.0pt'>tainted</span></span>after the two
+      branches merge. It is also used to merge taintedness states
+      in function specifications (see the <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>strcat</span></span> example in the next
+      section).&nbsp; We can also define error combinations so that
+      a warning is reported if the states on different paths are
+      incompatible.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The <span class="Annot"><span style=
+'font-size:10.0pt'>defaults</span></span> clause specifies default
+values used for declarators without explicit attribute annotations.
+We choose default values to make it easy to start checking an
+unannotated program. Here we assume unannotated references are
+<span class="Annot"><span style=
+'font-size:10.0pt'>tainted</span></span> and Splint will report a
+warning where unannotated references are passed to functions that
+require untainted parameters. The warnings indicate either a format
+bug in the code or a place where an <span class=
+      "Annot"><span style='font-size:10.0pt'>untainted</span></span>
+      annotation should be added. Running Splint again after adding
+      the annotation will propagate the newly documented assumption
+      through the program.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX" style='margin-bottom:6.0pt'>The full grammar
+for metastate definitions is given in Appendix C.</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975004">10.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Annotations</a></h2>
+<p class="TextFontCX">The annotations defined by metastate
+definitions can be used like normal annotations.&nbsp; The context
+specifier for an annotation indicates where it may be used.&nbsp;
+For the taintedness example, we can use <span class=
+"Annot"><span style='font-size:10.0pt'>tainted</span></span> and
+<span class="Annot"><span style=
+'font-size:10.0pt'>untainted</span></span> as annotations wherever
+<span class="Annot"><span style=
+'font-size:10.0pt'>only</span></span> could be used.&nbsp; This
+includes <span class="Annot"><span style=
+'font-size:10.0pt'>ensures</span></span> and <span class=
+"Annot"><span style='font-size:10.0pt'>requires</span></span>
+clauses, which allows us to specify functions that modify state
+associated with metastate definitions.&nbsp; The syntax
+      <span class="Annot"><i><span style=
+      'font-size: 10.0pt'>&lt;expr&gt;</span></i></span><span class="Annot">
+<span style=
+'font-size: 10.0pt'>:<i>&lt;attribute&gt;</i></span></span> is used
+to refer to the value of the user-defined attribute for expression
+<span class="Annot"><i><span style=
+'font-size:10.0pt'>&lt;expr&gt;</span></i></span>.&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">It is often necessary to extend the library
+specifications with metastate annotations.&nbsp; We don&#8217;t
+want to have different versions of the library for different
+metastate annotations, so instead Splint provides a mechanism for
+adding annotations separately using an <span class=
+"ProgramNameChar"><span style='font-size:10.0pt'>.xh</span></span>
+file.&nbsp; For the taintedness example, we do this by providing
+annotated declarations in the <span class=
+"ProgramNameChar"><span style=
+'font-size:10.0pt'>tainted.xh</span></span> file. Example
+specifications in this file include:</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="Verbatim">int printf&nbsp; (/*@untainted@*/ char *fmt,
+...);</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">char *fgets (char *s, int n, FILE *stream)
+/*@ensures tainted s@*/ ;</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">char *strcat (/*@returned@*/ char *s1,&nbsp;
+char *s2)&nbsp;</p>
+<p class="Verbatim">&nbsp;&nbsp; /*@ensures s1:taintedness =
+s1:taintedness | s2:taintedness @*/</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The <span class="CodeText"><span style=
+'font-size:10.0pt'>strcat</span></span> specification uses
+<span class="Annot"><span style='font-size:10.0pt'>/*@ensures
+s1:taintedness = s1:taintedness | s2:taintedness @*/</span></span>
+to indicate that the taintedness of <span class=
+"CodeText"><span style='font-size:10.0pt'>s1</span></span> after
+<span class="CodeText"><span style=
+'font-size:10.0pt'>strcat</span></span> returns is the result of
+merging the taintedness of <span class=
+      "CodeText"><span style='font-size:10.0pt'>s1</span></span>
+      and <span class="CodeText"><span style=
+      'font-size:10.0pt'>s2</span></span> before the call.&nbsp;
+      Because the parameters lack annotations, they are implicitly
+      tainted according to the default rules and either untainted
+      or tainted references can be passed as parameters to
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>strcat</span></span>. The <span class=
+      "Annot"><span style='font-size:10.0pt'>ensures</span></span>
+      clause means that after <span class="CodeText"><span style=
+      'font-size:10.0pt'>strcat</span></span> returns the first
+      parameter (and the result, because of the returned annotation
+      on <span class="CodeText"><span style=
+      'font-size:10.0pt'>s1</span></span>) will be tainted if
+      either passed object was tainted.&nbsp; Splint merges the two
+      taintedness states using the attribute definition
+      rules&#8212;hence, if the <span class="CodeText"><span style=
+      'font-size:10.0pt'>s1</span></span> parameter is untainted
+      and the <span class="CodeText"><span style=
+      'font-size:10.0pt'>s2</span></span> parameter is tainted, the
+      result and first parameter will be tainted after <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>strcat</span></span> returns.</p>
+<p class="TextFontCX">&nbsp;</p>
+
+<p>
+<a href="sec11.html"><b>Next:</b> 11. Macros</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

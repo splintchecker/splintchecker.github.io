@@ -1,0 +1,161 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="lclint-guide.css" title="style1">
+<title>LCLint User's Guide - Section 6: Sharing</title>
+</head>
+<body>
+#include "header.html"
+
+<h2>
+<a name="sec-6">
+6. Sharing</a></a>
+</a></h2>
+
+Errors involving unexpected sharing of storage can cause serious problems.
+Undocumented sharing may lead to unpredictable modifications, and some library
+calls (e.g., strcpy) have undefined behavior if parameters share storage.
+Another class of sharing errors occurs when clients of an abstract type may
+obtain a reference to mutable storage that is part of the abstract
+representation.  This exposes the representation of the abstract type, since
+clients may modify an instance of the abstract type indirectly through this
+shared storage.<p>
+
+<h2>
+<a name="RTFToC37">
+<a name="sec-6.1">6.1 Aliasin</A></a></a></a></a></a>g
+</a></h2>
+LCLint detects errors involving dangerous aliasing of parameters.  Some of
+these errors are already detected through the standard memory annotations
+(e.g., only parameters may not be aliases.)   Two additional annotations are
+provided for constraining aliasing of parameters and return values.
+<a name="_Ref347469444"><a name="_Toc349905879">
+<h4>
+<a name="RTFToC38">
+<a name="sec-6.1.1">6.1.1 Unique Parameters</A></a></a>
+</a></h4>
+The unique annotation denotes a parameter that may not be aliased by any other
+storage reachable from the function implementation -- that is, any storage
+reachable through the other parameters or global variables used by the
+function.  The unique annotation places similar constraints on function
+parameters as the only annotation, but it does not transfer the obligation to
+release storage.<p>
+LCLint will report an error if a unique parameter may be aliased by another
+parameter or global variable.<p>
+
+<a href="fig10.html">Figure 10.  Unique parameters.</a>
+<a name="_Ref347469448"><a name="_Toc349905880"></b>
+<h4>
+<a name="RTFToC39">
+<a name="sec-6.1.2">6.1.2 Returned Parameters</A></a></a>
+</a></h4>
+LCLint reports an error if a function returns a reference to storage reachable
+from one of its parameters (if retalias is on) since this may introduce
+unexpected aliases in the body of the calling function when the result is
+assigned.<p>
+<p>
+The returned annotation denotes a parameter that may be aliased by the return
+value.  LCLint checks the call assuming the result may be an alias to the
+returned parameter. <a href="fig11.html">Figure 11</a> shows an example use of a returned annotation.
+<a name="_Toc344355414"><a name="_Ref344809320"><a name="_Ref344894258"><a name="_Ref344907981"><a name="_Ref345591053"><a name="_Ref345591408"><a name="_Toc349905881">
+<h2>
+<a name="RTFToC40">
+<a name="sec-6.2">6.2 Exposure</A></a></a></a>
+</a></h2>
+LCLint detects places where the representation of an abstract type is exposed.
+This occurs if a client has a pointer to storage that is part of the
+representation of an instance of the abstract type.  The client can then modify
+or examine the storage this points to, and manipulate the value of the abstract
+type instance without using its operations.
+<p>
+<b></b>There are three ways a representation may be exposed:
+<ol>
+<li>Returning (or assigning to a global variable) an object that includes a
+pointer to a mutable component of an abstract type representation.  (Controlled
+by <a href="appC.html#flag-retexpose"><tt>retexpose</tt></a>).
+<li>Assigning a mutable component of an abstract object to storage reachable
+from an actual parameter or a global variable that may be used after the call.
+This means the client may manipulate the abstract object using the actual
+parameter after the call.  Note that if the corresponding formal parameter is
+declared only, the caller may not use the actual parameter after the call so
+the representation is not exposed.  (Controlled by <a href="appC.html#flag-assignexpose"><tt>assignexpose</tt></a>).
+<li> Casting mutable storage to or from an abstract type.  (Controlled by
+<a href="appC.html#flag-castexpose"><tt>castexpose</tt></a>).
+</ol>
+
+Annotations may be used to allow exposed storage to be returned safely by
+restricting how the caller may use the returned storage.
+<a name="_Ref347469553"><a name="_Toc349905882">
+<h4>
+<a name="RTFToC41">
+<a name="sec-6.2.1">6.2.1 Read-Only Storage</A></a></a>
+</a></h4>
+It is often useful for a function to return a pointer to internal storage (or a
+instance of a mutable abstract type) that is intended only as an
+<i>observer</i>.  The caller may use the result, but should not modify the
+storage it points to.  For example, consider an na&iuml;ve implementation of
+the employee_getName operation for the abstract employee type:
+<pre>
+   typedef /&#42;@abstract@&#42;/ struct {
+      char &#42;name;
+      int id;
+   } &#42;employee;
+   ...
+   char &#42;employee_getName (employee e) { return e-&gt;name; }
+</pre>
+LCLint produces a message to indicate that the return value exposes the
+representation.  One solution would be to return a fresh copy of e-&gt;name.
+This is expensive, though, especially if we expect employee_getName is used
+mainly just to get a string for searching or printing.  Instead, we could
+change the declaration of employee_getName to:
+<pre>
+extern /&#42;@observer@&#42;/ char &#42;employee_getName (employee e);
+</pre>
+Now, the original implementation is correct.  The declaration indicates that
+the result may not be modified by the caller, so it is acceptable to return
+shared storage.<a href="guide_fn.html#fn17">[17]</a>  LCLint checks that the
+return value is not modified by the caller.  An error is reported if observer
+storage is modified directly, passed as a function parameter that may be
+modified, assigned to a global variable or reference derivable from a global
+variable that is not declared with an observer annotation, or returned as a
+function result or a reference derivable from the function result that is not
+annotation with an observer annotation.
+<a name="_Ref347469563"><a name="_Ref348017065">
+<h4>
+<a name="RTFToC42">String
+Literals</a>
+</a></h4>
+A program that attempts to modify a string literal has undefined behavior
+[<a
+href="guide.html#ref-ANSI">ANSI</a>, Section 3.1.4]. This is not enforced by most C compilers, and can lead
+to particularly pernicious bugs that only appear when optimizations are turned
+on and the compiler attempts to minimize storage for string literals.  LCLint
+can be used to check that string literals are not modified, by treating them as
+observer storage.  If readonlystrings is on (default in standard mode), LCLint
+will report an error if a string literal is modified. 
+<a name="_Toc349905883">
+<h4>
+<a name="RTFToC43">
+<a name="sec-6.2.2">6.2.2 Exposed Storage</A></a></a>
+</a></h4>
+Sometimes it is necessary to expose the representation of an abstract type.
+This may be evidence of a design flaw, but in some cases is justified for
+efficiency reasons.  The exposed annotation denotes storage that is exposed.
+It may be used on a return value for results that reference storage internal to
+an abstract representation, on a parameter value to indicate a parameter that
+may be assigned directly to part of an abstract representation,<a
+href="guide_fn.html#fn18">[18]</a> or on a field of an abstract representation
+to indicate that external references to the storage may exist.  
+<a name="_Ref347169365"><a name="_Ref347254440"><a name="_Ref343064165"><a name="_Toc344355415">An
+error is reported if exposed storage is released, but unlike an observer, no
+error is reported if it is modified.<p>
+<p>
+<a href="fig12.html">Figure 12</a> shows examples of exposure problems detected by LCLint.
+<a name="_Ref348093458"><a name="_Ref347853031"><a name="_Toc349905884">
+
+<p>
+<b>Next: <A HREF="sec7.html">Value Constraints</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+#include "footer.html"
+

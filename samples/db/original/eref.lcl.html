@@ -1,0 +1,108 @@
+<A NAME="line69"></A><html><head>
+<title>eref.lcl</title>
+</head><body>
+<h3>eref.lcl</h3>
+<PRE>
+<A NAME="line1"></A>imports <A HREF="employee.lcl.html">employee</A>;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>immutable type eref;
+<A NAME="line4"></A>spec immutable type map;
+<A NAME="line5"></A> 
+<A NAME="line6"></A>uses <A HREF="refTable.lsl.html">refTable</A>(eref, employee, map);
+<A NAME="line7"></A> 
+<A NAME="line8"></A>spec map m;
+<A NAME="line9"></A>constant eref erefNIL = nil;
+<A NAME="line10"></A> 
+<A NAME="line11"></A>eref eref_alloc(void) map m; {
+<A NAME="line12"></A>   modifies m;
+<A NAME="line13"></A>   ensures newInd(result, m^, m');
+<A NAME="line14"></A>   }
+<A NAME="line15"></A>void eref_free(eref er) map m; {
+<A NAME="line16"></A>   requires er \in domain(m^);
+<A NAME="line17"></A>   modifies m;
+<A NAME="line18"></A>   ensures m' = delete(m^, er);
+<A NAME="line19"></A>   }
+<A NAME="line20"></A>void eref_assign(eref er, employee e) map m; {
+<A NAME="line21"></A>   requires er \in domain(m^);
+<A NAME="line22"></A>   modifies m;
+<A NAME="line23"></A>   ensures m' = assign(m^, er, e);
+<A NAME="line24"></A>   }
+<A NAME="line25"></A>employee eref_get(eref er) map m; {
+<A NAME="line26"></A>   requires er \in domain(m^);
+<A NAME="line27"></A>   ensures result = m^[er];
+<A NAME="line28"></A>   }
+<A NAME="line29"></A>bool eref_equal(eref er1, eref er2) {
+<A NAME="line30"></A>   ensures result = (er1 = er2);
+<A NAME="line31"></A>   }
+<A NAME="line32"></A>void eref_initMod(void) map m; {
+<A NAME="line33"></A>   modifies m;
+<A NAME="line34"></A>   ensures m' = new;
+<A NAME="line35"></A>   }
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

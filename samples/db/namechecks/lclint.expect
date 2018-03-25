@@ -1,0 +1,64 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/namechecks'
+lclint +lh +checks -allimponly +allmacros +showsummary +czech +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+eref.lcl:7,15: Constant erefNIL name is not consistent with Czech naming
+                  convention.  The name should begin with eref_
+  Constant name is not consistent with Czech naming convention. Use
+  -czechconsts to suppress message.
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+dbase.lcl:17: Function hire name is not consistent with Czech naming
+                 convention.  Accessible types: db
+  Function or iterator name is not consistent with Czech naming convention. Use
+  -czechfcns to suppress message.
+dbase.lcl:32: Function uncheckedHire name is not consistent with Czech naming
+                 convention.  Accessible types: db
+dbase.lcl:41: Function fire name is not consistent with Czech naming
+                 convention.  Accessible types: db
+dbase.lcl:49: Function query name is not consistent with Czech naming
+                 convention.  Accessible types: db
+dbase.lcl:57: Function promote name is not consistent with Czech naming
+                 convention.  Accessible types: db
+dbase.lcl:68: Function setSalary name is not consistent with Czech naming
+                 convention.  Accessible types: db
+< preprocessing >
+< checking employee.c >
+bool.h:34,29: Function check name is not consistent with Czech naming
+                 convention.  Accessible types: bool
+< checking eref.c >
+eref.h:9,30: Datatype eref_status name violates Czech naming convention.  Czech
+                datatype names should not use the _ charater.
+  Type name is not consistent with Czech naming convention. Czech type names
+  must not use the underscore character. Use -czechtypes to suppress message.
+eref.h:14,3: Datatype eref_ERP name violates Czech naming convention.  Czech
+                datatype names should not use the _ charater.
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+usedef                       0           1
+exporttype                   0           5
+macroempty                   0           1
+compdef                      0           1
+czechfcns                    7           0
+czechconsts                  1           0
+czechtypes                   2           0
+sizeoftype                   0           6
+                          ========  =========
+Total:                      10          14
+
+Finished LCLint checking --- 10 code errors found
+392 spec, 2986 source (1275 before pre-processing) lines in 4.37 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/namechecks'

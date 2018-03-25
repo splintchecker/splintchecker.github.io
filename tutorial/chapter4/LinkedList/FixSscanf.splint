@@ -1,0 +1,103 @@
+Splint 3.0.1.6 --- 14 Mar 2002
+
+FixSscanf.c: (in function copy_record)
+FixSscanf.c:31:2: Storage b->next reachable from parameter is kept (should be
+                     implicitly only)
+  Storage derivable from a parameter does not match the alias kind expected for
+  the formal parameter. (Use -compmempass to inhibit warning)
+   FixSscanf.c:30:3: Storage b->next becomes kept
+FixSscanf.c: (in function insert_record)
+FixSscanf.c:65:3: Implicitly only storage new_record->next (type struct emp_rec
+    *) not released before assignment (curr aliases lst):
+    new_record->next = curr
+  A memory leak has been detected. Only-qualified storage is not released
+  before the last reference to it is lost. (Use -mustfreeonly to inhibit
+  warning)
+FixSscanf.c:65:3: Implicitly temp storage lst assigned to implicitly only:
+                     new_record->next = curr
+  Temp storage (associated with a formal parameter) is transferred to a
+  non-temporary reference. The storage may be released or new aliases created.
+  (Use -temptrans to inhibit warning)
+FixSscanf.c:69:5: Clauses exit with curr->next->next->next referencing kept
+    storage in true branch, implicitly only storage in false branch
+  The state of a variable is different depending on which branch is taken. This
+  means no annotation can sensibly be applied to the storage. (Use -branchstate
+  to inhibit warning)
+   FixSscanf.c:65:3: Storage curr->next->next->next becomes kept
+FixSscanf.c:69:5: Clauses exit with curr->next referencing implicitly only
+                     storage in true branch, kept storage in false branch
+   FixSscanf.c:65:3: Storage curr->next becomes kept
+   FixSscanf.c:69:5: Storage curr->next becomes implicitly only
+FixSscanf.c:70:10: Kept storage lst returned as implicitly only: lst
+  storage is transferred to a non-temporary reference after being passed as
+  keep parameter. The storage may be released or new aliases created. (Use
+  -kepttrans to inhibit warning)
+   FixSscanf.c:65:3: Storage lst becomes kept
+FixSscanf.c: (in function delete_record)
+FixSscanf.c:89:14: Implicitly temp storage lst returned as implicitly only: lst
+FixSscanf.c:96:8: Implicitly temp storage lst passed as only param (curr
+                     aliases lst): free (curr)
+FixSscanf.c:97:10: Variable lst used after being released
+  Memory is used after it has been released (either by passing as an only param
+  or assigning to an only global). (Use -usereleased to inhibit warning)
+   FixSscanf.c:96:8: Storage lst released
+FixSscanf.c:97:10: Implicitly temp storage lst returned as implicitly only: lst
+FixSscanf.c: (in function find_record)
+FixSscanf.c:111:9: Implicitly temp storage lst returned as implicitly only
+                      (curr aliases lst): curr
+FixSscanf.c:115:10: Null storage returned as non-null: NULL
+  Function returns a possibly null pointer, but is not declared using
+  /*@null@*/ annotation of result.  If function may return NULL, add /*@null@*/
+  annotation to the return value declaration. (Use -nullret to inhibit warning)
+FixSscanf.c: (in function main)
+FixSscanf.c:143:29: Possibly null storage test_list passed as non-null param:
+                       add_employees (test_list)
+  A possibly null pointer is passed as a parameter corresponding to a formal
+  parameter with no /*@null@*/ annotation.  If NULL may be used for this
+  parameter, add a /*@null@*/ annotation to the function parameter declaration.
+  (Use -nullpass to inhibit warning)
+   FixSscanf.c:139:24: Storage test_list may become null
+FixSscanf.c:143:3: Fresh storage test_list (type emp_list) not released before
+                      assignment: test_list = add_employees(test_list)
+  A memory leak has been detected. Storage allocated locally is not released
+  before the last reference to it is lost. (Use -mustfreefresh to inhibit
+  warning)
+   FixSscanf.c:139:42: Fresh storage test_list allocated
+FixSscanf.c:148:3: Fresh storage test_list (type emp_list) not released before
+    assignment: test_list = delete_record(test_list, "Hatton")
+   FixSscanf.c:143:3: Fresh storage test_list allocated
+FixSscanf.c:153:3: Fresh storage test_list (type emp_list) not released before
+    assignment: test_list = delete_record(test_list, "Bodycombe")
+   FixSscanf.c:148:3: Fresh storage test_list allocated
+FixSscanf.c:162:3: Fresh storage test_list (type emp_list) not released before
+                      assignment: test_list = insert_record(test_list, zim)
+   FixSscanf.c:153:3: Fresh storage test_list allocated
+FixSscanf.c:167:8: Only storage zim->next (type struct emp_rec *) derived from
+                      released storage is not released (memory leak): zim
+  A storage leak due to incomplete deallocation of a structure or deep pointer
+  is suspected. Unshared storage that is reachable from a reference that is
+  being deallocated has not yet been deallocated. Splint assumes when an object
+  is passed as an out only void pointer that the outer object will be
+  deallocated, but the inner objects will not. (Use -compdestroy to inhibit
+  warning)
+FixSscanf.c:173:3: Fresh storage test_list (type emp_list) not released before
+    assignment: test_list = delete_record(test_list, "Zimmerman")
+   FixSscanf.c:162:3: Fresh storage test_list allocated
+FixSscanf.c:178:12: Fresh storage zim not released before return
+   FixSscanf.c:168:3: Fresh storage zim allocated
+FixSscanf.c:178:12: Fresh storage test_list not released before return
+   FixSscanf.c:173:3: Fresh storage test_list allocated
+FixSscanf.c: (in function add_employees)
+FixSscanf.c:201:32: Passed storage *e contains 1 undefined field: next
+  Storage derivable from a parameter, return value or global is not defined.
+  Use /*@out@*/ to denote passed or returned storage which need not be defined.
+  (Use -compdef to inhibit warning)
+FixSscanf.c:202:5: Clauses exit with lst referencing fresh storage in while
+                      body, implicitly temp storage if loop is not taken
+   FixSscanf.c:201:7: Fresh storage lst allocated
+FixSscanf.c:203:10: Implicitly temp storage lst returned as implicitly only:
+                       lst
+FixSscanf.c:203:14: Fresh storage e not released before return
+   FixSscanf.c:185:38: Fresh storage e allocated
+
+Finished checking --- 25 code warnings

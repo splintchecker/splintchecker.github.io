@@ -1,0 +1,1800 @@
+<html> <head>
+<title>C Tutorial with Splint</title>
+</head>
+<body>
+
+<h1>C Tutorial with Splint</h1> 
+
+<ol start=0>
+	    
+  <li> <A HREF="#chapter0">  Introduction </A>
+  <li> <A HREF="#chapter1">  Getting Started with C</A>
+  <li> <A HREF="#chapter2">  Types and Operations</A>
+  <li> <A HREF="#chapter3">  Control Flow  </A>
+  <li> <A HREF="#chapter4">  Memory Management </A>
+</ol>
+
+
+<A NAME="chapter0"><h1>Introduction</h1></A>
+
+This tutorial combines learning C with learning how to use
+a static analysis tool <a href="http://www.splint.org">(Splint)</a>.
+
+<h3>Prerequisites</h3>
+
+Readers should be familiar with basic Unix commands and able
+to use a text editor. No prior programming experience
+necessary. 
+
+
+
+<p>
+Suggestion: use <a href="http://www.gnu.org/software/emacs/emacs.html">
+Emacs</a>
+
+
+
+<p>
+<A HREF=http://www.washington.edu/computing/unix/unixqr.html>
+UNIX Reference
+</A> 
+
+
+
+<A NAME="chapter1"><h1> A First C Program </h1></A>
+<h3> Overview </h3>
+The section gets you started working with
+C and familiar with the basic syntax, of compiling and running 
+C programs. 
+
+<h3> Get Started </h3>
+
+<p>
+Let's get started with a very simple C program. This program 
+will just output the string HelloWorld:
+
+
+
+<pre><code>
+<!--#include virtual="HelloWorld.c"-->
+</pre></code>
+
+<p>
+Start the editor, and enter the text as it is written
+above, but don't cut and paste. The goal here is to just
+get accustomed to the syntax. 
+
+<p>
+Save the file as
+<code> HelloWorld.c </code> 
+
+Now you need to compile it. A compiler 
+takes as input the source code, and 
+produces machine code, which the computer 
+can understand and execute. 
+
+<p>
+The most common compiler is <A
+HREF=http://www.gnu.org/software/gcc/gcc.html>gcc</A>  
+Try <code> gcc --help</code>.
+
+<h3> Compiling </h3>
+<p> 
+To compile open a terminal and enter: 
+
+<code><pre>
+gcc HelloWorld.c 
+</code></pre> 
+
+Be careful about syntax. 
+Notice that every statement has to end with a semi-colon. Make sure 
+you surround all the strings with double quotes. C is also
+case sensitive.
+
+If you make a mistake now is a good time to get familiar
+with what kinds of errors
+produce what kind of compiler output.
+
+
+<h3> Running </h3>
+<p>
+Once you have compiled the program the next step is to run it. Type:
+<code><pre>
+a.out
+</code></pre>
+
+<p>
+If you are using gcc and you want to call the output executable 
+something else then enter: 
+
+<pre><code>
+dkf5k@paisley
+: /uf5/dkf5k/testsource ; gcc HelloWorld.c -o hello
+
+dkf5k@paisley
+: /uf5/dkf5k/testsource ; hello
+Hello World!
+</pre></code>
+
+<p>
+After the -o flag enter whatever you want to call the executable
+file. Note that if you compile a different source file and give
+it the same name as an old executable the old executable will get
+overwritten.
+  
+
+<h3> Examine the Source </h3>
+
+What do you think the printf
+statement does? 
+<p>
+a) Abort the program <p>
+b) Display text on the screen <p>
+c) Increment the accumulator register <p>
+d) Begin an infinite loop <p>
+
+You would probably guess that b) printf displays text on the screen. 
+Knowing this you can add arbitrary text to your program. Try modifying
+the HelloWorld program so that it greets you. Make it print "Hello
+&lt;your_name&gt;".
+
+<p>
+Now look at the <code> return 0;</code>
+statement. For now, all we need to know 
+is that <code> return 0; </code> exits the program. Here's an
+experiment for you to try. Take your HelloWorld program, and transpose
+the <code> printf </code> statements, and the <code> return 0; </code>
+statements, so that the <code> return 0; </code> statement is first. 
+What do you think will happen? Try it and see. Then try putting 
+some <code> printf </code> statements before the <code> return 0;
+</code> statement.
+
+<p>
+
+Let's look at this part of the source code: 
+<code><pre>
+int main()
+{
+}
+</code></pre>
+For now, all we need to know is that there is some
+<i> function </i> called <code> main </code> in our program. All C
+programs must have some function specifically called <code>main</code>.
+The <code> main </code> function is where execution starts. 
+
+<p>
+Now let's turn our attention to the line:
+<pre><code>
+/*My First C Program*/
+</pre></code>
+
+This is a <i> comment </i>. Comments are delimited
+by /* and */. The compiler completely ignores 
+them since their purpose is to aid a human 
+reader. Somebody reading this 
+file would know that the program is "My First C 
+Program".
+
+
+<p>
+Another use for comments is to temporarily stop
+blocks of code from being compiled. You might
+only want to test part of your program, and 
+by "commenting  out" the rest you can accomplish this, but
+you cannot nest comments. 
+
+
+<p>
+The last lines of code that we haven't talked about are 
+the <code> #include </code> statements. 
+
+There is a file called stdlib.h
+and the <code> #include </code> statement instructs the 
+<i>preprocessor</i> to take the contents of that file and insert
+it directly into the file being compiled. Here is an experiment 
+for you to try: create a file and call it <code>message.txt </code>.
+In the file put the following line:
+<pre><code>
+Welcome to the C programming language. 
+</pre></code>
+<p>
+Then create another file and call it <code>test.c</code>.
+<pre><code> 
+<!--#include virtual="IncludeExperiment.c"-->
+</pre></code>
+
+
+Compile and run the program. Is the output what you expected? 
+<p>
+In the next section we will learn more about C's built in
+types, and operators.
+
+
+<A NAME="chapter2"><h1>Types and Operations</h1></A>
+
+<h2>Overview</h2>
+In this section we introduce 
+the basics of the C language while also introducing
+some of the common mistakes people make 
+which are not caught by most compilers. We
+show you how to use Splint to find these kinds of mistakes. 
+
+<h2>Types</h2>
+So far in the first C program we saw the <code> int </code> type. 
+There are four other basic types in the C Programming
+Language:
+<code><pre>
+
+char        defined to be a single byte holding one character
+int         an integer
+float       a single precision floating point number
+double      a double precision floating point number
+
+</code></pre>
+<p>
+An <code>int</code> is simply a positive or negative
+whole number. A float, or double is a number
+with a decimal point like 3.14159 or 2.71828.
+
+<p>
+You can declare variables of a certain type like this:
+
+<code><pre>
+int max = 50;
+int a,b,c,d,e;   /*declare five integer types*/
+float PI = 3.14159;
+double E = 2.71828;
+char language = 'C';  /*declare and initialize two character types*/
+</code></pre>
+
+
+
+<p>
+The '=' sign is the 
+<i> assignment </i> operator. The line: 
+<code><pre>
+int max = 50;
+</code></pre>
+
+<p>
+means the variable <code>max</code> gets the value 50.
+
+<p>
+Notice we can either initialize the variable
+when we declare it, or we may not.
+What happens if 
+we use a variable that we have not initialized? 
+Try compiling and running
+the following program: 
+
+
+<code><pre>
+<!--#include virtual="Initialized.c"-->
+</code></pre>
+
+Here the <code>%d</code> indicates that the
+bits associated with variable <code>a</code> should
+be interpreted as an integer in printing.  
+
+What will this program output?
+It should output the value 5 since variable <code>a
+</code> was initialized with the value
+5. 
+
+What would happen if we didn't initialize the variable? 
+
+<code><pre>
+<!--#include virtual="Uninitialized.c"-->
+</code></pre>
+
+Try compiling and running the program, and see what happens. 
+You should get something like: 
+
+<code><pre>
+dkf5k@paisley
+: /uf5/dkf5k/testsource ; a.out
+The value of variable a is -1073744252
+</code></pre>
+
+Where did this -1073744252 number come from? It
+is whatever happens to be on the stack . In general, 
+using a variable whose value is uninitialized is a bug. 
+Notice that the compiler
+silently produced an executable for you (even though the output is 
+undefined, and the source code is probably wrong). 
+
+<p>
+Splint will tell you that something looks wrong.
+Let's see how this works.
+
+<p>
+If you are using Emacs, create a new file (say <code> test.c </code>)
+and, copy the above source code into it if you haven't done
+so already. Then type <code> M-x compile </code> (the <code> 
+M-x </code> should get you to the minibuffer then type 
+<code> compile </code>). Now 
+type <code> splint test.c </code>.  (you can 
+also use the compilation buffer with <code> gcc </code> doing
+straight compilation) 
+
+<p>
+If you are not using Emacs, your editor may have some similar 
+feature to Emacs compilation buffer. Check your edtior documentation.
+You can always run Splint from the command line, by using <code>
+splint test.c </code>, and the output should scroll on your terminal 
+window. (for this approach it would be best if you had a scrolling 
+terminal window).
+
+<p>
+You should get output like this: 
+
+<code><pre>
+<!--#include virtual="Uninitialized.splint"-->
+</code></pre>
+
+<p>
+(if Splint doesn't work, recheck the 
+ <A HREF="http://www.splint.org/download.html">installation instructions
+</A>)
+
+
+<P>
+Splint raised a "use before definition" 
+warning, and this is what we should expect. We are using 
+the variable <code> a </code> before it is defined. Typically in checking
+a large source code file you would jump from warning to warning
+comparing Splint's output to 
+the source code.
+
+
+<p>
+An rvalue is any 
+expression that can go on the right hand side of an assignment
+statement. Numbers  like <code>3</code>, <code>5</code>,
+<code>6</code>, are valid rvalues as are variables like <code>
+Max</code>, <code>Min</code>, or <code>temp</code>. Lvalues
+on the other hand are valid expressions that can go on the left
+hand side of an assignment statement. Literal numbers
+would not be valid lvalues since you can
+not assign a value to a literal number. 
+
+<p>
+<!-- XXX: These should be presented better -->
+
+Other things to be aware of: 
+
+<ul> 
+<li>Declarations
+can only occur at the start of a program (or 
+<i> function </i>). So code like this will not compile: 
+<code><pre>
+<!--#include virtual="InvalidDeclaration.c"-->
+</code></pre>
+
+<li>All variables must be valid C identifiers. The
+rules for a variable to be a valid C identifier are the following: 
+
+<ul>
+<li>The first character must be a letter. 
+<li>Subsequent characters may be either letters, digits, or
+underscores.
+<li>It must not be a C <A HREF="Keywords.html">keyword.</A>
+</ul>
+
+<p>
+For a quick exercise determine which identifiers are valid, and which are not.
+
+
+<ol>
+<li><code> 1stPlace       </code>
+<li><code> Float          </code>
+<li><code> minVertex      </code>
+<li><code> register       </code>
+<li><code> best-match     </code>
+<li><code> __maximum      </code>
+<li><code> First&amp;Last </code>
+<li><code> FirstBe4LLast  </code>
+</ol>
+</ul>
+
+<p>
+<A HREF="IdentifierQuizAnswers.html"> Check your answers</A>
+
+</ul>
+<p>
+<h2>Arithmetic Operations</h2>
+
+In C there are five arithmetic operators: <code>+,-,*,/ </code>and the modulus
+operator <code>%</code>. Usually you can use these just like you
+would use a regular calculator but be aware of the following: 
+
+<ul>
+<li>The modulus operator for <code>a % b</code>
+returns the remainder when a is divided by b.  e.g. <code>10 % 3</code>
+will yield
+1 because 10 divided by 3 equals 3 with a remainder of 1.
+
+<br><br>
+<li>There is a difference between floating point division and integer
+division.  Note that <code> 11 / 2 </code>will not return the floating point
+type <code>5.5 </code> but will return the integer type
+<code>5</code>. If you want the <code> / </code> operator to instead
+performing floating point division then do the following: add a
+decimal point to either of the two operands e.g. <code> 11/2.0
+</code>. (you can also do this was a <i> cast </i> as we will see in
+the example)
+
+     
+<br><br>
+<li>
+
+Multiplication and division precede addition and subtraction
+like in normal algebra. 
+The expression <code> 3 * 4 + 2 * 7 </code> is
+parenthesized as <code> (3 * 4) + (2 * 7) </code>.
+</ul>
+     
+
+     
+Let's look at an example of a common mistake programmers make using the
+arithmetic operators, and show how Splint can find
+this mistake.
+
+Take a look at the following program:  
+<pre><code>  
+<!--#include virtual="DivisionMistake.c"-->
+</pre></code>
+
+Does this do the right thing? Try it and see, and then scroll down.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+You should have got the output <code> 4
+</code> instead of the output <code> 4.66667 </code>. This is because, 
+as we mentioned above, since both <code>3</code> and <code> a + b + c
+</code> are integers the compiler performs integer division 
+instead of floating point division, and it truncated the result. This is not the same as rounding. The number
+ 4.666667 rounded is 5 not 4. The
+compiler is saying is that  14 / 3  is equal to 4 with a remainder
+of 2. 
+
+Here is what Splint says about this program:
+
+<pre><code> 
+<!--#include virtual="DivisionMistake.splint"-->
+</pre></code>
+
+Splint says what is expected. In this line we
+assigned an integer type to a floating point variable:
+<pre><code>
+float avg = (a + b + c) / 3;
+</pre></code>
+
+To fix this 
+change the line to: 
+<pre><code>   
+float avg = (a + b + c) / 3.0;
+</pre></code>
+     
+<p>
+Here the compiler performs floating point division because at
+least one of the operands is a floating point.
+
+
+
+<h2> Logical Operations</h2>
+
+The relational operations are
+
+<code>&lt; &lt;= &gt; &gt;=</code>
+
+These operators function as expected 
+when applied to the numeric types <code> int, float
+</code>
+and <code> double </code>. The expression <code> 4 > 3</code> is true
+     while the expression <code> 4 < 3</code> is false. In C:
+
+<blockquote>
+false is the numeric value zero, and true is any numeric value
+other than zero.  
+</blockquote>
+
+To test for equality or inequality use
+the relational equality or inequality operators,
+==, and != respectively. These operators will always return 1 for
+a true statement and 0 for a false one. 
+
+The logical operators are:
+
+<br><br><br>
+<table border>
+<caption>Logical Operators</caption>
+<th>Operator <th>Name <tr>
+<td><code>&&</code>       <td>AND  <tr>
+<td><code>||</code>       <td>OR   <tr>
+<td><code>! </code>       <td>NOT  
+</table>
+<br><br><br>
+
+These function as one would expect. For example, here is the truth
+table for the AND operator. 
+
+<br><br><br>
+<table border>
+<caption>AND Operator</caption>
+<th>A        <th>B       <th> A AND B <tr>
+<td>True     <td>True    <td> True    <tr>
+<td>True     <td>False   <td> False   <tr>
+<td>False    <td>True    <td> False   <tr>
+<td>False    <td>False   <td> False   
+</table>
+<br><br><br>
+
+<h2>Characters and Strings</h2>
+<p>
+The <code> char </code> type represents a character. 
+<p>
+
+<code><pre>
+char character = 'z';
+</code></pre>
+
+<p>
+The following would print out the character:
+
+<code><pre>
+<!--#include virtual="PrintCharacter.c"-->
+</code></pre>
+
+<p>
+In C an array holds a collection of the same type. The syntax
+<code> char alphabet[26] </code> declares an array which holds
+26 characters. The array is zero indexed so in this case
+indices go from 0 to 25. We could write <code>alphabet[0] = 'a'
+</code> or
+<code>alphabet[25] = 'z'</code> to set characters in the array, and
+<code>char TheLetterM = alphabet[12]</code> to get elements from the
+array. 
+
+<p>
+
+In C we usually think of a string as an array of characters.
+Here is how to define and print out a string:
+
+<code><pre>
+<!--#include virtual="PrintString.c"-->
+</code></pre>
+
+
+<p>
+Notice that single quotes specify a character value, and
+double quotes specify a string of zero or more characters.
+
+<p>
+The character array <code>TestString</code>
+is 12 bytes long rather than
+11 because an extra character is used at the end
+for the NULL character ('\0') to specify
+the end of the string. As an exercise try changing
+the above 12 to an 11, and then run Splint on the code,
+and see what the output is.
+
+<p>
+Here are some character constants you can play with: 
+<br><br>
+<table border>
+<caption></caption>
+<th>Character Name        <th>ASCII Name       <th>Escape Sequence <tr>
+<td>newline                 <td>NL            <td>\n   <tr>
+<td>horizontal tab          <td>HT            <td>\t   <tr>
+<td>vertical tab            <td>VT            <td>\v   <tr>
+<td>backspace               <td>BS            <td>\b   <tr>
+<td>form feed               <td>FF            <td>\f   <tr>
+<td>alert or bell           <td>BEL           <td>\a   <tr>
+<td>carriage return         <td>CR            <td>\r   <tr>
+<td>blackslash              <td>\             <td>\\   <tr>
+<td>single quote            <td>'             <td>\'   <tr>
+<td>dobule quote            <td>""             <td>\"   <tr>
+<td>question mark           <td>?             <td>\?   <tr>
+</table>
+<br>
+
+<p>
+Try and write a program which rings the bell on the computer
+(character constant \a).
+
+<p>
+The next chapter focuses on control flow.
+
+
+<A NAME="chapter3"><h1>Control Flow </h1></A>
+
+<h2> Overview </h2>
+Control flow is about what parts of the program
+get executed when and it what order.
+
+
+<h2>Conditional Execution</h2>
+The <code> if </code> statement is used to conditionally
+execute pieces of code. 
+The following program will output <code>Hello World!</code>:
+
+<pre><code>
+<!--#include virtual="IfExample.c"-->
+</pre></code>
+
+<p>
+Only if the argument inside the parenthesis is true does it execute the block.
+
+<p>
+The <code> else </code> statement is very similar. The following piece
+of code will output <code>Goodbye!</code>:
+
+<pre><code>
+<!--#include virtual="ElseExample.c"-->
+</pre></code>
+
+We can nest <code>if</code>s.
+
+<pre><code>
+<!--#include virtual="ElseIfExample.c"-->
+</pre></code>
+
+<p>
+This piece of code will output: "l'chaim!"
+
+<p>
+Guess what the following will output:
+
+<pre><code>
+<!--#include virtual="IfQuiz.c"-->
+</pre></code>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+<p>
+This program will output "Life is a highway".
+Successive <code> else if </code>
+statements are executed sequentialy, in the order they occur
+in the file, and it executes the first that is true. 
+
+<p>
+Let's write a simple program using <code>if</code>,
+<code>else</code>, and <code>else if</code> which calculates
+body mass index. 
+
+<p>
+Body mass index is the ratio of a 
+person's weight in kilograms divided by the square
+of their height in meters.  
+(in this example we use the <code>#define</code>
+preprocessor instruction to define constants)
+
+<pre><code>
+<!--#include virtual="BMI.c"-->
+</pre></code>
+
+<p>
+Trace through the execution of this program.
+Is there anything missing?
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+<p>
+One thing this program does not do is check if the input
+is valid. If someone entered a negative value for their height
+this program would execute without printing anything.
+
+<p>
+We could add:
+
+<code><pre>
+else
+{
+	printf("Error: Body Mass index less than 0");
+}
+</code></pre>
+
+Splint will actually catch this kind of error if you run it on the program
+with the flag <code>elseifcomplete</code>. Flags tell Splint
+what kinds of checks to perform.
+Look in <A HREF="http://www.splint.org/manual/html/appB.html">
+appendix B </a> of the manual for more information on flags. 
+
+<code><pre>
+<!--#include virtual="BMI.splint"-->
+</code></pre>
+
+<p>
+The last warning here is about
+"incomplete <code>elseif</code> logic".
+
+<p>
+The other warning is about "dangerous"
+floating point comparision. Why 
+is it dangerous to compare
+floating point types?
+
+<p>
+<A HREF="FloatAnswer.php">
+Answer</A>
+
+
+<p>
+<h2>Looping (<code>for</code> and <code>while</code>)</h2>
+
+
+<p>
+Consider the following program which prints out the 
+squares from 1 through  5:
+
+<code><pre>
+<!--#include virtual="NeedLoop.c"-->
+</code></pre>
+
+<p>
+This program will work correctly, but there is a lot of redundancy. 
+We can remove the redundancy with a <code>while</code> statement.
+
+<code><pre>
+<!--#include virtual="FirstLoop.c"-->
+</code></pre>
+
+<p>
+The while statement tells the computer to "keep executing
+this body of code enclosed by the curly brackets while this condition is true".
+As soon as the condition is false, (as soon as i > 5) the program
+moves on to the next statement. 
+
+<p>
+Without looping printing out the perfect
+squares from 1 to 100 would require 100 separate
+statements, but with a loop all we need to do is change the value in
+the test condition (<code>i <= 100</code>).
+
+<p>
+We can use while loops in a variety of ways.
+For example, we could use it to write a program
+that finds the sum:
+
+<p>
+S = 1 + 2 + ... n
+<br>
+<br>
+Like this: 
+
+<code><pre>
+<!--#include virtual="Sum.c"--> 
+</code></pre>
+
+
+What would happen if we forgot to increment the value of
+<code>i</code>? Try
+compiling and running the following
+program:
+
+<code><pre>
+<!--#include virtual="InfiniteLoop.c"-->
+</code></pre>
+
+<p>
+The program will keep
+executing the same statement over and over again. 
+If not stopped it will run forever. 
+Control+c will kill the process.
+
+<p>
+Splint can provide warnings for likely infinite loops. Here is
+Splint's output:
+
+
+<code><pre>
+<!--#include virtual="InfiniteLoop.splint"-->
+</code></pre>
+
+<h2><code>for</code> statements</h2>
+<p>
+A <code>for</code> statement is very similar
+to a <code>while</code> statement.
+
+<p>
+We could have used a <code>for</code> loop instead
+of a <code>while</code> in our sum program:
+
+<pre><code>
+<!--#include virtual="SumFor.c"-->
+</pre></code>
+
+<p>
+It is just a <code>while</code>
+loop with the initialization and iteration
+step built in. The first statement in the
+<code>for</code> loop:
+
+<code><pre>
+i = 1;
+</code></pre>
+
+<p>
+initializes the index variable. The second statement:
+
+<code><pre>
+i <= n; 
+</code></pre>
+
+<p>
+tells 
+program when it can exit the loop.
+
+<p>
+and the third statement:
+
+<code><pre>
+i++
+</code></pre>
+
+<p>
+tells the program what to do once all
+the statements enclosed in curly brackets
+have been executed. 
+
+
+<p>
+A <code>for</code> loop has these three components:
+
+<pre><code><i>
+for(initilization; test; iteration)
+{
+	body;
+}
+</pre></code></i>
+
+
+<p>
+Try writing a few of these programs
+with loops:
+
+<ol>
+<li>Print out the perfect cubes from 1 to 10
+<li>Convert a number from decimal to reverse binary. (e.g. 19 would
+get converted to 11001)
+<li>Calculate the factorial function (n! = n*n-1*n-2...1)
+<li>Find the integer solutions to the equation a<sup>2</sup> + 
+b<sup>2</sup> + c<sup>2</sup> + d<sup>2</sup>=200 
+</ol> 
+
+<p>
+<A HREF="LoopExerciseAnswers.php">Answers</A>
+
+<p>
+Question: Is it possible to convert
+any <code>for</code> loop to a <code>while</code> loop?
+Scroll down for the answer.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<p>
+Yes. Any <code>while</code> loop:
+<pre><code>
+while (i < n
+{
+   /* body */
+}
+</pre></code>
+<p>
+can be converted into a <code>for</code> loop:
+
+<pre><code>
+for;i < n;
+{
+   /* body */
+}
+</pre></code>
+
+<p>
+The semi-colons 
+at the beginning say "do nothing".
+So it will execute this block of code as
+long as <code>i <= n</code>. It is also possible
+to convert any <code> while </code> loop to a <code> for
+</code> loop:
+
+<pre><code>
+for (i = 0; i < n; i++)
+{
+ /* body */
+}
+</pre></code>
+
+<p>
+as a while loop:
+
+<pre><code>
+i = 0;
+while( i < n)
+{
+   /* body */ 
+   i++;
+}
+</pre></code>
+
+<h2>The <code>switch</code> Statement</h2>
+
+<p>
+Consider the following program: 
+
+<pre><code>
+<!--#include virtual="GradeAsk.c"-->
+</pre></code>
+
+This is a reasonable way to write this program. But C provides
+another control construct which does the same thing with less typing. 
+
+<pre><code>
+<!--#include virtual="GradeAskSwitch.c"-->
+</pre></code>
+
+<p>
+The program will go through
+cases till one matches, and
+execute the code corresponding to that case. 
+
+<p>
+For some practice with <code>switch</code> statements
+write a short program which prompts the user
+for a month number and outputs the number of days in that month.
+
+<p>
+For February the program
+could just output "it either has
+28 days or 29", but a more sophisticated program
+would prompt for the year
+and determine how many days it actually has for that year.
+A leap year is any year which is a multiple of 4, but not of
+100 unless it is also a multiple of 400, so 1984 is a leap year
+1900 is not, but 2000 is.
+
+<p>
+<A HREF="Month.php">Answer</A>
+
+<p>
+You can only apply the <code>switch</code> statement
+to discrete values like <code>int</code>s and <code>char</code>s
+but not <code>float</code>s. 
+
+<p>
+Notice how each list of possible cases
+is followed by a <code>break</code>. Those <code>
+break</code>s are important.
+Consider the output of this program:
+
+<code><pre>
+<!--#include virtual="GradeAskSwitchNoBreak.c"-->
+</code></pre>
+
+This output is:
+
+<pre><code>
+<!--#include virtual="GradeAskSwitchNoBreak.output"-->
+</pre></code>
+
+<p>
+It entered the first <code>case</code>
+which evaluated to true, but then just kept executing or 
+"falling through" since it did not encounter a <code>break</code>
+statement. 
+
+<p>
+An error similar to this caused 
+<A HREF="http://www.splint.org/manual/manual.html#_ftn11">
+AT&T's 
+entire network to go down in 1990.</A>
+
+
+<p>
+Splint catches these kinds of mistakes:
+
+<pre><code>
+<!--#include virtual="GradeAskSwitchNoBreak.splint"-->
+</pre></code>
+
+
+<p>
+Sometimes  
+a fall through case might be
+what you want. Consider
+the following program:
+
+<pre><code>
+<!--#include virtual="SwitchFallThrough.c"-->
+</pre></code>
+
+<p>
+By not including the <code>break</code> statement we "fall through" and
+correctly report that 3,5,7 are both prime and odd (although
+this program fails to identify 2 as a valid prime number). 
+Leaving out the <code>break</code> was intentional, but
+Splint will still report a warning:
+
+<pre><code>
+<!--#include virtual="SwitchFallThrough.splint"-->
+</pre></code>
+
+<p>
+We need a way to tell Splint that we "meant" to fall through
+and left the <code>break</code> out intentionally. We can do
+this by adding an annotation 
+directly to the source code:
+<pre><code>
+<!--#include virtual="SwitchFallThroughAnnotated.c"-->
+</pre></code>
+
+<p>
+Now running Splint does not produce a warning:
+
+<pre><code>
+<!--#include virtual="SwitchFallThroughAnnotated.splint"-->
+</pre></code>
+
+<p>
+By adding annotations to the code we can tell Splint what we are
+trying to do or what we expect to be true, and in this way Splint can
+do more thorough, efficient and accurate checking.
+
+
+<h2>Two More Errors</h2>
+
+<h3>= and ==</h3>
+
+<p>
+The operators = and == are often confused.
+
+<p> The = sign means assignment while the == sign tests for 
+equality. 
+
+<p>
+Consider the following code:
+
+<pre><code>
+<!--#include virtual="EqualMistake.c"-->
+</pre></code>
+
+<p>
+What is the output? Keep in mind that the '=' returns the value of the assignment, and that in C zero means false, and non-zero means true. Scroll down for the answer.
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<p>
+The output of this program is:
+<pre><code>
+<!--#include virtual="EqualMistake.output"-->
+</pre></code>
+
+<p>
+This is because the '=' operator returns a 0 which in C is false,
+and so the <code>else</code> branch is taken. 
+
+<p>
+Splint will catch this particular error:
+
+<pre><code>
+<!--#include virtual="EqualMistake.splint"-->
+</pre></code>
+
+<p>
+Splint reports two warnings for this kind of error one because = was used
+instead of == inside of the <code>if</code> and the other because the
+expression inside the <code>if</code> is not boolean. 
+
+<!-- here might be a good spot to introduce booleans -->
+
+<p>
+Similar to using the '=' for the '==' is the error of using the '=='
+for the '='. Consider the following program:
+
+<pre><code>
+<!--#include virtual="FindMax.c"-->
+</pre></code>
+
+<p>
+Determine what the output of this program will be, and suggest how to fix it.
+Scroll down for the answer.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<p>
+Here is the output of the program:
+
+<pre><code>
+<!--#include virtual="FindMax.output"-->
+</pre></code>
+
+<p>
+The statement:
+<pre><code>
+max == array[i];
+</pre></code>
+
+<p>
+has absolutley no effect. 
+
+<p>
+We would fix is just by changing it to:
+<pre><code>
+max = array[i];
+</pre></code>
+
+<p>
+Splint will also catch this mistake:
+
+<pre><code>
+<!--#include virtual="FindMax.splint"-->
+</pre></code>
+
+<h3>Deep Breaks</h3>
+
+<p>
+Take a look at the following piece of code that finds
+the first number larger than 10 in a 3x3 matrix:
+
+<pre><code>
+<!--#include virtual="Matrix.c"-->
+</pre></code>
+
+<p>
+Is the output the following?
+
+<pre><code>
+We found a number larger than 10!
+matrix[1][1] is 17
+</pre></code>
+
+<p>
+Scroll down for the answer.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<p>
+No. The output also includes 21:
+
+<code><pre>
+<!--#include virtual="Matrix.output"-->
+</code></pre>
+
+<p>
+The <code>break</code> statement only breaks out on the 
+<i>innermost</i> loop. For this program that is  the loop which goes through a given row of the 
+matrix. A programmer may put a 
+<code>break</code> inside an outer loop without realizing it is breaking an inner loop instead. 
+
+<pre><code>
+<!--#include virtual="Matrix.splint"-->
+</pre></code>
+
+<p>
+Similar to the "fall through" case we can add an annotation telling
+Splint that we realize it is okay:
+
+<pre><code>
+<!--#include virtual="MatrixWithAnnotation.c"-->
+</pre></code>
+
+
+<p>
+And now splint will not produce a warning:
+
+<pre><code>
+<!--#include virtual="MatrixWithAnnotation.splint"-->
+</pre></code>
+
+<A NAME="chapter4"><h1>Dynamic Memory Management</h1></A>
+
+<h2>Overview</h2>
+<p>
+In this chapter we introduce the C library functions for
+allocating and deallocating memory dynamically. Allocating
+memory dynamically can come in handy when it is not known
+how much memory the program will need. For example a database
+program may need to work both for a customer with 100 records
+and for one with 10,000 records. 
+
+<p>
+We will also show you some of the common errors
+associated with dynamic memory allocation, and
+how Splint can help to avoid
+them. 
+
+<h2>Stack vs. Heap</h2>
+
+<p>
+In general there are two places memory can come from: the stack and
+the heap. 
+
+Up to this point we have been allocating memory from the stack:
+
+<pre>
+int main()
+{
+ int IntegerArray[30];
+
+}
+</pre>
+
+<p>
+This allocates enough space to hold 30 integers. The
+<code>int</code> type is usually 4 bytes long, so
+this would allocate 120 bytes of storage. Sometimes
+allocating from the stack is all we need.
+
+<p>
+The bad thing about allocating things on the stack is that
+it may not be known at compile time how much space is needed.
+
+<p>
+By allocating memory from the heap we can:
+<ul>
+<li>Vary the amount of space we allocate during the execution of the program
+<li>Allocate memory and deallocate it only when we want to.
+</ul>
+
+<h2><code>malloc</code> and <code>free</code></h2>
+<p>
+The <code>malloc()</code> function dynamically allocates space
+from the heap:
+
+<PRE>
+void *malloc(size_t number_of_bytes);
+</PRE>
+
+<p>
+The <code>void *</code> is C's generic pointer type. You can cast the
+return value of <code>malloc</code> to any actual pointer type you
+like (even your own types that you define with <code>struct</code>)
+
+So code like:
+<PRE>
+int *ip;
+ip = (int*) malloc(size * sizeof(*ip));
+</PRE>
+will allocate enough space to hold <code>size</code> number of
+integers. <code>sizeof</code> is an operator which returns the number
+of bytes needed to hold one instance of a particular type. In this case,
+for most computers <code>sizeof(*ip)</code> will return 4 since on
+most computers the integer type takes up 4 bytes. 
+
+<p>
+Using <code>sizeof</code> is preferable to hard coding like this:
+<PRE>
+ip = (int*) malloc(size * 4);
+</PRE>
+since using <code>sizeof</code> makes the code more portable.
+
+<p>
+If there is no memory left on the computer then <code>malloc</code>
+will return a <code>NULL</code> pointer. The NULL pointer
+is guaranteed not to point at any object.
+
+In general, whenever
+a call to <code>malloc</code> is made the program should check
+whether <code>malloc</code> returned <code>NULL</code>.
+Probably the best way to do this would be to write a
+function which takes one pointer argument, and if that pointer
+is <code>NULL</code> prints out a suitable debugging message, and
+exits the program. Alternatively, you could try and continue the
+program without that block of memory.
+
+<h2>Freeing Memory </h2>
+
+<p>
+Clearly you cannot just keep asking for memory, and always
+getting it. The computer has limited memory resources.
+If you don't need a piece of memory any more it would
+be nice to be able to return that piece of memory to the
+free store. 
+
+Consider the following program:
+
+<PRE>
+<!--#include virtual="RunOutOfMemory.c"-->
+</PRE>
+
+<p>
+If you run this program you will see that eventually
+the computer does actually run out of memory, and
+that <code>malloc</code> eventually returns NULL.
+
+
+<PRE>
+<!--#include virtual="RunOutOfMemory.output"-->
+</PRE>
+
+<p>
+Splint will warn us about this program.
+More specifically, it will tell us that there
+is a a memory leak.
+
+<p>
+When <code>i</code> is 1 we let <code>p</code> point at a newly allocated block
+of memory, but when <code>i</code> is 2 we let <code>p</code>
+point at another
+newly allocated block of memory. That first block of memory
+is not reachable since there are no pointers to it.
+
+<p>
+Splint's output:
+
+<PRE>
+<!--#include virtual="RunOutOfMemory.splint"-->
+</PRE>
+
+<p>
+To fix it use <code>free</code>:
+
+<PRE>
+void free(void* ptr);
+</PRE>
+
+<p>
+We pass to free a pointer to the block of memory
+to deallocate.
+
+<p>
+If a piece of memory is not deallocated by <code>free</code> before the
+program ends then usually the operating system in terminating the process
+deallocates it.
+
+<p>
+By using <code>free</code> we can fix our program so that
+it doesn't have any memory leaks. 
+
+<PRE>
+<!--#include virtual="RunOutOfMemoryFixed.c"-->
+</PRE>
+
+What's the problem with this program now? Scroll down
+when you know the answer.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<p>
+Now the program runs in an infinite loop.
+<p>
+Here is splint's output:
+
+<PRE>
+<!--#include virtual="RunOutOfMemoryFixed.splint"-->
+</PRE>
+
+<p>
+Splint cannot detect that <code>malloc</code>
+will never return NULL in this program
+(there are limits to what static analysis can determine
+only by looking at the source code).
+
+<p>
+On average Splint produces more false positives than false negatives,
+since a programmer can often determine
+quickly that Splint is producing
+a spurious warning, but an unreported
+warning could lead to a bug in the program. 
+
+<h2>An example of dynamic memory allocation: Linked Lists</h2>
+<p>
+(Note: This linked list implementation is based on that 
+found in
+<A HREF="http://www-ee.eng.hawaii.edu/~alex/TextBooks/JoyOfC/info.html">
+<i>The Joy of C</i></A> by Lawrence H. Miller, and
+Alexander E. Quilici.)
+
+
+<p>
+An advantage of a linked list over an array is that
+deleting or inserting elements in the middle of an array 
+can be expensive since all the entries
+must be shifted. A linked list requires no shifting
+to insert or delete elements. 
+
+<p>
+But a linked list has the disadvantage
+that it takes longer to retrieve an
+entry. 
+
+<p>
+Here is the structure of a linked list:
+<p>
+<IMG SRC="LinkedList/LinkedList.gif">
+
+
+<p>
+Each node has two fields. One points to the
+other node in the list, and the other 
+holds the relevant data (in this case a name).
+
+<p>
+Let's implement a linked list which holds employee
+records.
+
+<p>
+Since employees are always getting hired, and
+fired a linked list is an appropriate data
+structure for keeping the list in order
+by employee last name. 
+
+<p>
+We will want to be able to insert to a list,
+delete from a list, print out the list, or
+find a employee record within the list. 
+
+We start like this:
+<PRE>
+<!--#include virtual="LinkedList/Typedefs.c"-->
+</PRE>
+
+<p>
+An <code>emp_record</code> has three data
+fields corresponding to attributes of the employee,
+and a <code>next</code> field which corresponds to the
+next employee record in the list. 
+
+<p>
+We will define an <code>emp_list</code>
+to be a pointer to an <code>emp_record</code>. 
+
+<p>
+And we will designate the empty list as
+<code>NULL</code>:
+
+<code><pre>
+<!--#include virtual="LinkedList/emp_list_create.c"-->
+</code></pre>
+
+So we would write code like:
+
+<pre><code>
+emp_list my_list = emp_list_create();
+</pre></code>
+
+which just sets it to <code>NULL</code>.
+
+
+<p>
+First, let's write prototypes for all our functions, since
+we want to insert, delete, find, and print we will need these
+four functions:
+
+
+<PRE><CODE>
+emp_list insert_record(emp_list lst, emp_record *e);
+emp_list delete_record(emp_list lst, char* lastname);
+emp_record* find_record(emp_list lst, char* lastname);
+void print_list(emp_list lst);
+</PRE></CODE>
+
+<p>
+In the case of inserting or deleting we need to return a
+new list. Remember that C all parameters are passed by
+value so neither of these functions can actually modify
+their argument, <code>lst</code>. That's why they need
+to return the new changed list:
+
+<pre><code>
+my_list = delete_record(my_list, "Finkelstein");
+</pre></code>
+
+
+<p>
+Before starting on that we need to implement
+a simple function which copies one employee
+record into another:
+
+<pre><code>
+<!--#include virtual="LinkedList/copy_record.c"-->
+</pre></code>
+
+<p>
+We need to
+do this because we are going to implement
+<code>insert_record</code> by making
+a copy of the record passed in. 
+
+<p>
+Our approach for <code>insert_record</code> will be to
+iterate through the list looking for
+the first entry whose last name is alphabetically
+after the last name of the inserted record.
+There are two cases
+one for inserting to the front of the list, and the other
+for inserting in the middle or the end:
+
+<PRE>
+<!--#include virtual="LinkedList/insert_record.c"-->
+</PRE>
+
+<p>
+Here is a picture of what were doing if we insert 
+"Cod" into an empty list:
+<p>
+<IMG SRC="LinkedList/LinkedListInsertEmpty.gif">
+<p>
+
+And here is a picture of what we are doing if we insert
+"Cod" into a non-empty list:
+
+<p>
+<IMG SRC="LinkedList/LinkedListInsertFull.gif">
+<p>
+
+<p>
+We have three more functions to implement:
+
+<ul>
+  <li><code>delete_record</code>
+  <li><code>find_record</code>
+  <li><code>print_list</code>
+</ul>
+
+However, <code>find_record</code>, and <code>print_list</code>
+are both similar in that they involve interating through a list,
+and performing some operations on each node.
+Try and implement both of
+those functions now. You can reuse the code which iterates
+through the list from the <code>insert_record</code> function.
+For now, just verify that it will compile. 
+
+<p>
+After you have finished writing those try doing <code>delete_record</code>.
+As before with <code>insert_record</code> there are two cases: deleting
+the first node in the list, and deleting the middle or last node. All
+that is changed is that now
+instead of setting the <code>next</code> pointer of the previous node
+to the inserted record just set it to <code>next->next</code> node,
+so that the deleted node no longer has another node in the list
+pointing at it. Remember to <code>free</code> the deleted node.
+
+<p>
+After you have written the functions try them out using this
+test bench.
+<p>
+
+
+
+<A HREF="LinkedList/test_bench.c.html">
+Test Bench</a>
+
+<p>
+To run the test bench you will need the
+
+<A HREF="LinkedList/emp_data.txt">
+data file
+</A>
+
+to be
+in the same directory as the program (be
+careful about adding unneeded white space in the data
+file)
+
+<br><br>
+Here is our implementation:
+<A HREF="LinkedList/LinkedList.c.html">
+
+LinkedList.c</A>
+<br><br>
+
+<h2>Common Memory Errors</h2>
+
+<p>
+Splint can check unannotated programs for common types
+of memory errors. Specifically a  memory leak and
+a dangling pointer.
+
+
+<h3>Memory Leak</h3>
+
+A memory leak just means that there is some piece of memory that
+has been allocated but there is no reference to it:
+<PRE>
+<!--#include virtual="MemoryLeak.c"-->
+</PRE>
+
+<p>
+In this case the memory block which <code>ip</code>
+was pointing at is unaccessible after the assignment
+
+<PRE>
+ip = ig;
+</PRE>
+
+<p>
+Since there is no way to access it there is no way 
+to <code>free</code> it. A small memory leak may be unnoticeable.
+But if there is a function which gets executed over, and over
+again, and for each execution there is a small memory leak, then
+eventually the computer will run out of memory.
+
+<p>
+when we run Splint on this program we get:
+<PRE>
+<!--#include virtual="MemoryLeak.splint"-->
+</PRE>
+
+<P>
+So Splint lets us know about the problem.
+
+<h3>Dangling Pointer</h3>
+
+<p>
+Another type of error is called the "dangling pointer". The
+problem occurs when a pointer is pointing at a piece of memory
+that has already been <code>free</code>d. In this case, trying
+to dereference that pointer will cause the program to crash.
+
+<p>
+Here is a simple example:
+
+<PRE>
+<!--#include virtual="DanglingPointer.c"-->
+</PRE>
+
+
+<p>
+and what Splint has to say about it:
+
+<PRE>
+<!--#include virtual="DanglingPointer.splint"-->
+</PRE>
+
+
+<h2>Using Splint on the Linked List Program</h2>
+
+<p>
+Let's use Splint to find errors in the linked list
+program.
+
+
+We'll start with what we had from the previous section:
+
+<ul>
+  <li><A HREF=
+       "LinkedList/LinkedList.c.html">LinkedList.c</A>
+
+  <li><A HREF=
+       "LinkedList/LinkedList.splint">LinkedList.splint</A>
+</ul>
+       <p>
+       Splint reports 32 warnings.
+       
+       Let's look at the first warning:
+
+       <pre><code>
+       <!--#include virtual="LinkedList/LinkedList.warning"--> 
+       </pre></code>
+
+       Splint is raising this warning because it could be the case
+       that <code>a->next</code> is pointing at a piece of memory in
+       which case the line <code>a->next = b->next</code> would
+       be a memory leak.
+
+       <p>
+       However, a pre-condition of this function is that <code>emp_record *a</code>
+       is undefined (because we are overwriting its fields). We can tell
+       Splint that we are going to make this assumption, and leave it up
+       to the caller to prevent a possible memory leak. We can do this by adding
+       an <code>/*@out@*/</code> annotation in <code>copy_record</code> telling
+       Splint that  <code>emp_record *a</code> may be undefined:
+
+<ul>
+  <li><A HREF=
+       "LinkedList/AddOut.c.html">AddOut.c</A>
+
+  <li><A HREF="LinkedList/AddOut.splint">AddOut.splint</A>
+</ul>
+
+        <p>
+        Now splint reports 30 warnings (with this extra information an additional
+        warning was also eliminated).
+
+        <p>
+        Now let's look as this warning:
+
+       <PRE><CODE>
+       <!--#include virtual="LinkedList/AddOut.warning"-->
+       </PRE></CODE>
+
+        <p>
+        Splint considers the possibility that <code>malloc</code> may have
+        returned <code>NULL</code> in line 61 in which case a <code>NULL</code>
+        pointer is getting passed to <code>copy_record</code>. We can fix
+        the code by adding an <code>assert</code> statement.
+
+        <pre><code>
+        assert (new_record != NULL);
+        </pre></code>
+
+         <p>
+         With the <code>assert</code> statement the program will abort if <code>malloc</code>
+         returns NULL.
+         
+         <p>
+          There are two other places in the file which have unchecked calls to
+          <code>malloc</code>, lines 136, and 182. We fix these and get:
+
+<ul>
+  <li><A HREF="LinkedList/FixMalloc.c.html"> FixMalloc.c</A>
+
+  <li><A HREF="LinkedList/FixMalloc.splint"> FixMalloc.splint </A>
+</ul>
+
+        <p>
+        Now splint raises 27 warnings. Let's consider this warning:
+
+        <code><pre>
+       <!--#include virtual="LinkedList/FixMalloc.warning"-->
+        </code></pre>
+
+       Splint is raising a warning because it could be the case that
+       <code>fp</code> is <code>NULL</code> because the call to <code>fopen</code>
+       could have returned <code>NULL</CODE> if the file wasn't in the directory.
+       We can fix this just like we fixed the <code>malloc</code> warnings, by
+       adding an <code>assert</code> statement.
+
+
+<ul>
+  <li><A HREF="LinkedList/FixFgets.c.html">FixFgets.c</A>
+
+  <li><A HREF="LinkedList/FixFgets.splint">FixFgets.splint</A>
+</ul>
+
+<p>
+Now Splint raises 26 warnings. Let's consider the warning:
+
+        <code><pre>
+        <!--#include virtual="LinkedList/FixFgets.warning"-->
+        </code></pre>
+
+<p>
+Since we are not going to use the return value of this function we'll
+just cast the result to <code>void</code> and this will eliminate the
+warning:
+
+
+<ul>
+  <li><A HREF="LinkedList/FixSscanf.c.html">FixSscanf.c</A>
+
+  <li><A HREF="LinkedList/FixSscanf.splint">FixSscanf.splint</A>
+</ul>
+
+Now splint raises 25 warnings. 
+
+<hr>
+<p>
+This gives you an idea of what kinds of warnings Splint
+produces, and how the correct response may be to
+change the code, or add an annotation. 
+
+
+Some of the
+warnings produced by Splint may be
+spurious in which case
+it is appropriate to use the <code>/*@i@*/</code>
+annotation to suppress the checking of that line.
+
+<p>
+You can also suppress checking of a 
+type of warning by unsetting the flag
+when running Splint. For more information
+check <A HREF="http://www.splint.org/manual/html/appB.html">
+Appendix B of the users guide</A>.
+
+
+<p>
+<A HREF="../index.html">Contents</A>
+<hr>
+<address>dkf5k at virginia dot edu</address>
+<!-- hhmts start -->
+Last modified: Sat May 18 18:01:05 2002
+<!-- hhmts end -->
+</body>
+</html>

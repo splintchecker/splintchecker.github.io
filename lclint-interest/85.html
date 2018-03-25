@@ -1,0 +1,79 @@
+<h3>lclint-interest message 85</h3>
+<pre>
+To: Richard A OKeefe <ok@yallara.cs.rmit.edu.au>
+Cc: lclint-interest@larch.lcs.mit.edu, lclint@larch.lcs.mit.edu,
+        buechler@ateng.az.honeywell.com
+Subject: Re: Formal array size check request 
+In-Reply-To: Your message of "Fri, 05 Jul 1996 12:19:13 +1000."
+             <199607050219.MAA28510@yallara.cs.rmit.EDU.AU> 
+Date: Fri, 05 Jul 1996 10:04:33 -0700
+From: Pete Buechler <buechler@ateng.az.honeywell.com>
+
+Richard -
+
+>    It is a bad idea to put formal parameter names in prototypes.
+>    To an audience concerned with writing correct code, I don't need
+>    to explain why.
+
+
+Well, I like to think that I am concerned with writing correct code, but I
+still need to have this explained.
+
+I know that the formal parameters are ignored in the function prototype, but I
+thought that they were a good idea from the point of view of making the code
+understandable. For instance, for which of the following prototypes will a coder
+most likely get the parameter order correct?
+
+char *strtok(char *, char *)
+
+OR
+
+char *strtok(char *token_string, char *separator_string)
+
+If then the function is defined as
+
+char *strtok char *s1, char *s2)
+
+what harm has been done?
+
+I suppose there would be a problem if somebody changed the order of the
+parameters in the definition without changing them in the prototype. There
+would be no check which would find this change. On the other hand, if there are
+no names, there is still no check to find the change, and coders who mistakenly
+used the old parameter ordering are still in big trouble when they link to the
+function using the new ordering.
+
+> Many students are putting prototypes inside functions.
+> I don't suppose I need to explain the dangers of this either.
+
+Um, yes, please do. Am I correct in believing that the problem is that the
+student expects the extern declaration to be visible only within the block
+in which is is defined, while in fact is is visible for the rest of the
+translation unit?
+
+Our rule here is that prototypes for globally visible functions must be placed
+in header files. Then this header file must be included by any code which uses
+the function, and especially by the code which defines the function. Otherwise
+there is no check that the definition is compatible with the prototype. Is this
+what you require of your students?
+
+-Pete-
+
+
+
+</pre>
+<A HREF="84.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="86.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

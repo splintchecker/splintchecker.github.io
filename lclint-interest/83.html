@@ -1,0 +1,49 @@
+<h3>lclint-interest message 83</h3>
+<pre>
+From evans@cs.virginia.edu Mon Jun 24 16:50:59 1996
+Date: Mon, 24 Jun 96 16:46:01 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: seebs@intran.xerox.com
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Peter Seebach's message of Mon, 24 Jun 1996 12:52:57 PDT <9606241952.AA03271@moose.intran.xerox.com>
+Subject: lclint warnings, disablement, help please!
+
+
+Yes, lclint uses the ./.lclintrc and ~/.lclintrc files for reading
+options.  (It will read the ~/.lclint file first; then flags in the
+.lclintrc file in the current directory (if there is one) supercede
+those in the ~/.lclint file.)
+
+One way to get what you want would be to create a ~/.lclintrc file
+containing:
+
+	+charint
+
+This makes char and int types indistinguishable, so no errors will be
+reported where an int is used when a char is expected (and vice-versa).
+
+If you just want to disallow the int i = '\0'; error, you would use
++charintliteral (to make character literals type-equivalent to ints.)
+There is no more-specific way to disable the a[0] = 0 error (e.g., a
+symettric equivalent to charintliteral for using integer literals as
+chars, although I would claim that this is "less safe" in general.)
+
+--- Dave
+
+
+</pre>
+<A HREF="82.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="84.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

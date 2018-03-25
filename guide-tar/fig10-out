@@ -1,0 +1,11 @@
+LCLint 2.2 --- 25 Aug 96
+
+unique.c: (in function capitalize)
+<A HREF="unique.c.html#line7" target="source">unique.c:7,11</A>: Parameter 1 (s) to function strcpy is
+    declared unique but may be aliased externally by
+    parameter 2 (t)
+  A unique or only parameter may be aliased by some
+  other parameter or visible global. (-mayaliasunique
+  will suppress message)
+
+Finished LCLint checking --- 1 code error found

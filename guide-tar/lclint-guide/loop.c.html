@@ -1,0 +1,83 @@
+<A NAME="line26"></A><html><head>
+<title>loop.c</title>
+</head><body>
+<h3>loop.c</h3>
+<PRE>
+<A NAME="line1"></A>extern int glob1, glob2;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>extern int f (void) 
+<A NAME="line4"></A>  /*@globals glob1@*/ 
+<A NAME="line5"></A>  /*@modifies nothing@*/ ;
+<A NAME="line6"></A> 
+<A NAME="line7"></A>extern void g (void) 
+<A NAME="line8"></A>  /*@modifies glob2@*/ ;
+<A NAME="line9"></A> 
+<A NAME="line10"></A>extern void h (void) ; 
+<A NAME="line11"></A> 
+<A NAME="line12"></A>void upto (int x) 
+<A NAME="line13"></A>{
+<A NAME="line14"></A>  while (x &gt f()) g();
+<A NAME="line15"></A>  while (f() &lt 3) h();
+<A NAME="line16"></A>}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

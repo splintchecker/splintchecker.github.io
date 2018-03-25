@@ -1,0 +1,82 @@
+<h3>lclint-interest message 108</h3>
+<pre>
+From matteo@dotto.usr.dsi.unimi.it Thu Sep 26 11:55:59 1996
+From: Matteo Vaccari <matteo@dotto.usr.dsi.unimi.it>
+Subject: Re: Please subscribe
+To: lclint-interest@larch.lcs.mit.edu
+Date: Thu, 26 Sep 1996 17:46:31 +0200 (MET DST)
+X-Mailer: ELM [version 2.4 PL24]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Content-Length: 1829      
+
+
+
+> Please post a brief message introducing yourself and describing your
+> professional interests.  Feel free to also include any ideas you
+> have for lclint development or comments on your experiences using
+> lclint.
+
+
+I am a PhD student at the University of Milano.  My main field of
+interest is in derivation of programs, usually by means of
+paper-and-pencil.  I also did some work with automated theorem proving
+systems, mostly HOL.  I like HOL, but I prefer to concentrate on
+finding nice notations and formalisms to make derivations simpler and
+crisper.  
+
+While I think that learning program derivation techniques greatly
+enhances one's programming skills, it is clear that these techniques
+are not sufficient.  I'm very much in favor of powerful static
+analysis tools, rather than powerful debuggers.
+
+My interest in lclint is simply for personal use in my programming
+work.  Speaking of which, since I do most of my programming on the
+Macintosh, I hope to be able to use lclint to check Mac C code.  There
+are a few C extensions that are commonplace on the Mac; for instance
+this is a common idiom in header files:
+
+	pascal void Debugger(void) = 0xA9FF;
+
+and also this:
+
+	short ApFontID:0x984;
+
+(the latter means that variable ApFontID should be found at the given
+address). 
+
+My plan is to copy a set of Mac header files to a Linux machine, and
+edit them to take away all this clutter.  Then I could check my Mac
+sources on Linux.
+
+As far as I understand, in order to fully benefit from lclint I should
+also add annotations to function prototypes; it is a daunting task
+since there are several hundreds of them.  If someone else interested
+we could share some work (I do a few headers, you do some others).
+
+Regards,
+
+Matteo Vaccari
+
+-- 
+Matteo Vaccari                             http://eolo.usr.dsi.unimi.it/~matteo
+
+
+
+</pre>
+<A HREF="107.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="109.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

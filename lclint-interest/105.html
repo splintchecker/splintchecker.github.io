@@ -1,0 +1,138 @@
+<h3>lclint-interest message 105</h3>
+<pre>
+From evans@cs.virginia.edu Tue Sep 17 12:06:50 1996
+Date: Tue, 17 Sep 96 12:02:13 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Harald Kirsch's message of Tue, 17 Sep 1996 09:35:33 +0200 <199609170735.JAA11344@s424.iitb.fhg.de>
+Subject: (Known?) Bugs? of LCLint and questions
+
+
+Hi Harald,
+
+> 1) Running the program
+> ------------------------------------------------------------------------
+> #include <stdio.h>
+> #include <unistd.h>
+> 
+> int
+> main(int argc, char **argv)
+> {
+>   char bla[10];
+>   char *s = malloc(10);
+>   if( !s ) {
+>     free(s);
+>   }
+>
+>  s = bla;
+>  ...
+
+The problem here is that lclint doesn't interpret !s.  If the comparison
+is written as 
+
+	if (s != NULL)   or    if (!(s == NULL))
+
+then the error is not reported since lclint determines that s must be
+either deallocated or NULL (i.e., it does not point to any storage) at
+the point before the assignment.
+
+(LCLint should be able to determine that !s means the same thing, but it
+doesn't.)
+
+>
+> LCLint 2.1a --- 23 Apr 96
+>
+
+The most current version is 2.2a.  For release notes, see:
+
+	http://lclint.cs.virginia.edu/release.html
+
+> 2) Handling of realloc is obviously a problem, in particular the case
+> were it does not succeed. How would I write a wrapper around realloc
+> that can be fully specified with LCLint annotations?
+
+True.  The way the standard library defines realloc, (in ansi.h)
+
+extern /*@null@*/ /*@out@*/ /*@only@*/ void *
+   realloc (/*@null@*/ /*@only@*/ /*@special@*/ void *p, 
+	    size_t size) /*@modifies *p@*/ ;
+
+still doesn't satisfactorily capture the complete meaning of realloc.
+
+Actually, the distributed version of the standard library defined
+realloc incorrectly as:
+
+extern /*@null@*/ /*@out@*/ /*@only@*/ void *
+   realloc (/*@null@*/ /*@out@*/ /*@only@*/ /*@returned@*/ void *p, 
+            size_t size) /*@modifies *p@*/ ;
+
+Note the use of only and returned together doesn't make much sense.
+Only means the caller shouldn't rely on the reference after the call, so
+it shouldn't matter to the caller if the reference is returned (as far
+as the caller is concerned, this should be no different from a new
+reference).  
+
+The use of out is also a bit misleading --- realloc doesn't define the
+storage p points to.  What we really want is to say the storage p points
+to need not be defined before the call, and it is in the same state
+after the call.  This is the meaning of the /*@special@*/ annotation,
+when we don't use any special clauses.
+
+Still, this doesn't fully capture the effect of realloc, since when
+realloc fails it returns null but does not deallocate p (as the only
+annotation requires).  
+
+One way of wrapping realloc would be to make a version that doesn't
+return NULL when it fails, but returns p and using another parameter as
+the error code.  Something like,
+
+extern /*@null@*/ /*@out@*/ /*@only@*/ void *
+   safe_realloc (/*@null@*/ /*@only@*/ /*@special@*/ void *p, 
+                 size_t size,
+	         /*@out@*/ bool *ok) 
+   /*@modifies *p, *ok@*/ 
+{
+  *ok = TRUE;
+  
+  if (p == NULL) { return (malloc (size)); }
+  else {
+    void *res = realloc (p, size);
+    
+    if (res == NULL) {
+      *ok = FALSE;
+      /*@-usereleased@*/
+      return p; 
+      /*@=usereleased@*/
+    } else {
+      return res;
+    }
+  }
+}
+
+This message is getting a bit long, so I'll reply to your points 3 and 4
+in a separate message.
+
+--- Dave
+
+
+
+
+
+
+
+</pre>
+<A HREF="104.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="106.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

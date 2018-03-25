@@ -1,0 +1,111 @@
+<h3>lclint-interest message 103</h3>
+<pre>
+BABYL OPTIONS:
+Version: 5
+Labels:
+Note:   This is the header of an rmail file.
+Note:   If you are seeing it in rmail,
+Note:    it means the file has no messages in it.
+
+1,,
+Received: from larch.lcs.mit.edu by okemo.lcs.mit.edu; (5.65v3.2/1.1.8.2/02Jun95-1218PM)
+	id AA28965; Tue, 17 Sep 1996 03:11:32 -0400
+Received: by larch.lcs.mit.edu (5.57/Ultrix3.0-C)
+	id AA26741; Tue, 17 Sep 96 03:11:28 -0400
+Received: by mailgw1.fhg.de (fhg.de) with PRESMTP; Tue, 17 Sep 1996 09:11:12 +0200 from FHG-GATEWAY
+X-Env: (fhg.de) kir@iitb.fhg.de -> lclint-interest@larch.lcs.mit.EDU.VIA-SMTP
+Received: by mailgw1.fhg.de (fhg.de) with SMTP; Tue, 17 Sep 1996 09:11:09 +0200 from iitb.fhg.de
+Received: by iitb.fhg.de; Tue, 17 Sep 96 09:10:41 +0200 from gatein.iitb.fhg.de (gateout.iitb.fhg.de)
+Received: by gatein.iitb.fhg.de; Tue, 17 Sep 96 09:10:38 +0200
+Received: from s4(153.96.9.75) by gate via smap (V1.3mjr)
+	id sma023133; Tue Sep 17 09:10:33 1996
+Received: from s424.iitb.fhg.de by s4.iitb.fhg.de (SMI-8.6/SMI-SVR4)
+	id JAA26672; Tue, 17 Sep 1996 09:10:30 +0200
+Received: by s424.iitb.fhg.de (SMI-8.6/SMI-SVR4)
+	id JAA11332; Tue, 17 Sep 1996 09:10:29 +0200
+Date: Tue, 17 Sep 1996 09:10:29 +0200
+From: kir@iitb.fhg.de (Harald Kirsch)
+Message-Id: <199609170710.JAA11332@s424.iitb.fhg.de>
+To: lclint-interest@larch.lcs.mit.edu
+Subject: Intro
+
+*** EOOH ***
+X-Env: (fhg.de) kir@iitb.fhg.de -> lclint-interest@larch.lcs.mit.EDU.VIA-SMTP
+Date: Tue, 17 Sep 1996 09:10:29 +0200
+From: kir@iitb.fhg.de (Harald Kirsch)
+To: lclint-interest@larch.lcs.mit.edu
+Subject: Intro
+
+
+Hi to everybody on the list!
+
+Like everbody, I was asked to give a short introduction to myself and
+the hows and whys of my interest in LCLint. Well, last Friday I came
+across LCLint (2.1a on Linux) and it was interesting enough to keep me
+busy a few hours on the weekend. 
+
+>From the signature you see that I am working at the institute IITB of
+the Fraunhofer Gesellschaft, which is one of the largest non-profit
+research institutions in Germany working on public as well as on
+private research contracts. Here at the IITB (about 190 people)
+we cover about everthing where computers are fed real-world signals
+from sensors to make some sense out of them. That is, image
+interpretation and (digital) signal processing are major fields.
+
+Personally I am involved in projects about combustion engine diagnosis
+and railway/train diagnosis. How this fits together? Well, there is
+rotating machinery involved in both cases and we are quite fit in
+working with signals digitized synchronous to the rotation.
+
+And what does this all have to do with LCLint? We do quite a bit of
+programming in C. This brings me back to  last Friday, where tried
+LCLint on
+  o a new library I just implemented to work with our favorite data
+    format, 
+  o code generated from clig, the 'command line interpreter generator',
+    which is a nice getopt-replacement that generates code from a simple
+    specification file  to break down argc and argv.
+
+I found 
+  o one error in the library (a macro parameter used without
+    parentheses), 
+  o a few lines of code which might make problems
+    porting to other machines or compilers (mainly free mixing of
+    integral types) 
+  o a bunch of code where LCLint has different ideas of good coding
+    (mainly use of values not equal to zero equivalent to TRUE)
+  o and some code concerning memory management where I cannot convince
+    LCLInt that it is really ok. 
+
+I'll send some question and comments concerning the last point in
+another mail. 
+
+In general, I think LCLint is great and I am already thinking about
+forcing our to students to use it. I'm not sure about my
+colleges. Some of them might experience a frustration they don't want
+to stand :-)
+
+That's it for now,
+
+	Harald Kirsch
+
+-------------------------------------------------+------------------
+Harald Kirsch, kir@iitb.fhg.de, +49 721 6091 384 | This  message is
+FhG/IITB,      Fraunhoferstr.1, 76131 Karlsruhe  | subject oriented.
+
+</pre>
+<A HREF="102.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="104.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

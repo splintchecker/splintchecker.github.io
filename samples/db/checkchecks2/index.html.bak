@@ -1,0 +1,150 @@
+<html>
+<head>
+<title> LCLint Sample - Checks Mode 2</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<h1>
+LCLint Sample - Checks Mode 2<BR>
+</h1>
+
+<H3> Changes from <A HREF="../checkchecs1/index.html">Checks Mode 1</A> </H3>
+
+<A HREF="diffs.html">Differences</A>
+<p>
+Fixed errors reported in first iteration.
+<P>
+
+<H3> Modules </H3>
+
+<UL>
+<LI>employee - employee datatype (<A HREF="employee.lcl.html">LCL</A>,
+<A HREF="employee.c.html">Code</A>,  <A HREF="employee.h.html">Header</A>)
+<LI>empset - sets of employees (<A HREF="empset.lcl.html">LCL</A>,
+<A HREF="empset.c.html">Code</A>,  <A HREF="empset.h.html">Header</A>)
+<LI>dbase - database of employees (<A HREF="dbase.lcl.html">LCL</A>, 
+<A HREF="dbase.c.html">Code</A>,  <A HREF="dbase.h.html">Header</A>)
+<LI>eref - reference to an employee (<A HREF="eref.lcl.html">LCL</A>,
+<A HREF="eref.c.html">Code</A>,  <A HREF="eref.h.html">Header</A>)
+<LI>erc - collection of erefs (<A HREF="erc.lcl.html">LCL</A>, <A
+HREF="erc.c.html">Code</A>,  <A HREF="erc.h.html">Header</A>)
+<LI>ereftab - table of employees and erefs (<A
+HREF="ereftab.lcl.html">LCL</A>, <A HREF="ereftab.c.html">Code</A>, <A HREF="ereftab.h.html">Header</A>)
+</UL>
+
+<H3> Checks Mode 2</h3>
+
+Running LCLint detects <A HREF="lclint.out.html">4 anomalies</A>.   
+
+<a name="inconglobs">
+<h4><A href="../../../guide/guide.html#sec-4.3">Inconsistent Declarations</a></h4>
+
+Two messages report inconsistent declarations:
+<pre>
+<A HREF="empset.c.html#line38">empset.c:38,6</A>: Function empset_insertUnique inconsistently redeclared with
+                  known in globals list
+  A function, variable or constant is redefined with a different type.  Use
+  -incondefs to suppress message.
+   <A HREF="empset.lcl.html#line27">empset.lcl:27</A>: Specification of empset_insertUnique
+<A HREF="empset.c.html#line144">empset.c:144,6</A>: Function empset_initMod inconsistently redeclared with known in
+                   globals list
+   <A HREF="empset.lcl.html#line83">empset.lcl:83</A>: Specification of empset_initMod
+</pre>
+
+The globals clauses we added in the <A
+HREF="../checkchecks1/index.html#addglobs">previous iteration</a> are
+inconsistent with the specifications.  The variable <tt>known</tt> is
+declared in <A HREF="empset.h.html#line10"><tt>empset.h</tt></a>, but
+should really be a file static variable in <tt>empset.c</tt>.   
+
+(If we had used the <tt>+exportlocal</tt> flag, LCLint will report
+declarations that do not use <tt>static</tt> but are used in only one
+module.  An error is reported for <tt>known</tt> and several other
+variables.  These are deferred until <A
+HREF="../strictchecks/index.html#localexports">Strict Checks</A>.)
+
+We more the declaration of <tt>known</tt> into <tt>empset.c</tt>.  Now,
+one inconsistent definition error is reported:
+<pre>
+<A HREF="empset-mod.c.html#line39">empset.c:39,6</A>: Globals list for empset_insertUnique includes internal state,
+                  known, but previously declared without globals internalState.
+  A function, variable or constant is redefined with a different type.  Use
+  -incondefs to suppress message.
+   <A HREF="empset.lcl.html#line27">empset.lcl:27</A>: Specification of empset_insertUnique
+</pre>
+
+The specification for <tt>empset_insertUnique</tt> does not include file
+static variables, but it should include <tt>internalState</tt> to
+indicate that some internal state may be modified.
+
+<h4><A href="../../../guide/guide.html#sec-4.2">Global Variables</a></h4>
+
+One message reports an undocumented global use:
+
+<pre>
+empset.c: (in function empset_disjointUnion)
+<A HREF="empset.c.html#line86">empset.c:86,7</A>: Called procedure empset_insertUnique may access file static
+                  known
+  A checked global variable is used in the function, but not listed in its
+  globals clause.  By default, only globals specified in .lcl files are
+  checked.  To check all globals, use +allglobals.  To check globals
+  selectively use /*@checked@*/ in the global declaration.  Use -globs to
+  suppress message.
+</pre>
+
+We add <tt>globals known</tt> to the declaration of
+<tt>empset_disjoinUnion</tt>.  As before, we also need to add
+<tt>internalState</tt> to the specification.
+
+<h4><A href="../../../guide/guide.html#sec-7.1.4">Global State</a></h4>
+
+One message reports a global state error:
+<pre>
+<A HREF="empset.c.html#line148">empset.c:148,24</A>: Function returns with global known undefined
+  A global variable does not satisfy its annotations when control is
+  transferred.  Use -globstate to suppress message.
+   <A HREF="empset.lcl.html#line83">empset.lcl:83</A>: Storage known becomes undefined
+</pre>
+
+In fact, this return is only take if the <tt>empset_initMod</tt> has
+already been defined.  So, we known <tt>known</tt> is defined at the
+return point.  We add <tt>-globstate</tt> control comments to suppress
+the message.
+
+<h4><A href="../../../guide/guide.html#sec-5.2.1">Only Storage</a></h4>
+
+Rerunning LCLint, one new error is reported:
+<pre>
+<A HREF="empset.c.html#line155">empset.c:155,3</A>: Only storage assigned to static: known = ereftab_create()
+  The only reference to this storage is transferred to another reference (e.g.,
+  by returning it) that does not have the only annotation.  This may lead to a
+  memory leak, since the new reference is not necessarily released.  Use
+  -onlytrans to suppress message.
+</pre>
+
+We add an <tt>only</tt> annotation on the declaration of
+<tt>known</tt>.
+
+
+<P>
+<HR>
+<A HREF="run.html">
+<IMG ALIGN=left SRC =
+"http://larch-www.lcs.mit.edu:8001/larch/lclint/lclint-run.jpg" ALT = "Run LCLint"></A>
+<A HREF="../namechecks/index.html">
+<IMG ALIGN=left SRC =
+"http://larch-www.lcs.mit.edu:8001/larch/lclint/right-arrow.jpg" ALT =
+"Continue to Name Checks"></A>
+<A HREF="../index.html">
+<IMG ALIGN=left SRC = "http://larch-www.lcs.mit.edu:8001/larch/lclint/up-arrow.jpg" ALT = "Return to Summary"></A>
+<A HREF="http://larch-www.lcs.mit.edu:8001/larch/lclint/index.html">
+<IMG ALIGN=left SRC = "http://larch-www.lcs.mit.edu:8001/larch/lclint/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://larch-www.lcs.mit.edu:8001/~evs">David
+Evans</a> <br>
+<A href="http://larch-www.lcs.mit.edu:8001/">Systematic Program Develpoment</A><br>
+<a
+href="mailto:evs@larch.lcs.mit.edu"><em>evs@larch.lcs.mit.edu</em></a>
+</author>
+</body>
+</html>
+

@@ -1,0 +1,93 @@
+<A NAME="line10"></A><html><head>
+<title>list.c</title>
+</head><body>
+<h3>list.c</h3>
+<PRE>
+<A NAME="line1"></A>typedef /*@null@*/ struct _list
+<A NAME="line2"></A>{
+<A NAME="line3"></A>  /*@only@*/ char *this;
+<A NAME="line4"></A>  /*@null@*/ /*@only@*/ struct _list *next;
+<A NAME="line5"></A>} *list;
+<A NAME="line6"></A> 
+<A NAME="line7"></A>extern /*@out@*/ /*@only@*/ void *
+<A NAME="line8"></A>  smalloc (size_t);
+<A NAME="line9"></A> 
+<A NAME="line10"></A>void
+<A NAME="line11"></A>list_addh (list l, /*@only@*/ char *e)
+<A NAME="line12"></A>{
+<A NAME="line13"></A>  if (l != NULL)
+<A NAME="line14"></A>    {
+<A NAME="line15"></A>      while (l-&gtnext != NULL) 
+<A NAME="line16"></A>	{
+<A NAME="line17"></A>	  l = l-&gtnext;
+<A NAME="line18"></A>	}
+<A NAME="line19"></A>      
+<A NAME="line20"></A>      l-&gtnext = (list) smalloc (sizeof (*l-&gtnext));
+<A NAME="line21"></A>      l-&gtnext-&gtthis = e;
+<A NAME="line22"></A>    }
+<A NAME="line23"></A>}
+<A NAME="line24"></A> 
+<A NAME="line25"></A>  
+<A NAME="line26"></A>      
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

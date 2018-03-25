@@ -1,0 +1,49 @@
+LCLint 2.2 --- 25 Aug 96
+
+exposure.c: (in function employee_getName)
+<A HREF="exposure.c.html#line6" target="source">exposure.c:6,10</A>: Function returns reference to
+                    parameter e: e->name
+  The returned value shares storage with a parameter
+  or global. If a parameter is to be returned, use the
+  returned qualifier. If the result is not modified,
+  use the observer qualifier on the result type.
+  Otherwise, exposed can be used, but limited checking
+  is done. (-retalias will suppress message)
+<A HREF="exposure.c.html#line6" target="source">exposure.c:6,10</A>: Return value exposes rep of employee:
+                    e->name
+  The return value shares storage with an instance of
+  an abstract type. This means clients may have access
+  to a pointer into the abstract representation. Use
+  the observer qualifier to return exposed storage
+  that may not be modified by the client. Use the
+  exposed qualifier to return modifiable (but not
+  deallocatable) exposed storage (dangerous).
+  (-retexpose will suppress message)
+<A HREF="exposure.c.html#line6" target="source">exposure.c:6,18</A>: Released storage e->name reachable
+                    from parameter at return point
+  Memory is used after it has been released (either by
+  passing as an only param or assigning to and only
+  global. (-usereleased will suppress message)
+   <A HREF="exposure.c.html#line6" target="source">exposure.c:6,10</A>: Storage e->name is released
+exposure.c: (in function employee_capName)
+<A HREF="exposure.c.html#line23" target="source">exposure.c:23,3</A>: Suspect modification of observer
+                    name: *name = toupper(*name)
+  Storage declared with observer is possibly modified.
+  Observer storage may not be modified. (-modobserver
+  will suppress message)
+<A HREF="exposure.c.html#line4" target="source">exposure.c:4,1</A>: Function employee_getName exported but
+                   not declared in header file
+  A declaration is exported, but does not appear in a
+  header file. (-exportheader will suppress message)
+   <A HREF="exposure.c.html#line7" target="source">exposure.c:7,1</A>: Definition of employee_getName
+<A HREF="exposure.c.html#line10" target="source">exposure.c:10,1</A>: Function employee_obsName exported
+                    but not declared in header file
+   <A HREF="exposure.c.html#line11" target="source">exposure.c:11,19</A>: Definition of employee_obsName
+<A HREF="exposure.c.html#line14" target="source">exposure.c:14,1</A>: Function employee_exposeName exported
+                    but not declared in header file
+   <A HREF="exposure.c.html#line15" target="source">exposure.c:15,19</A>: Definition of employee_exposeName
+<A HREF="exposure.c.html#line18" target="source">exposure.c:18,1</A>: Function employee_capName exported
+                    but not declared in header file
+   <A HREF="exposure.c.html#line24" target="source">exposure.c:24,1</A>: Definition of employee_capName
+
+Finished LCLint checking --- 8 code errors found

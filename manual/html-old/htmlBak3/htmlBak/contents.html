@@ -1,0 +1,482 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual</title>
+</head>
+<!--#include virtual="manual-header.html"-->
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<p class=MsoTitle>
+
+<table>
+<tr>
+<td>
+<img width=189 height=219 src="http://www.splint.org/manual/manual-301_files/image001.jpg" hspace=12><a name="_Ref533872469"></a></p>
+</td>
+<td>
+<p class=MsoTitle><span class=MsoCommentReference><span style='font-size:26.0pt;
+font-family:"Book Antiqua"'>&nbsp;</span></span></p>
+
+<p class=MsoTitle><span class=MsoCommentReference><span style='font-size:26.0pt;
+font-family:"Book Antiqua"'>Splint Manual</span></span></p>
+
+<p class=MsoSubtitle><span class=MsoCommentReference><span style='font-size:
+18.0pt;font-family:"Book Antiqua"'>Version 3.0.1</span></span></p>
+
+<p class=MsoSubtitle><span class=MsoCommentReference><span style='font-size:
+ 18.0pt;font-family:"Book Antiqua"'>7 January 2002</span></span></p>
+
+
+<p class=TextFontCX style='margin-left:28.35pt;
+text-indent:-14.15pt'><span class=MsoCommentReference><span style='font-size:
+15.5pt'>&nbsp;</span></span></p>
+
+<p class=TextFontCX align=right style='margin-right:
+9.0pt;text-align:right'><span class=MsoCommentReference><span
+style='font-size:14.0pt'>
+<a href="authors.html">Authors and Credits</a><br>
+Secure Programming Group<br>
+<a href="http://www.cs.virginia.edu/">University of Virginia, Department
+of Computer Science</a>
+</span></i></span></p>
+
+</span></span>
+</td>
+</tr>
+</table>
+<p>
+
+<div class=Section3>
+
+<p class=MsoToc1 align=center style='text-align:center'><span
+class=MsoCommentReference><span style='font-size:15.5pt'>Contents</span></span></p>
+
+<!-- <p class=MsoToc1>\([0-9]*\)\(.*</p>\) -->
+
+<a href="sec1.html"><p class=MsoToc1>1<span style='font-size:12.0pt;font-weight:normal'>      </span>Operation</p></a>
+
+<p class=MsoToc2>1.1<spanstyle='font-size:12.0pt'>     </span>Warnings</p>
+
+<p class=MsoToc2>1.2<span style='font-size:12.0pt'>     </span>Flags</p>
+
+<p class=MsoToc2>1.3<span style='font-size:12.0pt'>     </span>Stylized
+Comments</p>
+
+<p class=MsoToc3>1.3.1<span style='font-size:12.0pt'>     </span>Annotations</p>
+
+<p class=MsoToc3>1.3.2<span style='font-size:12.0pt'>     </span>Setting Flags</p>
+
+<a href="sec2.html"><p class=MsoToc1>2<span style='font-size:12.0pt;font-weight:normal'>      </span>Null
+Dereferences</p></a>
+
+<p class=MsoToc3>2.1.1<span style='font-size:12.0pt'>     </span>Predicate
+Functions</p>
+
+<p class=MsoToc3>2.1.2<span style='font-size:12.0pt'>     </span>Notnull
+Annotations</p>
+
+<p class=MsoToc3>2.1.3<span style='font-size:12.0pt'>     </span>Relaxing Null
+Checking</p>
+
+<a href="sec3.html">
+<p class=MsoToc1>3<span style='font-size:12.0pt;font-weight:normal'>      </span>Undefined
+Values</p></a>
+
+<p class=MsoToc3>3.1.1<span style='font-size:12.0pt'>     </span>Undefined
+Parameters</p>
+
+<p class=MsoToc3>3.1.2<span style='font-size:12.0pt'>     </span>Relaxing
+Checking</p>
+
+<p class=MsoToc3>3.1.3<span style='font-size:12.0pt'>     </span>Partially
+Defined Structures</p>
+
+<a href="sec4.html"><p class=MsoToc1>4<span style='font-size:12.0pt;font-weight:normal'>      </span>Types</p></a>
+
+<p class=MsoToc2>4.1<span style='font-size:12.0pt'>     </span>Built in C Types</p>
+
+<p class=MsoToc3>4.1.1<span style='font-size:12.0pt'>     </span>Characters</p>
+
+<p class=MsoToc3>4.1.2<span style='font-size:12.0pt'>     </span>Enumerators</p>
+
+<p class=MsoToc3>4.1.3<span style='font-size:12.0pt'>     </span>Numeric Types</p>
+
+<p class=MsoToc3>4.1.4<span style='font-size:12.0pt'>     </span>Arbitrary
+Integral Types</p>
+
+<p class=MsoToc2>4.2<span style='font-size:12.0pt'>     </span>Boolean Types</p>
+
+<p class=MsoToc2>4.3<span style='font-size:12.0pt'>     </span>Abstract Types</p>
+
+<p class=MsoToc3>4.3.1<span style='font-size:12.0pt'>     </span>Controlling
+Access</p>
+
+<p class=MsoToc3>4.3.2<span style='font-size:12.0pt'>     </span>Mutability</p>
+
+<p class=MsoToc2>4.4<span style='font-size:12.0pt'>     </span>Polymorphism</p>
+
+<a href="sec5.html"><p class=MsoToc1>5<span style='font-size:12.0pt;font-weight:normal'>      </span>Memory Management</p></a>
+
+<p class=MsoToc2>5.1<span style='font-size:12.0pt'>     </span>Storage Model</p>
+
+<p class=MsoToc2>5.2<span style='font-size:12.0pt'>     </span>Deallocation
+Errors</p>
+
+<p class=MsoToc3>5.2.1<span style='font-size:12.0pt'>     </span>Unshared
+References</p>
+
+<p class=MsoToc3>5.2.2<span style='font-size:12.0pt'>     </span>Temporary
+Parameters</p>
+
+<p class=MsoToc3>5.2.3<span style='font-size:12.0pt'>     </span>Owned and
+Dependent References</p>
+
+<p class=MsoToc3>5.2.4<span style='font-size:12.0pt'>     </span>Keep
+Parameters</p>
+
+<p class=MsoToc3>5.2.5<span style='font-size:12.0pt'>     </span>Shared
+References</p>
+
+<p class=MsoToc3>5.2.6<span style='font-size:12.0pt'>     </span>Stack
+References</p>
+
+<p class=MsoToc3>5.2.7<span style='font-size:12.0pt'>     </span>Inner Storage</p>
+
+<p class=MsoToc2>5.3<span style='font-size:12.0pt'>     </span>Implicit Memory
+Annotations</p>
+
+<p class=MsoToc2>5.4<span style='font-size:12.0pt'>     </span>Reference
+Counting</p>
+
+<a href="sec6.html"><p class=MsoToc1>6<span style='font-size:12.0pt;font-weight:normal'>      </span>Sharing</p></a>
+
+<p class=MsoToc2>6.1<span style='font-size:12.0pt'>     </span>Aliasing</p>
+
+<p class=MsoToc3>6.1.1<span style='font-size:12.0pt'>     </span>Unique
+Parameters</p>
+
+<p class=MsoToc3>6.1.2<span style='font-size:12.0pt'>     </span>Returned
+Parameters</p>
+
+<p class=MsoToc2>6.2<span style='font-size:12.0pt'>     </span>Exposure</p>
+
+<p class=MsoToc3>6.2.1<span style='font-size:12.0pt'>     </span>Read-Only
+Storage</p>
+
+<p class=MsoToc3>6.2.2<span style='font-size:12.0pt'>     </span>Exposed
+Storage</p>
+
+<a href="sec7.html"><p class=MsoToc1>7<span style='font-size:12.0pt;font-weight:normal'>      </span>Function
+Interfaces</p></a>
+
+<p class=MsoToc2>7.1<span style='font-size:12.0pt'>     </span>Modifications</p>
+
+<p class=MsoToc3>7.1.1<span style='font-size:12.0pt'>     </span>State
+Modifications</p>
+
+<p class=MsoToc3>7.1.2<span style='font-size:12.0pt'>     </span>Missing
+Modifies Clauses</p>
+
+<p class=MsoToc2>7.2<span style='font-size:12.0pt'>     </span>Global Variables</p>
+
+<p class=MsoToc3>7.2.1<span style='font-size:12.0pt'>     </span>Controlling Globals
+Checking</p>
+
+<p class=MsoToc3>7.2.2<span style='font-size:12.0pt'>     </span>Definition
+State</p>
+
+<p class=MsoToc2>7.3<span style='font-size:12.0pt'>     </span>Declaration
+Consistency</p>
+
+<p class=MsoToc2>7.4<span style='font-size:12.0pt'>     </span>State Clauses</p>
+
+<p class=MsoToc2>7.5<span style='font-size:12.0pt'>     </span>Requires and
+Ensures Clauses</p>
+
+<a href="sec8.html"><p class=MsoToc1>8<span style='font-size:12.0pt;font-weight:normal'>      </span>Control
+Flow</p></a>
+
+<p class=MsoToc2>8.1<span style='font-size:12.0pt'>     </span>Execution</p>
+
+<p class=MsoToc2>8.2<span style='font-size:12.0pt'>     </span>Undefined
+Behavior</p>
+
+<p class=MsoToc2>8.3<span style='font-size:12.0pt'>     </span>Problematic
+Control Structures</p>
+
+<p class=MsoToc3>8.3.1<span style='font-size:12.0pt'>     </span>Likely
+Infinite Loops</p>
+
+<p class=MsoToc3>8.3.2<span style='font-size:12.0pt'>     </span>Switches</p>
+
+<p class=MsoToc3>8.3.3<span style='font-size:12.0pt'>     </span>Deep Breaks</p>
+
+<p class=MsoToc3>8.3.4<span style='font-size:12.0pt'>     </span>Loop and If
+Bodies</p>
+
+<p class=MsoToc3>8.3.5<span style='font-size:12.0pt'>     </span>Complete Logic</p>
+
+<p class=MsoToc2>8.4<span style='font-size:12.0pt'>     </span>Suspicious
+Statements</p>
+
+<p class=MsoToc3>8.4.1<span style='font-size:12.0pt'>     </span>Statements
+with No Effects</p>
+
+<p class=MsoToc3>8.4.2<span style='font-size:12.0pt'>     </span>Ignored Return
+Values</p>
+
+<a href="sec9.html"><p class=MsoToc1>9<span style='font-size:12.0pt;font-weight:normal'>      </span>Buffer
+Sizes</p></a>
+
+<p class=MsoToc2>9.1<span style='font-size:12.0pt'>     </span>Checking Accesses</p>
+
+<p class=MsoToc2>9.2<span style='font-size:12.0pt'>     </span>Annotating
+Buffer Sizes</p>
+
+<p class=MsoToc2>9.3<span style='font-size:12.0pt'>     </span>Warnings</p>
+
+<a href="sec10.html"><p class=MsoToc1>10<span style='font-size:12.0pt;font-weight:normal'>      </span>Extensible
+Checking</p></a>
+
+<p class=MsoToc2>10.1<span style='font-size:12.0pt'>       </span>Defining
+Attributes</p>
+
+<p class=MsoToc2>10.2<span style='font-size:12.0pt'>       </span>Annotations</p>
+
+<p class=MsoToc2>10.3<span style='font-size:12.0pt'>       </span>Example</p>
+
+<a href="sec11.html"><p class=MsoToc1>11<span style='font-size:12.0pt;font-weight:normal'>      </span>Macros</p></a>
+
+<p class=MsoToc2>11.1<span style='font-size:12.0pt'>       </span>Constant
+Macros</p>
+
+<p class=MsoToc2>11.2<span style='font-size:12.0pt'>       </span>Function-like
+Macros</p>
+
+<p class=MsoToc3>11.2.1<span style='font-size:12.0pt'>       </span>Side Effect
+Free Parameters</p>
+
+<p class=MsoToc2>11.3<span style='font-size:12.0pt'>       </span>Controlling
+Macro Checking</p>
+
+<p class=MsoToc2>11.4<span style='font-size:12.0pt'>       </span>Iterators</p>
+
+<p class=MsoToc3>11.4.1<span style='font-size:12.0pt'>       </span>Defining
+Iterators</p>
+
+<p class=MsoToc3>11.4.2<span style='font-size:12.0pt'>       </span>Using Iterators</p>
+
+<a href="sec12.html"><p class=MsoToc1>12<span style='font-size:12.0pt;font-weight:normal'>      </span>Naming
+Conventions</p></a>
+
+<p class=MsoToc2>12.1<span style='font-size:12.0pt'>       </span>Type-Based
+Naming Conventions</p>
+
+<p class=MsoToc3>12.1.1<span style='font-size:12.0pt'>       </span>Czech Names</p>
+
+<p class=MsoToc3>12.1.2<span style='font-size:12.0pt'>       </span>Slovak
+Names</p>
+
+<p class=MsoToc3>12.1.3<span style='font-size:12.0pt'>       </span>Czechoslovak
+Names</p>
+
+<p class=MsoToc2>12.2<span style='font-size:12.0pt'>       </span>Namespace
+Prefixes</p>
+
+<p class=MsoToc2>12.3<span style='font-size:12.0pt'>       </span>Naming
+Restrictions</p>
+
+<p class=MsoToc3>12.3.1<span style='font-size:12.0pt'>       </span>Reserved
+Names</p>
+
+<p class=MsoToc3>12.3.2<span style='font-size:12.0pt'>       </span>Distinct
+Names</p>
+
+<a href="sec13.html"><p class=MsoToc1>13<span style='font-size:12.0pt;font-weight:normal'>      </span>Completeness</p></a>
+
+<p class=MsoToc2>13.1<span style='font-size:12.0pt'>       </span>Unused
+Declarations</p>
+
+<p class=MsoToc2>13.2<span style='font-size:12.0pt'>       </span>Complete
+Programs</p>
+
+<p class=MsoToc3>13.2.1<span style='font-size:12.0pt'>       </span>Unnecessarily
+External Names</p>
+
+<p class=MsoToc3>13.2.2<span style='font-size:12.0pt'>       </span>Declarations
+Missing from Headers</p>
+
+<a href="sec14.html"><p class=MsoToc1>14<span style='font-size:12.0pt;font-weight:normal'>      </span>Libraries
+and Header File Inclusion</p></a>
+
+<p class=MsoToc2>14.1<span style='font-size:12.0pt'>       </span>Standard
+Libraries</p>
+
+<p class=MsoToc3>14.1.1<span style='font-size:12.0pt'>       </span>ISO
+Standard Library</p>
+
+<p class=MsoToc3>14.1.2<span style='font-size:12.0pt'>       </span>POSIX
+Library</p>
+
+<p class=MsoToc3>14.1.3<span style='font-size:12.0pt'>       </span>UNIX
+Library</p>
+
+<p class=MsoToc3>14.1.4<span style='font-size:12.0pt'>       </span>Strict
+Libraries</p>
+
+<p class=MsoToc2>14.2<span style='font-size:12.0pt'>       </span>Generating
+Libraries</p>
+
+<p class=MsoToc3>14.2.1<span style='font-size:12.0pt'>       </span>Generating
+the Standard Libraries</p>
+
+<p class=MsoToc2>14.3<span style='font-size:12.0pt'>       </span>Header File
+Inclusion</p>
+
+<p class=MsoToc3>14.3.1<span style='font-size:12.0pt'>       </span>Preprocessing
+Constants</p>
+
+<a href="appA.html"><p class=MsoToc1>Appendix A<span style='font-size:12.0pt;font-weight:normal'>    </span>Availability</p></a>
+
+<a href="appB.html"><p class=MsoToc1>Appendix B<span style='font-size:12.0pt;font-weight:normal'>    </span>Flags</p></a>
+
+<p class=MsoToc2>Global Flags</p>
+
+<p class=MsoToc3>Help</p>
+
+<p class=MsoToc3>Initialization</p>
+
+<p class=MsoToc3>Pre-processor</p>
+
+<p class=MsoToc3>Libraries</p>
+
+<p class=MsoToc3>Output</p>
+
+<p class=MsoToc3>Expected Errors</p>
+
+<p class=MsoToc2>Message Format</p>
+
+<p class=MsoToc2>Mode Selector Flags</p>
+
+<p class=MsoToc2>Checking Flags</p>
+
+<p class=MsoToc3>Key</p>
+
+<p class=MsoToc3>Types</p>
+
+<p class=MsoToc3>Function Interfaces</p>
+
+<p class=MsoToc3>Memory Management</p>
+
+<p class=MsoToc3>Sharing</p>
+
+<p class=MsoToc3>Use Before Definition <i>(Section 3)</i></p>
+
+<p class=MsoToc3>Null Dereferences <i>(Section 2)</i></p>
+
+<p class=MsoToc3>Macros <i>(Section 7)</i></p>
+
+<p class=MsoToc3>Iterators</p>
+
+<p class=MsoToc3>Naming Conventions</p>
+
+<p class=MsoToc3>Other Checks</p>
+
+<p class=MsoToc2>Flag Name Abbreviations</p>
+
+<a href="appC.html"><p class=MsoToc1>Appendix C<span style='font-size:12.0pt;font-weight:normal'>    </span>Annotations</p></a>
+
+<p class=MsoToc3>Suppressing Warnings</p>
+
+<p class=MsoToc2>Syntactic Annotations</p>
+
+<p class=MsoToc3>Functions</p>
+
+<p class=MsoToc3>Iterators (Section 11.4)</p>
+
+<p class=MsoToc3>Constants (Section 11.1)</p>
+
+<p class=MsoToc3>Alternate Types (Section 4.4)</p>
+
+<p class=MsoToc3>Declarator Annotations</p>
+
+<p class=MsoToc3>Type Access</p>
+
+<p class=MsoToc3>Macro Expansion</p>
+
+<p class=MsoToc3>Arbitrary Integral Types</p>
+
+<p class=MsoToc3>Traditional Lint Comments</p>
+
+<p class=MsoToc2>Metastate Definitions</p>
+
+<a href="appD.html"><p class=MsoToc1>Appendix D<span style='font-size:12.0pt;font-weight:normal'>    </span>Specifications</p></a>
+
+<p class=MsoToc3>Specification Flags</p>
+
+<a href="appE.html"><p class=MsoToc1>Appendix E<span style='font-size:12.0pt;font-weight:normal'>    </span>Annotated
+Bibliography</p></a>
+
+<a href="appIndex.html"><p class=MsoToc1>Index</p></a>
+
+<p class=TextFontCX><span
+class=MsoCommentReference><i><span style='font-size:15.5pt;text-transform:uppercase'><b>&nbsp;</b></span></i></span></p>
+
+<p class=MsoToc1 align=center style='text-align:center'><span
+class=MsoCommentReference><span style='font-size:15.5pt'>Figures</span></span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoTof>Figure 1.  Typical Effort-Benefit Curve for Using Splint</p>
+
+<p class=MsoTof>Figure 2.  Null Checking</p>
+
+<p class=MsoTof>Figure 3.  Use before Definition</p>
+
+<p class=MsoTof>Figure 4.  Boolean Checking</p>
+
+<p class=MsoTof>Figure 5.  Information Hiding Violations</p>
+
+<p class=MsoTof>Figure 6.  Memory Management</p>
+
+<p class=MsoTof>Figure 7.  Stack-Allocated Storage</p>
+
+<p class=MsoTof>Figure 8.  Implicit Annotations</p>
+
+<p class=MsoTof>Figure 9.  Reference Counting</p>
+
+<p class=MsoTof>Figure 10.  Unique parameters</p>
+
+<p class=MsoTof>Figure 11.  Exposure</p>
+
+<p class=MsoTof>Figure 12.  Modification</p>
+
+<p class=MsoTof>Figure 13.  Global Variables</p>
+
+<p class=MsoTof>Figure 14.  Annotated Globals Lists</p>
+
+<p class=MsoTof>Figure 15.  State Clauses</p>
+
+<p class=MsoTof>Figure 16.  Evaluation Order</p>
+
+<p class=MsoTof>Figure 17.  Infinite Loops</p>
+
+<p class=MsoTof>Figure 18.  Switch Cases</p>
+
+<p class=MsoTof>Figure 19.  Statements with No Effect</p>
+
+<p class=MsoTof>Figure 20.  Ignored Return Values</p>
+
+<p class=MsoTof>Figure 21.  Prefix Character Codes</p>
+
+<p class=MsoTof>Figure 22.  Distinct Names</p>
+
+<p class=MsoTof>Figure 23.  Flag Name Abbreviations</p>
+
+<p class=TextFontCX></p>
+
+
+<!--#include virtual="manual-footer.html"-->

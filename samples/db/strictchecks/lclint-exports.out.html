@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/strictchecks'
+lclint +lh +checks -allimponly +allmacros +exportany +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< preprocessing >
+<A HREF="employee.h.html#line3" target="source">employee.h:3</A>: Constant exported, but not specified: EMPLOYEE_H
+  A constant is exported, but not specified. Use -exportconst to suppress
+  message.
+< more preprocessing . >
+<A HREF="bool.h.html#line3" target="source">bool.h:3</A>: Constant exported, but not specified: BOOL_H
+< more preprocessing . >
+<A HREF="bool.h.html#line23" target="source">bool.h:23</A>: Function exported, but not specified: bool_initMod
+  A function is exported, but not specified. Use -exportfcn to suppress
+  message.
+< more preprocessing . >
+<A HREF="bool.h.html#line27" target="source">bool.h:27</A>: Function exported, but not specified: bool_unparse
+< more preprocessing . >
+<A HREF="bool.h.html#line30" target="source">bool.h:30</A>: Function exported, but not specified: bool_not
+< more preprocessing . >
+<A HREF="bool.h.html#line33" target="source">bool.h:33</A>: Function exported, but not specified: bool_equal
+< more preprocessing . >
+<A HREF="bool.h.html#line37" target="source">bool.h:37</A>: Function exported, but not specified: check
+< more preprocessing . >
+<A HREF="eref.h.html#line3" target="source">eref.h:3</A>: Constant exported, but not specified: EREF_H
+< more preprocessing . >
+<A HREF="empset.h.html#line3" target="source">empset.h:3</A>: Constant exported, but not specified: EMPSET_H
+< more preprocessing . >
+<A HREF="erc.h.html#line3" target="source">erc.h:3</A>: Constant exported, but not specified: ERC_H
+< more preprocessing . >
+<A HREF="ereftab.h.html#line5" target="source">ereftab.h:5</A>: Constant exported, but not specified: EREFTAB_H
+< more preprocessing . >
+<A HREF="dbase.h.html#line3" target="source">dbase.h:3</A>: Constant exported, but not specified: DBASE_H
+< more preprocessing . >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+<A HREF="eref.h.html#line9" target="source">eref.h:9,16</A>: Constant exported, but not specified: ST_USED
+<A HREF="eref.h.html#line9" target="source">eref.h:9,25</A>: Constant exported, but not specified: ST_AVAIL
+<A HREF="eref.h.html#line9" target="source">eref.h:9,36</A>: Type exported, but not specified: erefStatus
+  A type is exported, but not specified. Use -exporttype to suppress message.
+<A HREF="eref.h.html#line14" target="source">eref.h:14,3</A>: Type exported, but not specified: erefTable
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+<A HREF="erc.h.html#line7" target="source">erc.h:7,67</A>: Type exported, but not specified: ercElem
+<A HREF="erc.h.html#line8" target="source">erc.h:8,18</A>: Type exported, but not specified: ercList
+<A HREF="erc.h.html#line9" target="source">erc.h:9,55</A>: Type exported, but not specified: ercInfo
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+< cleaning .......... >
+
+Finished LCLint checking --- 19 code errors found
+396 spec, 3040 source (1283 before pre-processing) lines in 5.22 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/strictchecks'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

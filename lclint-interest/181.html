@@ -1,0 +1,50 @@
+<h3>lclint-interest message 181</h3>
+<pre>
+From evans@cs.virginia.edu Tue Jan  6 19:15:46 1998
+Date: Tue, 6 Jan 98 18:57:29 -0500
+From: evans@cs.virginia.edu (David Evans)
+To: davidv@hsa.com.au
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: David A Vincent's message of 07 Jan 1998 10:30:06 +1100 <q2vhvxp4e9.fsf@hsa.com.au>
+Subject: annotation help
+
+
+When you redeclare something, lclint will use the later definition
+(after warning you about the redeclartion and inconsistencies).  So,
+after you added the declaration with the /*@null@*/ annotation, you
+shouldn't get messages where XtAddCallback is called with a possibly
+null XtPointer argument.  
+
+There's no special syntax to indicate that you are augmenting an earlier
+definition, but you can use syntactic comments to suppress the
+inconsistent declaration message (as suggested by the error message you
+got).  For example,
+
+/*@-incondefs@*/
+/*@external@*/ extern void XtAddCallback(Widget, String,
+                                         XtCallbackProc, /*@null@*/ XtPointer);
+/*@=incondefs@*/
+
+I added the /*@external@*/ to indicate that the definition of
+XtAddCallback is in an external file, so if you do completeness checking
+you wouldn't get complaints about it not being defined.
+
+--- Dave
+
+
+</pre>
+<A HREF="180.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="182.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

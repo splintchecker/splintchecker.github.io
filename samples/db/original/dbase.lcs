@@ -1,0 +1,661 @@
+%PASSED Output from LCLint 2.1a
+%LCLimports 
+%LCLSortTable
+%LCLsort bool immutable nil nil
+%LCLsort Bool synonym bool nil
+%LCLsort int primitive nil nil
+%LCLsort char primitive nil nil
+%LCLsort void primitive nil nil
+%LCLsort _char_Obj obj char nil
+%LCLsort __char_Obj_Ptr ptr _char_Obj nil
+%LCLsort __char_Obj_Arr arr _char_Obj nil
+%LCLsort _char_Vec vec char __char_Obj_Arr
+%LCLsort float primitive nil nil
+%LCLsort double primitive nil nil
+%LCLsort _eemployee0e_Enum enum eemployee0e nil
+%LCLsort gender_ANY enumMem nil nil
+%LCLsort FEMALE enumMem nil nil
+%LCLsort MALE enumMem nil nil
+%LCLsort enumEnd nil nil nil
+%LCLsort _gender synonym _eemployee0e_Enum nil
+%LCLsort _eemployee1e_Enum enum eemployee1e nil
+%LCLsort job_ANY enumMem nil nil
+%LCLsort NONMGR enumMem nil nil
+%LCLsort MGR enumMem nil nil
+%LCLsort enumEnd nil nil nil
+%LCLsort _job synonym _eemployee1e_Enum nil
+%LCLsort _semployee0s_Struct str semployee0s nil
+%LCLsort j strMem __eemployee1e_Enum_Obj nil
+%LCLsort gen strMem __eemployee0e_Enum_Obj nil
+%LCLsort salary strMem _int_Obj nil
+%LCLsort name strMem __char_Obj_Arr nil
+%LCLsort ssNum strMem _int_Obj nil
+%LCLsort strEnd nil nil nil
+%LCLsort _int_Obj obj int nil
+%LCLsort __eemployee0e_Enum_Obj obj _eemployee0e_Enum nil
+%LCLsort __eemployee1e_Enum_Obj obj _eemployee1e_Enum nil
+%LCLsort _semployee0s_Struct_Tuple tup _semployee0s_Struct nil
+%LCLsort __semployee0s_Struct_Ptr ptr _semployee0s_Struct nil
+%LCLsort __semployee0s_Struct_Arr arr _semployee0s_Struct nil
+%LCLsort __semployee0s_Struct_Tuple_Vec vec _semployee0s_Struct_Tuple __semployee0s_Struct_Arr
+%LCLsort _employee synonym _semployee0s_Struct nil
+%LCLsort String primitive nil nil
+%LCLsort eref immutable nil nil
+%LCLsort map immutable nil nil
+%LCLsort IndSet primitive nil nil
+%LCLsort _map_Obj obj map nil
+%LCLsort empset immutable nil nil
+%LCLsort _empset_Obj mutable empset nil
+%LCLsort ereftab immutable nil nil
+%LCLsort _ereftab_Obj mutable ereftab nil
+%LCLsort erc immutable nil nil
+%LCLsort _erc_Obj mutable erc nil
+%LCLsort ercIter immutable nil nil
+%LCLsort _ercIter_Obj mutable ercIter nil
+%LCLsort ercElems primitive nil nil
+%LCLsort FILE immutable nil nil
+%LCLsort _FILE_Obj obj FILE nil
+%LCLsort __FILE_Obj_Ptr ptr _FILE_Obj nil
+%LCLsort __FILE_Obj_Arr arr _FILE_Obj nil
+%LCLsort _FILE_Vec vec FILE __FILE_Obj_Arr
+%LCLsort ___FILE_Obj_Ptr_Obj obj __FILE_Obj_Ptr nil
+%LCLsort _ioStream synonym __char_Obj_Arr nil
+%LCLsort _sdbase1s_Struct str sdbase1s nil
+%LCLsort h strMem _int_Obj nil
+%LCLsort l strMem _int_Obj nil
+%LCLsort j strMem __eemployee1e_Enum_Obj nil
+%LCLsort g strMem __eemployee0e_Enum_Obj nil
+%LCLsort strEnd nil nil nil
+%LCLsort _sdbase1s_Struct_Tuple tup _sdbase1s_Struct nil
+%LCLsort __sdbase1s_Struct_Ptr ptr _sdbase1s_Struct nil
+%LCLsort __sdbase1s_Struct_Arr arr _sdbase1s_Struct nil
+%LCLsort __sdbase1s_Struct_Tuple_Vec vec _sdbase1s_Struct_Tuple __sdbase1s_Struct_Arr
+%LCLsort _db_q synonym _sdbase1s_Struct nil
+%LCLsort _edbase2e_Enum enum edbase2e nil
+%LCLsort missERR enumMem nil nil
+%LCLsort duplERR enumMem nil nil
+%LCLsort jobERR enumMem nil nil
+%LCLsort genderERR enumMem nil nil
+%LCLsort salERR enumMem nil nil
+%LCLsort db_OK enumMem nil nil
+%LCLsort enumEnd nil nil nil
+%LCLsort _db_status synonym _edbase2e_Enum nil
+%LCLsort db immutable nil nil
+%LCLsort _db_Obj obj db nil
+%LCLsort employee_name primitive nil nil
+%LCLSortTableEnd
+%LCLSymbolTable
+%LCLop div :int, int -> int
+%LCLop mod :int, int -> int
+%LCLop set_ssNum :_semployee0s_Struct_Tuple, int -> _semployee0s_Struct_Tuple
+%LCLop min :int, int -> int
+%LCLop set_name :_semployee0s_Struct_Tuple, employee_name -> _semployee0s_Struct_Tuple
+%LCLop max :int, int -> int
+%LCLop set_gen :_semployee0s_Struct_Tuple, _eemployee0e_Enum -> _semployee0s_Struct_Tuple
+%LCLop 0 : -> int
+%LCLop 0 : -> double
+%LCLop if __ then __ else __  :bool, bool, bool -> bool
+%LCLop if __ then __ else __  :bool, int, int -> int
+%LCLop if __ then __ else __  :bool, double, double -> double
+%LCLop if __ then __ else __  :bool, _char_Vec, _char_Vec -> _char_Vec
+%LCLop if __ then __ else __  :bool, char, char -> char
+%LCLop if __ then __ else __  :bool, String, String -> String
+%LCLop if __ then __ else __  :bool, _semployee0s_Struct_Tuple, _semployee0s_Struct_Tuple -> _semployee0s_Struct_Tuple
+%LCLop if __ then __ else __  :bool, IndSet, IndSet -> IndSet
+%LCLop if __ then __ else __  :bool, eref, eref -> eref
+%LCLop if __ then __ else __  :bool, map, map -> map
+%LCLop if __ then __ else __  :bool, empset, empset -> empset
+%LCLop if __ then __ else __  :bool, ereftab, ereftab -> ereftab
+%LCLop if __ then __ else __  :bool, ercElems, ercElems -> ercElems
+%LCLop if __ then __ else __  :bool, erc, erc -> erc
+%LCLop if __ then __ else __  :bool, ercIter, ercIter -> ercIter
+%LCLop if __ then __ else __  :bool, _erc_Obj, _erc_Obj -> _erc_Obj
+%LCLop if __ then __ else __  :bool, FILE, FILE -> FILE
+%LCLop if __ then __ else __  :bool, _eemployee0e_Enum, _eemployee0e_Enum -> _eemployee0e_Enum
+%LCLop if __ then __ else __  :bool, _eemployee1e_Enum, _eemployee1e_Enum -> _eemployee1e_Enum
+%LCLop if __ then __ else __  :bool, employee_name, employee_name -> employee_name
+%LCLop if __ then __ else __  :bool, db, db -> db
+%LCLop if __ then __ else __  :bool, _sdbase1s_Struct_Tuple, _sdbase1s_Struct_Tuple -> _sdbase1s_Struct_Tuple
+%LCLop if __ then __ else __  :bool, _edbase2e_Enum, _edbase2e_Enum -> _edbase2e_Enum
+%LCLop set_g :_sdbase1s_Struct_Tuple, _eemployee0e_Enum -> _sdbase1s_Struct_Tuple
+%LCLop __ \select g :_sdbase1s_Struct_Tuple -> _eemployee0e_Enum
+%LCLop __ \select g :_sdbase1s_Struct -> __eemployee0e_Enum_Obj
+%LCLop 1 : -> int
+%LCLop 1 : -> double
+%LCLop set_l :_sdbase1s_Struct_Tuple, int -> _sdbase1s_Struct_Tuple
+%LCLop __ \select l :_sdbase1s_Struct_Tuple -> int
+%LCLop __ \select l :_sdbase1s_Struct -> _int_Obj
+%LCLop set_h :_sdbase1s_Struct_Tuple, int -> _sdbase1s_Struct_Tuple
+%LCLop __ \field_arrow g :__sdbase1s_Struct_Ptr -> __eemployee0e_Enum_Obj
+%LCLop __ \select h :_sdbase1s_Struct_Tuple -> int
+%LCLop __ \select h :_sdbase1s_Struct -> _int_Obj
+%LCLop __ < __  :int, int -> bool
+%LCLop __ < __  :double, double -> bool
+%LCLop hire :_semployee0s_Struct_Tuple, db -> db
+%LCLop __ \field_arrow l :__sdbase1s_Struct_Ptr -> _int_Obj
+%LCLop empty : -> _char_Vec
+%LCLop empty : -> String
+%LCLop empty : -> ereftab
+%LCLop empty : -> db
+%LCLop __ > __  :int, int -> bool
+%LCLop __ > __  :double, double -> bool
+%LCLop query :db, _sdbase1s_Struct_Tuple -> empset
+%LCLop __ \field_arrow h :__sdbase1s_Struct_Ptr -> _int_Obj
+%LCLop match :_eemployee0e_Enum, _eemployee0e_Enum -> bool
+%LCLop match :_eemployee1e_Enum, _eemployee1e_Enum -> bool
+%LCLop fire :db, int -> db
+%LCLop count :char, _char_Vec -> int
+%LCLop count :char, String -> int
+%LCLop count :eref, ercElems -> int
+%LCLop count :char, db -> int
+%LCLop promote :db, int -> db
+%LCLop head :_char_Vec -> char
+%LCLop head :String -> char
+%LCLop head :db -> char
+%LCLop __ \inv :double -> double
+%LCLop setSal :db, int, int -> db
+%LCLop init :_char_Vec -> _char_Vec
+%LCLop init :String -> String
+%LCLop init :db -> db
+%LCLop find :db, int -> _semployee0s_Struct_Tuple
+%LCLop isEmpty :_char_Vec -> bool
+%LCLop isEmpty :String -> bool
+%LCLop isEmpty :db -> bool
+%LCLop employed :db, int -> bool
+%LCLop last :_char_Vec -> char
+%LCLop last :String -> char
+%LCLop last :db -> char
+%LCLop __ \implies __  :bool, bool -> bool
+%LCLop numEmployees :db -> int
+%LCLop len :_char_Vec -> int
+%LCLop len :String -> int
+%LCLop len :db -> int
+%LCLop set_j :_semployee0s_Struct_Tuple, _eemployee1e_Enum -> _semployee0s_Struct_Tuple
+%LCLop set_j :_sdbase1s_Struct_Tuple, _eemployee1e_Enum -> _sdbase1s_Struct_Tuple
+%LCLop prefix :_char_Vec, int -> _char_Vec
+%LCLop prefix :String, int -> String
+%LCLop prefix :db, int -> db
+%LCLop __ / __  :double, double -> double
+%LCLop set_salary :_semployee0s_Struct_Tuple, int -> _semployee0s_Struct_Tuple
+%LCLop removePrefix :_char_Vec, int -> _char_Vec
+%LCLop removePrefix :String, int -> String
+%LCLop removePrefix :db, int -> db
+%LCLop substring :_char_Vec, int, int -> _char_Vec
+%LCLop substring :String, int, int -> String
+%LCLop substring :db, int, int -> db
+%LCLop __ || __  :_char_Vec, _char_Vec -> _char_Vec
+%LCLop __ || __  :String, String -> String
+%LCLop __ || __  :db, db -> db
+%LCLop tail :_char_Vec -> _char_Vec
+%LCLop tail :String -> String
+%LCLop tail :db -> db
+%LCLop __ \in __  :char, _char_Vec -> bool
+%LCLop __ \in __  :char, String -> bool
+%LCLop __ \in __  :eref, IndSet -> bool
+%LCLop __ \in __  :_semployee0s_Struct_Tuple, empset -> bool
+%LCLop __ \in __  :eref, ercElems -> bool
+%LCLop __ \in __  :_semployee0s_Struct_Tuple, db -> bool
+%LCLop __ \in __  :char, db -> bool
+%LCLop nullTerminated :_char_Vec -> bool
+%LCLop nullTerminated :String -> bool
+%LCLop nullTerminated :db -> bool
+%LCLop throughNull :_char_Vec -> _char_Vec
+%LCLop throughNull :String -> String
+%LCLop throughNull :db -> db
+%LCLop sameStr :_char_Vec, _char_Vec -> bool
+%LCLop sameStr :String, String -> bool
+%LCLop sameStr :db, db -> bool
+%LCLop lenStr :_char_Vec -> int
+%LCLop lenStr :String -> int
+%LCLop lenStr :db -> int
+%LCLop times10plus :int, int -> int
+%LCLop plus1 :int -> int
+%LCLop 2 : -> int
+%LCLop 3 : -> int
+%LCLop 4 : -> int
+%LCLop 5 : -> int
+%LCLop 6 : -> int
+%LCLop 7 : -> int
+%LCLop 8 : -> int
+%LCLop add :ereftab, _semployee0s_Struct_Tuple, eref -> ereftab
+%LCLop 9 : -> int
+%LCLop getERef :ereftab, _semployee0s_Struct_Tuple -> eref
+%LCLop in :ereftab, eref -> bool
+%LCLop maxEmployeeName : -> int
+%LCLop employeePrintSize : -> int
+%LCLop MALE : -> _eemployee0e_Enum
+%LCLop FEMALE : -> _eemployee0e_Enum
+%LCLop gender_ANY : -> _eemployee0e_Enum
+%LCLop __ * __  :int, int -> int
+%LCLop __ * __  :double, double -> double
+%LCLtag eemployee0e enum
+%LCLop true : -> bool
+%LCLop false : -> bool
+%LCLop MGR : -> _eemployee1e_Enum
+%LCLop NONMGR : -> _eemployee1e_Enum
+%LCLop job_ANY : -> _eemployee1e_Enum
+%LCLop __ \and __  :bool, bool -> bool
+%LCLop __ \or __  :bool, bool -> bool
+%LCLtag eemployee1e enum
+%LCLop {  } : -> IndSet
+%LCLop {  } : -> empset
+%LCLop {  } : -> ercElems
+%LCLop {  } : -> erc
+%LCLop __ \eq __  :bool, bool -> bool
+%LCLop __ \eq __  :int, int -> bool
+%LCLop __ \eq __  :double, double -> bool
+%LCLop __ \eq __  :_char_Vec, _char_Vec -> bool
+%LCLop __ \eq __  :char, char -> bool
+%LCLop __ \eq __  :String, String -> bool
+%LCLop __ \eq __  :_semployee0s_Struct_Tuple, _semployee0s_Struct_Tuple -> bool
+%LCLop __ \eq __  :IndSet, IndSet -> bool
+%LCLop __ \eq __  :eref, eref -> bool
+%LCLop __ \eq __  :map, map -> bool
+%LCLop __ \eq __  :empset, empset -> bool
+%LCLop __ \eq __  :ereftab, ereftab -> bool
+%LCLop __ \eq __  :ercElems, ercElems -> bool
+%LCLop __ \eq __  :erc, erc -> bool
+%LCLop __ \eq __  :ercIter, ercIter -> bool
+%LCLop __ \eq __  :_erc_Obj, _erc_Obj -> bool
+%LCLop __ \eq __  :FILE, FILE -> bool
+%LCLop __ \eq __  :_eemployee0e_Enum, _eemployee0e_Enum -> bool
+%LCLop __ \eq __  :_eemployee1e_Enum, _eemployee1e_Enum -> bool
+%LCLop __ \eq __  :employee_name, employee_name -> bool
+%LCLop __ \eq __  :db, db -> bool
+%LCLop __ \eq __  :_sdbase1s_Struct_Tuple, _sdbase1s_Struct_Tuple -> bool
+%LCLop __ \eq __  :_edbase2e_Enum, _edbase2e_Enum -> bool
+%LCLop \not __  :bool -> bool
+%LCLop set_val :erc, ercElems -> erc
+%LCLop __ \neq __  :bool, bool -> bool
+%LCLop __ \neq __  :int, int -> bool
+%LCLop __ \neq __  :double, double -> bool
+%LCLop __ \neq __  :_char_Vec, _char_Vec -> bool
+%LCLop __ \neq __  :char, char -> bool
+%LCLop __ \neq __  :String, String -> bool
+%LCLop __ \neq __  :_semployee0s_Struct_Tuple, _semployee0s_Struct_Tuple -> bool
+%LCLop __ \neq __  :IndSet, IndSet -> bool
+%LCLop __ \neq __  :eref, eref -> bool
+%LCLop __ \neq __  :map, map -> bool
+%LCLop __ \neq __  :empset, empset -> bool
+%LCLop __ \neq __  :ereftab, ereftab -> bool
+%LCLop __ \neq __  :ercElems, ercElems -> bool
+%LCLop __ \neq __  :erc, erc -> bool
+%LCLop __ \neq __  :ercIter, ercIter -> bool
+%LCLop __ \neq __  :_erc_Obj, _erc_Obj -> bool
+%LCLop __ \neq __  :FILE, FILE -> bool
+%LCLop __ \neq __  :_eemployee0e_Enum, _eemployee0e_Enum -> bool
+%LCLop __ \neq __  :_eemployee1e_Enum, _eemployee1e_Enum -> bool
+%LCLop __ \neq __  :employee_name, employee_name -> bool
+%LCLop __ \neq __  :db, db -> bool
+%LCLop __ \neq __  :_sdbase1s_Struct_Tuple, _sdbase1s_Struct_Tuple -> bool
+%LCLop __ \neq __  :_edbase2e_Enum, _edbase2e_Enum -> bool
+%LCLop set_activeIters :erc, int -> erc
+%LCLop { __ } :char -> _char_Vec
+%LCLop { __ } :char -> String
+%LCLop { __ } :eref -> IndSet
+%LCLop { __ } :_semployee0s_Struct_Tuple -> empset
+%LCLop { __ } :eref -> ercElems
+%LCLop { __ } :_semployee0s_Struct_Tuple -> db
+%LCLop { __ } :char -> db
+%LCLop set_toYield :ercIter, ercElems -> ercIter
+%LCLop set_eObj :ercIter, _erc_Obj -> ercIter
+%LCLtag semployee0s struct
+%LCLop yielded :eref, ercIter, ercIter -> bool
+%LCLop startIter :erc -> erc
+%LCLop endIter :erc -> erc
+%LCLop [__, __] :ercElems, int -> erc
+%LCLop [__, __] :ercElems, _erc_Obj -> ercIter
+%LCLop __ [] :__char_Obj_Ptr -> __char_Obj_Arr
+%LCLop __ [] :__semployee0s_Struct_Ptr -> __semployee0s_Struct_Arr
+%LCLop __ [] :__FILE_Obj_Ptr -> __FILE_Obj_Arr
+%LCLop __ [] :__sdbase1s_Struct_Ptr -> __sdbase1s_Struct_Arr
+%LCLop __ [__] :_char_Vec, int -> char
+%LCLop __ [__] :__char_Obj_Arr, int -> _char_Obj
+%LCLop __ [__] :__semployee0s_Struct_Tuple_Vec, int -> _semployee0s_Struct_Tuple
+%LCLop __ [__] :__semployee0s_Struct_Arr, int -> _semployee0s_Struct
+%LCLop __ [__] :String, int -> char
+%LCLop __ [__] :map, eref -> _semployee0s_Struct_Tuple
+%LCLop __ [__] :_FILE_Vec, int -> FILE
+%LCLop __ [__] :__FILE_Obj_Arr, int -> _FILE_Obj
+%LCLop __ [__] :__sdbase1s_Struct_Tuple_Vec, int -> _sdbase1s_Struct_Tuple
+%LCLop __ [__] :__sdbase1s_Struct_Arr, int -> _sdbase1s_Struct
+%LCLop __ [__] :db, int -> char
+%LCLop [__, __, __, __] :int, int, _eemployee1e_Enum, _eemployee0e_Enum -> _sdbase1s_Struct_Tuple
+%LCLop [__, __, __, __] :_eemployee0e_Enum, _eemployee1e_Enum, int, int -> _sdbase1s_Struct_Tuple
+%LCLop __ |- __  :_char_Vec, char -> _char_Vec
+%LCLop __ |- __  :String, char -> String
+%LCLop __ |- __  :db, char -> db
+%LCLop [__, __, __, __, __] :_eemployee1e_Enum, _eemployee0e_Enum, int, _char_Vec, int -> _semployee0s_Struct_Tuple
+%LCLop [__, __, __, __, __] :int, employee_name, int, _eemployee0e_Enum, _eemployee1e_Enum -> _semployee0s_Struct_Tuple
+%LCLop __ -| __  :char, _char_Vec -> _char_Vec
+%LCLop __ -| __  :char, String -> String
+%LCLop __ -| __  :char, db -> db
+%LCLop __ \leq __  :int, int -> bool
+%LCLop __ \leq __  :double, double -> bool
+%LCLop __ \geq __  :int, int -> bool
+%LCLop __ \geq __  :double, double -> bool
+%LCLop __ \cap __  :IndSet, IndSet -> IndSet
+%LCLop __ \cap __  :empset, empset -> empset
+%LCLop __ \cap __  :db, db -> db
+%LCLop 20 : -> int
+%LCLop null : -> char
+%LCLop __ \cup __  :IndSet, IndSet -> IndSet
+%LCLop __ \cup __  :empset, empset -> empset
+%LCLop __ \cup __  :ercElems, ercElems -> ercElems
+%LCLop __ \cup __  :db, db -> db
+%LCLop 80 : -> int
+%LCLop \A :bool, bool -> bool
+%LCLop \A :int, bool -> bool
+%LCLop \A :double, bool -> bool
+%LCLop \A :String, bool -> bool
+%LCLop \A :char, bool -> bool
+%LCLop \A :_char_Vec, bool -> bool
+%LCLop \A :_semployee0s_Struct_Tuple, bool -> bool
+%LCLop \A :IndSet, bool -> bool
+%LCLop \A :eref, bool -> bool
+%LCLop \A :map, bool -> bool
+%LCLop \A :empset, bool -> bool
+%LCLop \A :ereftab, bool -> bool
+%LCLop \A :ercElems, bool -> bool
+%LCLop \A :erc, bool -> bool
+%LCLop \A :ercIter, bool -> bool
+%LCLop \A :_erc_Obj, bool -> bool
+%LCLop \A :FILE, bool -> bool
+%LCLop \A :_eemployee0e_Enum, bool -> bool
+%LCLop \A :_eemployee1e_Enum, bool -> bool
+%LCLop \A :employee_name, bool -> bool
+%LCLop \A :db, bool -> bool
+%LCLop \A :_sdbase1s_Struct_Tuple, bool -> bool
+%LCLop \A :_edbase2e_Enum, bool -> bool
+%LCLop parse :_char_Vec -> _semployee0s_Struct_Tuple
+%LCLop parse :_char_Vec -> empset
+%LCLop parse :_char_Vec -> erc
+%LCLop parse :db -> _char_Vec
+%LCLop \E :bool, bool -> bool
+%LCLop \E :int, bool -> bool
+%LCLop \E :double, bool -> bool
+%LCLop \E :String, bool -> bool
+%LCLop \E :char, bool -> bool
+%LCLop \E :_char_Vec, bool -> bool
+%LCLop \E :_semployee0s_Struct_Tuple, bool -> bool
+%LCLop \E :IndSet, bool -> bool
+%LCLop \E :eref, bool -> bool
+%LCLop \E :map, bool -> bool
+%LCLop \E :empset, bool -> bool
+%LCLop \E :ereftab, bool -> bool
+%LCLop \E :ercElems, bool -> bool
+%LCLop \E :erc, bool -> bool
+%LCLop \E :ercIter, bool -> bool
+%LCLop \E :_erc_Obj, bool -> bool
+%LCLop \E :FILE, bool -> bool
+%LCLop \E :_eemployee0e_Enum, bool -> bool
+%LCLop \E :_eemployee1e_Enum, bool -> bool
+%LCLop \E :employee_name, bool -> bool
+%LCLop \E :db, bool -> bool
+%LCLop \E :_sdbase1s_Struct_Tuple, bool -> bool
+%LCLop \E :_edbase2e_Enum, bool -> bool
+%LCLop unparse :_semployee0s_Struct_Tuple -> _char_Vec
+%LCLop unparse :empset -> _char_Vec
+%LCLop unparse :erc -> _char_Vec
+%LCLop unparse :_char_Vec -> db
+%LCLop isSprint :_char_Vec, _semployee0s_Struct_Tuple -> bool
+%LCLop isSprint :_char_Vec, empset -> bool
+%LCLop isSprint :_char_Vec, erc -> bool
+%LCLop isSprint :db, _char_Vec -> bool
+%LCLop __ \select ssNum :_semployee0s_Struct_Tuple -> int
+%LCLop __ \select ssNum :_semployee0s_Struct -> _int_Obj
+%LCLop __ \select name :_semployee0s_Struct_Tuple -> _char_Vec
+%LCLop __ \select name :_semployee0s_Struct -> __char_Obj_Arr
+%LCLop __ \select name :_semployee0s_Struct_Tuple -> employee_name
+%LCLop __ \field_arrow ssNum :__semployee0s_Struct_Ptr -> _int_Obj
+%LCLop __ \select salary :_semployee0s_Struct_Tuple -> int
+%LCLop __ \select salary :_semployee0s_Struct -> _int_Obj
+%LCLop __ \select val :erc -> ercElems
+%LCLop __ \field_arrow name :__semployee0s_Struct_Ptr -> __char_Obj_Arr
+%LCLop __ \select gen :_semployee0s_Struct_Tuple -> _eemployee0e_Enum
+%LCLop __ \select gen :_semployee0s_Struct -> __eemployee0e_Enum_Obj
+%LCLop __ \select activeIters :erc -> int
+%LCLop __ \field_arrow salary :__semployee0s_Struct_Ptr -> _int_Obj
+%LCLop __ \select j :_semployee0s_Struct_Tuple -> _eemployee1e_Enum
+%LCLop __ \select j :_semployee0s_Struct -> __eemployee1e_Enum_Obj
+%LCLop __ \select j :_sdbase1s_Struct_Tuple -> _eemployee1e_Enum
+%LCLop __ \select j :_sdbase1s_Struct -> __eemployee1e_Enum_Obj
+%LCLop __ \select toYield :ercIter -> ercElems
+%LCLop __ \iff __  :bool, bool -> bool
+%LCLop __ \field_arrow gen :__semployee0s_Struct_Ptr -> __eemployee0e_Enum_Obj
+%LCLop __ \select eObj :ercIter -> _erc_Obj
+%LCLop __ \field_arrow j :__semployee0s_Struct_Ptr -> __eemployee1e_Enum_Obj
+%LCLop __ \field_arrow j :__sdbase1s_Struct_Ptr -> __eemployee1e_Enum_Obj
+%LCLop write :FILE, _char_Vec -> FILE
+%LCLop getLine :FILE -> _char_Vec
+%LCLop remLine :FILE -> FILE
+%LCLop nil : -> eref
+%LCLop NIL : -> __char_Obj_Ptr
+%LCLop NIL : -> __semployee0s_Struct_Ptr
+%LCLop NIL : -> __FILE_Obj_Ptr
+%LCLop NIL : -> __sdbase1s_Struct_Ptr
+%LCLop new : -> map
+%LCLop new : -> db
+%LCLop assign :map, eref, _semployee0s_Struct_Tuple -> map
+%LCLop delete :eref, IndSet -> IndSet
+%LCLop delete :map, eref -> map
+%LCLop delete :_semployee0s_Struct_Tuple, empset -> empset
+%LCLop delete :ereftab, eref -> ereftab
+%LCLop delete :eref, ercElems -> ercElems
+%LCLop delete :_semployee0s_Struct_Tuple, db -> db
+%LCLop domain :map -> IndSet
+%LCLop newInd :eref, map, map -> bool
+%LCLop insert :eref, IndSet -> IndSet
+%LCLop insert :_semployee0s_Struct_Tuple, empset -> empset
+%LCLop insert :eref, ercElems -> ercElems
+%LCLop - __  :int -> int
+%LCLop - __  :double -> double
+%LCLop db_OK : -> _edbase2e_Enum
+%LCLop __ + __  :__char_Obj_Ptr, int -> __char_Obj_Ptr
+%LCLop __ + __  :int, __char_Obj_Ptr -> __char_Obj_Ptr
+%LCLop __ + __  :int, int -> int
+%LCLop __ + __  :double, double -> double
+%LCLop __ + __  :__semployee0s_Struct_Ptr, int -> __semployee0s_Struct_Ptr
+%LCLop __ + __  :int, __semployee0s_Struct_Ptr -> __semployee0s_Struct_Ptr
+%LCLop __ + __  :__FILE_Obj_Ptr, int -> __FILE_Obj_Ptr
+%LCLop __ + __  :int, __FILE_Obj_Ptr -> __FILE_Obj_Ptr
+%LCLop __ + __  :__sdbase1s_Struct_Ptr, int -> __sdbase1s_Struct_Ptr
+%LCLop __ + __  :int, __sdbase1s_Struct_Ptr -> __sdbase1s_Struct_Ptr
+%LCLop salERR : -> _edbase2e_Enum
+%LCLop __ - __  :__char_Obj_Ptr, int -> __char_Obj_Ptr
+%LCLop __ - __  :__char_Obj_Ptr, __char_Obj_Ptr -> int
+%LCLop __ - __  :int, int -> int
+%LCLop __ - __  :double, double -> double
+%LCLop __ - __  :__semployee0s_Struct_Ptr, int -> __semployee0s_Struct_Ptr
+%LCLop __ - __  :__semployee0s_Struct_Ptr, __semployee0s_Struct_Ptr -> int
+%LCLop __ - __  :IndSet, IndSet -> IndSet
+%LCLop __ - __  :empset, empset -> empset
+%LCLop __ - __  :ercElems, ercElems -> ercElems
+%LCLop __ - __  :__FILE_Obj_Ptr, int -> __FILE_Obj_Ptr
+%LCLop __ - __  :__FILE_Obj_Ptr, __FILE_Obj_Ptr -> int
+%LCLop __ - __  :__sdbase1s_Struct_Ptr, int -> __sdbase1s_Struct_Ptr
+%LCLop __ - __  :__sdbase1s_Struct_Ptr, __sdbase1s_Struct_Ptr -> int
+%LCLop __ - __  :db, db -> db
+%LCLop sizeof :bool -> int
+%LCLop sizeof :int -> int
+%LCLop sizeof :char -> int
+%LCLop sizeof :void -> int
+%LCLop sizeof :float -> int
+%LCLop sizeof :double -> int
+%LCLop sizeof :_eemployee0e_Enum -> int
+%LCLop sizeof :_eemployee1e_Enum -> int
+%LCLop sizeof :eref -> int
+%LCLop sizeof :map -> int
+%LCLop sizeof :empset -> int
+%LCLop sizeof :ereftab -> int
+%LCLop sizeof :erc -> int
+%LCLop sizeof :ercIter -> int
+%LCLop sizeof :FILE -> int
+%LCLop sizeof :_edbase2e_Enum -> int
+%LCLop sizeof :db -> int
+%LCLop genderERR : -> _edbase2e_Enum
+%LCLop jobERR : -> _edbase2e_Enum
+%LCLop duplERR : -> _edbase2e_Enum
+%LCLop size :IndSet -> int
+%LCLop size :empset -> int
+%LCLop size :ereftab -> int
+%LCLop size :ercElems -> int
+%LCLop size :db -> int
+%LCLop isSub :_char_Vec, int -> bool
+%LCLop isSub :__char_Obj_Arr, int -> bool
+%LCLop isSub :__semployee0s_Struct_Tuple_Vec, int -> bool
+%LCLop isSub :__semployee0s_Struct_Arr, int -> bool
+%LCLop isSub :_FILE_Vec, int -> bool
+%LCLop isSub :__FILE_Obj_Arr, int -> bool
+%LCLop isSub :__sdbase1s_Struct_Tuple_Vec, int -> bool
+%LCLop isSub :__sdbase1s_Struct_Arr, int -> bool
+%LCLop missERR : -> _edbase2e_Enum
+%LCLop erefNIL : -> eref
+%LCLop __ \subseteq __  :IndSet, IndSet -> bool
+%LCLop __ \subseteq __  :empset, empset -> bool
+%LCLop __ \subseteq __  :ercElems, ercElems -> bool
+%LCLop __ \subseteq __  :db, db -> bool
+%LCLop succ :int -> int
+%LCLop succ :_eemployee0e_Enum -> _eemployee0e_Enum
+%LCLop succ :_eemployee1e_Enum -> _eemployee1e_Enum
+%LCLop succ :_edbase2e_Enum -> _edbase2e_Enum
+%LCLop __ \supseteq __  :IndSet, IndSet -> bool
+%LCLop __ \supseteq __  :empset, empset -> bool
+%LCLop __ \supseteq __  :ercElems, ercElems -> bool
+%LCLop __ \supseteq __  :db, db -> bool
+%LCLop pred :int -> int
+%LCLop __ \subset __  :IndSet, IndSet -> bool
+%LCLop __ \subset __  :empset, empset -> bool
+%LCLop __ \subset __  :ercElems, ercElems -> bool
+%LCLop __ \subset __  :db, db -> bool
+%LCLop __ \supset __  :IndSet, IndSet -> bool
+%LCLop __ \supset __  :empset, empset -> bool
+%LCLop __ \supset __  :ercElems, ercElems -> bool
+%LCLop __ \supset __  :db, db -> bool
+%LCLop __ \notin __  :eref, IndSet -> bool
+%LCLop __ \notin __  :_semployee0s_Struct_Tuple, empset -> bool
+%LCLop __ \notin __  :eref, ercElems -> bool
+%LCLop __ \notin __  :_semployee0s_Struct_Tuple, db -> bool
+%LCLop abs :int -> int
+%LCLop abs :double -> double
+%LCLtype float float exposed
+%LCLtype bool bool immutable
+%LCLconst FALSE bool
+%LCLconst TRUE bool
+%LCLtype float float exposed
+%LCLtype bool bool immutable
+%LCLconst FALSE bool
+%LCLconst TRUE bool
+%LCLconst maxEmployeeName int
+%LCLconst employeePrintSize int
+%LCLenumConst MALE _eemployee0e_Enum
+%LCLenumConst FEMALE _eemployee0e_Enum
+%LCLenumConst gender_ANY _eemployee0e_Enum
+%LCLtype gender _gender exposed
+%LCLenumConst MGR _eemployee1e_Enum
+%LCLenumConst NONMGR _eemployee1e_Enum
+%LCLenumConst job_ANY _eemployee1e_Enum
+%LCLtype job _job exposed
+%LCLtype employee _employee exposed
+%LCLfcn employee_sprint : __char_Obj_Arr, _semployee0s_Struct_Tuple -> void 
+%LCLfcnGlobals 
+%LCLfcn employee_equal : __semployee0s_Struct_Ptr, __semployee0s_Struct_Ptr -> bool 
+%LCLfcnGlobals 
+%LCLfcn employee_setName : __semployee0s_Struct_Ptr, __char_Obj_Arr -> bool 
+%LCLfcnGlobals 
+%LCLfcn employee_initMod :  -> void 
+%LCLfcnGlobals 
+%LCLtype float float exposed
+%LCLtype bool bool immutable
+%LCLconst FALSE bool
+%LCLconst TRUE bool
+%LCLtype float float exposed
+%LCLtype bool bool immutable
+%LCLconst FALSE bool
+%LCLconst TRUE bool
+%LCLconst maxEmployeeName int
+%LCLconst employeePrintSize int
+%LCLenumConst MALE _eemployee0e_Enum
+%LCLenumConst FEMALE _eemployee0e_Enum
+%LCLenumConst gender_ANY _eemployee0e_Enum
+%LCLtype gender _gender exposed
+%LCLenumConst MGR _eemployee1e_Enum
+%LCLenumConst NONMGR _eemployee1e_Enum
+%LCLenumConst job_ANY _eemployee1e_Enum
+%LCLtype job _job exposed
+%LCLtype employee _employee exposed
+%LCLfcn employee_sprint : __char_Obj_Arr, _semployee0s_Struct_Tuple -> void 
+%LCLfcnGlobals 
+%LCLfcn employee_equal : __semployee0s_Struct_Ptr, __semployee0s_Struct_Ptr -> bool 
+%LCLfcnGlobals 
+%LCLfcn employee_setName : __semployee0s_Struct_Ptr, __char_Obj_Arr -> bool 
+%LCLfcnGlobals 
+%LCLfcn employee_initMod :  -> void 
+%LCLfcnGlobals 
+%LCLtype empset _empset_Obj mutable
+%LCLfcn empset_create :  -> _empset_Obj 
+%LCLfcnGlobals 
+%LCLfcn empset_final : _empset_Obj -> void 
+%LCLfcnGlobals 
+%LCLfcn empset_clear : _empset_Obj -> void 
+%LCLfcnGlobals 
+%LCLfcn empset_insert : _empset_Obj, _semployee0s_Struct_Tuple -> bool 
+%LCLfcnGlobals 
+%LCLfcn empset_insertUnique : _empset_Obj, _semployee0s_Struct_Tuple -> void 
+%LCLfcnGlobals 
+%LCLfcn empset_delete : _empset_Obj, _semployee0s_Struct_Tuple -> bool 
+%LCLfcnGlobals 
+%LCLfcn empset_union : _empset_Obj, _empset_Obj -> _empset_Obj 
+%LCLfcnGlobals 
+%LCLfcn empset_disjointUnion : _empset_Obj, _empset_Obj -> _empset_Obj 
+%LCLfcnGlobals 
+%LCLfcn empset_intersect : _empset_Obj, _empset_Obj -> void 
+%LCLfcnGlobals 
+%LCLfcn empset_size : _empset_Obj -> int 
+%LCLfcnGlobals 
+%LCLfcn empset_member : _semployee0s_Struct_Tuple, _empset_Obj -> bool 
+%LCLfcnGlobals 
+%LCLfcn empset_subset : _empset_Obj, _empset_Obj -> bool 
+%LCLfcnGlobals 
+%LCLfcn empset_choose : _empset_Obj -> _semployee0s_Struct 
+%LCLfcnGlobals 
+%LCLfcn empset_sprint : _empset_Obj -> __char_Obj_Ptr 
+%LCLfcnGlobals 
+%LCLfcn empset_initMod :  -> void 
+%LCLfcnGlobals 
+%LCLtype float float exposed
+%LCLtype bool bool immutable
+%LCLconst FALSE bool
+%LCLconst TRUE bool
+%LCLtype FILE FILE immutable
+%LCLvar stdin ___FILE_Obj_Ptr_Obj
+%LCLvar stdout ___FILE_Obj_Ptr_Obj
+%LCLvar stderr ___FILE_Obj_Ptr_Obj
+%LCLtype ioStream _ioStream exposed
+%LCLtype db_q _db_q exposed
+%LCLenumConst db_OK _edbase2e_Enum
+%LCLenumConst salERR _edbase2e_Enum
+%LCLenumConst genderERR _edbase2e_Enum
+%LCLenumConst jobERR _edbase2e_Enum
+%LCLenumConst duplERR _edbase2e_Enum
+%LCLenumConst missERR _edbase2e_Enum
+%LCLtype db_status _db_status exposed
+%LCLtype db db immutable
+%LCLvar d _db_Obj
+%LCLfcn hire : _semployee0s_Struct_Tuple -> _edbase2e_Enum 
+%LCLfcnGlobals _db_Obj d; 
+%LCLfcn uncheckedHire : _semployee0s_Struct_Tuple -> void 
+%LCLfcnGlobals _db_Obj d; 
+%LCLfcn fire : int -> bool 
+%LCLfcnGlobals _db_Obj d; 
+%LCLfcn query : _sdbase1s_Struct_Tuple, _empset_Obj -> int 
+%LCLfcnGlobals _db_Obj d; 
+%LCLfcn promote : int -> bool 
+%LCLfcnGlobals _db_Obj d; 
+%LCLfcn setSalary : int, int -> _edbase2e_Enum 
+%LCLfcnGlobals _db_Obj d; 
+%LCLfcn db_print :  -> void 
+%LCLfcnGlobals _db_Obj d; ___FILE_Obj_Ptr_Obj stdout; 
+%LCLfcn db_initMod :  -> void 
+%LCLfcnGlobals _db_Obj d; 
+%LCLSymbolTableEnd

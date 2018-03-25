@@ -1,0 +1,60 @@
+<h3>lclint-interest message 116</h3>
+<pre>
+From lbr@mjolner.dk Fri Oct 18 12:13:45 1996
+Sender: gnort@daimi.aau.dk
+To: lclint-interest@larch.lcs.mit.edu
+Subject: Re: Hi and problem
+References: <9610181545.AA13655@larch.lcs.mit.edu>
+From: Lars Balker Rasmussen <lbr@mjolner.dk>
+Date: 18 Oct 1996 17:58:16 +0200
+In-Reply-To: evans@cs.virginia.edu's message of Fri, 18 Oct 96 11:45:24 -0400
+Lines: 26
+X-Mailer: Red Gnus v0.52/Emacs 19.33
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+evans@cs.virginia.edu (David Evans) writes:
+> So, what we want to say if f is an array of possibly-null f_t's.  We can
+> do this with a typedef:
+> 
+> #include <stdio.h>
+> 
+> typedef void (*f_t)(void);
+> typedef /*@null@*/ f_t nf_t;
+> 
+> nf_t f[] = {
+>         NULL
+> };
+
+Hmm, then we're back to the arcane-construct scenario.  It would be
+great if we could specify the above using a single annotation, and no C
+whatsoever, like
+
+f_t /*@checkedfornull@*/ f[] = { ... };
+
+(Lines like 
+	typedef /*@null@*/ FW_InitialRegFunc FW_InitialRegFunc_null;
+ look strange in production code, and have questionable maintenance
+ properties...)
+-- 
+Lars Balker Rasmussen, Mjolner Informatics ApS
+lbr@mjolner.dk
+
+
+</pre>
+<A HREF="115.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="117.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

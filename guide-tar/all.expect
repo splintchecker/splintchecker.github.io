@@ -1,0 +1,324 @@
+gmake[1]: Entering directory `/u/evs/lclint/guide'
+lclint palindrome.c 
+LCLint 2.0 --- 26 Feb 96
+
+palindrome.c: (in function isPalindrome)
+palindrome.c:6: Cast from underlying abstract type
+                   mstring: (char *)s
+palindrome.c:7: Function strlen expects arg 1 to be
+                   char * gets mstring: s
+palindrome.c:11: Array fetch from non-array (mstring):
+                    s[len - i - 1]
+palindrome.c: (in function callPal)
+palindrome.c:19: Function isPalindrome expects arg 1
+                    to be mstring gets char *: "bob"
+
+Finished LCLint checking --- 4 code errors found
+lclint bool.c +predboolptr -linelen 70 -showfunc
+LCLint 2.0 --- 26 Feb 96
+
+bool.c:7: Return value type bool does not match declared type int: b1
+bool.c:6: Test expression for if is assignment expression: i = 3
+bool.c:6: Test expression for if not bool, type int: i = 3
+bool.c:8: Operand of ! is non-boolean (int): !i
+bool.c:8: Right operand of || is non-boolean (char *): !i || s
+bool.c:10: Test expression for if not bool, type char *: s
+bool.c:12: Use of == with bool variables (risks inconsistency because
+              of multiple true values): b1 == b2
+
+Finished LCLint checking --- 7 code errors found
+lclint bool.c
+LCLint 2.0 --- 26 Feb 96
+
+bool.c: (in function f)
+bool.c:7: Return value type bool does not match
+             declared type int: b1
+bool.c:6: Test expression for if is assignment
+             expression: i = 3
+bool.c:6: Test expression for if not bool, type int:
+             i = 3
+bool.c:8: Operand of ! is non-boolean (int): !i
+bool.c:8: Right operand of || is non-boolean (char *):
+             !i || s
+bool.c:12: Use of == with bool variables (risks
+    inconsistency because of multiple true values):
+    b1 == b2
+
+Finished LCLint checking --- 6 code errors found
+lclint bool.c -boolops
+LCLint 2.0 --- 26 Feb 96
+
+bool.c: (in function f)
+bool.c:7: Return value type bool does not match
+             declared type int: b1
+bool.c:6: Test expression for if is assignment
+             expression: i = 3
+bool.c:6: Test expression for if not bool, type int:
+             i = 3
+bool.c:12: Use of == with bool variables (risks
+    inconsistency because of multiple true values):
+    b1 == b2
+
+Finished LCLint checking --- 4 code errors found
+lclint modify.c +checks
+LCLint 2.0 --- 26 Feb 96
+
+modify.c: (in function setx)
+modify.c:4: Undocumented modification of *y: *y = *x
+modify.c:5: Suspect object listed in modifies of setx
+               not modified: *x
+   modify.c:1: Declaration of setx
+modify.c:1: Function setx exported but not declared in
+               header file
+   modify.c:5: Definition of setx
+modify.c:7: Function sety exported but not declared in
+               header file
+   modify.c:11: Definition of sety
+
+Finished LCLint checking --- 4 code errors found
+lclint globals.c +checks
+LCLint 2.0 --- 26 Feb 96
+
+globals.c: (in function f)
+globals.c:5: Undocumented use of global glob2
+globals.c:3: Global glob1 listed but not used
+globals.c:1: Variable glob1 exported but not declared
+                in header file
+globals.c:1: Variable glob2 exported but not declared
+                in header file
+globals.c:3: Function f exported but not declared in
+                header file
+   globals.c:6: Definition of f
+
+Finished LCLint checking --- 5 code errors found
+lclint only.c
+LCLint 2.0 --- 26 Feb 96
+
+only.c: (in function f)
+only.c:11: Only storage glob not released before
+              assignment: glob = y
+   only.c:1: Storage glob becomes only
+only.c:11: Implicitly temp storage y assigned to only:
+              glob = y
+only.c:13: Dereference of possibly null pointer m: *m
+   only.c:8: Storage m may become null
+only.c:13: Variable x used after being released
+   only.c:12: Storage x released
+only.c:14: Implicitly temp storage z returned as only:
+              z
+only.c:14: Fresh storage m not released before return
+   only.c:9: Fresh storage m allocated
+
+Finished LCLint checking --- 6 code errors found
+lclint stack.c
+LCLint 2.0 --- 26 Feb 96
+
+stack.c: (in function f)
+stack.c:12: Stack-allocated storage &loc reachable
+               from return value: &loc
+stack.c:12: Stack-allocated storage *x reachable from
+               parameter x
+   stack.c:10: Storage *x becomes stack
+stack.c:12: Stack-allocated storage glob reachable
+               from global glob
+   stack.c:9: Storage glob becomes stack
+
+Finished LCLint checking --- 3 code errors found
+No output for Figure 8
+lclint implicit.c
+LCLint 2.0 --- 26 Feb 96
+
+Finished LCLint checking --- no code errors found
+lclint rstring.c
+LCLint 2.0 --- 26 Feb 96
+
+rstring.c: (in function rstring_first)
+rstring.c:13: Reference counted storage returned
+                 without modifying reference count: r1
+
+Finished LCLint checking --- 1 code error found
+lclint unique.c
+LCLint 2.0 --- 26 Feb 96
+
+unique.c: (in function capitalize)
+unique.c:7: Parameter 1 (s) to function strcpy is
+    declared unique but may be aliased externally by
+    parameter 2 (t)
+
+Finished LCLint checking --- 1 code error found
+No output for Figure 11
+lclint returned.c
+LCLint 2.0 --- 26 Feb 96
+
+returned.c: (in function intSet_singleton2)
+returned.c:19: New fresh storage passed as implicitly
+                  temp (not released): intSet_new()
+
+Finished LCLint checking --- 1 code error found
+lclint exposure.c +checks
+LCLint 2.0 --- 26 Feb 96
+
+exposure.c: (in function employee_getName)
+exposure.c:6: Function returns reference to parameter
+                 e: e->name
+exposure.c:6: Return value exposes rep of employee:
+                 e->name
+exposure.c:6: Released storage e->name reachable from
+                 parameter
+   exposure.c:6: Storage e->name is released
+exposure.c: (in function employee_capName)
+exposure.c:23: Suspect modification of observer name:
+                  *name = toupper(*name)
+exposure.c:4: Function employee_getName exported but
+                 not declared in header file
+   exposure.c:7: Definition of employee_getName
+exposure.c:10: Function employee_obsName exported but
+                  not declared in header file
+   exposure.c:11: Definition of employee_obsName
+exposure.c:14: Function employee_exposeName exported
+                  but not declared in header file
+   exposure.c:15: Definition of employee_exposeName
+exposure.c:18: Function employee_capName exported but
+                  not declared in header file
+   exposure.c:24: Definition of employee_capName
+
+Finished LCLint checking --- 8 code errors found
+lclint usedef.c
+LCLint 2.0 --- 26 Feb 96
+
+usedef.c: (in function dumbfunc)
+usedef.c:11: Value *x used before definition
+usedef.c:13: Passed storage x not completely defined
+                (*x is undefined): getVal (x)
+usedef.c:15: Passed storage x not completely defined
+                (*x is undefined): mysteryVal (x)
+
+Finished LCLint checking --- 3 code errors found
+lclint null.c
+LCLint 2.0 --- 26 Feb 96
+
+null.c: (in function firstChar1)
+null.c:3: Dereference of possibly null pointer s: *s
+   null.c:1: Storage s may become null
+
+Finished LCLint checking --- 1 code error found
+No output for Figure 15
+lclint mstring.c
+LCLint 2.0 --- 26 Feb 96
+
+Finished LCLint checking --- no code errors found
+lclint mstringnn.c
+LCLint 2.0 --- 26 Feb 96
+
+mstringnn.c: (in function mstring_space)
+mstringnn.c:9: Dereference of possibly null pointer m:
+                  *m
+   mstringnn.c:7: Storage m may become null
+
+Finished LCLint checking --- 1 code error found
+lclint annotglobs.c
+LCLint 2.0 --- 26 Feb 96
+
+annotglobs.c: (in function initialize)
+annotglobs.c:14: Undef global globnum used before
+                    definition
+annotglobs.c:16: Global storage globname contains 1
+    undefined field when call returns: firstname
+annotglobs.c: (in function finalize)
+annotglobs.c:22: Only storage globname.firstname (type
+    char *) derived from killed global is not released
+    (memory leak)
+
+Finished LCLint checking --- 3 code errors found
+lclint names.c +distinctinternalnames +internalnamelookalike +ansireserved
+LCLint 2.0 --- 26 Feb 96
+
+names.c:1: Name stringreverse is reserved for future
+    ANSI library extensions.  Functions that begin
+    with "str" and a lowercase letter may be added to
+    <stdlib.h> or <string.h>. (See ANSI, Section
+    4.13.7)
+names.c: (in function f)
+names.c:6: Internal identifier looka1ike is not
+    distinguishable from lookalike except by lookalike
+    characters
+   names.c:5: Declaration of lookalike
+names.c:10: Variable x shadows outer declaration
+   names.c:3: Previous declaration of x: int
+
+Finished LCLint checking --- 3 code errors found
+lclint order.c +evalorderuncon -linelen 65
+LCLint 2.0 --- 26 Feb 96
+
+order.c: (in function f)
+order.c:11: Expression has undefined behavior (value of right
+               operand modified by left operand): x++ * x
+order.c:13: Expression has undefined behavior (left operand uses
+               i, modified by right operand): y[i] = i++
+order.c:14: Expression has undefined behavior (value of right
+    operand modified by left operand): modglob() * glob
+order.c:15: Expression has undefined behavior (unconstrained
+    function mystery used in left operand may set global
+    variable glob used in right operand): mystery() * glob
+
+Finished LCLint checking --- 4 code errors found
+lclint loop.c
+LCLint 2.0 --- 26 Feb 96
+
+loop.c: (in function upto)
+loop.c:14: Suspected infinite loop.  No value used in
+    loop test (x, glob1) is modified by test or loop
+    body.
+
+Finished LCLint checking --- 1 code error found
+lclint switch.c
+LCLint 2.0 --- 26 Feb 96
+
+switch.c: (in function decide)
+switch.c:11: Fall through case (no preceeding break)
+switch.c:14: Missing case in switch: DEFINITELY
+
+Finished LCLint checking --- 2 code errors found
+lclint noeffect.c +noeffectuncon
+LCLint 2.0 --- 26 Feb 96
+
+noeffect.c: (in function noeffect)
+noeffect.c:6: Statement has no effect: y == *x
+noeffect.c:7: Statement has no effect: nomodcall(x)
+noeffect.c:8: Statement has no effect (possible
+    undected modification through call to
+    unconstrained function mysterycall):
+    mysterycall(x)
+
+Finished LCLint checking --- 3 code errors found
+lclint ignore.c
+LCLint 2.0 --- 26 Feb 96
+
+ignore.c: (in function ignore)
+ignore.c:8: Return value (type int) ignored: fi()
+ignore.c:10: Return value (type bool) ignored: fb()
+
+Finished LCLint checking --- 2 code errors found
+lclint ignore.c -retvalbool
+LCLint 2.0 --- 26 Feb 96
+
+ignore.c: (in function ignore)
+ignore.c:8: Return value (type int) ignored: fi()
+
+Finished LCLint checking --- 1 code error found
+lclint sumsquares.c +allmacros
+LCLint 2.0 --- 26 Feb 96
+
+sumsquares.c: (in macro sumsquares)
+sumsquares.c:5: Parameter 1 to square is declared sef,
+    but the argument is a macro parameter declared
+    without sef: x
+sumsquares.c:5: Parameter 1 to square is declared sef,
+    but the argument is a macro parameter declared
+    without sef: y
+sumsquares.c: (in function f)
+sumsquares.c:9: Parameter 1 to square is declared sef,
+                   but the argument may modify i: i++
+
+Finished LCLint checking --- 3 code errors found
+gmake[1]: Leaving directory `/u/evs/lclint/guide'

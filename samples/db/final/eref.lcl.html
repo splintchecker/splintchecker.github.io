@@ -1,0 +1,120 @@
+<A NAME="line74"></A><html><head>
+<title>eref.lcl</title>
+</head><body>
+<h3>eref.lcl</h3>
+<PRE>
+<A NAME="line1"></A>imports <A HREF="employee.lcl.html">employee</A>, &lt;stdio&gt;;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>immutable type eref;
+<A NAME="line4"></A>constant eref eref_undefined;
+<A NAME="line5"></A> 
+<A NAME="line6"></A>spec immutable type map;
+<A NAME="line7"></A> 
+<A NAME="line8"></A>spec map m;
+<A NAME="line9"></A> 
+<A NAME="line10"></A>eref eref_alloc(void) map m; FILE *stderr;
+<A NAME="line11"></A>{
+<A NAME="line12"></A>  modifies m, *stderr^;
+<A NAME="line13"></A>  /* ensures newInd(result, m^, m'); */
+<A NAME="line14"></A>}
+<A NAME="line15"></A> 
+<A NAME="line16"></A>bool eref_isDefined (eref er) map m; { }
+<A NAME="line17"></A> 
+<A NAME="line18"></A>void eref_free(eref er) map m; 
+<A NAME="line19"></A>{
+<A NAME="line20"></A>  /* requires er \in domain(m^); */
+<A NAME="line21"></A>  modifies m;
+<A NAME="line22"></A>  /* ensures m' = delete(m^, er); */
+<A NAME="line23"></A>}
+<A NAME="line24"></A> 
+<A NAME="line25"></A>void eref_assign(eref er, employee e) map m; 
+<A NAME="line26"></A>{
+<A NAME="line27"></A>  /* requires er \in domain(m^); */
+<A NAME="line28"></A>  modifies m;
+<A NAME="line29"></A>  /* ensures m' = assign(m^, er, e); */
+<A NAME="line30"></A>}
+<A NAME="line31"></A> 
+<A NAME="line32"></A>employee eref_get(eref er) map m; 
+<A NAME="line33"></A>{
+<A NAME="line34"></A>  /* requires er \in domain(m^); */
+<A NAME="line35"></A>  /* ensures result = m^[er]; */
+<A NAME="line36"></A>}
+<A NAME="line37"></A> 
+<A NAME="line38"></A>bool eref_equal(eref er1, eref er2) 
+<A NAME="line39"></A>{
+<A NAME="line40"></A>  /* ensures result = (er1 = er2); */
+<A NAME="line41"></A>}
+<A NAME="line42"></A> 
+<A NAME="line43"></A>void eref_initMod(void) map m; FILE *stderr; internalState;
+<A NAME="line44"></A>{
+<A NAME="line45"></A>  modifies m, internalState, *stderr^;
+<A NAME="line46"></A>  /* ensures m' = new; */
+<A NAME="line47"></A>}
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

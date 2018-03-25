@@ -1,0 +1,498 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 9. Buffer Sizes</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+
+<h1 style='margin-left:0in;text-indent:0in;page-break-before:auto'>
+<a name="_Toc534974998"></a><a name="_Ref534963019"></a><a name=
+"_Ref534962975">9<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a id="buffer" name="buffer">
+Buffer Sizes</a></a></h1>
+<p class="TextFontCX">Buffer overflow errors are a particularly
+dangerous type of bug in C programs.&nbsp; They are directly
+responsible for about half of all security attacks
+[Larochelle01].&nbsp; For performance reasons, C does not perform
+run time bounds checking.&nbsp; Referencing storage outside
+allocated regions can cause memory corruption and lead to strange
+behavior.&nbsp; Moreover, buffer overflow bugs are particularly
+insidious because they can go undetected in testing or normal use,
+but usually result in security critical bugs.&nbsp; Reads beyond
+the end of a buffer can cause the program to leak
+information.&nbsp; Writes beyond the end a buffer (buffer
+overflows) can usually be exploited make the program run arbitrary
+code.&nbsp; Attackers can exploit these programming bugs to replace
+the return address on the stack and place arbitrary code in memory
+thereby gaining full access to the machine.&nbsp; Splint is able to
+detect many memory bounds errors.<a href="appNotes.html#_ftn12" name=
+"_ftnref12" title=""><span style=
+'font-size:11.0pt; font-family:"Times New Roman"'>[12]</span></a>&nbsp;</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974999">9.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Checking Accesses</a></h2>
+<p class="TextFontCX">Splint models blocks of contiguous memory
+using two properties: <span class="Annot"><span style=
+'font-size:10.0pt'>maxSet</span></span> and <span class=
+"Annot"><span style='font-size:10.0pt'>maxRead</span></span>.&nbsp;
+Given a buffer <span class="CodeText"><i><span style=
+'font-size:10.0pt'>b</span></i></span>, <span class=
+"Annot"><span style=
+'font-size:10.0pt'>maxSet(<i>b</i>)</span></span> denotes the
+highest address beyond <span class="CodeText"><i><span style=
+'font-size:10.0pt'>b</span></i></span> that can be safely used as
+an lvalue. &nbsp;For the declaration <span class=
+"CodeText"><span style='font-size:10.0pt'>char
+buf[MAXSIZE]</span></span> we have <span class=
+      "Annot"><span style='font-size: 10.0pt'>maxSet(buf)</span></span>
+      <span class="CodeText"><span style='font-size: 10.0pt'>=
+      MAXSIZE - 1</span></span>. &nbsp;Similarly, <span class=
+      "Annot"><span style='font-size:10.0pt'>maxRead</span></span>
+      denotes the highest index of a buffer that can be safely used
+      an rvalue.&nbsp; It is inappropriate to read an uninitialized
+      element or beyond the <span class="CodeText"><span style=
+      'font-size:10.0pt'>NUL</span></span> terminator of a null
+      terminated buffer.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">When a buffer is accessed as an lvalue,
+Splint generates a precondition constraint involving the
+<span class="Annot"><span style=
+'font-size:10.0pt'>maxSet</span></span> property.&nbsp; When a
+buffer is accessed as an rvalue, Splint generates a precondition
+constraint involving the <span class="Annot"><span style=
+'font-size:10.0pt'>maxRead</span></span> property.&nbsp; For the
+expression <span class="CodeText"><span style=
+'font-size:10.0pt'>*<i>ptr</i></span></span>, Splint generates the
+constraints <span class="Annot"><span style=
+'font-size:10.0pt'>maxSet(<i>ptr</i>)</span></span>
+      <span class="CodeText"><span style='font-size:10.0pt'>&gt;=
+      0</span></span> or <span class="Annot"><span style=
+      'font-size:10.0pt'>maxRead(<i>ptr</i>)</span></span>
+      <span class="CodeText"><span style='font-size:10.0pt'>&gt;=
+      0</span></span> depending on whether <span class=
+      "CodeText"><i><span style=
+      'font-size:10.0pt'>ptr</span></i></span> is used as an lvalue
+      or rvalue.&nbsp; Similarly, for accesses of the form
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>ptr[i]</span></span>, splint generates the
+      constraints <span class="Annot"><span style=
+      'font-size:10.0pt'>maxSet(<i>ptr</i>)</span></span>
+      <span class="CodeText"><span style='font-size:10.0pt'>&gt;=
+      i</span></span> or <span class="Annot"><span style=
+      'font-size:10.0pt'>maxRead(<i>ptr</i>)</span></span>
+      <span class="CodeText"><span style='font-size:10.0pt'>&gt;=
+      i</span></span>.&nbsp; If <span class="Flag"><span style=
+      'font-size:10.0pt'>+boundswrite</span></span> is set, Splint
+      warns if it is unable to resolve a constraint involving
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>maxSet</span></span>. If <span class=
+      "Flag"><span style=
+      'font-size:10.0pt'>+boundsread</span></span> is set, Splint
+      warns about unresolved <span class="Annot"><span style=
+      'font-size:10.0pt'>maxRead</span></span> constraints
+      also.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Splint generates postconditions for
+statements to help resolve precondition constraints.&nbsp; When a
+buffer is written to we know that an element of a buffer is
+initialized and is safe to read.&nbsp; We generate the
+postcondition <span class="Annot"><span style=
+'font-size:10.0pt'>maxRead(<i>ptr</i>)</span></span>
+      <span class="CodeText"><span style='font-size:10.0pt'>&gt;=
+      0</span></span> if the buffer is accessed using <span class=
+      "CodeText"><span style='font-size:10.0pt'>*ptr</span></span>
+      or <span class="Annot"><span style=
+      'font-size:10.0pt'>maxRead(ptr)</span></span> <span class=
+      "CodeText"><span style='font-size:10.0pt'>&gt;=
+      i</span></span> if the buffer is accessed using <span class=
+      "CodeText"><i><span style=
+      'font-size:10.0pt'>ptr</span></i></span><span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>[<i>i</i>]</span></span>.&nbsp; Splint
+      generates additional postconditions for a variety of C
+      constructs.&nbsp; For assignment statements, Splint generates
+      a postcondition equating the two operands.&nbsp; Splint also
+      generates post condition constraints for the <span class=
+      "Annot"><span style='font-size:10.0pt'>maxSet</span></span>
+      value of fixed sized arrays.</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975000">9.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Annotating Buffer Sizes</a></h2>
+<p class="TextFontCX">Function declarations may include
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>requires</span></span> and <span class=
+      "Annot"><span style='font-size:10.0pt'>ensures</span></span>
+      clauses that specify assumptions about buffer sizes for
+      function preconditions.&nbsp; They are interpreted like
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>requires</span></span> and <span class=
+      "Annot"><span style='font-size:10.0pt'>ensures</span></span>
+      clauses for simple memory states (see Section 7.5) but can be
+      more expressive.&nbsp; When a function with a <span class=
+      "Annot"><span style='font-size:10.0pt'>requires</span></span>
+      clause is called, the call site must be checked to satisfy
+      the constraints implied by the <span class=
+      "Annot"><span style='font-size:10.0pt'>requires</span></span>
+      clause.&nbsp; Similarly, an <span class="Annot"><span style=
+      'font-size:10.0pt'>ensures</span></span> clause can be used
+      to specify function post conditions.&nbsp; If the
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>+checkpost</span></span> flag is set,
+      Splint warns if it cannot verify that a function
+      implementation satisfies its declared postconditions.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Constraints can contain function parameters
+as well as global variables and integer constants. The unary
+operators, <span class="Annot"><span style=
+'font-size:10.0pt'>maxSet</span></span> and <span class=
+"Annot"><span style='font-size:10.0pt'>maxRead</span></span> which
+correspond to the properties described above are also supported.
+&nbsp;Multiple predicates may be conjoined using <span class=
+"CodeText"><span style=
+'font-size: 10.0pt'>/\</span></span>.&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">For example, the standard library annotates
+<span class="CodeText"><span style=
+'font-size:10.0pt'>strcpy</span></span>:</p>
+<p class="MsoPlainText" style='line-height:normal'>&nbsp;</p>
+<p class="Verbatim" style='margin-left:22.5pt'>void /*@alt char *
+@*/strcpy</p>
+<p class="Verbatim" style='margin-left:22.5pt;text-indent:13.5pt'>
+(/*@unique@*/ /*@out@*/ /*@returned@*/ char *s1, char *s2)</p>
+<p class="Verbatim" style='margin-left:.5in'>/*@modifies *s1@*/</p>
+<p class="Verbatim" style='margin-left:.5in'>/*@requires maxSet(s1)
+&gt;= maxRead(s2) @*/</p>
+<p class="Verbatim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*@ensures
+maxRead(s1) == maxRead (s2) @*/;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p class="MsoPlainText" style=
+'margin-left:.5in;line-height:normal'><b>&nbsp;</b></p>
+<p class="MsoPlainText" style=
+'text-align:justify;line-height:normal'>The <span class=
+"Annot"><span style='font-size:10.0pt'>requires</span></span>
+clause indicates that the buffer passed as <span class=
+"CodeText"><span style='font-size:10.0pt'>s1</span></span> must be
+large enough to hold the string passed as <span class=
+"CodeText"><span style='font-size:10.0pt'>s2</span></span>.&nbsp;
+The <span class="Annot"><span style=
+'font-size:10.0pt'>ensures</span></span> clause specifies that
+<span class="Annot"><span style=
+'font-size:10.0pt'>maxRead</span></span> of <span class=
+"CodeText"><span style='font-size:10.0pt'>s1</span></span> after
+the call is equal to <span class="Annot"><span style=
+'font-size:10.0pt'>maxRead</span></span> of <span class=
+"CodeText"><span style='font-size:10.0pt'>s2</span></span>.&nbsp;
+In cases where the size of <span class=
+      "CodeText"><span style='font-size:10.0pt'>s2</span></span> is
+      unknown, programs should use <span class=
+      "CodeText"><span style=
+      'font-size: 10.0pt'>strncpy</span></span>, annotated as:</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim" style='margin-left:22.5pt'>void /*@alt char *
+@*/ strncpy</p>
+<p class="Verbatim" style='margin-left:22.5pt'>&nbsp;&nbsp;
+(/*@unique@*/ /*@out@*/ /*@returned@*/ char *s1, char *s2,</p>
+<p class="Verbatim" style='margin-left:22.5pt;text-indent:13.5pt'>
+&nbsp; size_t n)</p>
+<p class="Verbatim" style='margin-left:22.5pt'>
+&nbsp;&nbsp;/*@modifies *s1@*/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p class="Verbatim" style='margin-left:22.5pt'>&nbsp; /*@requires
+maxSet(s1) &gt;= ( n - 1 ); @*/</p>
+<p class="Verbatim" style='margin-left:22.5pt'>&nbsp; /*@ensures
+maxRead (s2) &gt;= maxRead(s1) /\ maxRead (s1) &lt;= n;@*/;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The syntax for buffer size constraint clauses
+is:</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX" align="left" style=
+'margin-left: 22.5pt;text-align:left'><i><span lang=
+"FR">constraint</span></i> <span lang="FR">&nbsp;</span>
+<span style='font-family:Symbol'>&#222;</span> <span lang=
+"FR">(</span><span class="Annot"><span style=
+'font-size:10.0pt'>requires</span></span> <span lang="FR">|</span>
+<span class="Annot"><span style=
+'font-size:10.0pt'>ensures</span></span><span lang="FR">)
+<i>consExpr relOp consExpr</i></span></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: 22.5pt;text-align:left'><i><span lang=
+"FR">relOp</span></i> <span lang=
+"FR">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size: 10.0pt'>==</span></span>
+      <span lang="FR">|</span> <span class="Annot"><span style=
+      'font-size:10.0pt'>&gt;</span></span> <span lang=
+      "FR">|</span> <span class="Annot"><span style=
+      'font-size:10.0pt'>&gt;=</span></span> <span lang=
+      "FR">|</span> <span class="Annot"><span style=
+      'font-size:10.0pt'>&lt;</span></span> <span lang=
+      "FR">|</span> <span class="Annot"><span style=
+      'font-size:10.0pt'>&lt;=</span></span></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: 22.5pt;text-align:left'><i><span lang=
+"FR">consExpr&nbsp;</span></i> <span style=
+'font-family:Symbol'>&#222;</span> <i><span lang=
+"FR">consExpression binOp consExpr</span></i> | <i>unaryOp</i>
+<span class="Annot"><span style=
+'font-size:10.0pt'>(</span></span><i>consExpr</i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>)</span></span> | <i>term</i></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: 22.5pt;text-align:left'><i>binOp</i>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=
+'font-family:Symbol'>&#222;</span> <span class=
+      "Annot"><span style='font-size:10.0pt'>+</span></span> |
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>-</span></span></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: 22.5pt;text-align:left'><i>unaryOp</i> &nbsp;
+<span style='font-family:Symbol'>&#222;</span> <span class=
+"Annot"><span style='font-size:10.0pt'>maxSet</span></span> |
+<span class="Annot"><span style=
+'font-size:10.0pt'>maxRead</span></span></p>
+<p class="TextFontCX" align="left" style=
+'margin-left: 22.5pt;text-align:left'><i>term</i>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=
+'font-family:Symbol'>&#222;</span> <i>identifier</i> |
+<i>literal</i> | <span class="Annot"><span style=
+'font-size: 10.0pt'>result</span></span></p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975001">9.3<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Less Stringent Checking</a></h2>
+<p class="TextFontCX">
+For some programs, Splint's standard bounds checking produces an
+unacceptably high number of warnings. Because of this, Splint now
+prioritizes warnings using a simple heuristic. The flags
+<span class="Flag"><span style=
+'font-size:10.0pt'>likely-bounds</span></span>, <span class=
+"Flag"><span style=
+'font-size:10.0pt'>likely-bounds-writes</span></span>, and
+<span class="Flag"><span style=
+'font-size:10.0pt'>likely-bounds-read</span></span> are similar to
+<span class="Flag"><span style=
+'font-size:10.0pt'>bounds</span></span>,<span class=
+"Flag"><span style='font-size:10.0pt'>bounds-write</span></span>,
+and <span class="Flag"><span style=
+'font-size:10.0pt'>bounds-read</span></span>, but they only cause
+Splint to produce warnings for what it determines are likely bounds
+errors. Splint classifies an unresolved constraint as a likely
+bounds error if it can reduce the constraint to a numerical
+inconsistency such as <span class="Verbatim">5 &gt;= 10</span>.
+Warnings for these constraints are more likely to be legitimate --
+indicating real bugs or the lack of annotations. Additionally, when
+these warnings are false positives, it is easier for humans to
+recognize them as spurious. These flags generate significantly
+fewer errors (an order of magnitude in some cases), and the errors
+generated are easier to understand. However, this does not come
+without cost. The checking is significantly less precise and is
+likely to miss real errors.</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975001">9.4<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Warnings</a></h2>
+<p class="TextFontCX">Since bounds checking is more complex than
+other checks done by Splint, memory bounds warnings contain
+extensive information about the unresolved constraint.&nbsp;
+Warning messages for unresolved constraints contain both the
+original constraints and the simplified form of the constraint
+which cannot be resolved.&nbsp; If the constraint was derived from
+a function precondition, the original precondition is included in
+the error message.&nbsp; If the <span class=
+      "Flag"><span style='font-size:10.0pt'>+showconstraintlocation</span></span>
+      flag is set, the message includes the expression that the
+      constraint is derived from.&nbsp; The <span class=
+      "Flag"><span style=
+      'font-size:10.0pt'>+showconstraintparens</span></span> flag
+      directs Splint to display fully parenthesized constraints in
+      warnings to remove ambiguity.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Consider the code excerpt below containing a
+trivial out-of-bounds write:</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim" style='text-indent:.5in'>int buf[10];</p>
+<p class="Verbatim" style='text-indent:.5in'>buf[10] = 3;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX" style='margin-bottom:6.0pt'>Splint warns:</p>
+<p align="left" class="lclintrun" style='margin-left:.5in'>
+setChar.c:5:4: Likely out-of-bounds store:<br>
+&nbsp;&nbsp;&nbsp; buf[10] = 3</p>
+<p class="lclintrun" align="left" style='margin-left:.5in'>
+&nbsp;&nbsp;&nbsp; Unable to resolve constraint: requires 9 &gt;=
+10</p>
+<p class="lclintrun" align="left" style=
+'margin-top:0in;margin-right:0in;margin-bottom:6.0pt; margin-left:.5in'>
+&nbsp;&nbsp;&nbsp; needed to satisfy precondition: requires
+maxSet(buf @ setChar.c:5:4) &gt;= 10</p>
+<p class="TextFontCX">Splint has simplified the constraint from the
+<span class="Annot"><span style=
+'font-size:10.0pt'>requires</span></span> clause to
+      <span class="CodeText"><span style='font-size:10.0pt'>9 &gt;=
+      10</span></span> by substituting for the known value of
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>maxSet(buf)</span></span> and generated a
+      warning because 9(the highest index of <span class=
+      "CodeText"><span style='font-size:10.0pt'>buf</span></span>
+      that may be safely written to) is not greater than or equal
+      to 10.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">A more realistic example is shown Figure
+21.&nbsp; The function <span class="CodeText"><span style=
+'font-size:10.0pt'>updateEnv</span></span> is a na&#239;ve
+implementation of a function to copy an environmental
+variable.&nbsp; There is no standard restriction on the length of
+the return value of <span class="CodeText"><span style=
+'font-size:10.0pt'>getenv</span></span> so this can cause a buffer
+overflow.&nbsp; A safe version of <span class=
+"CodeText"><span style='font-size:10.0pt'>updateEnv</span></span>
+(such as <span class="CodeText"><span style=
+'font-size:10.0pt'>updateEnvSafe</span></span> in Figure 21) would
+ensure that the buffer is large enough to hold the environment
+variable string before copying.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The <span class="Annot"><span style=
+'font-size:10.0pt'>requires</span></span> clause means Splint will
+report a warning if a call to <span class=
+      "CodeText"><span style='font-size:10.0pt'>updateEnvSafe</span></span>
+      passed in a buffer as <span class="CodeText"><span style=
+      'font-size:10.0pt'>str</span></span> that is not big enough
+      to hold the value passed as <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>strSize</span></span> characters.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">In many cases, functions will have multiple
+unresolved constraints which are similar.&nbsp; For example, if a
+subsequence statement writes to the next element of a buffer.&nbsp;
+Usually all these constraints represent all real problems or are
+all spurious.&nbsp; If the <span class="Flag"><span style=
+'font-size:10.0pt'>+redundantconstraints</span></span> flag is set,
+Splint reports even apparently redundant warning messages.&nbsp;
+Otherwise, if satisfying one unresolved constraint would imply
+satisfying another, Splint only prints a warning message for the
+stronger constraint.</p>
+<p class="TextFontCX">&nbsp;</p>
+<center>
+<table class="MsoNormalTable" border="0" cellspacing="0"
+cellpadding="0" style='margin-left:9.9pt;border-collapse:collapse'>
+<tr>
+<td valign="top" style=
+'width:202.5pt;border:solid black 1.5pt; border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt;height:12.15pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<span class="Keyword"><b><span style=
+'font-size:10.0pt; color:white'>bounds.c</span></b></span></p></td>
+<td valign="top" style=
+'width:3.0in;border-top:solid black 1.5pt; border-left:none;border-bottom:none;border-right:solid black 1.5pt; background:black;padding:0in 5.4pt 0in 5.4pt;height:12.15pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<b><span style='color:white'>Running
+Splint</span></b></p></td></tr>
+<tr>
+<td valign="top" style=
+'width:202.5pt;border:solid black 1.5pt; border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+<p class="Verbatim"><span style=
+'font-family:Courier'>&nbsp;</span></p>
+<p class="Verbatim"><span style='font-family:Courier'>void
+updateEnv(char * str)</span></p>
+<p class="Verbatim"><span style='font-family:Courier'>{</span></p>
+<p class="Verbatim"><span style='font-family:Courier'>&nbsp;&nbsp;
+char * tmp;</span></p>
+<p class="Verbatim"><i><span style=
+'font-size:9.0pt;font-family:Courier'>7</span></i><span style='font-family:Courier'>
+&nbsp; tmp = getenv(&#8220;MYENV&#8221;);</span></p>
+<p class="Verbatim"><span style='font-family:Courier'>&nbsp;&nbsp;
+if (tmp != NULL)</span></p>
+<p class="Verbatim"><i><span style=
+'font-size:9.0pt;font-family:Courier'>9</span></i><span style='font-family:Courier'>
+&nbsp;&nbsp;&nbsp;&nbsp; strcpy (str, tmp);</span></p>
+<p class="Verbatim"><span style='font-family:Courier'>}</span></p>
+<p class="Verbatim"><span style=
+'font-family:Courier'>&nbsp;</span></p>
+<p class="Verbatim"><span style='font-family:Courier'>void
+updateEnvSafe (char * str,</span></p>
+<p class="Verbatim"><span style=
+'font-family:Courier'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+size_t strSize)</span></p>
+<p class="Verbatim"><span style='font-family:Courier'>&nbsp;</span>
+<a href="mailto:/*@requires"><span style=
+'font-family:Courier'>/*@requires</span></a> <span style=
+'font-family:Courier'>maxSet(str)</span></p>
+<p class="Verbatim"><span style=
+'font-family:Courier'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&gt;= strSize &#8211;1@*/</span></p>
+<p class="Verbatim"><span style='font-family:Courier'>{</span></p>
+<p class="Verbatim"><span style='font-family:Courier'>&nbsp;&nbsp;
+char * tmp;</span></p>
+<p class="Verbatim"><span style='font-family:Courier'>&nbsp;&nbsp;
+tmp = getenv(&#8220;MYENV&#8221;);</span></p>
+<p class="Verbatim"><span style='font-family:Courier'>&nbsp;&nbsp;
+if (tmp != NULL)</span></p>
+<p class="Verbatim"><span style='font-family:Courier'>&nbsp;&nbsp;
+{</span></p>
+<p class="Verbatim"><span style=
+'font-family:Courier'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; strncpy (str,
+tmp,</span></p>
+<p class="Verbatim"><span style=
+'font-family:Courier'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+strSize -1);</span></p>
+<p class="Verbatim"><span style=
+'font-family:Courier'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; str[strSize
+-1] = &#8216;/0&#8217;;</span></p>
+<p class="Verbatim"><span style='font-family:Courier'>&nbsp;&nbsp;
+}</span></p>
+<p class="Verbatim"><span style=
+'font-family:Courier'>}</span></p></td>
+<td valign="top" style=
+'width:3.0in;border-top:none;border-left:none; border-bottom:solid black 1.5pt;border-right:solid black 1.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="lclintrun">&gt; splint bounds.c +bounds
++showconstraintlocation</p>
+<p class="lclintrun">&nbsp;</p>
+<p class="lclintrun">bounds.c:9: Possible out-of-bounds store:</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; strcpy(str, tmp)</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; Unable to resolve
+constraint:</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; requires maxSet(str @
+bounds.c:9) &gt;=</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; maxRead(getenv("MYENV") @
+bounds.c:7)</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp;&nbsp; needed to satisfy
+precondition:</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; requires maxSet(str @
+bounds.c:9) &gt;=</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; maxRead(tmp @
+bounds.c:9)</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp;&nbsp; derived from strcpy
+precondition: requires</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; maxSet(&lt;parameter 1&gt;)
+&gt;=</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; maxRead(&lt;parameter
+2&gt;)</p></td></tr></table>
+<table cellspacing="0" cellpadding="0" hspace="0" vspace="0">
+<tr>
+<td valign="top" style=
+'padding-top:0in;padding-right: 9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+<p class="MsoCaption"><a name="_Ref534909813"></a><a name=
+"_Ref534909817">Figure 21</a>.&nbsp; Memory
+Bounds</p></td></tr></table></center>
+<br clear="all">
+ 
+<p class="TextFontCX">The <span class="Flag"><span style=
+'font-size:10.0pt'>+functionpost</span></span> flag is useful for
+determining if array bounds warnings are spurious.&nbsp; If this
+flag is set, Splint will print the constraints that it established
+at the end of the function.&nbsp; If the warnings are spurious,
+localized control comments can be used to suppress them.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+
+<p>
+<a href="sec10.html"><b>Next:</b> 10. Extensible Checking</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

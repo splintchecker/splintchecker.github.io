@@ -1,0 +1,164 @@
+<html>
+<title>Footnotes</title>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+
+
+<h2>Footnotes</h2>
+<a name="fn1">
+1 Lint is a common programming tool for detecting anomalies in C
+programs.  The original lint was developed by S. C. Johnson in the late
+seventies, mainly because early versions of C did not support function prototypes.<p>
+<a name="fn2">
+2 Another way to provide extra information about code is to use formal
+specifications (<a href="appG.html">Appendix G</A>).</a><p>
+<a name="fn3">
+3 Unlike regular C comments, control comments should not be used within a
+single token.  They may introduce new separators in the code during parsing.<p>
+<a name="fn4">
+4 For abstract types whose instances can change value, a client does need to
+know if assignment has copy or sharing semantics (see <a
+href="sec3.html#sec-3.2">Section 3.2</a>).<p>
+<a name="fn5">
+5 <em>Does not apply to HTML version.</em>
+<i>italics</i>. <p>
+<a name="fn6">
+6 The meta-notation, item,+ is used to denote a comma separated list of items.
+For example, <tt>/*@access mstring, intSet@*/</tt> provides access to
+the representations of both <tt>mstring</tt> and <tt>intSet</tt>.)   <p>
+<a name="fn7">
+7 Through the parameter.  Modifications using some other variable that has a
+pointer to the location of this parameter are not considered.<p>
+<a name="fn8">
+8 To change
+the names of <tt>TRUE</tt> and <tt>FALSE</tt>, use <a
+href="appC.html#flag-booltrue"><tt>-booltrue</tt></a>
+ and <a href="appC.html#flag-boolfalse"><tt>-boolfalse</tt></a>.  The
+LCLint distribution includes an implementation of <tt>bool</tt>, in <tt>lib/bool.h</tt>.
+However, it isn't necessary to use this implementation to get the
+benefits of boolean checking.<p> 
+<a name="fn9">
+9 This means that theoreticians can prove that no algorithm exists that solves
+the problem correctly for all possible programs.<p>
+<a name="fn10">
+10 This section is largely based on [<a
+href="guide.html#ref-Evans96">Evans96</a>].  It semi-formally defines
+some of the terms needed to describe memory management checking;  if you are satisfied with an intuitive understanding of these terms, this section may be
+skipped.<p>
+<a name="fn11">
+11 This is similar to the LISP storage model, except that objects are typed.<p>
+<a name="fn12">
+12 Except <tt>sizeof</tt>, which does not need the value of its argument.<p>
+<a name="fn13">
+13 If the storage is not assigned to a reference, an internal reference
+is created to track the storage.<p>
+<a name="fn14">
+14 The full declaration of <tt>malloc</tt> also includes a <tt>null</tt>
+annotation (<a href="sec7.html#sec-7.2">Section 7.2</a>) to
+indicate that the result may be <tt>NULL</tt> (as it is when the requested storage
+cannot be allocated) and an <tt>out</tt> annotation (<a
+href="sec7.html#sec-7.1">Section 7.1</a>) to indicate that the result
+points to undefined storage.<p> 
+<a name="fn15">
+15 The full declaration of <tt>free</tt> also has <tt>out</tt> and
+<tt>null</tt> annotations on the parameter to indicate that the argument
+may be <tt>NULL</tt> and need not point to defined storage.  According
+to [<a href="guide.html#ref-ANSI">ANSI</a>, 4.10.3.2], <tt>NULL</tt> may
+be passed to <tt>free</tt> without an error.  On some UNIX platforms,
+passing <tt>NULL</tt> to <tt>free</tt> causes a program crash so the
+UNIX version of the standard library (<a
+href="appF.html">Appendix F</a>) specifies <tt>free</tt> without the
+<tt>null</tt> annotation on its parameter. To check that allocated
+objects are completely destroyed (e.g., all unshared objects inside a
+structure are deallocated before the structure is deallocated), LCLint
+checks that any parameter passed as an <tt>out only void *</tt> does not
+contain references to live, unshared objects.  This makes sense, since
+such a parameter could not be used sensibly in any way other than
+deallocating its storage. 
+<p>
+<a name="fn16">
+16 If an exposure qualifier is used (see <a
+href="sec6.html#sec-6.2">Section 6.2</a>), the implied dependent
+annotation is used instead of the more generally implied only
+annotation.  
+<p> 
+<a name="fn17">
+17 Strictly, we should also check that the returned <tt>observer</tt> storage is not
+used again after any other calls to the abstract type module using the same
+parameter.  LCLint does not attempt to check this, and in practice it is not
+usually a problem.<p>
+<a name="fn18">
+18 Note that if the parameter is annotated with <tt>only</tt>, it is not an error to
+assign it to part of an abstract representation, since the caller may not use
+the storage after the call returns.<p>
+<a name="fn19">
+19 That is, the return type is <tt>bool</tt>, or <tt>int</tt> if <a
+href="appC.html#flag-boolint">+boolint</tt></a> is used. <p> 
+<a name="fn20">
+20 The sef annotation denotes a parameter as side-effect free (see <a
+href="sec8.html#sec-8.2.1">Section 8.2.1</a>). 
+By declaring the argument to assert to be side-effect free, LCLint will report
+errors if the parameter to assert produces a side-effect.  This is especially
+pertinent if assertions are turned off when the production version is compiled.
+The <tt>bool /*@alt int@*/</tt> type specifier for the parameter means
+the parameter type must match either <tt>bool</tt> or <tt>int</tt>.
+Alternate types are described in <a href="sec8.html#sec-8.2.2">Section
+8.2.2</a>.<p> 
+<a name="fn21">
+21 To be completely correct, all the macro parameters should be evaluated
+before the macro has any side-effects.  Since checking this would require
+extensive analysis for occasional modest gain, it was not considered worth
+implementing.<p>
+<a name="fn22">
+22 Note that functions which do not produce to the same result each time they
+are called with the same arguments should be declared to modify internalState
+so they  will lead to errors if they are passed as sef parameters.<p>
+<a name="fn23">
+23 The most renown C naming convention is the Hungarian naming convention,
+introduced by Charles Simonyi [Simonyi, Charles, and Martin Heller.  "The
+Hungarian Revolution."  <i>BYTE</i>, August 1991, p. 131-38].  The names for
+LCLint naming conventions follow the tradition of using Central European
+nationalities as mnemonics for naming conventions.  The LCLint conventions are
+similar to the Hungarian naming convention in that they encode type information
+in names, except that the LCLint conventions encode the names of accessible
+abstract types instead of the type of the declaration of return value.
+Prefixes used in the Hungarian naming convention are not supported by LCLint.<p>
+<a name="fn24">
+24 Namespace prefixes should probably be described by regular expressions.
+LCLint uses a simpler, more limited means for describing names, which is
+believed to be adequate for describing most useful naming conventions.  If
+there is sufficient interest, regular expressions may be supported in a future
+version of LCLint.<p>
+<a name="fn25">
+25 Peter van der Linden estimates that default fall through is the wrong
+behavior 97% of the time.  [<a href="guide.html#ref-vdL">vdL95</a>, p. 37]<p>
+<a name="fn26">
+26 "Software Glitch Cripples AT&amp;T Network", Telephony, 22 January 1990.<p>
+<a name="fn27">
+27 In earlier versions of LCLint, the default extension <tt>.lldmp</tt> was used.  This
+has been shortened to <tt>.lcd</tt>.
+</body>
+
+<hr>
+
+
+
+<A HREF="guide.html#contents">
+<IMG ALIGN=left SRC = "up-arrow.jpg" ALT = "Contents"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> 
+<a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+
+
+
+
+
+

@@ -1,0 +1,160 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/namechecks'
+lclint +lh +checks -allimponly +allmacros +distinctexternalnames +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec employee.lcl >
+employee.lcl:6,43: External identifier gender is not distinguishable from
+                      gender_ANY in the first 6 characters (gender)
+  An external name is not distinguishable from another external name using the
+  number of significant characters. According to ANSI Standard (3.1), an
+  implementation may only consider the first 6 characters significant, and
+  ignore alphabetical case distinctions. The +externalnamelen <n> flag may be
+  used to change the number of significant characters, and -externalnamecaseinse
+  nsitive to make alphabetical case significant in external names. Use
+  -distinctexternalnames to suppress message.
+   employee.lcl:6,30: Specification of gender_ANY
+employee.lcl:16,3: External identifier employee is not distinguishable from
+                      employeePrintSize in the first 6 characters (employ)
+   employee.lcl:4,14: Specification of employeePrintSize
+employee.lcl:18: External identifier employee_sprint is not distinguishable
+                    from employeePrintSize in the first 6 characters (employ)
+   employee.lcl:4,14: Specification of employeePrintSize
+   One or more additional indistinguishable external names not reported
+employee.lcl:27: External identifier employee_equal is not distinguishable from
+                    employeePrintSize in the first 6 characters (employ)
+   employee.lcl:4,14: Specification of employeePrintSize
+   One or more additional indistinguishable external names not reported
+employee.lcl:37: External identifier employee_setName is not distinguishable
+                    from employeePrintSize in the first 6 characters (employ)
+   employee.lcl:4,14: Specification of employeePrintSize
+   One or more additional indistinguishable external names not reported
+employee.lcl:49: External identifier employee_initMod is not distinguishable
+                    from employeePrintSize in the first 6 characters (employ)
+   employee.lcl:4,14: Specification of employeePrintSize
+   One or more additional indistinguishable external names not reported
+< reading spec eref.lcl >
+eref.lcl:22: External identifier eref_assign is not distinguishable from
+                eref_alloc in the first 6 characters (eref_a)
+   eref.lcl:9: Specification of eref_alloc
+< reading spec empset.lcl >
+empset.lcl:9: External identifier empset_final is not distinguishable from
+                 empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+empset.lcl:15: External identifier empset_clear is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+empset.lcl:21: External identifier empset_insert is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+empset.lcl:27: External identifier empset_insertUnique is not distinguishable
+                  from empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+empset.lcl:34: External identifier empset_delete is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+empset.lcl:40: External identifier empset_union is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+empset.lcl:45: External identifier empset_disjointUnion is not distinguishable
+                  from empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+empset.lcl:52: External identifier empset_intersect is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+empset.lcl:58: External identifier empset_size is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+empset.lcl:63: External identifier empset_member is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+empset.lcl:68: External identifier empset_subset is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+empset.lcl:73: External identifier empset_choose is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+empset.lcl:79: External identifier empset_sprint is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+empset.lcl:84: External identifier empset_initMod is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+empset.lcl:90,6: External identifier empset_elements is not distinguishable
+                    from empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+< reading spec ereftab.lcl >
+ereftab.lcl:5: External identifier ereftab_create is not distinguishable from
+                  ereftab in the first 6 characters (erefta)
+   ereftab.lcl:3,1: Specification of ereftab
+ereftab.lcl:10: External identifier ereftab_insert is not distinguishable from
+                   ereftab in the first 6 characters (erefta)
+   ereftab.lcl:3,1: Specification of ereftab
+   One or more additional indistinguishable external names not reported
+ereftab.lcl:17: External identifier ereftab_delete is not distinguishable from
+                   ereftab in the first 6 characters (erefta)
+   ereftab.lcl:3,1: Specification of ereftab
+   One or more additional indistinguishable external names not reported
+ereftab.lcl:23: External identifier ereftab_lookup is not distinguishable from
+                   ereftab in the first 6 characters (erefta)
+   ereftab.lcl:3,1: Specification of ereftab
+   One or more additional indistinguishable external names not reported
+ereftab.lcl:28: External identifier ereftab_initMod is not distinguishable from
+                   ereftab in the first 6 characters (erefta)
+   ereftab.lcl:3,1: Specification of ereftab
+   One or more additional indistinguishable external names not reported
+ereftab.lcl:34,6: External identifier ereftab_elements is not distinguishable
+                     from ereftab in the first 6 characters (erefta)
+   ereftab.lcl:3,1: Specification of ereftab
+   One or more additional indistinguishable external names not reported
+< reading spec erc.lcl >
+erc.lcl:66: External identifier erc_initMod is not distinguishable from
+               erc_insert in the first 6 characters (erc_in)
+   erc.lcl:17: Specification of erc_insert
+< reading spec dbase.lcl >
+dbase.lcl:4,30: External identifier genderERR is not distinguishable from
+                   gender_ANY in the first 6 characters (gender)
+   employee.lcl:6,30: Specification of gender_ANY
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+eref.h:14,3: External identifier eref_ERP is not distinguishable from
+    eref_equal in the first 6 characters because alphabetical case is ignored
+   eref.lcl:35: Specification of eref_equal
+< checking empset.c >
+empset.h:8,13: External identifier empset is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   empset.lcl:4: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+dbase.c:7,3: External identifier employeeKinds is not distinguishable from
+                employeePrintSize in the first 6 characters (employ)
+   employee.lcl:4,14: Specification of employeePrintSize
+   One or more additional indistinguishable external names not reported
+dbase.c:21,58: External identifier employeeKinds_all is not distinguishable
+                  from employeePrintSize in the first 6 characters (employ)
+   employee.lcl:4,14: Specification of employeePrintSize
+   One or more additional indistinguishable external names not reported
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 34 code errors found
+392 spec, 2986 source (1275 before pre-processing) lines in 4.62 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/namechecks'

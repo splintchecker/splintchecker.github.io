@@ -1,0 +1,87 @@
+<h3>lclint-interest message 64</h3>
+<pre>
+From evs Mon Mar 25 12:35:49 1996
+Date: Mon, 25 Mar 96 12:14:47 -0500
+From: evs (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: eric@rrinc.com
+In-Reply-To: Eric Bloodworth's message of Sun, 24 Mar 1996 20:08:27 -0500 <3155F20B.167E@rrinc.com>
+Subject: can lclint detect this leak? 
+
+
+Yes, I think you're right that some extensions to lclint to allow this
+to be described would be worthwhile.  
+
+Currently, what I have in mind is to add a /*@special@*/ annotation on
+parameters to indicate that none of the implicit assumptions apply to
+storage derived from the parameter.  Then clauses can be used to
+describe derived storage.  I think 4 clauses are needed:
+
+	/*@uses x->size, x->num@*/   
+		References that are used in the implementation.  Must be
+		defined before the call, assumed to be defined checking
+		the implementation.
+	/*@defines x->elements@*/
+		References that are defined in all possible paths
+		through	the implementation.  Must not refer to allocated
+		storage before the call (or a memory leak), assumed to
+		be undefined checking the implementation, assumed to
+		be defined after the call returns.
+	/*@allocates x->stuff@*/
+		Same as defines, except storage is allocated but not
+		defined.
+	/*@releases x->name@*/
+		References that are released in the implementation.
+		Must be allocated before the call, and a memory leak
+		is reported if it is not deallocated in the 
+		implementation.  After the call, the corresponding
+		reference is dead storage.
+
+Then, you would be able to specify 
+
+	extern int alloc_booga_s (/*@special@*/ booga_s *stuff)
+            /*@allocates stuff->bar@*/
+	or  /*@allocates *stuff@*/     [ semantics of this might be unclear? ]
+
+	extern int free_booga_s (/*@special@*/ booga_s *stuff)
+	    /*@releases stuff->bar@*/
+	or  /*@releases *stuff@*/
+
+This would also have the advantage that instead of using /*@partial@*/
+to indicate structure fields may not be defined on call but are checked
+as though they are defined, programmers can explicitly specify what
+fields are used and defined.
+
+Perhaps, this should be extended to allow /*@special@*/ annotations on
+the return value also, and use a special name (e.g., "result") to
+specify the return values in the uses, defines, allocates, releases
+lists.
+
+I'm open to suggestions of alternate ways of doing this, especially with
+respect to what kinds of (simple) things programmers would like to
+specify about function interfaces that cannot be done with the current
+lclint annotations, and I'll add something like this to an update
+release.
+
+--- Dave
+
+
+
+
+
+</pre>
+<A HREF="63.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="65.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

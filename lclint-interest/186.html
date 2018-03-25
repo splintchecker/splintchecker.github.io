@@ -1,0 +1,55 @@
+<h3>lclint-interest message 186</h3>
+<pre>
+From 100566.1506@compuserve.com Wed Feb 11 12:09:56 1998
+Sender: 100566.1506@compuserve.com
+Date: Wed, 11 Feb 1998 15:07:50 +0100 (CET)
+From: Hermann Kleier <100566.1506@compuserve.com>
+X-Sender: 100566.1506@opto4l.default.com
+Reply-To: Hermann Kleier <100566.1506@compuserve.com>
+To: lclint-interest <lclint-interest@larch.lcs.mit.edu>
+Cc: Alias of hermann for sending emails <100566.1506@compuserve.com>
+Subject: Constants in .lcl-files
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+I used to have the following four definitions/declarations in a header file:
+
+#define FAR
+#define RECORDSIZE 925
+typedef char FAR Inrecord [RECORDSIZE];
+typedef const char FAR *ConstString;
+
+The data types defined are used as function parameters.  Therefore I need to
+move the declarations to my .lcl-file.   But then the problems occurr:
+
+(1) FAR:           Just a macro defined to an emty string for reasonable
+                   operating systems. But some environments need to define `FAR'
+                   as `far'.
+
+(2) const:         Simply yields a parse error.  I know, the /*@*/ can guarantee
+                   that a function does not alter its parameters.  But a const
+                   data type is recognized by any ANSI-C compiler.
+
+(3) RECORDSIZE:    I dislike to seed my constants around in the program.  I
+                   prefer macros or int constants.
+
+
+
+
+
+</pre>
+<A HREF="185.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="187.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

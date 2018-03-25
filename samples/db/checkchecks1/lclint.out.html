@@ -1,0 +1,303 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/checkchecks1'
+lclint +lh +checks -allimponly +allmacros +showsummary +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+employee.c: (in function employee_sprint)
+<A HREF="employee.c.html#line29" target="source">employee.c:29,28</A>: Read-only string literal storage used as initial value for
+                     unqualified storage: gender[0] = "male"
+  A read-only string literal is assigned to a non-observer reference. Use
+  -readonlytrans to suppress message.
+<A HREF="employee.c.html#line29" target="source">employee.c:29,36</A>: Read-only string literal storage used as initial value for
+                     unqualified storage: gender[1] = "female"
+<A HREF="employee.c.html#line29" target="source">employee.c:29,46</A>: Read-only string literal storage used as initial value for
+                     unqualified storage: gender[2] = "?"
+<A HREF="employee.c.html#line30" target="source">employee.c:30,27</A>: Read-only string literal storage used as initial value for
+                     unqualified storage: jobs[0] = "manager"
+<A HREF="employee.c.html#line30" target="source">employee.c:30,38</A>: Read-only string literal storage used as initial value for
+                     unqualified storage: jobs[1] = "non-manager"
+<A HREF="employee.c.html#line30" target="source">employee.c:30,53</A>: Read-only string literal storage used as initial value for
+                     unqualified storage: jobs[2] = "?"
+<A HREF="employee.c.html#line33" target="source">employee.c:33,5</A>: Array fetch using non-integer, gender: gender[e.gen]
+  To allow enum types to index arrays, use +enumindex. Use +enumindex to
+  suppress message.
+<A HREF="employee.c.html#line33" target="source">employee.c:33,20</A>: Array fetch using non-integer, job: jobs[e.j]
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+eref.c: (in function eref_alloc)
+<A HREF="eref.c.html#line12" target="source">eref.c:12,14</A>: Undocumented use of file static eref_Pool
+  A checked global variable is used in the function, but not listed in its
+  globals clause. By default, only globals specified in .lcl files are checked.
+  To check all globals, use +allglobals. To check globals selectively use
+  /*@checked@*/ in the global declaration. Use -globs to suppress message.
+<A HREF="eref.c.html#line12" target="source">eref.c:12,51</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line12" target="source">eref.c:12,73</A>: Undocumented use of file static eref_Pool (in post loop test)
+<A HREF="eref.c.html#line16" target="source">eref.c:16,14</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line18" target="source">eref.c:18,7</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line19" target="source">eref.c:19,24</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line20" target="source">eref.c:20,14</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line18" target="source">eref.c:18,7</A>: Undocumented modification of eref_Pool.conts:
+    eref_Pool.conts = (employee *)realloc(eref_Pool.conts, 2 * eref_Pool.size *
+    sizeof(employee))
+  An externally-visible object is modified by a function, but not listed in its
+  modifies clause. Use -mods to suppress message.
+<A HREF="eref.c.html#line22" target="source">eref.c:22,11</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line28" target="source">eref.c:28,7</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line29" target="source">eref.c:29,27</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line30" target="source">eref.c:30,10</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line28" target="source">eref.c:28,7</A>: Undocumented modification of eref_Pool.status:
+    eref_Pool.status = (eref_status *)realloc(eref_Pool.status, 2 *
+    eref_Pool.size * sizeof(eref_status))
+<A HREF="eref.c.html#line32" target="source">eref.c:32,11</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line38" target="source">eref.c:38,7</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line38" target="source">eref.c:38,26</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line38" target="source">eref.c:38,7</A>: Undocumented modification of eref_Pool.size:
+                eref_Pool.size = 2 * eref_Pool.size
+<A HREF="eref.c.html#line40" target="source">eref.c:40,27</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line41" target="source">eref.c:41,9</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line41" target="source">eref.c:41,9</A>: Undocumented modification of eref_Pool.status[]:
+                eref_Pool.status[i] = avail
+<A HREF="eref.c.html#line41" target="source">eref.c:41,37</A>: Undocumented use of file static eref_Pool (in post loop test)
+<A HREF="eref.c.html#line44" target="source">eref.c:44,3</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line44" target="source">eref.c:44,3</A>: Undocumented modification of eref_Pool.status[]:
+                eref_Pool.status[res] = used
+eref.c: (in function eref_initMod)
+<A HREF="eref.c.html#line54" target="source">eref.c:54,8</A>: Undocumented use of file static needsInit
+<A HREF="eref.c.html#line59" target="source">eref.c:59,3</A>: Undocumented use of file static needsInit
+<A HREF="eref.c.html#line59" target="source">eref.c:59,3</A>: Undocumented modification of needsInit: needsInit = FALSE
+<A HREF="eref.c.html#line63" target="source">eref.c:63,3</A>: Undocumented modification of eref_Pool.conts:
+                eref_Pool.conts = (employee *)malloc(size * sizeof(employee))
+<A HREF="eref.c.html#line71" target="source">eref.c:71,3</A>: Undocumented modification of eref_Pool.status:
+    eref_Pool.status = (eref_status *)malloc(size * sizeof(eref_status))
+<A HREF="eref.c.html#line79" target="source">eref.c:79,3</A>: Undocumented modification of eref_Pool.size: eref_Pool.size = size
+<A HREF="eref.c.html#line84" target="source">eref.c:84,7</A>: Undocumented modification of eref_Pool.status[]:
+                eref_Pool.status[i] = avail
+eref.c: (in function eref_free)
+<A HREF="eref.c.html#line91" target="source">eref.c:91,3</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line91" target="source">eref.c:91,3</A>: Undocumented modification of eref_Pool.status[]:
+                eref_Pool.status[er] = avail
+eref.c: (in function eref_assign)
+<A HREF="eref.c.html#line96" target="source">eref.c:96,3</A>: Undocumented use of file static eref_Pool
+<A HREF="eref.c.html#line96" target="source">eref.c:96,3</A>: Undocumented modification of eref_Pool.conts[]:
+                eref_Pool.conts[er] = e
+eref.c: (in function eref_get)
+<A HREF="eref.c.html#line101" target="source">eref.c:101,10</A>: Undocumented use of file static eref_Pool
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+<A HREF="empset.c.html#line5" target="source">empset.c:5,6</A>: Name _empset_get is in the implementation name space (any
+                 identifier beginning with underscore)
+  External name is reserved for system in ANSI standard. Use -ansireserved to
+  suppress message.
+empset.c: (in function empset_insertUnique)
+<A HREF="empset.c.html#line37" target="source">empset.c:37,27</A>: Undocumented use of global known
+<A HREF="empset.c.html#line43" target="source">empset.c:43,23</A>: Undocumented use of global known
+empset.c: (in function empset_initMod)
+<A HREF="empset.c.html#line140" target="source">empset.c:140,7</A>: Undocumented use of file static initDone
+<A HREF="empset.c.html#line147" target="source">empset.c:147,3</A>: Undocumented use of global known
+<A HREF="empset.c.html#line147" target="source">empset.c:147,3</A>: Undocumented modification of known: known = ereftab_create()
+<A HREF="empset.c.html#line147" target="source">empset.c:147,3</A>: Only storage assigned to unqualified: known = ereftab_create()
+  The only reference to this storage is transferred to another reference that
+  does not have an aliasing annotation. This may lead to a memory leak, since
+  the new reference is not necessarily released. Use -onlyunqglobaltrans to
+  suppress message.
+<A HREF="empset.c.html#line148" target="source">empset.c:148,3</A>: Undocumented use of file static initDone
+<A HREF="empset.c.html#line148" target="source">empset.c:148,3</A>: Undocumented modification of initDone: initDone = TRUE
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+dbase.c: (in macro numERCS)
+<A HREF="dbase.c.html#line16" target="source">dbase.c:16,20</A>: Incompatible types for + (enum { mMGRS, fMGRS, mNON, fNON },
+                  int): lastERC - firstERC + 1
+  Types are incompatible. Use -type to suppress message.
+dbase.c: (in function db_initMod)
+<A HREF="dbase.c.html#line26" target="source">dbase.c:26,7</A>: Undocumented use of global initDone
+<A HREF="dbase.c.html#line37" target="source">dbase.c:37,8</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line37" target="source">dbase.c:37,22</A>: Operands of <= have incompatible types (int, employeeKinds):
+                  i <= lastERC
+<A HREF="dbase.c.html#line39" target="source">dbase.c:39,7</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line39" target="source">dbase.c:39,7</A>: Undocumented modification of db[]: db[i] = erc_create()
+<A HREF="dbase.c.html#line39" target="source">dbase.c:39,7</A>: Only storage assigned to unqualified: db[i] = erc_create()
+<A HREF="dbase.c.html#line37" target="source">dbase.c:37,22</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                  test): i <= lastERC
+<A HREF="dbase.c.html#line42" target="source">dbase.c:42,3</A>: Undocumented use of global initDone
+<A HREF="dbase.c.html#line42" target="source">dbase.c:42,3</A>: Undocumented modification of initDone: initDone = TRUE
+<A HREF="dbase.c.html#line45" target="source">dbase.c:45,6</A>: Name _db_ercKeyGet is in the implementation name space (any
+                 identifier beginning with underscore)
+<A HREF="dbase.c.html#line55" target="source">dbase.c:55,6</A>: Name _db_keyGet is in the implementation name space (any
+                 identifier beginning with underscore)
+dbase.c: (in function _db_keyGet)
+<A HREF="dbase.c.html#line60" target="source">dbase.c:60,8</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line60" target="source">dbase.c:60,22</A>: Operands of <= have incompatible types (int, employeeKinds):
+                  i <= lastERC
+<A HREF="dbase.c.html#line60" target="source">dbase.c:60,22</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                  test): i <= lastERC
+<A HREF="dbase.c.html#line72" target="source">dbase.c:72,5</A>: Name _db_addEmpls is in the implementation name space (any
+                 identifier beginning with underscore)
+dbase.c: (in function uncheckedHire)
+<A HREF="dbase.c.html#line118" target="source">dbase.c:118,19</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line118" target="source">dbase.c:118,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+<A HREF="dbase.c.html#line120" target="source">dbase.c:120,19</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line120" target="source">dbase.c:120,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+<A HREF="dbase.c.html#line123" target="source">dbase.c:123,19</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line123" target="source">dbase.c:123,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+<A HREF="dbase.c.html#line125" target="source">dbase.c:125,19</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line125" target="source">dbase.c:125,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+dbase.c: (in function fire)
+<A HREF="dbase.c.html#line132" target="source">dbase.c:132,8</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line132" target="source">dbase.c:132,22</A>: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+<A HREF="dbase.c.html#line134" target="source">dbase.c:134,20</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line138" target="source">dbase.c:138,19</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line132" target="source">dbase.c:132,22</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+dbase.c: (in function promote)
+<A HREF="dbase.c.html#line154" target="source">dbase.c:154,23</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line154" target="source">dbase.c:154,23</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+<A HREF="dbase.c.html#line158" target="source">dbase.c:158,27</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line158" target="source">dbase.c:158,27</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+<A HREF="dbase.c.html#line170" target="source">dbase.c:170,19</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line170" target="source">dbase.c:170,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+<A HREF="dbase.c.html#line171" target="source">dbase.c:171,19</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line171" target="source">dbase.c:171,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+<A HREF="dbase.c.html#line175" target="source">dbase.c:175,19</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line175" target="source">dbase.c:175,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+<A HREF="dbase.c.html#line176" target="source">dbase.c:176,19</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line176" target="source">dbase.c:176,19</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+dbase.c: (in function query)
+<A HREF="dbase.c.html#line222" target="source">dbase.c:222,9</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line222" target="source">dbase.c:222,23</A>: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+<A HREF="dbase.c.html#line223" target="source">dbase.c:223,32</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line222" target="source">dbase.c:222,23</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+<A HREF="dbase.c.html#line226" target="source">dbase.c:226,29</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line226" target="source">dbase.c:226,29</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+<A HREF="dbase.c.html#line227" target="source">dbase.c:227,30</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line227" target="source">dbase.c:227,30</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+<A HREF="dbase.c.html#line230" target="source">dbase.c:230,29</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line230" target="source">dbase.c:230,29</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+<A HREF="dbase.c.html#line231" target="source">dbase.c:231,30</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line231" target="source">dbase.c:231,30</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+<A HREF="dbase.c.html#line238" target="source">dbase.c:238,29</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line238" target="source">dbase.c:238,29</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+<A HREF="dbase.c.html#line239" target="source">dbase.c:239,30</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line239" target="source">dbase.c:239,30</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+<A HREF="dbase.c.html#line242" target="source">dbase.c:242,25</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line242" target="source">dbase.c:242,25</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mMGRS]
+<A HREF="dbase.c.html#line244" target="source">dbase.c:244,25</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line244" target="source">dbase.c:244,25</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[mNON]
+<A HREF="dbase.c.html#line250" target="source">dbase.c:250,29</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line250" target="source">dbase.c:250,29</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+<A HREF="dbase.c.html#line251" target="source">dbase.c:251,30</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line251" target="source">dbase.c:251,30</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+<A HREF="dbase.c.html#line254" target="source">dbase.c:254,25</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line254" target="source">dbase.c:254,25</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fMGRS]
+<A HREF="dbase.c.html#line256" target="source">dbase.c:256,25</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line256" target="source">dbase.c:256,25</A>: Array fetch using non-integer, enum { mMGRS, fMGRS, mNON, fNON
+                   }: db[fNON]
+<A HREF="dbase.c.html#line259" target="source">dbase.c:259,1</A>: Suspect object listed in modifies of query not modified: s
+  An object listed in the modifies clause is not modified by the implementation
+  of the function. The modification may not be detected if it is done through a
+  call to an unspecified function. Use -mustmod to suppress message.
+   <A HREF="dbase.lcl.html#line49" target="source">dbase.lcl:49</A>: Specification of query
+dbase.c: (in function db_print)
+<A HREF="dbase.c.html#line268" target="source">dbase.c:268,8</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line268" target="source">dbase.c:268,22</A>: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+<A HREF="dbase.c.html#line270" target="source">dbase.c:270,30</A>: Undocumented use of global db
+<A HREF="dbase.c.html#line268" target="source">dbase.c:268,22</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+drive.c: (in function main)
+<A HREF="drive.c.html#line128" target="source">drive.c:128,22</A>: Assignment of db_status to int: j = hire(e)
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+<A HREF="dbase.c.html#line18" target="source">dbase.c:18,17</A>: Variable db exported but not declared in header file
+  A variable declaration is exported, but does not appear in a header file.
+  (Used with exportheader.) Use -exportheadervar to suppress message.
+<A HREF="empset.c.html#line5" target="source">empset.c:5,6</A>: Function _empset_get exported but not declared in header file
+  A declaration is exported, but does not appear in a header file. Use
+  -exportheader to suppress message.
+   <A HREF="empset.c.html#line15" target="source">empset.c:15,1</A>: Definition of _empset_get
+<A HREF="dbase.c.html#line20" target="source">dbase.c:20,6</A>: Variable initDone exported but not declared in header file
+<A HREF="dbase.c.html#line45" target="source">dbase.c:45,6</A>: Function _db_ercKeyGet exported but not declared in header file
+   <A HREF="dbase.c.html#line53" target="source">dbase.c:53,1</A>: Definition of _db_ercKeyGet
+<A HREF="dbase.c.html#line55" target="source">dbase.c:55,6</A>: Function _db_keyGet exported but not declared in header file
+   <A HREF="dbase.c.html#line70" target="source">dbase.c:70,1</A>: Definition of _db_keyGet
+<A HREF="dbase.c.html#line72" target="source">dbase.c:72,5</A>: Function _db_addEmpls exported but not declared in header file
+   <A HREF="dbase.c.html#line89" target="source">dbase.c:89,1</A>: Definition of _db_addEmpls
+< cleaning ......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+usedef                       0           1
+exporttype                   0           5
+globs                       57           1
+macroempty                   0           1
+compdef                      0           1
+onlyunqglobaltrans           2           0
+readonlytrans                6           0
+mods                        16           0
+mustmod                      1           0
+ansireserved                 4           0
+sizeoftype                   0           6
+type                        17           5
+enumindex                   24           0
+exportheader                 4           0
+exportheadervar              2           0
+                          ========  =========
+Total:                     133          20
+
+Finished LCLint checking --- 133 code errors found
+391 spec, 2967 source (1247 before pre-processing) lines in 4.60 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/checkchecks1'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

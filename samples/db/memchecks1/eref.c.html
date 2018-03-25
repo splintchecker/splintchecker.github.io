@@ -1,0 +1,158 @@
+<A NAME="line149"></A><html><head>
+<title>eref.c</title>
+</head><body>
+<h3>eref.c</h3>
+<PRE>
+<A NAME="line1"></A># include &lt;stdio.h&gt;
+<A NAME="line2"></A># include &lt;stdlib.h&gt;
+<A NAME="line3"></A>#include "<A HREF="eref.h.html">eref.h</A>"
+<A NAME="line4"></A> 
+<A NAME="line5"></A>eref_ERP eref_Pool;            /* private */
+<A NAME="line6"></A>static bool needsInit = TRUE;  /* private */
+<A NAME="line7"></A> 
+<A NAME="line8"></A>eref eref_alloc (void) 
+<A NAME="line9"></A>{
+<A NAME="line10"></A>  int i, res;
+<A NAME="line11"></A>  
+<A NAME="line12"></A>  for (i=0; (eref_Pool.status[i] == used) && (i &lt; eref_Pool.size); i++);
+<A NAME="line13"></A>  
+<A NAME="line14"></A>  res = i;
+<A NAME="line15"></A> 
+<A NAME="line16"></A>  if (res == eref_Pool.size) 
+<A NAME="line17"></A>    {
+<A NAME="line18"></A>      eref_Pool.conts =
+<A NAME="line19"></A>	(employee *) realloc (eref_Pool.conts,
+<A NAME="line20"></A>			      2 * eref_Pool.size * sizeof (employee));
+<A NAME="line21"></A>      
+<A NAME="line22"></A>      if (eref_Pool.conts == 0) 
+<A NAME="line23"></A>	{
+<A NAME="line24"></A>	  printf ("Malloc returned null in eref_alloc\n");
+<A NAME="line25"></A>	  exit (EXIT_FAILURE);
+<A NAME="line26"></A>	}
+<A NAME="line27"></A>      
+<A NAME="line28"></A>      eref_Pool.status =
+<A NAME="line29"></A>	(eref_status *) realloc (eref_Pool.status,
+<A NAME="line30"></A>				 2 * eref_Pool.size * sizeof (eref_status));
+<A NAME="line31"></A> 
+<A NAME="line32"></A>      if (eref_Pool.status == 0) 
+<A NAME="line33"></A>	{
+<A NAME="line34"></A>	  printf ("Malloc returned null in eref_alloc\n");
+<A NAME="line35"></A>	  exit (EXIT_FAILURE);
+<A NAME="line36"></A>	}
+<A NAME="line37"></A>      
+<A NAME="line38"></A>      eref_Pool.size = 2*eref_Pool.size;
+<A NAME="line39"></A> 
+<A NAME="line40"></A>      for (i = res+1; i &lt; eref_Pool.size; i++)
+<A NAME="line41"></A>        eref_Pool.status[i] = avail;
+<A NAME="line42"></A>    }
+<A NAME="line43"></A>  
+<A NAME="line44"></A>  eref_Pool.status[res] = used;
+<A NAME="line45"></A>  return (eref) res;
+<A NAME="line46"></A>}
+<A NAME="line47"></A> 
+<A NAME="line48"></A>void eref_initMod (void) 
+<A NAME="line49"></A>{
+<A NAME="line50"></A>  int i;
+<A NAME="line51"></A>  const int size = 16;
+<A NAME="line52"></A>  
+<A NAME="line53"></A>  if (!needsInit) 
+<A NAME="line54"></A>    {
+<A NAME="line55"></A>      return;
+<A NAME="line56"></A>    }
+<A NAME="line57"></A> 
+<A NAME="line58"></A>  needsInit = FALSE;
+<A NAME="line59"></A>  bool_initMod ();
+<A NAME="line60"></A>  employee_initMod ();
+<A NAME="line61"></A> 
+<A NAME="line62"></A>  eref_Pool.conts = (employee *) malloc (size * sizeof (employee));
+<A NAME="line63"></A> 
+<A NAME="line64"></A>  if (eref_Pool.conts == 0) 
+<A NAME="line65"></A>    {
+<A NAME="line66"></A>      printf ("Malloc returned null in eref_initMod\n");
+<A NAME="line67"></A>      exit (EXIT_FAILURE);
+<A NAME="line68"></A>    }
+<A NAME="line69"></A>  
+<A NAME="line70"></A>  eref_Pool.status = (eref_status *) malloc (size * sizeof (eref_status));
+<A NAME="line71"></A> 
+<A NAME="line72"></A>  if (eref_Pool.status == 0) 
+<A NAME="line73"></A>    {
+<A NAME="line74"></A>      printf ("Malloc returned null in eref_initMod\n");
+<A NAME="line75"></A>      exit (EXIT_FAILURE);
+<A NAME="line76"></A>    }
+<A NAME="line77"></A>  
+<A NAME="line78"></A>  eref_Pool.size = size;
+<A NAME="line79"></A> 
+<A NAME="line80"></A>  for (i = 0; i &lt; size; i++)
+<A NAME="line81"></A>    {
+<A NAME="line82"></A>      eref_Pool.status[i] = avail;
+<A NAME="line83"></A>    }
+<A NAME="line84"></A>}
+<A NAME="line85"></A> 
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

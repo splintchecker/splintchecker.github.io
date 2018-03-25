@@ -1,0 +1,38 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/allmacros'
+lclint +lh -allimponly +allmacros +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+employee.h:5: Macro constant employeeFormat not declared
+  Macro constant has no declaration. Use /*@constant ...@*/ to declare the
+  macro. Use -macroconstdecl to suppress message.
+< checking eref.c >
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+dbase.c:4: Macro constant firstERC not declared
+dbase.c: (in macro firstERC)
+dbase.c:4,20: Unrecognized identifier in macro definition: mMGRS
+  An unrecognized identifier appears in a macro. If the identifier is defined
+  before the macro is used, then this is okay. Use -macrounrecog to suppress
+  message.
+dbase.c:5: Macro constant lastERC not declared
+dbase.c: (in macro lastERC)
+dbase.c:5,19: Unrecognized identifier in macro definition: fNON
+dbase.c:6: Macro constant numERCS not declared
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 6 code errors found
+391 spec, 2935 source (1239 before pre-processing) lines in 4.23 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/allmacros'

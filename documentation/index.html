@@ -1,0 +1,121 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>Splint Documentation</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<center><h2>
+Splint Documentation
+</h2></center>
+
+<b><a href="../manual/">Splint Manual</a></b>
+<blockquote>
+A comprehensive guide to using Splint. [<a
+href="../manual/manual.html">HTML</a>] [<a
+href="../manual/manual.ps">PS</a>] [<a href="../manual/manual.pdf">PDF</a>]
+<p>
+
+</blockquote>
+
+<b><a href="../faq.html">Frequently Asked Questions</a></b>
+<p>
+
+<h3>Selected Papers</h3>
+
+<a href="http://www.cs.virginia.edu/evans/pubs/ieeesoftware-abstract.html">
+<em>Improving Security Using Extensible Lightweight Static
+Analysis</em></a>
+<blockquote>
+David Evans and David Larochelle. In  <a href="http://www.computer.org/software/">IEEE Software</a>, Jan/Feb
+2002.  (<a
+href="http://www.cs.virginia.edu/evans/pubs/ieeesoftware-revised.pdf">PDF</a>,
+12 pages)
+<p>
+Most security attacks exploit instances of well-known classes of
+implementations flaws.  This article describes how Splint can be used to
+detect common security vulnerabilities (including buffer overflows and
+format string vulnerabilities).
+
+</blockquote>
+
+<a href="http://www.cs.virginia.edu/~evans/usenix01-abstract.html"><em>Statically Detecting Likely Buffer Overflow Vulnerabilities</em></a>
+<blockquote>
+David Larochelle and David Evans.  In
+<a
+href="http://www.usenix.org/events/sec01/"<em>
+2001 USENIX Security Symposium</em></a>, Washington, D. C., August
+13-17, 2001.  (<a
+href="http://lclint.cs.virginia.edu/usenix01.pdf">PDF</a>, <a
+href="http://lclint.cs.virginia.edu/usenix01.html">HTML</a>, 13 pages)
+
+(<a href="http://www.cs.virginia.edu/evans/talks/usenix.ppt">
+Talk slides</a> [<a
+href="http://www.cs.virginia.edu/evans/talks/usenix.ppt">PPT</a>]
+ [<a
+href="http://www.cs.virginia.edu/evans/talks/usenix.pdf">PDF</a>])
+<p>
+Buffer overflow attacks may be today's single most important security
+threat. This paper presents a new approach to mitigating buffer
+overflow vulnerabilities by detecting likely vulnerabilities through
+an analysis of the program source code. Our approach exploits
+information provided in semantic comments and uses lightweight and
+efficient static analyses. This paper describes an implementation of
+our approach that extends the LCLint annotation-assisted static
+checking tool. Our tool is as fast as a compiler and nearly as easy to
+use. We present experience using our approach to detect buffer
+overflow vulnerabilities in two security-sensitive programs.
+</blockquote>
+
+<p>
+<A HREF="http://www.cs.virginia.edu/~evans/pldi96-abstract.html">Static Detection of Dynamic Memory
+Errors</A>
+<blockquote> David Evans.  In <A
+HREF="http://www.cs.wisc.edu/~fischer/pldi96/index.html"> SIGPLAN
+Conference on Programming Language Design and Implementation</A> (PLDI
+'96), Philadelphia, PA, May 1996.  (<a href="http://www.cs.virginia.edu/~evans/pldi96.pdf">PDF</a>, <a href="http://www.cs.virginia.edu/~evans/pldi96.ps.gz">gzipped
+postscript</a>; 10 pages)
+<p>
+Describes approach for exploiting annotations added to code to detect
+a wide class of errors, focusing on memory management concerns.
+</blockquote>
+<p>
+<a href="../publications/">Additional Splint Papers</a>
+
+<h3>Examples</h3>
+
+<p>
+<b><A HREF="../samples/db/index.html">db: Employee Database Program</A></b>
+<blockquote>
+
+Starts with a fully specified, complete implementation.  Uses Splint to
+detect some bugs in the code, detect errors in the specifications,
+improve the specifications, and adopt and check conformance to a naming
+convention.  (Obsolete, but still mostly relevant.)
+
+</blockquote>
+
+<h3>Release Notes</h3>
+
+<a href="../release.html">Latest</a><br>
+Earlier releases: <a href="../release2.5q.html">2.5q</a>, <a
+href="../release-2.5m.html">2.5m</a>, <a
+href="../release-2.4b.html">2.4b</a>, <a
+href="../release2.3i.html">2.3i</a>, <a
+href="../release2.2.html">2.2</a>
+
+<h3>Development</h3>
+
+<a href="../bugs.html">Known Bugs</a><br>
+<a href="../changes.html">Change Log</a><br>
+
+<p>
+
+<a
+href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/lclint/LCLintDev/">SourceForge
+CVS</a> - latest development version<br>
+
+<!--#include virtual="footer.html"-->
+
+

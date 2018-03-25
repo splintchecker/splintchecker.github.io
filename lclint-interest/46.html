@@ -1,0 +1,52 @@
+<h3>lclint-interest message 46</h3>
+<pre>
+From ropella@lvs-emh.lvs.loral.com Tue Mar 19 15:35:08 1996
+From: ropella@lvs-emh.lvs.loral.com
+Date: Fri, 15 Mar 1996 17:29:51 -0600
+To: lclint-interest@larch.lcs.mit.edu
+Subject: Include files and the CPP
+
+
+Hey,
+How can I get rid of warnings like the following that come from
+the cpp?
+
+LCLint 2.0 --- 01 Mar 96
+
+cpp: warning ../ep/ep_timer_reg.h:19: AT_CLK_SEL_1MHz redefined
+cpp: warning ../ep/ep_timer_reg.h:20: AT_CLK_SEL_100kHz redefined
+
+
+These #defines change depending on what package they're included
+in, so I do want them redefined.  I also need to run the cpp and
+include the header files because of typedefs that I want lclint
+to recognize.
+
+To me, this looks like a cpp problem.  It's almost as if lclint
+runs all the files through the cpp at the same time.  However,
+our compiler doesn't seem to do this because we don't get these
+warnings when compiling.
+
+I suppose I could go through and do an #undef immediately before
+the #define; but, that makes for pretty ugly code.
+
+Thanks.
+glen
+
+
+</pre>
+<A HREF="45.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="47.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

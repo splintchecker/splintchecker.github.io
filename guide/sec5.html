@@ -1,0 +1,342 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint User's Guide - Section 5: Memory Management</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<h2>
+<a name="sec-5">
+5. Memory Management
+</a></h2>
+About half the bugs in typical C programs can be attributed to memory
+management problems.  Memory management bugs are notoriously difficult to
+detect through traditional techniques.  Often, the symptom of the bug is far
+removed from its actual source.  Memory management bug often only appear
+sporadically and some bugs may only be apparent when compiler optimizations are
+turned on or the code is compiled on a different platform.  Run-time tools
+offer some help, but are cumbersome to use and limited to detecting errors that
+occur when test cases are run.  By detecting these errors statically, we can be
+confident that certain types of errors will never occur and provide verified
+documentation on the memory management behavior of a program.  <p>
+<p>
+LCLint can detect many memory management errors at compile time including:<p>
+<ul>
+<li>	using storage that may have been freed (<a href="sec5.html#sec-5.2">Section 5.2</a>)<p>
+<li>	failing to deallocate memory (<a href="sec5.html#sec-5.2">Section 5.2</a>)<p>
+<li>	returning a pointer to stack-allocated storage (<a href="sec5.html#sec-5.2.6">Section 5.2.6</a>)<p>
+<li>	undocumented or dangerous aliasing or storage sharing (<a href="sec6.html">Section 6</a>)<p>
+<li>	passing or returning storage that is not completely defined (<a
+href="sec7.html#sec-7.1">Section 7.1</a>)<p>
+<li>	dereferencing a null pointers (<a href="sec7.html#sec-7.2">Section 7.2</a>)<p>
+</ul>
+
+Most of these checks rely heavily on annotations added to programs to document
+assumptions related to memory management and pointer values.  By documenting
+these assumptions for function interfaces, variables, type definitions and
+structure fields, memory management bugs can be detected at their source --
+where an assumption is violated.  In addition, precise documentation about
+memory management decisions makes its easier to change code.
+<a name="_Toc344355408"><a name="_Toc349905866">
+<h2>
+<a name="RTFToC25">
+<a name="sec-5.1">5.1 Storage Model</A></a><a href="guide_fn.html#fn10">[10]</a></a>
+</a></h2>
+<blockquote>
+<em> Yea, from the table of my memory I'll wipe away all trivial fond records, all
+saws of books, all forms, all pressures past, that youth and observation copied
+there.</em><br>
+- Hamlet prefers garbage collection (Shakespeare, Hamlet. Act I, Scene
+v)
+</blockquote>
+
+This section describes execution-time concepts for describing the state of
+storage more precisely than can be done using standard C terminology.  Certain
+uses of storage are likely to indicate program bugs, and are reported as
+anomalies.<p>
+<p>
+LCL assumes a CLU-like object storage model.<a
+href="guide_fn.html#fn11">[11]</a>  An <i>object</i> is a typed region
+of storage.  Some objects use a fixed amount of storage that is allocated and deallocated automatically by the
+compiler.<p>
+Other objects use dynamic storage that must be managed by the program.<p>
+<p>
+Storage is <i>undefined</i> if it has not been assigned a value, and
+<i>defined</i> after it has been assigned a value.  An object is <i>completely
+defined</i> if all storage that may be reached from it is defined.  What
+storage is reachable from an object depends on the type and value of the
+object.  For example, if p is a pointer to a structure, p is completely defined
+if the value of p is NULL, or if every field of the structure p points to is
+completely defined.<p>
+<p>
+When an expression is used as the left side of an assignment expression we say
+it is <i>used as an lvalue</i>.  Its location in memory is used, but not its
+value.  Undefined storage may be used as an lvalue since only its location is
+needed.  When storage is used in any other way, such as on the right side of an
+assignment, as an operand to a primitive operator (including the indirection
+operator, *),<a href="guide_fn.html#fn12">[12]</a> or as a<p>
+function parameter, we say it is <i>used as an rvalue</i>.  It is an
+anomaly to use undefined storage as an rvalue.<p>
+<p>
+A <i>pointer</i> is a typed memory address.  A pointer is either <i>live</i> or
+<i>dead</i>.  A live pointer is either NULL or an address within allocated
+storage.  A pointer that points to an object is an <i>object</i> pointer.  A
+pointer that points inside an object (e.g., to the third element of an
+allocated block) is an <i>offset</i> pointer.  A pointer that points to
+allocated storage that is not defined is an <i>allocated</i> pointer.  The
+result of dereferencing an allocated pointer is undefined storage.  Hence, it
+is an anomaly to use it as an rvalue.  A dead (or "dangling") pointer does not
+point to allocated storage.  A pointer becomes dead if the storage it points to
+is deallocated (e.g., the pointer is passed to the free library function.)  It
+is an anomaly to use a dead pointer as an rvalue.<p>
+<p>
+There is a special object <i>null</i> corresponding to the NULL pointer in a C
+program.  A pointer that may have the value NULL is a <i>possibly-null</i>
+pointer.  It is an anomaly to use a possibly-null pointer where a non-null
+pointer is expected (e.g., certain function arguments or the indirection
+operator).
+<a name="_Toc344355409"><a name="_Ref344893840"><a name="_Ref347465595"><a name="_Ref347469133"><a name="_Ref347476065"><a name="_Toc349905867">
+<h2>
+<a name="RTFToC26">
+<a name="sec-5.2">5.2 Deallocation Errors</A></a></a></a></a></a></a>
+</a></h2>
+There are two kinds of deallocation errors with which we are concerned:
+deallocating storage when there are other live references to the same storage,
+or failing to deallocate storage before the last  reference to it is lost.  To
+handle these deallocation errors, we introduce a concept of an obligation to
+release storage.  Every time storage is allocated, it creates an obligation to
+release the storage.  This obligation is attached to the reference to which the
+storage is assigned.<a href="guide_fn.html#fn13">[13]</a>  Before the scope of the
+reference is exited or it is assigned to a new value, the storage to which it
+points must be released.  Annotations can be used to indicate that this
+obligation is transferred through a return value, function parameter or
+assignment to an external reference.
+<a name="_Toc349905868">
+<h4>
+<a name="RTFToC27">
+<a name="sec-5.2.1">5.2.1 Unshared References</A></a>
+</a></h4>
+
+<blockquote>
+<em>`Tis in my memory lock'd, and you yourself shall keep the key of it.</em><br>
+- Ophelia prefers explicit deallocation (Hamlet.  Act I, Scene iii)
+</blockquote>
+
+The only annotation is used to indicate a reference is the only pointer to the
+object it points to.  We can view the reference as having an obligation to
+release this storage.  This obligation is satisfied by transferring it to some other reference in one of three ways:<p>
+<ul>
+<li>	pass it as an actual parameter corresponding to a formal parameter
+declared with an only annotation               
+<li>	assign it to an external reference declared with an only annotation
+<li>	return it as a result declared with an only annotation
+</ul>
+
+After the release obligation is transferred, the original reference is a dead
+pointer and the storage it points to may not be used. <p>
+
+<p>
+All obligations to release storage stem from primitive allocation routines
+(e.g., malloc), and are ultimately satisfied by calls to free.  The standard
+library declared the primitive allocation and deallocation routines.
+<p>
+The basic memory allocator, malloc, is declared:<a
+href="guide_fn.html#fn14">[14]</a>
+</a><p><pre>
+/*@only@*/ void *malloc (size_t size);
+</pre>
+It returns an object that is referenced only by the function return value.  <p>
+<p>
+The deallocator, free, is declared:<a href="guide_fn.html#fn15">[15]</a><p>
+<pre>
+void free (/*@only@*/ void *ptr);
+</pre>
+<a name="_Ref344990094"><p>
+The parameter to free must reference an unshared object.  Since the parameter
+is declared using only, the caller may not use the referenced object after the
+call, and may not pass in a reference to a shared object.  There is nothing
+special about malloc and free -- their behavior can be described entirely in
+terms of the provided annotations</a>.
+<a name="_Ref347468963"><a name="_Ref347469360"><a name="_Toc349905869">
+<p>
+<a href="fig6.html">Figure 6.  Deallocation errors.</a>
+<p>
+<h4>
+<a name="RTFToC28">
+<a name="sec-5.2.2">5.2.2 Temporary Parameters</A></a></a>
+</a></h4>
+The temp annotation is used to declare a function parameter that is used
+temporarily by the function.  An error is reported if the function releases the
+storage associated with a temp formal parameter or creates new aliases it that
+are visible after the function returns.  Any storage may be passed as a temp
+parameter, and it satisfies its original memory constraints after the function
+returns.
+<a name="_Toc349905870">
+<h4>
+<a name="RTFToC29">
+<a name="sec-5.2.3">5.2.3 Owned and Dependent References</a></a></a>
+</a></h4>
+In real programs it is sometimes necessary to have storage that is shared
+between several possibly references.  The owned and dependent annotations
+provide a more flexible way of managing storage, at the cost of less checking.
+The owned annotation denotes a reference with an obligation to release storage.
+Unlike only, however, other external references marked with dependent
+annotations may share this object.  It is up to the programmer to ensure that
+the lifetime of a dependent reference is contained within the lifetime of the
+corresponding owned reference.
+<a name="_Ref347805800"><a name="_Toc349905871">
+<h4>
+<a name="RTFToC30">
+<a name="sec-5.2.4">5.2.4 Kept Parameters</A></a></a>
+</a></h4>
+The keep annotation is similar to only, except the caller may use the reference
+after the call.  The called function must assign the keep parameter to an only
+reference, or pass it as a keep parameter to another function.  It is up to the
+programmer to make sure that the calling function does not use this reference
+after it is released.  The keep annotation is useful for adding an object to a
+collection (e.g., a symbol table), where it is known that it will not be
+deallocated until the collection is. 
+<a name="_Ref347469304"><a name="_Toc349905872">
+<h4>
+<a name="RTFToC31">
+<a name="sec-5.2.5">5.2.5 Shared References</A></a></a>
+</a></h4>
+If LCLint is used to check a program designed to be used in a garbage-collected
+environment, there may be storage that is shared by one or more references and
+never explicitly released.  The shared annotation declares storage that may be
+shared arbitrarily, but never released.
+<a name="_Ref348341639"><a name="_Toc349905873">
+<h4>
+<a name="RTFToC32">
+<a name="sec-5.2.6">5.2.6 Stack References</A></a></a>
+</a></h4>
+Local variables that are not allocated dynamically are store on a call stack.
+When a function returns, its stack frame is deallocated, destroying the storage
+associated with the function's local variables.  A memory error occurs if a
+pointer into this storage is live after the function returns.  LCLint detects
+errors involving stack references exported from a function through return
+values or assignments to references reachable from global variables or actual
+parameters.  No annotations are needed to detect stack reference errors, since
+it is clear from a declaration if storage is allocated on the function stack.
+<p>
+<a href="fig7.html">Figure 7.  Stack references.</a>
+<p>
+<a name="_Toc349905874"></b>
+<h4>
+<a name="RTFToC33">
+<a name="sec-5.2.7">5.2.7 Inner Storage</A></a>
+</a></h4>
+An annotation always applies to the outermost level of storage.  For example,
+<pre>
+/*@only@*/ int **x;
+</pre>
+declares x as an unshared pointer to a pointer to an int.  The only annotation
+applies to x, but not to *x.  To apply annotations to inner storage a type
+definition may be used:
+<pre>
+  typedef /*@only@*/ int *oip;
+  /*@only@*/ oip *x;
+</pre>
+Now, x is an only pointer to an oip, which is an only pointer to an int.<p>
+<p>
+When annotations are use in type definitions, they may be overridden in
+instance declarations.  For example,
+<pre>
+/*@dependent@*/ oip x;
+</pre>
+makes x a dependent pointer to an int.
+<a name="_Toc344355410"><a name="_Ref344893978"><a name="_Ref347812243"><a name="_Toc349905875">
+<h2>
+<a name="RTFToC34">
+<a name="sec-5.3">5.3 Implicit Memory Annotations</A></a></a></a></a>
+</a></h2>
+Since it is important that LCLint can check unannotated programs effectively,
+the meaning of declarations with no memory annotations is chosen to minimize
+the number of annotations needed to get useful checking on an unannotated
+program. <p>
+<p>
+An implicit memory management annotation may be assumed for declarations with
+no explicit memory management annotation.  Implicit annotations are checked
+identically to the corresponding explicit annotation, except error messages
+indicate that they result from an implicit annotation.<p>
+<p>
+Unannotated function parameters are assumed to be temp.  This means if memory
+checking is turned on for an unannotated program, all functions that release
+storage referenced by a parameter or assign a global variable to alias the
+storage will produce error messages.  (Controlled by paramimptemp.)<p>
+<p>
+Unannotated return values, structure fields and global variables are assumed to
+be only.  With implicit annotations (on by default), turning on memory checking
+for an unannotated program will produce errors for any function that does not
+return unshared storage or assignment of shared storage to a global variable or
+structure field.<a href="guide_fn.html#fn16">[16]</a>  (Controlled by
+<a href="appC.html#flag-retimponly"><tt>retimponly</tt></a>, <a
+href="appC.html#flag-structimponly"><tt>structimponly</tt></a> and <a
+href="appC.html#flag-globimponly"><tt>globimponly</tt></a>.  The <a
+href="appC.html#flag-codeimponly"><tt>codeimponly</tt></a> flag sets all of the implicit only flags.)   
+</a><p>
+<a href="fig8.html">Figure 8.  Implicit annotations</a>
+<p>
+<h2>
+<a name="RTFToC35">
+<a name="sec-5.4">5.4 Reference Counting</A></a></a></a></a>
+</a></h2>
+Another approach to memory management is to add a field to a type to explicitly
+keep track of the number of references to that storage.  Every time a reference
+is added or lost the reference count is adjusted accordingly;  if it would
+become zero, the storage is released.  Reference counting it difficult to do
+without automatic checking since it is easy to forget to increment or decrement
+the reference count, and exceedingly difficult to track down these errors.<p>
+<p>
+LCLint supports reference counting by using annotations to constrain the use of
+reference counted storage in a manner similar to other memory management
+annotations.<p>
+<p>
+A reference counted type is declared using the refcounted annotation.  Only
+pointer to struct types may be declared as reference counted, since reference
+counted storage must have a field to count the references.  One field in the
+structure (or integral type) is preceded by the refs annotation to indicate
+that the value of this field is the number of live references to the structure.
+<p>
+ <p>
+For example (in <tt>rstring.h</tt>),
+<pre>
+     typedef /*@abstract@*/ /*@refcounted@*/ struct {
+	  /*@refs@*/ int refs;
+        char *contents;
+      } *rstring;
+</pre>
+declares rstring as an abstract, reference-counted type.  The refs field counts
+the number of references and the contents field holds the contents of a
+string.<p>
+<p>
+All functions that return refcounted storage must increase the reference count
+before returning.  LCLint cannot determine if the reference count was
+increased, so any function that directly returns a reference to refcounted
+storage will produce an error.  This is avoided, by using a function to return
+a new reference (e.g., rstring_ref in Figure 9).<p>
+<p>
+A reference counted type may be passed as a temp or dependent parameter.  It
+may not be passed as an only parameter.  Instead, the killref annotation is
+used to denote a parameter whose reference is eliminated by the function call.
+Like only parameters, an actual parameter corresponding to a killref formal
+parameter may not be used in the calling function after the call.  LCLint
+checks that the implementation of a function releases all killref parameters,
+either by passing them as killref parameters, or assigning or returning them
+without increasing the reference count.<p>
+<a name="_Ref343064185"><a name="_Ref343095163"><a name="_Toc344355412">
+<p>
+<a href="fig9.html">Figure 9.  Reference counting.</a>
+</p>
+<a name="_Ref345591777"></a></a><a name="_Ref343064188"><a name="_Ref343064238"><a name="_Ref344355210"><a name="_Toc344355413"><a name="_Toc349905878"><a name="_Ref348796245"><a name="_Ref348845247"><a name="_Toc349905877"></a></a></a></a></b>
+
+<p>
+<b>Next: <A HREF="sec6.html">Sharing</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+<!--#include virtual="footer.html"-->
+
+
+

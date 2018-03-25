@@ -1,0 +1,74 @@
+<h3>lclint-interest message 92</h3>
+<pre>
+From evans@cs.virginia.edu Thu Jul 18 22:11:36 1996
+Date: Thu, 18 Jul 96 22:10:30 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: oh@cis.ohio-state.edu
+In-Reply-To: Seung-Hong Oh's message of Thu, 18 Jul 1996 21:34:26 -0400 (EDT) <Pine.LNX.3.93.960718213117.4348A-100000@seung-hong.ganet.net>
+Subject: Initialising arrays in loops
+
+
+There's no specific way to do this, but you could define a macro to have
+the same effect:
+
+extern void MARK_DEFINED (/*@out@*/ void *);
+
+/*@+allmacros@*/
+/*@-macroparams@*/
+# define MARK_DEFINED(x)
+/*@=macroparams@*/
+/*@=allmacros@*/
+
+int f (void)
+{
+  struct { int x; } *st;
+  
+  st = malloc (sizeof (*st));
+  assert (st != NULL);
+
+  MARK_DEFINED (st); /* convinces lclint that st is completely defined */
+  return st->x; /* no use before definition error is reported */
+  /* (of course, there is still a memory leak reported) */
+}
+
+This is probably worth explaining more carefully:
+
+The parameter to MARK_DEFINED is annotated with /*@out@*/.  This means
+it need not be defined before the call, but is completely defined after
+the call returns.  (This version of MARK_DEFINED only works for
+pointers;  if we need to make it work for other types as well, we could
+use alternate types, e.g., /*@alt int@*/, in the declaration.)
+
+The definition of MARK_DEFINED is simply empty, so this will have no
+effect on the compiled code.  Its surrounded by two lclint comments:
+
+	/*@+allmacros@*/ means don't expand macro definitions
+		(hence, MARK_DEFINED will not be replaced with nothing
+		 where it is used)
+        /*@-macroparams@*/ prevents lclint from complaining that the
+		macro parameter x is not used in the body of the macro
+
+The two /*@=...@*/ lines reset these flags to their previous values.
+
+--- Dave
+
+
+
+
+</pre>
+<A HREF="91.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="93.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

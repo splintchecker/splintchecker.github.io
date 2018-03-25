@@ -1,0 +1,293 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 2. Null Dereferences</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+<h1 style='margin-left:0in;text-indent:0in'><a name="_Toc534974938"></a><a
+name="_Ref534641443"></a><a name="_Ref534093860"></a><a name="_Ref534050017"></a><a
+name="_Ref534008843">2<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Null Dereferences</a></h1>
+
+<p class=TextFontCX>A common cause of program
+failures is when a null pointer is dereferenced.  Splint detects these errors
+by distinguishing possibly <span class=CodeText><span style='font-size:10.0pt'>NULL</span></span>
+pointers at interface boundaries.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>The <span class=Annot><span
+style='font-size:10.0pt'>null</span></span> annotation is used to indicate that a pointer value may be <span class=CodeText><span
+style='font-size:10.0pt'>NULL</span></span>.  A pointer declared with no <span
+class=Annot><span style='font-size:10.0pt'>null</span></span> annotation, may
+not be <span class=CodeText><span style='font-size:10.0pt'>NULL</span></span>. 
+If null checking is turned on (controlled by <span class=Flag><span
+style='font-size:10.0pt'>null</span></span>), Splint will report an error when
+a possibly null pointer is passed as a parameter, returned as a result, or
+assigned to an external reference with no <span class=Annot><span
+style='font-size:10.0pt'>null</span></span> qualifier.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>If a pointer is declared with
+the <span class=Annot><span style='font-size:10.0pt'>null</span></span> annotation, the code must check that it is not <span
+class=CodeText><span style='font-size:10.0pt'>NULL</span></span> on all paths
+leading to a dereference of the pointer (or the pointer being returned or
+passed as a value with no <span class=Annot><span style='font-size:10.0pt'>null</span></span>
+annotation).  Dereferences of possibly null pointers may be protected by
+conditional statements or <span class=CodeText><span style='font-size:10.0pt'>assert</span></span>ions
+(to see how <span class=CodeText><span style='font-size:10.0pt'>assert</span></span>
+is declared see Section 8.1) that check the pointer is not <span
+class=CodeText><span style='font-size:10.0pt'>NULL</span></span>.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Consider two implementations
+of <span class=CodeText><span style='font-size:10.0pt'>firstChar</span></span>
+in Figure 2. For <span
+class=CodeText><span style='font-size:10.0pt'>firstChar1</span></span>, Splint
+reports an error since the pointer that is dereferenced is declared with a <span
+class=Annot><span style='font-size:10.0pt'>null</span></span> annotation.  For <span
+class=CodeText><span style='font-size:10.0pt'>firstChar2</span></span>, no
+error is reported since the true branch of the <span class=CodeText><span
+style='font-size:10.0pt'>s == NULL</span></span> if statement returns, so the
+dereference of <span class=CodeText><span style='font-size:10.0pt'>s</span></span>
+is only reached if <span class=CodeText><span style='font-size:10.0pt'>s</span></span>
+is not <span class=CodeText><span style='font-size:10.0pt'>NULL</span></span>.</p>
+
+<center>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 style='margin-left:5.4pt;border-collapse:collapse;
+ margin-left:-2.25pt;margin-right:-2.25pt'>
+ <tr>
+  <td  valign=top style='width:207.0pt;border:solid black 1.5pt;
+  border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><span class=Keyword><b><span style='font-size:10.0pt;
+  color:white'>null.c</span></b></span></p>
+  </td>
+  <td  valign=top style='width:220.5pt;border-top:solid black 1.5pt;
+  border-left:none;border-bottom:none;border-right:solid black 1.5pt;
+  background:black;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><b><span style='color:white'>Running Splint</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td  valign=top style='width:207.0pt;border:solid black 1.5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=Verbatim><span style='font-size:9.0pt'>&nbsp;</span></p>
+  <p class=Verbatim><span style='font-size:9.0pt'>char firstChar1 (/*@null@*/
+  char *s)</span></p>
+  <p class=Verbatim><span style='font-size:9.0pt'>{<br>
+  </span><span class=Line><span style='font-size:8.0pt'>3</span></span><span
+  style='font-size:9.0pt'>  return *s;</span></p>
+  <p class=Verbatim><span style='font-size:9.0pt'>}</span></p>
+  <p class=Verbatim><span style='font-size:9.0pt'>&nbsp;</span></p>
+  <p class=Verbatim><span style='font-size:9.0pt'>char firstChar2 (/*@null@*/
+  char *s)</span></p>
+  <p class=Verbatim><span style='font-size:9.0pt'>{</span></p>
+  <p class=Verbatim><span style='font-size:9.0pt'>   if (s == NULL) return
+  ‘\0’;<br>
+  </span><span class=Line><span style='font-size:8.0pt'>9</span></span><span
+  style='font-size:9.0pt'>  return *s;</span></p>
+  <p class=Verbatim><span style='font-size:9.0pt'>}</span></p>
+  </td>
+  <td  valign=top style='width:220.5pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=lclintrun>&gt; splint null.c</p>
+  <p class=lclintrun>Splint 3.0.1</p>
+  <p class=lclintrun>&nbsp;</p>
+  <p class=lclintrun>null.c: (in function firstChar1)</p>
+  <p class=lclintrun>null.c:3:11: Dereference of possibly null pointer s: *s</p>
+  <p class=lclintrun>   null.c:1:35: Storage s may become null</p>
+  <p class=lclintrun>&nbsp;</p>
+  <p class=lclintrun>Finished checking --- 1 code warning found</p>
+  <p class=TextFontCX>&nbsp;</p>
+  </td>
+ </tr>
+</table>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0 style="border-collapse: collapse" bordercolor="#111111">
+ <tr>
+  <td valign=top align=left style='padding-top:6.5pt;padding-right:
+  9.35pt;padding-bottom:6.5pt;padding-left:9.35pt'>
+  <p class=MsoCaption><a name="_Ref534981289"></a><a name="_Toc534824606"></a><a
+  name="_Ref534981293">Figure 2</a>.  Null Checking</p>
+  <p class=MsoNormal align=left style='margin-top:0in;margin-right:26.55pt;
+  margin-bottom:0in;margin-left:.5in;margin-bottom:.0001pt;text-align:left;
+  background:white'><span style='font-size:10.0pt'>Output from running Splint
+  is displayed in </span><span style='font-size:10.0pt;font-family:"Arial Narrow"'>sans-serif</span><span
+  style='font-size:10.0pt'> font.  The command line is preceded by </span><span
+  style='font-size:10.0pt;font-family:Arial'>&gt;</span><span style='font-size:
+  10.0pt'>, the rest is output from Splint.  Explanations added to the code or
+  splint output are shown in <i>italics</i>. Code shown in the figures in this
+  document is available from the splint web site, </span><span
+  style='font-size:10.0pt;font-family:Arial'>http://www.splint.org</span><span
+  style='font-size:10.0pt'>.  No error is reported for line 9, since the
+  dereference is reached only if </span><span class=CodeText><span
+  style='font-size:10.0pt'>s</span></span><span style='font-size:10.0pt'> is
+  non-null.  For most of the figures, the options </span><span class=Flag><span
+  style='font-size:9.0pt'>-linelen 55 -hints –showcol</span></span><span
+  style='font-size:10.0pt'> were used to produce condensed output, and </span><span
+  class=Flag><span style='font-size:9.0pt'>–exportlocal</span></span><span
+  style='font-size:10.0pt'> to inhibit warnings about exported declarations.  </span></p>
+  </td>
+ </tr>
+</table>
+</center>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974939"></a><a
+name="_Ref344185475">2.1.1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Predicate Functions</a></h3>
+
+<p class=TextFontCX>Another way to protect null
+dereference, is to declare a function using <span class=Annot><span
+style='font-size:10.0pt'>nullwhentrue</span></span> or <span
+class=Annot><span style='font-size:10.0pt'>falsewhennull</span></span><span
+class=Annot><span style='font-size:10.0pt'> </span></span>(these annotations
+where originally <span class=Annot><span style='font-size:10.0pt'>falsenull</span></span> and <span
+class=Annot><span style='font-size:10.0pt'>truenull</span></span>, but were renamed to clarify the logical asymmetry; <span
+class=Annot><span style='font-size:10.0pt'>falsenull</span></span> and <span
+class=Annot><span style='font-size:10.0pt'>truenull</span></span> may still be
+used) and call the function in a conditional statement before the <span
+class=Annot><span style='font-size:10.0pt'>null</span></span>-annotated pointer
+is dereferenced.  </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>If a function annotated with <span
+class=Annot><span style='font-size:10.0pt'>nullwhentrue</span></span> returns
+true it means its first passed parameter is <span class=CodeText><span
+style='font-size:10.0pt'>NULL</span></span>. If it returns false, the parameter
+is not <span class=CodeText><span style='font-size:10.0pt'>NULL</span></span>. 
+Note that it may return true for a parameter that is not <span class=CodeText><span
+style='font-size:10.0pt'>NULL</span></span>.  A more descriptive name for <span
+class=Annot><span style='font-size:10.0pt'>nullwhentrue</span></span> would be
+“if the result is false, the parameter was not null”. For example, if <span
+class=CodeText><span style='font-size:10.0pt'>isNull</span></span> is declared
+as,</p>
+
+<p class=example>   /*@nullwhentrue@*/ bool isNull (/*@null@*/ char *x);</p>
+
+<p class=beforelist>we could write <span class=CodeText><span style='font-size:
+10.0pt'>firstChar2</span></span>:</p>
+
+<p class=Verbatim>   char firstChar2 (/*@null@*/ char *s)</p>
+
+<p class=Verbatim>   {</p>
+
+<p class=Verbatim style='margin-left:.5in'>if (isNull (s)) return '\0';<br>
+return *s;</p>
+
+<p class=Verbatim>   }</p>
+
+<p class=afterlist>No error is reported since the dereference of <span
+class=CodeText><span style='font-size:10.0pt'>s</span></span> is only reached
+if <span class=CodeText><span style='font-size:10.0pt'>isNull(s)</span></span>
+is false, and since <span class=CodeText><span style='font-size:10.0pt'>isNull</span></span>
+is declared with the <span class=Annot><span style='font-size:10.0pt'>nullwhentrue</span></span>
+annotation this means <span class=CodeText><span style='font-size:10.0pt'>s</span></span>
+must not be null.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>The <span class=Annot><span
+style='font-size:10.0pt'>falsewhennull</span></span> annotation is not quite
+the logical opposite of <span class=Annot><span style='font-size:10.0pt'>nullwhentrue</span></span>. 
+If a function declared with <span class=Annot><span style='font-size:10.0pt'>falsewhennull</span></span>
+returns true, it means its parameter is definitely not <span class=CodeText><span
+style='font-size:10.0pt'>NULL</span></span>.  If it returns false, the
+parameter may or may not be <span class=CodeText><span style='font-size:10.0pt'>NULL</span></span>. 
+That is a <span class=Annot><span style='font-size:10.0pt'>falsewhennull</span></span>
+always returns false when passed a <span class=CodeText><span style='font-size:
+10.0pt'>NULL</span></span> parameter; it may sometimes return false when passed
+a non-<span class=CodeText><span style='font-size:10.0pt'>NULL</span></span>
+parameter.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=beforelist>For example, we could define <span class=CodeText><span
+style='font-size:10.0pt'>isNonEmpty</span></span> to return true if its
+parameter is not <span class=CodeText><span style='font-size:10.0pt'>NULL</span></span>
+and has least one character before the <span class=CodeText><span
+style='font-size:10.0pt'>NUL</span></span> terminator:</p>
+
+<p class=Verbatim>   /*@falsewhennull@*/ bool isNonEmpty (/*@null@*/ char *x)</p>
+
+<p class=Verbatim>   {</p>
+
+<p class=Verbatim>     return (x != NULL &amp;&amp; *x != ‘\0’);</p>
+
+<p class=Verbatim>   }</p>
+
+<p class=afterlist>Splint does not check that the implementation of a function
+declared with <span class=Annot><span style='font-size:10.0pt'>nullwhentrue</span></span>
+or <span class=Annot><span style='font-size:10.0pt'>falsewhennull</span></span>
+is consistent with its annotation, but assumes the annotation is correct when
+code that calls the function is checked.</p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974940">2.1.2<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Notnull Annotations</a></h3>
+
+<p class=TextFontCX>The <span class=Annot><span
+style='font-size:10.0pt'>notnull</span></span> annotation specifies that a
+declarator is definitely not <span class=CodeText><span style='font-size:10.0pt'>NULL</span></span>. 
+By default, this is assumed, but it may be necessary to use <span class=Annot><span
+style='font-size:10.0pt'>notnull</span></span> to override a <span class=Annot><span
+style='font-size:10.0pt'>null</span></span> in a type definition.  The <span
+class=Annot><span style='font-size:10.0pt'>null</span></span> annotation may be
+used in a type definition to indicate that all instances of the type may be <span
+class=CodeText><span style='font-size:10.0pt'>NULL</span></span>.  For declarations
+of a type declared using <span class=Annot><span style='font-size:10.0pt'>null</span></span>,
+the <span class=Annot><span style='font-size:10.0pt'>null</span></span>
+annotation in the type definition may be overridden with <span class=Annot><span
+style='font-size:10.0pt'>notnull</span></span>. This is particularly useful for parameters to hidden <span
+class=CodeText><span style='font-size:10.0pt'>static</span></span> operations
+of abstract types (see Section 4.3) where the null test has already been done before the function is called, or function results known to never be <span
+class=CodeText><span style='font-size:10.0pt'>NULL</span></span>.  For an
+abstract type, <span class=Flag><span style='font-size:10.0pt'>notnull</span></span>
+may not be used for parameters to external functions, since clients should not
+be aware of when the concrete representation may by <span class=CodeText><span
+style='font-size:10.0pt'>NULL</span></span>.  Parameters to static functions in
+the implementation module, however, may be declared using <span class=Annot><span
+style='font-size:10.0pt'>notnull</span></span>, since they may only be called
+from places where the representation is accessible.  Return values for <span
+class=CodeText><span style='font-size:10.0pt'>static</span></span> or external
+functions may be declared using <span class=Annot><span style='font-size:10.0pt'>notnull</span></span>. 
+</p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974941"></a><a
+name="_Ref347853058">2.1.3<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Relaxing Null Checking</a></h3>
+
+<p class=TextFontCX>An additional annotation, <span
+class=Annot><span style='font-size:10.0pt'>relnull</span></span> may be used to relax null checking.  No error is reported when a <span
+class=Annot><span style='font-size:10.0pt'>relnull</span></span> value is
+dereferenced, or when a possibly null value is assigned to an identifier
+declared using <span class=Annot><span style='font-size:10.0pt'>relnull</span></span>.
+</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>This is generally used for
+structure fields that may or may not be null depending on some other
+constraint.  Splint does not report and error when <span class=CodeText><span
+style='font-size:10.0pt'>NULL</span></span> is assigned to a <span class=Annot><span
+style='font-size:10.0pt'>relnull</span></span> reference, or when a <span
+class=Annot><span style='font-size:10.0pt'>relnull</span></span> reference is
+dereferenced.  It is up to the programmer to ensure that this constraint is
+satisfied before the pointer is dereferenced.</p>
+
+<p>
+<a href="sec3.html"><b>Next:</b> 3. Undefined Values</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

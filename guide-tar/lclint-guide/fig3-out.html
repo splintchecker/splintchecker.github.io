@@ -1,0 +1,43 @@
+<h3>LCLint Output</h3>
+<pre>
+LCLint 2.4 --- 12 Apr 98
+
+bool.c: (in function f)
+<A HREF="bool.c.html#line7" target="source">bool.c:7,12</A>: Return value type bool does not match
+                declared type int: b1
+  To make bool and int types equivalent, use +boolint.
+<A HREF="bool.c.html#line6" target="source">bool.c:6,7</A>: Test expression for if is assignment
+               expression: i = 3
+  The condition test is an assignment expression.
+  Probably, you mean to use == instead of =. If an
+  assignment is intended, add an extra parentheses
+  nesting (e.g., if ((a = b)) ...) to suppress this
+  message. (-predassign will suppress message)
+<A HREF="bool.c.html#line6" target="source">bool.c:6,7</A>: Test expression for if not bool, type int:
+               i = 3
+  Test expression type is not boolean or int.
+  (-predboolint will suppress message)
+<A HREF="bool.c.html#line8" target="source">bool.c:8,8</A>: Operand of ! is non-boolean (int): !i
+  The operand of a boolean operator is not a boolean.
+  Use +ptrnegate to allow ! to be used on pointers.
+  (-boolops will suppress message)
+<A HREF="bool.c.html#line8" target="source">bool.c:8,13</A>: Right operand of || is non-boolean (char
+                *): !i || s
+<A HREF="bool.c.html#line10" target="source">bool.c:10,7</A>: Test expression for if not bool, type
+                char *: s
+  Test expression type is not boolean. (-predboolptr
+  will suppress message)
+<A HREF="bool.c.html#line12" target="source">bool.c:12,7</A>: Use of == with bool variables (risks
+    inconsistency because of multiple true values):
+    b1 == b2
+  Two bool values are compared directly using a C
+  primitive. This may produce unexpected results since
+  all non-zero values are considered TRUE, so
+  different TRUE values may not be equal. The file
+  bool.h (included in lclint/lib) provides bool_equal
+  for safe bool comparisons. (-boolcompare will
+  suppress message)
+
+Finished LCLint checking --- 7 code errors found
+</pre>
+</html>

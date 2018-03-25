@@ -1,0 +1,84 @@
+###
+### original
+###
+
+ECHECKS = dbase.lcs employee.lcs empset.lcs erc.lcs eref.lcs ereftab.lcs
+
+OBJS   = dbase.o employee.o empset.o erc.o eref.o ereftab.o 
+
+
+.SUFFIXES:
+.SUFFIXES: .lcl .lcs .lh .h .c .o
+
+LCL = lclint -specundef +lh
+LCLINT = lclint
+
+LCLINTFLAGS = -allimponly
+
+GCC = gcc
+
+all: checkLCL drive
+
+checkLCL: ${ECHECKS}
+
+drive: ${OBJS} drive.o
+	$(GCC) -o drive ${OBJS} drive.o
+
+lint: ${ECHECKS}
+	${LCLINT} ${LCLINTFLAGS} +showscan +stats employee eref empset ereftab erc dbase drive.c
+
+### The following dependencies ensure that imported LCL specs are checked before 
+### the specs that import them.
+
+dbase.lcs: employee.lcs empset.lcs
+empset.lcs: employee.lcs
+erc.lcs: eref.lcs
+eref.lcl: employee.lcs
+ereftab.lcs: employee.lcs eref.lcs
+
+### The following dependencies ensure that a .o file is recompiled when the
+### corresponding .c file, or one of the .h files it #includes, is changed.
+
+dbase.o: dbase.c bool.h dbase.h employee.h empset.h
+drive.o: drive.c bool.h dbase.h employee.h empset.h erc.h eref.h ereftab.h 
+employee.o: employee.c employee.h 
+empset.o: empset.c bool.h empset.h erc.h eref.h employee.h employee.h 
+erc.o: erc.c bool.h erc.h eref.h employee.h 
+eref.o: eref.c eref.h employee.h 
+ereftab.o: ereftab.c bool.h ereftab.h erc.h eref.h employee.h 
+
+### The following rules generate .lh and .lcs files from .lcl files.  They also
+### ensure that .h files appear to be updated whenever the corresponding .lh
+### file is updated.
+
+.lcl.lh:
+	$(LCL) $*.lcl
+
+.lcl.lcs:
+	$(LCL) $*.lcl
+
+.lh.h:
+	touch $*
+
+.c.o:
+	$(GCC) -c $*.c
+
+### The following standard Makefile entries remove files from the directory:
+###    tidy  -- eliminate unwanted files
+###    clean -- delete derived files in preparation for rebuild
+
+clean: tidy
+	rm -f drive *.lcs *.lh *.o dbase drive erc eref emplyee empset ereftab
+
+tidy:
+	rm -f ,* .,* *.CKP *.BAK .emacs_[0-9]* core a.out *.*~ *~
+
+
+
+
+
+
+
+
+
+

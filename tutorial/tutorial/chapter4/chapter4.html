@@ -1,0 +1,650 @@
+<html><head>
+<title>Dynamic Memory Management</title>
+</head>
+
+
+<body>
+<h1>Dynamic Memory Management</h1>
+
+<h2>Overview</h2>
+<p>
+In this chapter we introduce the C library functions for
+allocating and deallocating memory dynamically. Allocating
+memory dynamically can come in handy when it is not known
+how much memory the program will need. For example a database
+program may need to work both for a customer with a 100 records
+and for one with 10,000 records.
+
+<p>
+We will also show you some of the common errors
+associated with dynamic memory allocation, and
+how Splint can help to avoid
+them. 
+
+<h2>Stack vs. Heap</h2>
+
+<p>
+In general there are two places memory can come from: the stack and
+the heap. 
+
+Up to this point we have been allocating memory from the stack:
+
+<pre>
+int main()
+{
+ int IntegerArray[30];
+
+}
+</pre>
+
+<p>
+This allocates enough space to hold 30 integers. The
+<code>int</code> type is usually 4 bytes long, so
+this would allocate 120 bytes of storage. Sometimes
+allocating from the stack is all we need.
+
+<p>
+The bad thing about allocating things on the stack is that
+it may not be known at compile time how much space is needed.
+
+<p>
+By allocating memory from the heap we can:
+<ul>
+<li>Vary the amount of space we allocate during the execution of the program
+<li>Allocate memory and deallocate it only when we want to.
+</ul>
+
+<h2><code>malloc</code> and <code>free</code></h2>
+<p>
+You can dynamically allocate space from the
+heap with
+the <code>malloc()</code> function:
+
+<PRE>
+void *malloc(size_t number_of_bytes);
+</PRE>
+
+<p>
+The <code>void *</code> is C's generic pointer type. You can cast the
+return value of <code>malloc</code> to any actual pointer type you
+like (even your own types that you define with <code>struct</code>)
+
+So code like:
+<PRE>
+int *ip;
+ip = (int*) malloc(size * sizeof(*ip));
+</PRE>
+will allocate enough space to hold <code>size</code> number of
+integers. <code>sizeof</code> is an operator which returns the number
+of bytes needed to hold one instance of a particular type. In this case,
+for most computers <code>sizeof(*ip)</code> will return 4 since on
+most computers the integer type takes up 4 bytes. 
+
+<p>
+Using <code>sizeof</code> is preferable to hard coding like this:
+<PRE>
+ip = (int*) malloc(size * 4);
+</PRE>
+since using <code>sizeof</code> makes the code more portable.
+
+<p>
+If there is no memory left on the computer then <code>malloc</code>
+will return a <code>NULL</code> pointer. The NULL pointer
+is guaranteed not to point at any object.
+
+In general, whenever
+a call to <code>malloc</code> is made the program should check
+whether <code>malloc</code> returned <code>NULL</code>.
+Probably the best way to do this would be to write a little
+function which takes one pointer argument, and if that pointer
+is <code>NULL</code> prints out a suitable debugging message, and
+exits the program. Alternatively, you could try and continue the
+program without that block of memory.
+
+<h2>Freeing Memory </h2>
+
+<p>
+Clearly you cannot just keep asking for memory, and always
+getting it. The computer has limited memory resources.
+If you don't need a piece of memory any more it would
+be nice to be able to return that piece of memory to the
+free store. 
+
+Consider the following program:
+
+<PRE>
+<!--#include virtual="RunOutOfMemory.c"-->
+</PRE>
+
+<p>
+If you run this program you will see that eventually
+the computer does actually run out of memory, and
+that <code>malloc</code> eventually returns NULL.
+On the computer I'm working on it managed to
+allocate about 2.9 GB before running out of memory.
+
+<PRE>
+<!--#include virtual="RunOutOfMemory.output"-->
+</PRE>
+
+<p>
+Splint will warn us about this program.
+More specifically, it will tell us that there
+is a a memory
+leak (talked about in more detail later).
+
+<p>
+When i is 1 we let p point at a newly allocated block
+of memory, but when i is 2 we let p point at another
+newly allocated block of memory. That first block of memory
+is not reachable since there are no pointers to it.
+
+<p>
+Splint's output:
+
+<PRE>
+<!--#include virtual="RunOutOfMemory.splint"-->
+</PRE>
+
+<p>
+To fix it use <code>free</code>:
+
+<PRE>
+void free(void* ptr);
+</PRE>
+
+<p>
+We pass to free a pointer to the block of memory
+to deallocate.
+
+<p>
+If a piece of memory is not deallocated by <code>free</code> before the
+program ends then usually the operating system in terminating the process
+deallocates it.
+
+<p>
+By using <code>free</code> we can fix our program so that
+it doesn't have any memory leaks. 
+
+<PRE>
+<!--#include virtual="RunOutOfMemoryFixed.c"-->
+</PRE>
+
+What's the problem with this program now? Scroll down
+when you know the answer.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<p>
+Now the program runs in an infinite loop.
+<p>
+Here is splint's output:
+
+<PRE>
+<!--#include virtual="RunOutOfMemoryFixed.splint"-->
+</PRE>
+
+<p>
+Splint cannot detect that <code>malloc</code>
+will never return NULL in this program
+(there are limits to what static analysis can determine
+only by looking at the source code).
+
+<p>
+Splint produces more false positives than false negatives,
+since a programmer can often determine
+quickly that Splint is producing
+a spurious warning, but an unreported
+warning could lead to an actual bug in the program. 
+
+<h2>An example of dynamic memory allocation: Linked Lists</h2>
+<p>
+(Note: This linked list implementation is based on that 
+found in
+<A HREF="http://www-ee.eng.hawaii.edu/~alex/TextBooks/JoyOfC/info.html">
+<i>The Joy of C</i></A> by Lawrence H. Miller, and
+Alexander E. Quilici.)
+
+
+<p>
+An advantage of a linked list over an array is that
+deleting or inserting elements in the middle of an array 
+can be expensive since all the entries
+must be shifted. In a linked list
+no shifting is needed. 
+
+<p>
+But a linked list has the disadvantage
+that it takes longer to retrieve an
+entry. 
+
+<p>
+Here is the structure of a linked list:
+<p>
+<IMG SRC="LinkedList/LinkedList.gif">
+
+
+<p>
+Each node has two fields. One points to the
+other node in the list, and the other 
+holds the relevant data (in this case a name).
+
+<p>
+Let's implement a linked list which holds employee
+records.
+
+<p>
+Since employees are always getting hired, and
+fired a linked list is an appropriate data
+structure for keeping the list in order
+by employee last name. 
+
+<p>
+We will want to be able to insert to a list,
+delete from a list, print out the list, or
+find a employee record within the list. 
+
+We start like this:
+<PRE>
+<!--#include virtual="LinkedList/Typedefs.c"-->
+</PRE>
+
+<p>
+An <code>emp_record</code> has three data
+fields corresponding to attributes of the employee,
+and a <code>next</code> field which corresponds to the
+next employee record in the list. 
+
+<p>
+We will define an <code>emp_list</code>
+to be a pointer to an <code>emp_record</code>. 
+
+<p>
+And we will designate the empty list as
+<code>NULL</code>:
+
+<code><pre>
+<!--#include virtual="LinkedList/emp_list_create.c"-->
+</code></pre>
+
+So we would write code like:
+
+<pre><code>
+emp_list my_list = emp_list_create();
+</pre></code>
+
+which just sets it to <code>NULL</code>.
+
+
+<p>
+First, let's write prototypes for all our functions, since
+we want to insert, delete, find, and print we will need these
+four functions:
+
+
+<PRE><CODE>
+emp_list insert_record(emp_list lst, emp_record *e);
+emp_list delete_record(emp_list lst, char* lastname);
+emp_record* find_record(emp_list lst, char* lastname);
+void print_list(emp_list lst);
+</PRE></CODE>
+
+<p>
+In the case of inserting or deleting we need to return a
+new list. Remember that C all parameters are passed by
+value so neither of these functions can actually modify
+their argument, <code>lst</code>. That's why they need
+to return the new changed list:
+
+<pre><code>
+my_list = delete_record(my_list, "Finkelstein");
+</pre></code>
+
+
+<p>
+Before starting on that we need to implement
+a simple function which copies one employee
+record into another:
+
+<pre><code>
+<!--#include virtual="LinkedList/copy_record.c"-->
+</pre></code>
+
+<p>
+We need to
+do this because we are going to implement
+<code>insert_record</code> by making
+a copy of the record passed in. 
+
+<p>
+Our approach for <code>insert_record</code> will be to
+iterate through the list looking for
+the first entry whose last name is alphabetically
+after the last name of the inserted record.
+There are two cases
+one for inserting to the front of the list, and the other
+for inserting in the middle or the end:
+
+<PRE>
+<!--#include virtual="LinkedList/insert_record.c"-->
+</PRE>
+
+<p>
+Here is a picture of what were doing if we insert 
+"Cod" into an empty list:
+<p>
+<IMG SRC="LinkedList/LinkedListInsertEmpty.gif">
+<p>
+
+And here is a picture of what we are doing if we insert
+"Cod" into a non-empty list:
+
+<p>
+<IMG SRC="LinkedList/LinkedListInsertFull.gif">
+<p>
+
+<p>
+We have three more functions to implement:
+
+<ul>
+  <li><code>delete_record</code>
+  <li><code>find_record</code>
+  <li><code>print_list</code>
+</ul>
+
+However, <code>find_record</code>, and <code>print_list</code>
+are both similar in that they involve interating through a list,
+and performing some operations on each node.
+Try and implement both of
+those functions now. You can reuse the code which iterates
+through the list from the <code>insert_record</code> function.
+For now, just verify that it will compile. 
+
+<p>
+After you have finished writing those try doing <code>delete_record</code>.
+As before with <code>insert_record</code> there are two cases: deleting
+the first node in the list, and deleting the middle or last node. All
+that is changed is that now
+instead of setting the <code>next</code> pointer of the previous node
+to the inserted record just set it to <code>next->next</code> node,
+so that the deleted node no longer has another node in the list
+pointing at it. Remember to <code>free</code> the deleted node.
+
+<p>
+After you have written the functions try them out using this
+test bench.
+<p>
+
+
+
+<A HREF="LinkedList/test_bench.c.html">
+Test Bench</a>
+
+<p>
+To run the test bench you will need the
+
+<A HREF="LinkedList/emp_data.txt">
+data file
+</A>
+
+to be
+in the same directory as the program (be
+careful about adding unneeded white space in the data
+file)
+
+<br><br>
+Here is our implementation:
+<A HREF="LinkedList/LinkedList.c.html">
+
+LinkedList.c</A>
+<br><br>
+
+<h2>Common Memory Errors</h2>
+
+<p>
+Splint can check unannotated programs for common types
+of memory errors. Specifically a  memory leak and
+a dangling pointer.
+
+
+<h3>Memory Leak</h3>
+
+A memory leak just means that there is some piece of memory that
+has been allocated but there is no reference to it:
+<PRE>
+<!--#include virtual="MemoryLeak.c"-->
+</PRE>
+
+<p>
+In this case the memory block which <code>ip</code>
+was pointing at is unaccessible after the assignment
+
+<PRE>
+ip = ig;
+</PRE>
+
+<p>
+Since there is no way to access it there is no way 
+to <code>free</code> it. A small memory leak may be unnoticeable.
+But if there is a function which gets executed over, and over
+again, and for each execution there is a small memory leak, then
+eventually the computer will run out of memory.
+
+<p>
+when we run Splint on this program we get:
+<PRE>
+<!--#include virtual="MemoryLeak.splint"-->
+</PRE>
+
+<P>
+So Splint lets us know about the problem.
+
+<h3>Dangling Pointer</h3>
+
+<p>
+Another type of error is called the "dangling pointer". The
+problem occurs when a pointer is pointing at a piece of memory
+that has already been <code>free</code>d. In this case, trying
+to dereference that pointer will cause the program to crash.
+
+<p>
+Here is a simple example:
+
+<PRE>
+<!--#include virtual="DanglingPointer.c"-->
+</PRE>
+
+
+<p>
+and what Splint has to say about it:
+
+<PRE>
+<!--#include virtual="DanglingPointer.splint"-->
+</PRE>
+
+
+<h3>Passing Pointers to Stack Allocated Storage</h3>
+
+<p>
+Another less common type of error is letting a pointer
+point at memory that has been allocated on the stack.
+Since data on stack is deallocated when the function returns this is
+a bad thing. For example, take a look at the following:
+
+<PRE>
+<!--#include virtual="StackAllocated.c"-->
+</PRE>
+
+
+
+<p>
+The problem here is that the integer pointer <code>global</code>
+gets the address of a piece of memory on the stack. But when the
+function <code>f()</code> returns that piece of memory is deallocated,
+so we have a "dangling" pointer.
+
+<p>
+Here is the output:
+
+<PRE>
+<!--#include virtual="StackAllocated.output"-->
+</PRE>
+
+<p>
+Splint will warn you about this kind of problem:
+
+<PRE>
+<!--#include virtual="StackAllocated.splint"-->
+</PRE>
+
+
+<h2>Using Splint on the Linked List Program</h2>
+
+<p>
+Let's use Splint to find errors in the linked list
+program.
+
+
+We'll start with what we had from the previous section:
+
+<ul>
+  <li><A HREF=
+       "LinkedList/LinkedList.c.html">LinkedList.c</A>
+
+  <li><A HREF=
+       "LinkedList/LinkedList.splint">LinkedList.splint</A>
+</ul>
+       <p>
+       Splint reports 32 warnings.
+       
+       Let's look at the first warning:
+
+       <pre><code>
+       <!--#include virtual="LinkedList/LinkedList.warning"--> 
+       </pre></code>
+
+       Splint is raising this warning because it could be the case
+       that <code>a->next</code> is pointing at a piece of memory in
+       which case the line <code>a->next = b->next</code> would
+       be a memory leak.
+
+       <p>
+       However, a pre-condition of this function is that <code>emp_record *a</code>
+       is undefined (because we are overwriting its fields). We can tell
+       Splint that we are going to make this assumption, and leave it up
+       to the caller to prevent a possible memory leak. We can do this by adding
+       an <code>/*@out@*/</code> annotation in <code>copy_record</code> telling
+       Splint that  <code>emp_record *a</code> may be undefined:
+
+<ul>
+  <li><A HREF=
+       "LinkedList/AddOut.c.html">AddOut.c</A>
+
+  <li><A HREF="LinkedList/AddOut.splint">AddOut.splint</A>
+</ul>
+
+        <p>
+        Now splint reports 30 warnings (with this extra information an additional
+        warning was also eliminated).
+
+        <p>
+        Now let's look as this warning:
+
+       <PRE><CODE>
+       <!--#include virtual="LinkedList/AddOut.warning"-->
+       </PRE></CODE>
+
+        <p>
+        Splint considers the possibility that <code>malloc</code> may have
+        returned <code>NULL</code> in line 61 in which case a <code>NULL</code>
+        pointer is getting passed to <code>copy_record</code>. We can fix
+        the code by adding an <code>assert</code> statement.
+
+        <pre><code>
+        assert (new_record != NULL);
+        </pre></code>
+
+         <p>
+         With the <code>assert</code> statement the program will abort if <code>malloc</code>
+         returns NULL.
+         
+         <p>
+          There are two other places in the file which have unchecked calls to
+          <code>malloc</code>, lines 136, and 182. We fix these and get:
+
+<ul>
+  <li><A HREF="LinkedList/FixMalloc.c.html"> FixMalloc.c</A>
+
+  <li><A HREF="LinkedList/FixMalloc.splint"> FixMalloc.splint </A>
+</ul>
+
+        <p>
+        Now splint raises 27 warnings. Let's consider this warning:
+
+        <code><pre>
+       <!--#include virtual="LinkedList/FixMalloc.warning"-->
+        </code></pre>
+
+       Splint is raising a warning because it could be the case that
+       <code>fp</code> is <code>NULL</code> because the call to <code>fopen</code>
+       could have returned <code>NULL</CODE> if the file wasn't in the directory.
+       We can fix this just like we fixed the <code>malloc</code> warnings, by
+       adding an <code>assert</code> statement.
+
+
+<ul>
+  <li><A HREF="LinkedList/FixFgets.c.html">FixFgets.c</A>
+
+  <li><A HREF="LinkedList/FixFgets.splint">FixFgets.splint</A>
+</ul>
+
+<p>
+Now Splint raises 26 warnings. Let's consider the warning:
+
+        <code><pre>
+        <!--#include virtual="LinkedList/FixFgets.warning"-->
+        </code></pre>
+
+<p>
+Since we are not going to use the return value of this function we'll
+just cast the result to <code>void</code> and this will eliminate the
+warning:
+
+
+<ul>
+  <li><A HREF="LinkedList/FixSscanf.c.html">FixSscanf.c</A>
+
+  <li><A HREF="LinkedList/FixSscanf.splint">FixSscanf.splint</A>
+</ul>
+
+Now splint raises 25 warnings. 
+
+<hr>
+<p>
+This gives you an idea of what kinds of warnings Splint
+produces, and how the correct response may be to
+change the code, or add an annotation. 
+
+
+Some of the
+warnings produced by Splint may be
+spurious in which case
+it is appropriate to use the <code>/*@i@*/</code>
+annotation to suppress the checking of that line.
+
+<p>
+You can also suppress checking of a 
+type of warning by unsetting the flag
+when running Splint. For more information
+check <A HREF="http://www.splint.org/manual/html/appB.html">
+Appendix B of the users guide</A>.
+
+
+<A HREF="../index.html"> Contents </A>
+<hr>
+<address>dkf5k at virginia dot edu</address>
+<!-- hhmts start -->
+Last modified: Sat May 18 00:43:56 2002
+<!-- hhmts end -->
+</body></html>
+

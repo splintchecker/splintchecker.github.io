@@ -1,0 +1,345 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/strictchecks'
+lclint +lh +strict +showsummary +repeatunrecog +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+<A HREF="employee.lcl.html#line49" target="source">employee.lcl:49</A>: Modifies list for employee_initMod uses global internal state,
+                    not included in globals list.
+  A global variable is used in the modifies clause, but it not listed in the
+  globals list.  The variable will be added to the globals list. Use
+  -warnmissingglobs to suppress message.
+   <A HREF="employee.lcl.html#line49" target="source">employee.lcl:49</A>: Specification of employee_initMod
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+<A HREF="empset.lcl.html#line27" target="source">empset.lcl:27</A>: Modifies list for empset_insertUnique uses global internal
+                  state, not included in globals list.
+   <A HREF="empset.lcl.html#line27" target="source">empset.lcl:27</A>: Specification of empset_insertUnique
+<A HREF="empset.lcl.html#line45" target="source">empset.lcl:45</A>: Modifies list for empset_disjointUnion uses global internal
+                  state, not included in globals list.
+   <A HREF="empset.lcl.html#line45" target="source">empset.lcl:45</A>: Specification of empset_disjointUnion
+<A HREF="empset.lcl.html#line84" target="source">empset.lcl:84</A>: Modifies list for empset_initMod uses global internal state, not
+                  included in globals list.
+   <A HREF="empset.lcl.html#line84" target="source">empset.lcl:84</A>: Specification of empset_initMod
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+<A HREF="ereftab.lcl.html#line28" target="source">ereftab.lcl:28</A>: Modifies list for ereftab_initMod uses global internal state,
+                   not included in globals list.
+   <A HREF="ereftab.lcl.html#line28" target="source">ereftab.lcl:28</A>: Specification of ereftab_initMod
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+<A HREF="erc.lcl.html#line66" target="source">erc.lcl:66</A>: Modifies list for erc_initMod uses global internal state, not
+               included in globals list.
+   <A HREF="erc.lcl.html#line66" target="source">erc.lcl:66</A>: Specification of erc_initMod
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< preprocessing >
+<A HREF="employee.h.html#line3" target="source">employee.h:3</A>: Constant exported, but not specified: EMPLOYEE_H
+  A constant is exported, but not specified. Use -exportconst to suppress
+  message.
+< more preprocessing . >
+<A HREF="bool.h.html#line3" target="source">bool.h:3</A>: Constant exported, but not specified: BOOL_H
+< more preprocessing . >
+<A HREF="bool.h.html#line23" target="source">bool.h:23</A>: Function exported, but not specified: bool_initMod
+  A function is exported, but not specified. Use -exportfcn to suppress
+  message.
+< more preprocessing . >
+<A HREF="bool.h.html#line27" target="source">bool.h:27</A>: Function exported, but not specified: bool_unparse
+< more preprocessing . >
+<A HREF="bool.h.html#line30" target="source">bool.h:30</A>: Function exported, but not specified: bool_not
+< more preprocessing . >
+<A HREF="bool.h.html#line33" target="source">bool.h:33</A>: Function exported, but not specified: bool_equal
+< more preprocessing . >
+<A HREF="bool.h.html#line37" target="source">bool.h:37</A>: Function exported, but not specified: check
+< more preprocessing . >
+<A HREF="eref.h.html#line3" target="source">eref.h:3</A>: Constant exported, but not specified: EREF_H
+< more preprocessing . >
+<A HREF="empset.h.html#line3" target="source">empset.h:3</A>: Constant exported, but not specified: EMPSET_H
+< more preprocessing . >
+<A HREF="erc.h.html#line3" target="source">erc.h:3</A>: Constant exported, but not specified: ERC_H
+< more preprocessing . >
+<A HREF="ereftab.h.html#line5" target="source">ereftab.h:5</A>: Constant exported, but not specified: EREFTAB_H
+< more preprocessing . >
+<A HREF="dbase.h.html#line3" target="source">dbase.h:3</A>: Constant exported, but not specified: DBASE_H
+< more preprocessing . >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+<A HREF="bool.h.html#line20" target="source">bool.h:20,26</A>: Modifies list for bool_initMod uses global internal state, not
+                 included in globals list.
+   <A HREF="bool.h.html#line20" target="source">bool.h:20,26</A>: Declaration of bool_initMod
+employee.c: (in function employee_setName)
+<A HREF="employee.c.html#line11" target="source">employee.c:11,40</A>: Body of if statement is not a block: return FALSE
+  If body is a single statement, not a compound block. Use -ifblock to suppress
+  message.
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+<A HREF="eref.h.html#line9" target="source">eref.h:9,16</A>: Constant exported, but not specified: ST_USED
+<A HREF="eref.h.html#line9" target="source">eref.h:9,25</A>: Constant exported, but not specified: ST_AVAIL
+<A HREF="eref.h.html#line9" target="source">eref.h:9,36</A>: Type exported, but not specified: erefStatus
+  A type is exported, but not specified. Use -exporttype to suppress message.
+<A HREF="eref.h.html#line14" target="source">eref.h:14,3</A>: Type exported, but not specified: erefTable
+eref.c: (in function eref_alloc)
+<A HREF="eref.c.html#line14" target="source">eref.c:14,76</A>: Body of for statement is empy
+  For statement has no body. Use -forempty to suppress message.
+<A HREF="eref.c.html#line22" target="source">eref.c:22,48</A>: Parameter to sizeof is type employee: sizeof(employee)
+  Operand of sizeof operator is a type. (Safer to use expression, int *x =
+  sizeof (*x); instead of sizeof (int).) Use -sizeoftype to suppress message.
+<A HREF="eref.c.html#line32" target="source">eref.c:32,46</A>: Parameter to sizeof is type erefStatus: sizeof(erefStatus)
+<A HREF="eref.c.html#line43" target="source">eref.c:43,9</A>: Body of for statement is not a block:
+                eref_Pool.status[i] = ST_AVAIL
+  Loop body is a single statement, not a compound block. Use -forblock to
+  suppress message.
+eref.c: (in function eref_initMod)
+<A HREF="eref.c.html#line63" target="source">eref.c:63,3</A>: Called procedure bool_initMod may access internal state, but
+                globals list does not include globals internalState
+  A called function uses internal state, but the globals list for the function
+  being checked does not include internalState Use -internalglobs to suppress
+  message.
+<A HREF="eref.c.html#line63" target="source">eref.c:63,3</A>: Undocumented modification of internal state possible from call to
+                bool_initMod: bool_initMod()
+  An externally-visible object is modified by a function, but not listed in its
+  modifies clause. Use -mods to suppress message.
+<A HREF="eref.c.html#line64" target="source">eref.c:64,3</A>: Called procedure employee_initMod may access internal state, but
+                globals list does not include globals internalState
+<A HREF="eref.c.html#line64" target="source">eref.c:64,3</A>: Undocumented modification of internal state possible from call to
+                employee_initMod: employee_initMod()
+<A HREF="eref.c.html#line66" target="source">eref.c:66,66</A>: Parameter to sizeof is type employee: sizeof(employee)
+<A HREF="eref.c.html#line74" target="source">eref.c:74,71</A>: Parameter to sizeof is type erefStatus: sizeof(erefStatus)
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+<A HREF="erc.h.html#line7" target="source">erc.h:7,67</A>: Type exported, but not specified: ercElem
+<A HREF="erc.h.html#line8" target="source">erc.h:8,18</A>: Type exported, but not specified: ercList
+<A HREF="erc.h.html#line9" target="source">erc.h:9,55</A>: Type exported, but not specified: ercInfo
+empset.c: (in function empset_get)
+<A HREF="empset.c.html#line12" target="source">empset.c:12,9</A>: Body of if statement is not a block: return er
+empset.c: (in function empset_member)
+<A HREF="empset.c.html#line20" target="source">empset.c:20,27</A>: Undetected modification possible from call to unconstrained
+                   function empset_get: empset_get
+  An unconstrained function is called in a function body where modifications
+  are checked. Since the unconstrained function may modify anything, there may
+  be undetected modifications in the checked function. Use -moduncon to
+  suppress message.
+empset.c: (in function empset_insert)
+<A HREF="empset.c.html#line30" target="source">empset.c:30,23</A>: Undetected modification possible from call to unconstrained
+                   function empset_get: empset_get
+<A HREF="empset.c.html#line35" target="source">empset.c:35,3</A>: Called procedure empset_insertUnique may access internal state,
+                  but globals list does not include globals internalState
+<A HREF="empset.c.html#line35" target="source">empset.c:35,3</A>: Undocumented modification of internal state possible from call
+                  to empset_insertUnique: empset_insertUnique(s, e)
+empset.c: (in function empset_delete)
+<A HREF="empset.c.html#line61" target="source">empset.c:61,8</A>: Undetected modification possible from call to unconstrained
+                  function empset_get: empset_get
+empset.c: (in function empset_union)
+<A HREF="empset.c.html#line115" target="source">empset.c:115,2</A>: Body of if statement is not a block: empset_insert(result, emp)
+empset.c: (in function empset_intersect)
+<A HREF="empset.c.html#line128" target="source">empset.c:128,2</A>: Body of if statement is not a block:
+                   empset_insert(toDelete, emp)
+empset.c: (in function empset_subset)
+<A HREF="empset.c.html#line143" target="source">empset.c:143,43</A>: Body of if statement is not a block: return FALSE
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+ereftab.c: (in function ereftab_lookup)
+<A HREF="ereftab.c.html#line35" target="source">ereftab.c:35,43</A>: Body of if statement is not a block: return er
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+erc.c: (in function erc_create)
+<A HREF="erc.c.html#line21" target="source">erc.c:21,37</A>: Parameter to sizeof is type ercInfo: sizeof(ercInfo)
+erc.c: (in function erc_member)
+<A HREF="erc.c.html#line60" target="source">erc.c:60,44</A>: Body of if statement is not a block: return TRUE
+<A HREF="erc.c.html#line60" target="source">erc.c:60,9</A>: Body of for statement is not a block:
+               if (eref_equal(tmpc->val, er)) return TRUE
+erc.c: (in function erc_insert)
+<A HREF="erc.c.html#line68" target="source">erc.c:68,49</A>: Parameter to sizeof is type ercElem: sizeof(ercElem)
+erc.c: (in function erc_join)
+<A HREF="erc.c.html#line122" target="source">erc.c:122,5</A>: Body of for statement is not a block: erc_insert(c1, tmpc->val)
+erc.c: (in function erc_sprint)
+<A HREF="erc.c.html#line131" target="source">erc.c:131,13</A>: Undetected modification possible from call to unconstrained
+                 function int_toSize: int_toSize
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+dbase.c: (in function db_initMod)
+<A HREF="dbase.c.html#line38" target="source">dbase.c:38,3</A>: Called procedure bool_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="dbase.c.html#line38" target="source">dbase.c:38,3</A>: Undocumented modification of internal state possible from call to
+                 bool_initMod: bool_initMod()
+<A HREF="dbase.c.html#line39" target="source">dbase.c:39,3</A>: Called procedure employee_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="dbase.c.html#line39" target="source">dbase.c:39,3</A>: Undocumented modification of internal state possible from call to
+                 employee_initMod: employee_initMod()
+<A HREF="dbase.c.html#line41" target="source">dbase.c:41,3</A>: Called procedure erc_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="dbase.c.html#line41" target="source">dbase.c:41,3</A>: Undocumented modification of internal state possible from call to
+                 erc_initMod: erc_initMod()
+<A HREF="dbase.c.html#line42" target="source">dbase.c:42,3</A>: Called procedure empset_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="dbase.c.html#line42" target="source">dbase.c:42,3</A>: Undocumented modification of internal state possible from call to
+                 empset_initMod: empset_initMod()
+dbase.c: (in function db_ercKeyGet)
+<A HREF="dbase.c.html#line56" target="source">dbase.c:56,45</A>: Body of if statement is not a block: return (er)
+dbase.c: (in function db_keyGet)
+<A HREF="dbase.c.html#line68" target="source">dbase.c:68,26</A>: Undocumented use of file static db
+  A checked global variable is used in the function, but not listed in its
+  globals clause. By default, only globals specified in .lcl files are checked.
+  To check all globals, use +allglobals. To check globals selectively use
+  /*@checked@*/ in the global declaration. Use -globs to suppress message.
+<A HREF="dbase.c.html#line68" target="source">dbase.c:68,12</A>: Undetected modification possible from call to unconstrained
+                  function db_ercKeyGet: db_ercKeyGet
+  An unconstrained function is called in a function body where modifications
+  are checked. Since the unconstrained function may modify anything, there may
+  be undetected modifications in the checked function. Use -modunconnomods to
+  suppress message.
+dbase.c: (in function db_hire)
+<A HREF="dbase.c.html#line102" target="source">dbase.c:102,12</A>: Body of if statement is not a block: return DBS_GENDERERR
+<A HREF="dbase.c.html#line105" target="source">dbase.c:105,12</A>: Body of if statement is not a block: return DBS_JOBERR
+<A HREF="dbase.c.html#line108" target="source">dbase.c:108,12</A>: Body of if statement is not a block: return DBS_SALERR
+<A HREF="dbase.c.html#line110" target="source">dbase.c:110,23</A>: Undetected modification possible from call to unconstrained
+                   function db_keyGet: db_keyGet
+<A HREF="dbase.c.html#line111" target="source">dbase.c:111,12</A>: Body of if statement is not a block: return DBS_DUPLERR
+dbase.c: (in function db_uncheckedHire)
+<A HREF="dbase.c.html#line127" target="source">dbase.c:127,7</A>: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MMGRS], er)
+<A HREF="dbase.c.html#line129" target="source">dbase.c:129,7</A>: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MNON], er)
+<A HREF="dbase.c.html#line127" target="source">dbase.c:127,7</A>: Body of if clause of if statement is not a block:
+                  erc_insert(db[(int)KND_MMGRS], er)
+<A HREF="dbase.c.html#line129" target="source">dbase.c:129,7</A>: Body of else clause of if statement is not a block:
+                  erc_insert(db[(int)KND_MNON], er)
+<A HREF="dbase.c.html#line132" target="source">dbase.c:132,7</A>: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FMGRS], er)
+<A HREF="dbase.c.html#line134" target="source">dbase.c:134,7</A>: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FNON], er)
+<A HREF="dbase.c.html#line132" target="source">dbase.c:132,7</A>: Body of if clause of if statement is not a block:
+                  erc_insert(db[(int)KND_FMGRS], er)
+<A HREF="dbase.c.html#line134" target="source">dbase.c:134,7</A>: Body of else clause of if statement is not a block:
+                  erc_insert(db[(int)KND_FNON], er)
+<A HREF="dbase.c.html#line129" target="source">dbase.c:129,7</A>: Body of if clause of if statement is not a block:
+    if (e.j == MGR) erc_insert(db[(int)KND_MMGRS], er) else
+    erc_insert(db[(int)KND_MNON], er)
+dbase.c: (in function db_fire)
+<A HREF="dbase.c.html#line146" target="source">dbase.c:146,8</A>: Undocumented modification of db[] possible from call to
+                  erc_delete: erc_delete(db[(int)ek], er)
+dbase.c: (in function db_promote)
+<A HREF="dbase.c.html#line163" target="source">dbase.c:163,8</A>: Undetected modification possible from call to unconstrained
+                  function db_ercKeyGet: db_ercKeyGet
+<A HREF="dbase.c.html#line167" target="source">dbase.c:167,12</A>: Undetected modification possible from call to unconstrained
+                   function db_ercKeyGet: db_ercKeyGet
+<A HREF="dbase.c.html#line169" target="source">dbase.c:169,9</A>: Body of if statement is not a block: return FALSE
+<A HREF="dbase.c.html#line179" target="source">dbase.c:179,7</A>: Undocumented modification of db[] possible from call to
+                  erc_delete: erc_delete(db[(int)KND_MNON], er)
+<A HREF="dbase.c.html#line180" target="source">dbase.c:180,7</A>: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MMGRS], er)
+<A HREF="dbase.c.html#line184" target="source">dbase.c:184,7</A>: Undocumented modification of db[] possible from call to
+                  erc_delete: erc_delete(db[(int)KND_FNON], er)
+<A HREF="dbase.c.html#line185" target="source">dbase.c:185,7</A>: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FMGRS], er)
+dbase.c: (in function db_setSalary)
+<A HREF="dbase.c.html#line201" target="source">dbase.c:201,8</A>: Undetected modification possible from call to unconstrained
+                  function db_keyGet: db_keyGet
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+drive.c: (in function main)
+<A HREF="drive.c.html#line23" target="source">drive.c:23,3</A>: Called procedure bool_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="drive.c.html#line23" target="source">drive.c:23,3</A>: Undocumented modification of internal state possible from call to
+                 bool_initMod: bool_initMod()
+  An externally-visible object is modified by a function with no /*@modifies@*/
+  comment. The /*@modifies ... @*/ control comment can be used to give a
+  modifies list for an unspecified function. Use -modnomods to suppress
+  message.
+<A HREF="drive.c.html#line24" target="source">drive.c:24,3</A>: Called procedure employee_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="drive.c.html#line24" target="source">drive.c:24,3</A>: Undocumented modification of internal state possible from call to
+                 employee_initMod: employee_initMod()
+<A HREF="drive.c.html#line25" target="source">drive.c:25,3</A>: Called procedure empset_initMod may access internal state, but
+                 globals list does not include globals internalState
+<A HREF="drive.c.html#line25" target="source">drive.c:25,3</A>: Undocumented modification of internal state possible from call to
+                 empset_initMod: empset_initMod()
+<A HREF="drive.c.html#line50" target="source">drive.c:50,7</A>: Undetected modification possible from call to unconstrained
+                 function check: check
+<A HREF="drive.c.html#line66" target="source">drive.c:66,7</A>: Undetected modification possible from call to unconstrained
+                 function check: check
+<A HREF="drive.c.html#line84" target="source">drive.c:84,7</A>: Undetected modification possible from call to unconstrained
+                 function check: check
+<A HREF="drive.c.html#line118" target="source">drive.c:118,19</A>: Body of if clause of if statement is not a block: e.gen = MALE
+<A HREF="drive.c.html#line118" target="source">drive.c:118,38</A>: Body of else clause of if statement is not a block:
+                   e.gen = FEMALE
+<A HREF="drive.c.html#line119" target="source">drive.c:119,19</A>: Body of if clause of if statement is not a block: e.j = NONMGR
+<A HREF="drive.c.html#line119" target="source">drive.c:119,38</A>: Body of else clause of if statement is not a block: e.j = MGR
+<A HREF="drive.c.html#line121" target="source">drive.c:121,7</A>: Undetected modification possible from call to unconstrained
+                  function check: check
+<A HREF="drive.c.html#line125" target="source">drive.c:125,4</A>: Undetected modification possible from call to unconstrained
+                  function check: check
+<A HREF="drive.c.html#line138" target="source">drive.c:138,3</A>: Undetected modification possible from call to unconstrained
+                  function check: check
+<A HREF="drive.c.html#line153" target="source">drive.c:153,9</A>: Called procedure empset_disjointUnion may access internal state,
+                  but globals list does not include globals internalState
+<A HREF="drive.c.html#line153" target="source">drive.c:153,9</A>: Undocumented modification of internal state possible from call
+                  to empset_disjointUnion: empset_disjointUnion(em2, em1)
+<A HREF="drive.c.html#line165" target="source">drive.c:165,3</A>: Undetected modification possible from call to unconstrained
+                  function check: check
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+bool.h: (in macro bool_initMod)
+<A HREF="bool.h.html#line23" target="source">bool.h:23,1</A>: Macro definition for bool_initMod is empty
+  A macro definition has no body. Use -macroempty to suppress message.
+< global checks >
+<A HREF="eref.lh.html#line9" target="source">eref.lh:9,13</A>: Function exported but not used outside eref: eref_free
+  A declaration is exported, but not used outside this module. Declaration can
+  use static qualifier. Use -exportlocal to suppress message.
+   <A HREF="eref.c.html#line97" target="source">eref.c:97,1</A>: Definition of eref_free
+<A HREF="empset.lh.html#line9" target="source">empset.lh:9,13</A>: Function exported but not used outside empset: empset_clear
+   <A HREF="empset.c.html#line26" target="source">empset.c:26,1</A>: Definition of empset_clear
+<A HREF="empset.lh.html#line11" target="source">empset.lh:11,13</A>: Function exported but not used outside empset:
+                    empset_insertUnique
+   <A HREF="empset.c.html#line55" target="source">empset.c:55,1</A>: Definition of empset_insertUnique
+<A HREF="empset.lh.html#line17" target="source">empset.lh:17,13</A>: Function exported but not used outside empset: empset_member
+   <A HREF="empset.c.html#line21" target="source">empset.c:21,1</A>: Definition of empset_member
+<A HREF="empset.lh.html#line18" target="source">empset.lh:18,13</A>: Function exported but not used outside empset: empset_subset
+   <A HREF="empset.c.html#line147" target="source">empset.c:147,1</A>: Definition of empset_subset
+<A HREF="ereftab.lh.html#line10" target="source">ereftab.lh:10,13</A>: Function exported but not used outside ereftab:
+                     ereftab_delete
+   <A HREF="ereftab.c.html#line26" target="source">ereftab.c:26,1</A>: Definition of ereftab_delete
+<A HREF="dbase.lh.html#line27" target="source">dbase.lh:27,13</A>: Function exported but not used outside dbase: db_promote
+   <A HREF="dbase.c.html#line189" target="source">dbase.c:189,1</A>: Definition of db_promote
+<A HREF="dbase.lh.html#line28" target="source">dbase.lh:28,18</A>: Function exported but not used outside dbase: db_setSalary
+   <A HREF="dbase.c.html#line213" target="source">dbase.c:213,1</A>: Definition of db_setSalary
+< cleaning .......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+forempty                     1           0
+forblock                     3           0
+ifblock                     22           0
+usedef                       0           1
+exportfcn                    5           0
+exporttype                   5           0
+exportconst                  9           0
+globs                        1           0
+internalglobs               11           0
+warnmissingglobs             7           6
+macroempty                   1           0
+compdef                      0           1
+mods                        16           0
+modnomods                    4           0
+moduncon                     8           0
+modunconnomods               8           0
+sizeoftype                   6           0
+exportlocal                  8           0
+                          ========  =========
+Total:                     115           8
+
+Finished LCLint checking --- 115 code errors found
+396 spec, 3040 source (1283 before pre-processing) lines in 5.62 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/strictchecks'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

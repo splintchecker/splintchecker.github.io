@@ -1,0 +1,16 @@
+Splint 3.0.1.6 --- 14 Mar 2002
+
+BMI.c: (in function main)
+BMI.c:25:26: Dangerous comparison involving float types: BMI < 30
+  Two real (float, double, or long double) values are compared directly using a
+  C primitive. This may produce unexpected results since floating point
+  representations are inexact. Instead, compare the difference to FLT_EPSILON
+  or DBL_EPSILON. (Use -realcompare to inhibit warning)
+BMI.c:29:26: Dangerous comparison involving float types: BMI < 25
+BMI.c:33:25: Dangerous comparison involving float types: BMI < 19
+BMI.c:33:13: Incomplete else if logic (no final else):
+                if (0 <= BMI && BMI < 19) { printf("Below av... }
+  There is no final else following an else if construct. (Use -elseifcomplete
+  to inhibit warning)
+
+Finished checking --- 4 code warnings

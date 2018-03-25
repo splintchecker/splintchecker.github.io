@@ -1,0 +1,111 @@
+<h3>lclint-interest message 149</h3>
+<pre>
+From kir@iitb.fhg.de Mon Sep 15 10:20:54 1997
+X-Env: (mailgw1.fhg.de) kir@iitb.fhg.de -> lclint-interest@larch.lcs.mit.EDU.VIA-SMTP
+Sender: kir@fhg.de
+Date: Mon, 15 Sep 1997 08:03:19 +0200
+From: Harald Kirsch <kir@iitb.fhg.de>
+Organization: IITB
+X-Mailer: Mozilla 3.01Gold (X11; I; Linux 2.0.18 i586)
+Mime-Version: 1.0
+To: lclint-interest@larch.lcs.mit.edu, kir@iitb.fhg.de
+Subject: How do I tell lclint that ...?
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi there,
+
+I like the idea of lclint very much, but often it is really hard
+to tell it what I mean. Does anybody know how to annotate the
+following code so that lclint does not complain about a memory
+leak in the line
+
+  s1 = table[0].bobo(s1, s2);
+
+Here comes the code:
+----------------------------------------------------------------
+#include <stdlib.h>
+
+typedef char *
+(*Bobo)(/*@only@*/char *s1, /*@only@*/char *s2);
+
+typedef struct s_Bla {
+  int i;
+  Bobo bobo;
+} Bla;
+
+
+extern char *bobo1(char *, char*);
+extern char *bobo2(char *, char*);
+
+/**********************************************************/
+Bla table[] = {
+  {1, bobo1},
+  {2, bobo2}
+};
+
+int
+main(int argc, char **argv)
+{
+  char *s1 = malloc(10);
+  char *s2 = malloc(20);
+
+  s1 = table[0].bobo(s1, s2);
+
+  return 0;
+}
+--------------------------------------------------------------------
+
+
+For reference, here come my ~/.lclintrc
+--------------------------------------------------------
+
+## show column position in errors?
+-showcol
+
+## length of output lines
+-linelen 72
+
+## most unannotated pointers are implicitly set to `only', in particular
+##  o global storage
+##  o return values
+##  o structure fields
++allimponly
+
+## character constants like 'a' can be used as int.
++charintliteral
+
+## all macros not marked /*@notfunction@*/ must have a prototype
++allmacros
+
+## I prefer to negate pointers, as in
+##    x = malloc(..)
+##    if( !x ) { ... }
+#+ptrnegate          
+-------------------------------------------------------
+
+
+	Regards,
+	Harald Kirsch
+
+----------------///|/////////////\------------------------------------
+Harald Kirsch   +----------------+ If you don't like make, have a look
+kir@iitb.fhg.de | IITB Karlsruhe | at http://www.iitb.fhg.de/~kir/Bras
+
+
+</pre>
+<A HREF="148.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="150.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

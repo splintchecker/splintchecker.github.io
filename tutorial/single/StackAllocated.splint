@@ -1,0 +1,11 @@
+Splint 3.0.1.6 --- 14 Mar 2002
+
+StackAllocated.c: (in function f)
+StackAllocated.c:13:2: Stack-allocated storage global reachable from global
+                          global
+  A stack reference is pointed to by an external reference when the function
+  returns. The stack-allocated storage is destroyed after the call, leaving a
+  dangling reference. (Use -stackref to inhibit warning)
+   StackAllocated.c:12:3: Storage global becomes stack
+
+Finished checking --- 1 code warning

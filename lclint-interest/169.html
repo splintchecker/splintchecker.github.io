@@ -1,0 +1,58 @@
+<h3>lclint-interest message 169</h3>
+<pre>
+From astala@tnso13.tele.nokia.fi Wed Sep 24 12:46:49 1997
+From: astala@tnso13.tele.nokia.fi (Arto Astala)
+Subject: how do I annotate formal parameters
+To: lclint-interest@larch.lcs.mit.edu
+Date: Wed, 24 Sep 1997 19:14:04 +0300 (EEST)
+Cc: astala@tnso13.tele.nokia.fi (Arto Astala)
+Reply-To: arto.astala@ntc.nokia.com
+X-Mailer: ELM [version 2.4 PL23]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO
+Content-Transfer-Encoding: 8bit
+
+Hi
+
+after six months or so I'm again using lclint and a question
+has resurfaced:
+
+- history of this list shows that 
+	Formal Parameter Names Considered Harmful
+  and 
+	annotation of parameters requires named parametes
+  then how do I annotate to be politically correct?
+
+currently I have a compromise, like this
+
+  void
+tf_print_symboltable_binding (
+          /*@observer@*/ tpstSymbolTable * /*sym_tab*/,
+	  FILE *out_file, 
+	  /*@temp@*/ char * /*bind_name*/, 
+          /*@temp@*/ char *str,
+          unsigned int /*max_len*/,
+                   int /*piece_len*/,
+                   int /*indent_len*/
+          )
+     /*@modifies fileSystem, *out_file, str@*/ ;
+
+t.aa
+
+
+</pre>
+<A HREF="168.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="170.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="lclint-guide.css" title="style1">
+<title>LCLint User's Guide - Section 9: Naming Conventions</title>
+</head>
+<body>
+#include "header.html"
+
+<h2>
+<a name="sec-9">
+9.  Naming Conventions
+</a></h2>
+
+Naming conventions tend to be a religious issue. Generally, it doesn't matter
+too much what naming convention is followed as long as one is chosen and
+followed religiously.  There are two kinds of naming conventions supported by
+LCLint.  Type-based naming conventions (<a href="sec9.html#sec-9.1">Section 9.1</a>) constrain identifier names
+according to the abstract types that are accessible where the identifier is
+defined.  Prefix naming conventions (<a href="sec9.html#sec-9.2">Section 9.2</a>) constrain the initial
+characters of identifier names according to what is being declared and its
+scope.  Naming conventions may be combined or different conventions may be
+selected for different kinds of identifiers.  In addition, LCLint supports
+checking that names do not conflict with names reserved for the standard
+library or implementation (<a href="sec9.html#sec-9.3">Section 9.3</a>) and that names are sufficiently
+distinguishable from other names. 
+<a name="_Toc344355426"><a name="_Ref347240654"><a name="_Ref348079373"><a name="_Toc349905903">
+<h2>
+<a name="sec-9.1">9.1 Type-Based Naming Conventions</A></a></a></a></a>
+</a></h2>
+Generic naming conventions constrain valid names of identifiers.  By limiting
+valid names, namespaces may be preserved and programs may be more easily
+understood since the name gives clues as to how and where the name is defined
+and how it should be used.<p>
+<p>
+Names may be constrained by the scope of the name (external, file static,
+internal), the file in which the identifier is defined, the type of the
+identifier, and global constraints.
+<h4>
+<a name="sec-9.1.1">9.1.1 Czech Names</A></a></a>
+</a></h4>
+<blockquote>
+<em>Of course, this is a complete jumble to the uninitiated, and that's the joke.</em><br>
+- Charles Simonyi, on the Hungarian naming convention
+</blockquote>
+<p>
+Czech<a href="guide_fn.html#fn23">[23]</a> names denote operations and variables
+of abstract types by preceding the names by <i>&lt;type</i><i>&gt;</i>_.  The
+remainder of the name should begin with a lowercase character, but may use any
+other character besides the underscore.  Types may be named using any
+non-underscore characters.   <p>
+<p>
+The Czech naming convention is selected by the czech flag.  If accessczech is
+on, a function, variable, constant or iterator named
+<i>&lt;type&gt;</i>_<i>&lt;name</i><i>&gt;</i> has access to the abstract type
+<i>&lt;type&gt;</i>.<p>
+<p>
+Reporting of violations of the Czech naming convention is controlled by
+different flags depending on what is being declared:<p>
+<tt>czechfcns</tt>
+<blockquote>
+Functions and iterators.  An error is reported for a function name of the form
+<i>&lt;prefix&gt;_&lt;name&gt;</i> where <i>&lt;prefix&gt;</i> is not the name
+of an accessible type.  Note that if accessczech is on, a type named
+<i>&lt;prefix&gt;</i> would be accessible in a function beginning with
+<i>&lt;prefix&gt;_</i>.  If accessczech is off, an error is reported instead.
+An error is reported for a function name that does not have an underscore if
+any abstract types are accessible where the function is defined.
+</blockquote>
+<tt>czechvars</tt><br>
+<tt>czechconstants</tt><br>
+<tt>czechmacros</tt><br>
+<blockquote>
+Variables, constants and expanded macros.  An error is reported if the
+identifier name starts with <i>&lt;prefix&gt;</i>_ and <i>prefix</i> is not the
+name of an accessible abstract type, or if an abstract type is accessible and
+the identifier name does not begin with <i>&lt;type&gt;_</i> where type is the
+name of an accessible abstract type.  If accessczech is on, the representation
+of the type is visible in the constant or variable definition.
+</blockquote>
+<tt>czechtypes</tt>
+<blockquote>
+User-defined types.  An error is reported if a type name includes an underscore
+character.
+</blockquote>
+<h4>
+<a name="sec-9.1.2">9.1.2 Slovak Names</A></a></a>
+</a></h4>
+Slovak names are similar to Czech names, except they are spelled differently.
+A Slovak name is of the form <i>&lt;type&gt;&lt;Name&gt;</i>.  The type prefix
+may not use uppercase characters.  The remainder of the name starts with the
+first uppercase character.<p>
+<p>
+The slovak flag selects the Slovak naming convention.  Like Czech names, it may
+be used with accessslovak to control access to abstract representations. The
+slovakfcns, slovakvars, slovakconstants, and slovakmacros flags are analogous
+to the similar Czech flags.  If slovaktype is on, an error is reported if a
+type name includes an uppercase letter.
+<a name="_Ref347994743"><a name="_Toc349905906">
+<h4>
+<a name="RTFToC68">
+<a name="sec-9.1.3">9.1.3 Czechoslovak Names</A></a></a>
+</a></h4>
+Czechoslovak names are a combination of Czech names and Slovak names.
+Operations may be named either <i>&lt;type</i><i>&gt;</i>_ followed by any
+sequence of non-underscore characters, or <i>&lt;type&gt;</i> followed by an
+uppercase letter and any sequence of characters.  Czechoslovak names have been
+out of favor since 1993, but may be necessary for checking legacy code. The
+czechoslovakfcns, czechoslovakvars, czechoslovakmacros, and
+czechoslovakconstants flags are analogous to the similar Czech flags.  If
+czechoslovaktype is on, an error is reported if a type name contains either an
+uppercase letter or an underscore character.
+<a name="_Ref347222192"><a name="_Ref347240687"><a name="_Toc349905907">
+<h2>
+<a name="RTFToC69">
+<a name="sec-9.2">9.2 Namespace Prefixes</A></a></a></a>
+</a></h2>
+Another way to restrict names is to constrain the leading character sequences
+of various kinds of identifiers.  For example, a the names of all user-defined
+types might begin with "T" followed by an uppercase letter and all file static
+names begin with an uppercase letter.  This may be useful for enforcing a
+namespace (e.g., all names exported by the X-windows library should begin with
+"X") or just making programs easier to understand by establishing an enforced
+convention.  LCLint can be used to constrain identifiers in this way to detect
+identifiers inconsistent with prefixes.<p>
+<p>
+All namespace flags are of the form, -<i>&lt;context&gt;</i>prefix
+<i>&lt;string&gt;</i>.  For example, the macro variable namespace restricting
+identifiers declared in macro bodies to be preceded by "m_" would be selected
+by -macrovarprefix "m_".  The string may contain regular characters that may
+appear in a C identifier.  These must match the initial characters of the
+identifier name.  In addition, special characters (shown in Table 1) can be
+used to denoted a class of characters.<a href="guide_fn.html#fn24">[24]</a>  The
+&#42; character may be used at the end of a prefix string to specify the
+rest of the identifier is zero or more characters matching the character
+immediately before the &#42;. For example, the prefix string "T&amp;&#42;"
+matches "T" or "TWINDOW" but not "Twin".<p>
+
+<pre>
+ ^    Any uppercase letter, A-Z                                                 
+ &amp;    Any lowercase letter, a-z                                                 
+ %    Any character that is not an uppercase letter (allows lowercase           
+      letters, digits and underscore)                                           
+ ~    Any character that is not a lowercase letter (allows uppercase letters,   
+      digits and underscore)                                                    
+ $    Any letter (a-z, A-Z)                                                     
+ /    Any letter or digit (A-Z, a-z, 0-9)                                       
+ ?    Any character valid in a C identifier                                     
+ #    Any digit, 0-9                                                            
+<a name="_Ref347222045"><a name="_Ref347222037"><a name="_Toc347255399"><a name="_Ref347220226"><a name="_Ref347220245"><a name="_Ref348090273"><a name="_Toc349905995">
+</pre>
+<b>Table
+</a>1.  Prefix character codes.</a></a></a></a></a></a></b><p>
+
+Different prefixes can be selected for the following identifier
+contexts:<br>
+<p> 
+<tt>macrovarprefix</tt>
+<blockquote> Any variable declared inside a macro body </blockquote>
+<tt>uncheckedmacroprefix</tt>
+<blockquote> Any macro that is not checked as a function or constant
+(see <a href="sec8.html#sec-8.4">Section 8.4</a>)                 </blockquote>
+<tt>tagprefix</tt>
+<blockquote>Tags for struct, union and enum declarations  
+</blockquote>
+<tt>enumprefix</tt>
+<blockquote>Members of enum types                         
+</blockquote>
+<tt>typeprefix</tt>
+<blockquote>
+Name of a user-defined type               
+</blockquote>
+<tt>filestaticprefix</tt>
+<blockquote>Any identifier with file static scope</blockquote>
+<tt>globvarprefix</tt>
+<blockquote>
+Any variable (not of function type) with global variables scope 
+</blockquote>      
+<tt>externalprefix</tt>
+<blockquote>
+Any exported identifier                       
+</blockquote>
+<p>
+If an identifier is in more than one of the namespace contexts, the most specific
+defined namespace prefix is used (e.g., a global variable is also an exported
+identifier, so if globalvarprefix is set, it is checked against the variable
+name; if not, the identifier is checked against the externalprefix.)<p>
+<p>
+For each prefix flag, a corresponding flag named
+<i>&lt;prefixname&gt;</i>exclude controls  whether errors are reported if
+identifiers in a different namespace match the namespace prefix.  For example,
+if macrovarprefixexclude is on, LCLint checks that no identifier that is not a
+variable declared inside a macro body uses the macro variable prefix. <p>
+<p>
+Here is a (somewhat draconian) sample naming convention:
+<p>
+<a href="appC.html#flag-uncheckedmacroprefix"><tt>-uncheckedmacroprefix "~&#42;"</tt></a><br>
+       unchecked macros have no lowercase letters <br> <a
+href="appC.html#flag-typeprefix"><tt>-typeprefix
+"T^&amp;&#42;"</tt></a><br> all type typenames begin with T followed by an
+uppercase letter.  The rest of the name is all lowercase letters.  <br>
+<a
+href="appC.html#flag-typeprefixexclude"><tt>+typeprefixexclude</tt></a><br>
+no identifier that does not name a user-defined type may begin with the
+type name prefix (set above) <br> <a
+href="appC.html#flag-filestaticprefix"><tt>-filestaticprefix"^&amp;&amp;&amp;"</tt></a>
+<br> file static scope variables begin with an uppercase letter and
+three lowercase letters<br> <a
+href="appC.html#flag-globvarprefix"><tt>-globvarprefix "G"</tt></a>
+<br> all global variables variables start with G <br> <a
+href="appC.html#flag-globvarprefixexclude"><tt>+globvarprefixexclude</tt></a><br>
+no identifier that is not a global variable starts with G <p> <a
+name="_Toc344355427"><a name="_Ref347240790"><a name="_Ref348079479"><a
+name="_Toc349905908"> <h2> <a name="RTFToC70"> <a name="sec-9.3">9.3
+Naming Restrictions</A></a></a></a></a> </a></h2> Additional naming
+restrictions can be used to check that names do no conflict with names
+reserved for the standard library, and that identifier are sufficiently
+distinct (either for the compiler and linker, or for the programmer.)
+Restrictions may be different for names that are needed by the linker
+(<i>external</i> names) and names that are only needed during
+compilations (<i>internal</i> names).  Names of non-static functions and
+global variables are external; all other names are internal.  <a
+name="_Toc349905909"> <h4> <a name="RTFToC71"> <a name="sec-9.3.1">9.3.1
+Reserved Names</A></a> </a></h4> Many names are reserved for the
+implementation and standard library.  A complete list of reserved names
+can
+be
+found in [<a href="references.html#ref-vdL">vdL</A>, p. 126-128] or [<a href="guide.html#ref-ANSI">ANSI</A>, <a
+href="sec4.html">Section 4</a>].  Some name prefixes such as str
+followed by a lowercase character are reserved for future library
+extensions.  Most C compilers do not detect naming conflicts, and they
+can lead to unpredictable program behavior.  If ansireserved is on,
+LCLint reports errors for external names that conflict with reserved
+names.  If ansireservedinternal is on, errors are also reported for
+internal names.  <a name="_Toc349905910"> <h4> <a name="RTFToC72"> <a
+name="sec-9.3.2">9.3.2 Distinct Identifiers</A></a> </a></h4>
+<blockquote> <em>The decision to retain the old six-character
+case-insensitive restriction on significance was most painful.</em><br>
+- ANSI C Rationale </blockquote> <p> LCLint can check that identifiers
+differ within a given number of characters, optionally ignoring
+alphabetic case and differences between characters that look similar.
+The number of significant characters may be different for external and
+internal names.  <p> <p> Using <a
+href="appC.html#flag-distinctexternalnames"><tt>+distinctexternalnames</tt></a>
+sets the number of significant characters for external names to six and
+makes alphabetical case insignificant for external names.  This is the
+minimum significance acceptable in an ANSI-conforming compiler.  Most
+modern compilers exceed these minimums (which are particularly hard to
+follow if one uses the Czech or Slovak naming convention).  The number
+of significant characters can be changed using the externalnamelength
+<i>&lt;number&gt;</i> flag.  If externalnamecaseinsensitive is on,
+alphabetical case is ignored in comparing external names. LCLint reports
+identifiers that differ only in alphabetic case. <p> <p> For internal
+identifiers, a conforming compiler must recognize at least 31 characters
+and treat alphabetical cases distinctly.  Nevertheless, it may still be
+useful to check that internal names are more distinct then required by
+the compiler to minimize the likelihood that identifiers are confused in
+the program.  Analogously to external names, the internalnamelength
+<i>&lt;number&gt;</i> flag sets the number of significant characters in
+an internal name and internalnamecaseinsensitive sets the case
+sensitivity.  The internalnamelookalike flag further restricts
+distinctions between identifiers.  When set, similar-looking characters
+match -- the lowercase letter "l" matches the uppercase letter "I" and
+the number "1"; the letter "O" or "o" matches the number "0"; "5"
+matches "S"; and "2" matches "Z".  Identifiers that are not distinct
+except for look-alike characters will produce an error message.
+External names are also internal names, so they must satisfy both the
+external and internal distinct identifier checks.<p> <p> <a
+href="fig18.html">Figure 18</a> illustrates some of the name checking
+done by LCLint.<p> <p> 
+
+<p>
+<b>Next: <A HREF="sec10.html">Other Checks</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+#include "../footer.html"
+

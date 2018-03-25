@@ -1,0 +1,5 @@
+#!/usr/cs/bin/bash
+for last; do a=0; done
+$SPLINT "$@"
+
+

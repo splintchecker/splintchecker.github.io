@@ -1,0 +1,82 @@
+<A NAME="line10"></A><html><head>
+<title>only.c</title>
+</head><body>
+<h3>only.c</h3>
+<PRE>
+<A NAME="line1"></A>extern /*@only@*/ int *glob;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>/*@only@*/ int *
+<A NAME="line4"></A>  f (/*@only@*/ int *x, int *y,
+<A NAME="line5"></A>     int *z)
+<A NAME="line6"></A>  /*@globals int *glob;@*/
+<A NAME="line7"></A>{
+<A NAME="line8"></A>  int *m = (int *)
+<A NAME="line9"></A>    malloc (sizeof (int));
+<A NAME="line10"></A>  
+<A NAME="line11"></A>  glob = y;
+<A NAME="line12"></A>  free (x);
+<A NAME="line13"></A>  *m = *x;
+<A NAME="line14"></A>  return z;
+<A NAME="line15"></A>}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

@@ -1,0 +1,61 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint Sample - Final Version</title>
+</head>
+<body>
+<!--#include virtual="../../../header.html"-->
+
+<center><h1>
+Final Version
+</h1></center>
+
+<H3> Changes from <A HREF="../strictlib/index.html">Strict Library</A> </H3>
+
+<A HREF="diffs.html">Differences</A>
+<p>
+Fixed errors reported using strict library.
+<p>
+Now, running LCLint detects <a href="lclint.out.html">no anomalies</a>.
+<P>
+
+<H3> Modules </H3>
+
+<UL>
+<LI>employee - employee datatype (<A HREF="employee.lcl.html">LCL</A>,
+<A HREF="employee.c.html">Code</A>,  <A HREF="employee.h.html">Header</A>)
+<LI>empset - sets of employees (<A HREF="empset.lcl.html">LCL</A>,
+<A HREF="empset.c.html">Code</A>,  <A HREF="empset.h.html">Header</A>)
+<LI>dbase - database of employees (<A HREF="dbase.lcl.html">LCL</A>, 
+<A HREF="dbase.c.html">Code</A>,  <A HREF="dbase.h.html">Header</A>)
+<LI>eref - reference to an employee (<A HREF="eref.lcl.html">LCL</A>,
+<A HREF="eref.c.html">Code</A>,  <A HREF="eref.h.html">Header</A>)
+<LI>erc - collection of erefs (<A HREF="erc.lcl.html">LCL</A>, <A
+HREF="erc.c.html">Code</A>,  <A HREF="erc.h.html">Header</A>)
+<LI>ereftab - table of employees and erefs (<A
+HREF="ereftab.lcl.html">LCL</A>, <A HREF="ereftab.c.html">Code</A>, <A HREF="ereftab.h.html">Header</A>)
+</UL>
+
+<H3> Summary </h3>
+
+We've just about reached the limit of what can be done usefully with
+LCLint 2.0.  In the course of checking, we have discovered a number of
+bugs in the code, enhanced missing or incomplete specifications,
+improved the documentation by adding annotations, adopted a naming
+convention, and checked the code against a stricted version of the
+standard library.
+<p>
+Although this is a toy example, it closely mirrors how
+LCLint has been used to find real problems in large programs. 
+<p>
+If we are still unsatisfied with the trustworthiness of the code, we could:
+<ul>
+<li>Add claims to the LCL specifications and use LP to prove they are
+correct.
+<li>Use run-time checking tools.
+</ul>
+<p>
+<A HREF="../index.html">Return to Summary</A>
+
+<!--#include virtual="../../../footer.html"-->
+

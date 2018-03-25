@@ -1,0 +1,49 @@
+<h3>lclint-interest message 22</h3>
+<pre>
+Date: 14 Nov 94 13:04:42 EST
+From: "JR (John Rogers)" <72634.2402@compuserve.com>
+To: LCLint interest list <lclint-interest@larch.lcs.mit.edu>
+Subject: /*NOTREACHED*/ vs. /*@ -unreachable */ ?
+
+Hi all!  I'm interested in the LCLint equivalents of various UNIX lint
+comments.  For instance, in UNIX lint, /*NOTREACHED*/ can be used to
+advise lint that a specific code path never returns.  The classical
+example is something like this:
+
+   if (something) {
+      printf("error!");
+      exit( EXIT_FAILURE );
+      /* NOTREACHED */
+   }
+
+This tells lint that code after the call to exit() is not reachable.  
+
+Anyway, /*NOTREACHED*/ only applies to that piece of code (until the
+next brace?).  /*NOTREACHED*/ doesn't turn off all unreachable code
+warnings until further notice.  PC-lint has a /*lint -unreachable */
+comment which is equivalent to /*NOTREACHED*/.
+
+My questions are:
+
+(1) In LCLint, does /*@ -unreachable */ act as /*NOTREACHED*/ does?
+
+(2) If not, is there a way in LCLint to achieve the same effect?
+
+Thanks again...
+--JR (John Rogers)
+</pre>
+<A HREF="21.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="23.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

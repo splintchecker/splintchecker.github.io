@@ -1,0 +1,81 @@
+<A NAME="line7"></A><html><head>
+<title>stack.c</title>
+</head><body>
+<h3>stack.c</h3>
+<PRE>
+<A NAME="line1"></A>int *glob;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>/*@dependent@*/
+<A NAME="line4"></A>int *f (int **x)
+<A NAME="line5"></A>{
+<A NAME="line6"></A>  int sa[2] = { 0, 1 };
+<A NAME="line7"></A>  int loc = 3;
+<A NAME="line8"></A> 
+<A NAME="line9"></A>  glob = &loc;
+<A NAME="line10"></A>  *x = &sa[0];
+<A NAME="line11"></A> 
+<A NAME="line12"></A>  return &loc; 
+<A NAME="line13"></A>}
+<A NAME="line14"></A> 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

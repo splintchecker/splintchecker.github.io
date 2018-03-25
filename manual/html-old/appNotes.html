@@ -1,0 +1,219 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - End Notes </title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+<p class="MsoHeading7" style='margin-left:0in;text-indent:0in'>
+<a name="_Toc534975077"></a><a name="_Ref53442451"></a><a name=
+"_Toc344355450">End Notes</a></p>
+
+<p class="MsoFootnoteText"><a href="#_ftnref1" name="_ftn1"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[1]</span></span></span></a>
+   Lint is a common programming tool for detecting anomalies in C
+   programs.&nbsp; S. C. Johnson developed the original lint in the
+   late seventies, mainly because early versions of C did not
+   support function prototypes.&nbsp; Splint was originally named
+   LCLint because it was originally intended to check for
+   inconsistencies between LCL specifications and C
+   implementations.&nbsp; To reflect divergence from LCL and
+   increased focus on detecting security vulnerabilities, the name
+   was changed to Splint, short for &#8220;Specification
+   Lint&#8221; and &#8220;Secure Programming Lint&#8221;.</p></div>
+<div id="ftn2">
+<p class="MsoFootnoteText"><a href="#_ftnref2" name="_ftn2"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[2]</span></span></span></a>
+   The meta-notation, <span class="Annot">item,<sup>+</sup></span>
+   is used to denote a comma separated list of items.&nbsp; For
+   example,
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   <span class="Annot">/*@access mstring, intSet@*/</span></p>
+<p class="MsoFootnoteText">allows access to the representations of
+both <span class="CodeText">mstring</span> and <span class=
+"CodeText">intSet</span>.)&nbsp;&nbsp;</p></div>
+<div id="ftn3">
+<p class="MsoFootnoteText"><a href="#_ftnref3" name="_ftn3"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[3]</span></span></span></a>
+   This section is largely based on [Evans96].&nbsp; It
+   semi-formally defines some of the terms needed to describe
+   memory management checking; if you are satisfied with an
+   intuitive understanding of these terms, this section may be
+   skipped.</p></div>
+<div id="ftn4">
+<p class="MsoFootnoteText"><a href="#_ftnref4" name="_ftn4"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[4]</span></span></span></a>
+   This is similar to the LISP storage model, except that objects
+   are typed.</p></div>
+<div id="ftn5">
+<p class="TextFontCX"><a href="#_ftnref5" name="_ftn5" title=
+""><span class="MsoFootnoteReference"><span class=
+"MsoFootnoteReference"><span style=
+'font-size:11.0pt;font-family:"Times New Roman"'>[5]</span></span></span></a>
+<span style='font-size:10.0pt'>Except</span> <span class=
+"CodeText"><span style=
+'font-size:10.0pt'>sizeof</span></span><span style=
+'font-size:10.0pt'>, which does not need the value of its
+argument.</span></p></div>
+<div id="ftn6">
+<p class="TextFontCX"><a href="#_ftnref6" name="_ftn6" title=
+""><span class="MsoFootnoteReference"><span class=
+"MsoFootnoteReference"><span style=
+'font-size:11.0pt;font-family:"Times New Roman"'>[6]</span></span></span></a>
+If the storage is not assigned to a reference, an internal
+reference is created to track the storage.</p></div>
+<div id="ftn7">
+<p class="MsoFootnoteText"><a href="#_ftnref7" name="_ftn7"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[7]</span></span></span></a>
+   The declaration of <span class="CodeText">free</span> has a
+   <span class="Annot">null</span>&nbsp;annotation on the parameter
+   to indicate that the argument may be <span class=
+   "CodeText">NULL</span>.&nbsp; According to [ISO, 7.20.3.2],
+   <span class="CodeText">NULL</span> may be passed to
+      <span class="CodeText">free</span> without no action.&nbsp;
+      On some UNIX platforms, passing <span class=
+      "CodeText">NULL</span> to free causes a program crash so the
+      UNIX version of the standard library specifies <span class=
+      "CodeText">free</span> without the <span class=
+      "Annot">null</span> annotation on its parameter. To check
+      that allocated objects are completely destroyed (e.g., all
+      unshared objects inside a structure are deallocated before
+      the structure is deallocated), Splint checks that any
+      parameter passed as an <span class="CodeText">out only void
+      *</span> does not contain references to live, unshared
+      objects.&nbsp; This makes sense, since such a parameter could
+      not be used sensibly in any way other than deallocating its
+      storage.</p></div>
+<div id="ftn8">
+<p class="MsoFootnoteText"><a href="#_ftnref8" name="_ftn8"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[8]</span></span></span></a>
+   In versions of Splint before 3.0, the <span class=
+   "Annot">noreturn</span> annotation was named <span class=
+   "Annot">exits</span>.&nbsp; The <span class=
+   "Annot">noreturn</span> annotation means the same thing, but is
+   a more appropriate name.&nbsp; For legacy code, Splint still
+   supports the <span class="Annot">exits</span> annotations.&nbsp;
+   Similarly, <span class="Annot">maynotreturn</span> replaces
+   <span class="Annot">mayexit</span>, <span class=
+   "Annot">noreturnwhentrue</span> replaces <span class=
+   "Annot">truexit</span> and <span class=
+   "Annot">noreturnwhenfalse</span> replaces <span class=
+   "Annot">falseexit</span>.</p></div>
+<div id="ftn9">
+<p class="MsoFootnoteText"><a href="#_ftnref9" name="_ftn9"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[9]</span></span></span></a>The
+   <span class="Annot">sef</span> annotation denotes a parameter as
+   side effect free (see Section 11.2.1).&nbsp; We use
+      <span class="CodeText">bool /*@alt int@*/</span> as the type
+      of the parameter, to indicate that it may be either a Boolean
+      or an integer.</p></div>
+<div id="ftn10">
+<p class="MsoFootnoteText"><a href="#_ftnref10" name="_ftn10"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[10]</span></span></span></a>
+   Peter van der Linden estimates that default fall through is the
+   wrong behavior 97% of the time.&nbsp; [vdL95, p. 37]</p></div>
+<div id="ftn11">
+<p class="MsoFootnoteText"><a href="#_ftnref11" name="_ftn11"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[11]</span></span></span></a>
+   &#8220;Software Glitch Cripples AT&amp;T Network&#8221;,
+   Telephony, 22 January 1990.</p></div>
+<div id="ftn12">
+<p class="MsoFootnoteText"><a href="#_ftnref12" name="_ftn12"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[12]</span></span></span></a>
+   See [Larochelle01] for information on internal aspects of the
+   checking.</p></div>
+<div id="ftn13">
+<p class="MsoFootnoteText"><a href="#_ftnref13" name="_ftn13"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[13]</span></span></span></a>
+   This section is largely based on [Evans02].</p></div>
+<div id="ftn14">
+<p class="MsoFootnoteText"><a href="#_ftnref14" name="_ftn14"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[14]</span></span></span></a>
+   C. Cowan et al., <i>FormatGuard: Automatic Protection from
+   printf Format String Vulnerabilities</i>.&nbsp; 10th Usenix
+   Security Symposium, 2001.</p></div>
+<div id="ftn15">
+<p class="MsoFootnoteText"><a href="#_ftnref15" name="_ftn15"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[15]</span></span></span></a>
+   To be completely correct, all the macro parameters should be
+   evaluated before the macro has any side effects.&nbsp; Splint
+   does not check this.</p></div>
+<div id="ftn16">
+<p class="MsoFootnoteText"><a href="#_ftnref16" name="_ftn16"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[16]</span></span></span></a>
+   Functions that do not produce to the same result each time they
+   are called with the same arguments should be declared to modify
+   <span class="Annot">internalState</span> so they will lead to
+   errors if they are passed as <span class="Annot">sef</span>
+   parameters.</p></div>
+<div id="ftn17">
+<p class="MsoFootnoteText"><a href="#_ftnref17" name="_ftn17"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[17]</span></span></span></a>
+   The most renowned C naming convention is the Hungarian naming
+   convention, introduced by Charles Simonyi [Simonyi, Charles, and
+   Martin Heller.&nbsp; &#8220;The Hungarian
+   Revolution.&#8221;&nbsp; <i>BYTE</i>, August 1991, p.
+   131-38].&nbsp; The names for Splint naming conventions follow
+   the tradition of using Central European nationalities as
+   mnemonics for naming conventions.&nbsp; The Splint conventions
+   are similar to the Hungarian naming convention in that they
+   encode type information in names, except that the Splint
+   conventions encode the names of accessible abstract
+   types&nbsp;instead of the type of the declaration of return
+   value.&nbsp; Prefixes used in the Hungarian naming convention
+   are not supported by Splint.</p>
+<p class="MsoFootnoteText">&nbsp;</p></div>
+<div id="ftn18">
+<p class="MsoFootnoteText"><a href="#_ftnref18" name="_ftn18"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[18]</span></span></span></a>
+   Of course, namespace prefixes should really be described by
+   regular expressions.&nbsp; If there is sufficient interest (that
+   is, someone volunteers to program it), regular expressions will
+   be supported in a future version of Splint.</p></div>
+<div id="ftn19">
+<p class="MsoFootnoteText"><a href="#_ftnref19" name="_ftn19"
+   title=""><span class="MsoFootnoteReference"><span class=
+   "MsoFootnoteReference"><span style=
+   'font-size:10.0pt;font-family:"Times New Roman"'>[19]</span></span></span></a>
+   POSIX library was contributed by Jens
+   Schweikhardt.</p></div></div>
+	
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

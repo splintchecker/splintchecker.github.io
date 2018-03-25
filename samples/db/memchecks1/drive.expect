@@ -1,0 +1,89 @@
+Print two different employees:
+        0  S.S. Doe 0            male    manager      100000.00
+        1  S.S. Doe 1            male    manager      100000.00
+Should print 4: 4
+Employees 0 - 19
+Employees:
+       19  J. Doe 19             female  manager         190.00
+       18  J. Doe 18             female  manager         180.00
+       17  J. Doe 17             female  manager         170.00
+       16  J. Doe 16             female  manager         160.00
+       15  J. Doe 15             female  manager         150.00
+        9  J. Doe 9              male    non-manager      90.00
+        8  J. Doe 8              male    non-manager      80.00
+        7  J. Doe 7              male    non-manager      70.00
+        6  J. Doe 6              male    non-manager      60.00
+        5  J. Doe 5              male    non-manager      50.00
+        4  J. Doe 4              male    non-manager      40.00
+        3  J. Doe 3              male    non-manager      30.00
+        2  J. Doe 2              male    non-manager      20.00
+        1  J. Doe 1              male    non-manager      10.00
+        0  J. Doe 0              male    non-manager       0.00
+       14  J. Doe 14             female  non-manager     140.00
+       13  J. Doe 13             female  non-manager     130.00
+       12  J. Doe 12             female  non-manager     120.00
+       11  J. Doe 11             female  non-manager     110.00
+       10  J. Doe 10             female  non-manager     100.00
+Employees 0 - 16, 18 - 19
+Employees:
+       19  J. Doe 19             female  manager         190.00
+       18  J. Doe 18             female  manager         180.00
+       16  J. Doe 16             female  manager         160.00
+       15  J. Doe 15             female  manager         150.00
+        9  J. Doe 9              male    non-manager      90.00
+        8  J. Doe 8              male    non-manager      80.00
+        7  J. Doe 7              male    non-manager      70.00
+        6  J. Doe 6              male    non-manager      60.00
+        5  J. Doe 5              male    non-manager      50.00
+        4  J. Doe 4              male    non-manager      40.00
+        3  J. Doe 3              male    non-manager      30.00
+        2  J. Doe 2              male    non-manager      20.00
+        1  J. Doe 1              male    non-manager      10.00
+        0  J. Doe 0              male    non-manager       0.00
+       14  J. Doe 14             female  non-manager     140.00
+       13  J. Doe 13             female  non-manager     130.00
+       12  J. Doe 12             female  non-manager     120.00
+       11  J. Doe 11             female  non-manager     110.00
+       10  J. Doe 10             female  non-manager     100.00
+Should get two females: 2
+       16  J. Doe 16             female  manager         160.00
+       18  J. Doe 18             female  manager         180.00
+
+Should get two females and ten males: 12
+        9  J. Doe 9              male    non-manager      90.00
+        8  J. Doe 8              male    non-manager      80.00
+        7  J. Doe 7              male    non-manager      70.00
+        6  J. Doe 6              male    non-manager      60.00
+        5  J. Doe 5              male    non-manager      50.00
+        4  J. Doe 4              male    non-manager      40.00
+        3  J. Doe 3              male    non-manager      30.00
+        2  J. Doe 2              male    non-manager      20.00
+        1  J. Doe 1              male    non-manager      10.00
+        0  J. Doe 0              male    non-manager       0.00
+       18  J. Doe 18             female  manager         180.00
+       16  J. Doe 16             female  manager         160.00
+
+Should get two females: 2
+       16  J. Doe 16             female  manager         160.00
+       18  J. Doe 18             female  manager         180.00
+
+Should get 18 employees
+Employees:
+       19  J. Doe 19             female  manager         190.00
+       18  J. Doe 18             female  manager         180.00
+       16  J. Doe 16             female  manager         160.00
+       15  J. Doe 15             female  manager         150.00
+        8  J. Doe 8              male    non-manager      80.00
+        7  J. Doe 7              male    non-manager      70.00
+        6  J. Doe 6              male    non-manager      60.00
+        5  J. Doe 5              male    non-manager      50.00
+        4  J. Doe 4              male    non-manager      40.00
+        3  J. Doe 3              male    non-manager      30.00
+        2  J. Doe 2              male    non-manager      20.00
+        1  J. Doe 1              male    non-manager      10.00
+        0  J. Doe 0              male    non-manager       0.00
+       14  J. Doe 14             female  non-manager     140.00
+       13  J. Doe 13             female  non-manager     130.00
+       12  J. Doe 12             female  non-manager     120.00
+       11  J. Doe 11             female  non-manager     110.00
+       10  J. Doe 10             female  non-manager     100.00

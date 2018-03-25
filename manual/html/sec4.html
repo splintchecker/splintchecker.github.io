@@ -1,0 +1,878 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 4. Types</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+<h1 style='margin-left:0in;text-indent:0in'><a name=
+"_Ref534977413"></a><a name="_Toc534974946">4<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a id="types" name="types">
+Types</a></a></h1>
+<p class="TextFontCX">Strong type checking&nbsp;often reveals
+programming errors.&nbsp; Splint can check primitive C types more
+strictly and flexibly than typical compilers (4.1) and provides
+support a Boolean type (4.2).&nbsp; In addition, users can define
+abstract types that provide information hiding&nbsp;(0).</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974947"></a><a name="_Ref534642132"></a><a name=
+"_Ref533964147"></a><a name="_Toc344355401">4.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Built in C Types</a></h2>
+<p align="right"><span style='font-size:9.0pt'><i>Two types
+have</i> compatible <i>type if their types are the
+same.</i></span></p>
+<p class="TextFontCX" align="right" style='text-align:right'>
+<span style='font-size:9.0pt'><span style='font-size:9.0pt'>ANSI C,
+3.1.2.6.</span></span></p>
+<p class="Sidebar">&nbsp;</p>
+<br>
+<br>
+ 
+<p class="MsoListBullet" style='margin-left:0in;text-indent:0in'>
+Splint supports stricter checking of built in C types.&nbsp; The
+<span class="CodeText"><span style=
+'font-size:10.0pt'>char</span></span> and <span class=
+"CodeText"><span style='font-size:10.0pt'>enum</span></span> types
+can be checked as distinct types, and the different numeric types
+can be type-checked strictly.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974948">4.1.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Characters</a></h3>
+<p class="TextFontCX">The primitive <span class=
+"CodeText"><span style='font-size:10.0pt'>char</span></span> type
+can be type-checked as a distinct type.&nbsp; If <span class=
+"CodeText"><span style='font-size:10.0pt'>char</span></span> is
+used as a distinct type, common errors involving assigning
+<span class="CodeText"><span style=
+'font-size:10.0pt'>int</span></span>s to <span class=
+"CodeText"><span style='font-size:10.0pt'>char</span></span>s are
+detected.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The <span class="Flag"><span style=
+'font-size:10.0pt'>+charint</span></span> flag can be used for
+checking legacy programs where <span class=
+      "CodeText"><span style='font-size:10.0pt'>char</span></span>
+      and <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span> are used
+      interchangeably.&nbsp; If <span class="Flag"><span style=
+      'font-size:10.0pt'>charint</span></span> is on, <span class=
+      "CodeText"><span style='font-size:10.0pt'>char</span></span>
+      types indistinguishable from <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>int</span></span>s.&nbsp; To keep
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>char</span></span> and <span class=
+      "Keyword"><span style='font-size:10.0pt'>int</span></span> as
+      distinct types, but allow chars to be used to index arrays,
+      use <span class="Flag"><span style=
+      'font-size:10.0pt'>+charindex</span></span>.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974949">4.1.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Enumerators</a></h3>
+<p class="TextFontCX">Standard C treats user-declared
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>enum</span></span> types just like
+      integers.&nbsp; An arbitrary integral value may be assigned
+      to an <span class="CodeText"><span style=
+      'font-size:10.0pt'>enum</span></span> type, whether or not it
+      was listed as an enumerator member.&nbsp; Splint checks each
+      user-defined <span class="CodeText"><span style=
+      'font-size:10.0pt'>enum</span></span> type as distinct
+      type.&nbsp; An error is reported if a value that is not an
+      enumerator member is assigned to the <span class=
+      "CodeText"><span style='font-size:10.0pt'>enum</span></span>
+      type, or if an <span class="CodeText"><span style=
+      'font-size:10.0pt'>enum</span></span> type is used as an
+      operand to an arithmetic operator.&nbsp; If the <span class=
+      "Flag"><span style='font-size:10.0pt'>enumint</span></span>
+      flag is on, <span class="CodeText"><span style=
+      'font-size:10.0pt'>enum</span></span> and <span class=
+      "CodeText"><span style='font-size:10.0pt'>int</span></span>
+      types may be used interchangeably.&nbsp; Like <span class=
+      "Flag"><span style=
+      'font-size:10.0pt'>charindex</span></span>, if the
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>enumindex</span></span> flag is on,
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>enum</span></span> types may be used to
+      index arrays.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974950">4.1.3<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Numeric Types</a></h3>
+<p class="TextFontCX">Splint reports where numeric types&nbsp;are
+used in dangerous or inconsistent ways.&nbsp; With the strictest
+checking, Splint will report an error anytime numeric types do not
+match exactly.&nbsp; If the <span class="Flag"><span style=
+'font-size:10.0pt'>relax-quals</span></span> flag is on, only those
+inconsistencies that may corrupt values are reported.&nbsp; For
+example, if an <span class="CodeText"><span style=
+'font-size:10.0pt'>int</span></span> is assigned to a variable of
+type <span class="CodeText"><span style=
+'font-size: 10.0pt'>long</span></span> (or passed as a
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>long</span></span> formal parameter),
+      Splint will not report an error if <span class=
+      "Flag"><span style=
+      'font-size:10.0pt'>relax-quals</span></span> is on since a
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>long</span></span> must have at least
+      enough bits to store an <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span> without data loss.&nbsp;
+      On the other hand, an error would be reported if the
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>long</span></span> were assigned to an
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span>, since the <span class=
+      "CodeText"><span style='font-size:10.0pt'>int</span></span>
+      type may not have enough bits to store the <span class=
+      "CodeText"><span style='font-size:10.0pt'>long</span></span>
+      value.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Similarly, if a <span class=
+"CodeText"><span style='font-size:10.0pt'>signed</span></span>
+value is assigned to an <span class="CodeText"><span style=
+'font-size:10.0pt'>unsigned</span></span>, Splint will report an
+error since an <span class="CodeText"><span style=
+'font-size:10.0pt'>unsigned</span></span> type cannot represent all
+<span class="CodeText"><span style=
+'font-size:10.0pt'>signed</span></span> values correctly.&nbsp; If
+the <span class="Flag"><span style=
+'font-size:10.0pt'>+ignore-signs</span></span> flag is on, checking
+is relaxed to ignore all sign qualifiers in type comparisons (this
+is not recommended, since it will suppress reporting of real bugs,
+but may be necessary for quickly checking certain legacy
+code).&nbsp;</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974951">4.1.4<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Arbitrary Integral Types</a></h3>
+<p class="TextFontCX">Some types are declared to be integral types,
+but the concrete type may be implementation dependent.&nbsp; For
+example, the standard library declares the types <span class=
+"CodeText"><span style='font-size:10.0pt'>size_t</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>ptr_diff</span></span> and <span class=
+"CodeText"><span style='font-size:10.0pt'>wchar_t</span></span>,
+but does not constrain their types other than limiting them to
+integral types.&nbsp; Programs may rely on them being integral
+types (e.g., can use <span class="CodeText"><span style=
+'font-size:10.0pt'>+</span></span> operator on two
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>size_t</span></span> operands), but should
+      not rely on a particular representation (e.g., <span class=
+      "CodeText"><span style='font-size: 10.0pt'>long
+      unsigned</span></span>).&nbsp;&nbsp;&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Splint supports three different kinds of
+arbitrary integral types:</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>/*@integraltype@*/</span></span></p>
+<p class="TextFontCX"><span class="Annot"><font size=
+"2">&nbsp;&nbsp;&nbsp;</font></span> An arbitrary integral
+type.&nbsp; The actual type may be any one of <span class=
+"CodeText"><span style='font-size:10.0pt'>short</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>int</span></span>, <span class=
+"CodeText"><span style='font-size:10.0pt'>long</span></span>,
+<span class="CodeText"><span style='font-size:10.0pt'>unsigned
+short</span></span>, <span class="CodeText"><span style=
+'font-size:10.0pt'>unsigned</span></span>, or <span class=
+"CodeText"><span style='font-size:10.0pt'>unsigned
+long</span></span>.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>/*@unsignedintegraltype@*/</span></span></p>
+<p class="TextFontCX"><span class="Annot"><font size=
+"2">&nbsp;&nbsp;&nbsp;</font></span> An arbitrary unsigned integral
+type.&nbsp; The actual type may be any one of <span class=
+"CodeText"><span style='font-size:10.0pt'>unsigned
+short</span></span>, <span class="CodeText"><span style=
+'font-size:10.0pt'>unsigned</span></span>, or <span class=
+"CodeText"><span style='font-size:10.0pt'>unsigned
+long</span></span>.</p>
+<p class="TextFontCX"><span class="Annot"><span style=
+'font-size:10.0pt'>/*@signedintegraltype@*/</span></span></p>
+<p class="TextFontCX"><span class="Annot"><font size=
+"2">&nbsp;&nbsp;&nbsp;</font></span> An arbitrary signed integral
+type.&nbsp; The actual type may be any one of <span class=
+"CodeText"><span style='font-size:10.0pt'>short</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>int</span></span>, or <span class=
+"CodeText"><span style='font-size:10.0pt'>long</span></span>.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Splint reports an error if the code depends
+on the actual representation of a type declared as an arbitrary
+integral.&nbsp; The <span class="Flag"><span style=
+'font-size:10.0pt'>match-any-integral</span></span>&nbsp;flag
+relaxes checking and allows an arbitrary integral type is allowed
+to match any integral type.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Other flags set the arbitrary integral types
+to a concrete type.&nbsp; These should only be used if portability
+to platforms that may use different representations is not
+important.&nbsp; The <span class="Flag"><span style=
+'font-size:10.0pt'>long-integral</span></span>&nbsp;and
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>long-unsigned-integral</span></span>&nbsp;flags
+      set the type corresponding to <span class=
+      "Annot"><span style='font-size: 10.0pt'>/*@integraltype@*/</span></span>&nbsp;to
+      be <span class="CodeText"><span style=
+      'font-size:10.0pt'>unsigned long</span></span> and
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>long</span></span> respectively.&nbsp; The
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>long-unsigned-unsigned-integral</span></span>&nbsp;flag
+      sets the type corresponding to <span class=
+      "Annot"><span style=
+      'font-size: 10.0pt'>/*@unsignedintegraltype@*/</span></span>
+      to be <span class="CodeText"><span style=
+      'font-size:10.0pt'>unsigned long</span></span>.&nbsp; The
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>long-signed-integral</span></span>&nbsp;flag
+      sets the type corresponding to <span class=
+      "Annot"><span style=
+      'font-size:10.0pt'>/*@signedintegraltype@*/</span></span> to
+      be <span class="CodeText"><span style=
+      'font-size:10.0pt'>long</span></span>.</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974952"></a><a name="_Ref534642133"></a><a name=
+"_Ref533964143"></a><a name="_Ref344892413"></a><a name=
+"_Toc344355400">4.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Boolean Types</a></h2>
+<p class="TextFontCX">Pre-ISO99 C had no Boolean representation
+&#8211; the result of a comparison operator was an integer, and no
+type checking is done for test expressions.&nbsp; C99 introduced a
+Boolean type (<span class="CodeText"><span style=
+'font-size:10.0pt'>_Bool</span></span> and <span class=
+"CodeText"><span style='font-size:10.0pt'>bool</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>true</span></span> and <span class=
+"CodeText"><span style='font-size:10.0pt'>false</span></span>
+macros in <span style=
+'font-size:10.0pt;font-family:Arial'>stdbool.h</span>), but did not
+strengthen the type checking.&nbsp; Splint supports a Boolean type
+that can be checked distinctly from integral types.&nbsp; Many
+common errors can be detected by introducing a distinct Boolean
+type and stronger type checking.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Splint checks that the test expression in an
+<span class="CodeText"><span style=
+'font-size:10.0pt'>if</span></span>, <span class=
+"CodeText"><span style='font-size:10.0pt'>while</span></span>, or
+<span class="CodeText"><span style=
+'font-size:10.0pt'>for</span></span> statement or an operand of a
+<span class="CodeText"><span style=
+'font-size:10.0pt'>&amp;&amp;</span></span>, <span class=
+"CodeText"><span style='font-size:10.0pt'>||</span></span> or
+<span class="CodeText"><span style=
+'font-size:10.0pt'>!</span></span>operator is a Boolean.&nbsp; If
+the type of a test expression is not a Boolean, Splint will produce
+a warning depending on the type of the test expression and flag
+settings.&nbsp; If the test expression has pointer type, the
+warning is inhibited by <span class="Flag"><span style=
+'font-size:10.0pt'>&#8211;predboolptr</span></span> (this can be
+used to prevent messages for the idiom of testing if a pointer is
+not null without a comparison).&nbsp; If it is type
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span>, the warnings is
+      inhibited by <span class="Flag"><span style=
+      'font-size:10.0pt'>-pred-bool-int</span></span>.&nbsp; For
+      all other types, Splint warns unless <span class=
+      "Flag"><span style=
+      'font-size: 10.0pt'>-pred-bool-others</span></span> is
+      set.&nbsp;&nbsp; Relations, comparisons and certain standard
+      library functions are declared to return Booleans.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Since using <span class=
+"CodeText"><span style='font-size:10.0pt'>=</span></span> instead
+of <span class="CodeText"><span style=
+'font-size:10.0pt'>==</span></span> is such a common bug, reporting
+of test expressions that are assignments is controlled by the
+separate <span class="Flag"><span style=
+'font-size:10.0pt'>pred-assign</span></span> flag.&nbsp; The
+message can be suppressed by adding extra parentheses around the
+test expression.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Use the <span class="Flag"><span style=
+'font-size:10.0pt'>&#8211;booltype
+&lt;name&gt;</span></span>&nbsp;flag to select the type name is
+used to represent Boolean values.&nbsp; There is no default Boolean
+type, although <span class="CodeText"><span style=
+'font-size: 10.0pt'>bool</span></span> is used by convention.&nbsp;
+The names <span class="CodeText"><span style=
+'font-size:10.0pt'>TRUE</span></span> and <span class=
+"CodeText"><span style='font-size:10.0pt'>FALSE</span></span> are
+assumed to represent true and false Boolean values.&nbsp; To change
+the names of true and false, use <span class=
+      "Flag"><span style='font-size:10.0pt'>-booltrue</span></span>
+      and <span class="Flag"><span style=
+      'font-size:10.0pt'>-boolfalse</span></span>.&nbsp; (The
+      Splint distribution includes an implementation of
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>bool</span></span>, in <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt;color:windowtext'>lib/bool.h</span></span>.&nbsp;
+      However, it isn&#8217;t necessary to use this implementation
+      to get the benefits of Boolean checking.)</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Figure 4 illustrates some of the Boolean
+checking done by Splint.&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<center>
+<table class="MsoNormalTable" border="0" cellspacing="0"
+cellpadding="0" style=
+'margin-left:5.4pt;border-collapse:collapse; margin-left:-2.25pt;margin-right:-2.25pt'>
+<tr style='height:13.3pt'>
+<td valign="top" style=
+'border:solid black 1.5pt; border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt;height:13.3pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<span class="Keyword"><b><span style=
+'font-size:10.0pt; color:white'>bool.c</span></b></span></p></td>
+<td valign="top" style=
+'border-top:1.5pt solid black; border-left:medium none;border-bottom:medium none;border-right:1.5pt solid black; background:black;padding-left:5.4pt; padding-right:5.4pt; padding-top:0in; padding-bottom:0in'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<b><span style='color:white'>Running
+Splint</span></b></p></td></tr>
+<tr>
+<td valign="top" style=
+'width:2.0in;border:solid black 1.5pt; border-top:none;padding:0in 5.4pt 0in 5.4pt;height:156.15pt'>
+<p class="Verbatim"># include "bool.h"</p>
+<p class="Verbatim">int f (int i, char *s,</p>
+<p class="Verbatim">&nbsp;&nbsp;&nbsp;&nbsp; bool b1, bool b2)</p>
+<p class="Verbatim">{</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>&nbsp;6</span></span>&nbsp; if (i = 3)</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>&nbsp;7</span></span>&nbsp;&nbsp;&nbsp; return
+b1;</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>&nbsp;8</span></span>&nbsp; if (!i || s)</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>&nbsp;9</span></span>&nbsp;&nbsp;&nbsp; return
+i;</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>10</span></span>&nbsp; if (s)</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>11</span></span>&nbsp;&nbsp;&nbsp; return 7;</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>12</span></span>&nbsp; if (b1 == b2)</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>13</span></span>&nbsp;&nbsp;&nbsp; return 3;</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>14</span></span>&nbsp; return 2;</p>
+<p class="Verbatim">}</p></td>
+<td valign="top" style=
+'border-top:medium none;border-left: medium none;border-bottom:1.5pt solid black;border-right:1.5pt solid black; padding-left:5.4pt; padding-right:5.4pt; padding-top:0in; padding-bottom:0in'>
+<p class="lclintrun">&gt; splint bool.c +predboolptr
+&#8211;booltype bool</p>
+<p class="lclintrun">&nbsp;</p>
+<p class="lclintrun">bool.c:6: Test expression for if is assignment
+expression: i = 3</p>
+<p class="lclintrun">bool.c:6: Test expression for if not bool,
+type int: i = 3</p>
+<p class="lclintrun">bool.c:7: Return value type bool does not
+match declared type int: b1</p>
+<p class="lclintrun">bool.c:8: Operand of ! is non-boolean (int):
+!i</p>
+<p class="lclintrun">bool.c:8: Right operand of || is non-boolean
+(char *): !i || s</p>
+<p class="lclintrun">bool.c:10: Test expression for if not bool,
+type char *: s</p>
+<p class="lclintrun">bool.c:12: Use of == with bool variables
+(risks inconsistency because</p>
+<p class="lclintrun">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+of multiple true values): b1 == b2</p>
+<p class="lclintrun">&nbsp;</p>
+<p class="lclintrun" style='page-break-after:avoid'>Finished
+checking --- 7 code warnings found</p></td></tr></table>
+<table cellspacing="0" cellpadding="0" hspace="0" vspace="0">
+<tr>
+<td valign="top" align="left" style=
+'padding-top:.1in;padding-right: 9.35pt;padding-bottom:.1in;padding-left:9.35pt'>
+<p class="MsoCaption"><a name="_Ref533964137"></a><a name=
+"_Toc534824608"></a><a name="_Ref534821769">Figure 4</a>.&nbsp;
+Boolean Checking</p></td></tr></table></center>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974953"></a><a name="3"><a name="_Ref534970776">4.3<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Abstract Types</a></a></h2>
+<p class="TextFontCX">Information hiding is a technique for
+handling complexity.&nbsp; By hiding implementation details,
+programs can be understood and developed in distinct modules and
+the effects of a change can be localized.&nbsp; One technique for
+information hiding&nbsp;is data abstraction.&nbsp; An
+abstract&nbsp;type is used to represent some natural program
+abstraction.&nbsp; It provides functions for manipulating instances
+of the type.&nbsp; The module that implements these functions is
+called the <i>implementation</i> module.&nbsp; We call the
+functions that are part of the implementation of an abstract type
+the <i>operations</i> of the type.&nbsp; Other modules that use the
+abstract type are called <i>clients</i>.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Clients may use the type name and operations,
+but should not manipulate or rely on the actual representation of
+the type.&nbsp; Only the implementation module may manipulate the
+representation of an abstract type.&nbsp; This hides information,
+since implementers and maintainers of client modules should not
+need to know anything about how the abstract type is implemented.
+It provides modularity, since the representation of an abstract
+type can be changed without having to change any client code.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Splint supports abstract types by detecting
+places where client code depends on the concrete representation of
+an abstract type.&nbsp; Some examples of abstraction violations
+detected by Splint are shown in Figure 5.</p>
+<p class="beforelist">&nbsp;</p>
+<p class="beforelist">To declare an abstract type, the
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>abstract</span></span>&nbsp;annotation is
+      added to a <span class="CodeText"><span style=
+      'font-size:10.0pt'>typedef</span></span>.&nbsp; For example
+      (in <span class="Keyword"><span style=
+      'font-size:10.0pt;font-family: Arial;color:windowtext'>mstring.h</span></span>),</p>
+<p class="example">typedef /*@abstract@*/ char *mstring;</p>
+<p class="TextFontCX">declares <span class=
+      "CodeText"><span style='font-size:10.0pt'>mstring</span></span>
+      as an abstract type.&nbsp; It is implemented using a
+      <span class="CodeText"><span style='font-size:10.0pt'>char
+      *</span></span>, but clients of the type should not depend on
+      or need to be aware of this.&nbsp; If it later becomes
+      apparent that a better representation such as a string table
+      should be used, we should be able to change the
+      implementation of <span class="CodeText"><span style=
+      'font-size: 10.0pt'>mstring</span></span> without having to
+      change or inspect any client code.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">In a client module, abstract types are
+checked by name, not structure.&nbsp; Splint reports an error if an
+instance of <span class="CodeText"><span style=
+'font-size:10.0pt'>mstring</span></span> is passed as a
+      <span class="CodeText"><span style='font-size:10.0pt'>char
+      *</span></span> (for instance, as an argument to <span class=
+      "CodeText"><span style=
+      'font-size: 10.0pt'>strlen</span></span>), since the
+      correctness of this call depends on the representation of the
+      abstract type.&nbsp; Splint also reports errors if any C
+      operator except assignment (<span class=
+      "CodeText"><span style='font-size:10.0pt'>=</span></span>) or
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>sizeof</span></span> is used on an
+      abstract type.&nbsp; The assignment operator is allowed since
+      its semantics do not depend on the representation of the type
+      (for abstract types whose instances can change value, a
+      client does need to know if assignment has copy or sharing
+      semantics as discussed in Section 4.3.2).&nbsp; The use of
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>sizeof</span></span>&nbsp;is also
+      permitted, since this is the only way for clients to allocate
+      pointers to the abstract type.&nbsp; Type casting objects to
+      or from abstract types in a client module is an abstraction
+      violation and will generate a warning message.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Normally, Splint will assume a type
+definition is not abstract unless the <span class=
+"Annot"><span style='font-size:10.0pt'>/*@abstract@*/</span></span>
+qualifier is used.&nbsp; If instead you want all user-defined types
+to be abstract types unless they are marked as <span class=
+"Annot"><span style='font-size:10.0pt'>concrete</span></span>, the
+<span class="Flag"><span style=
+'font-size:10.0pt'>+imp-abstract</span></span> flag can be
+used.&nbsp; This adds an implicit <span class=
+      "Annot"><span style='font-size:10.0pt'>abstract</span></span>
+      annotation to any <span class="CodeText"><span style=
+      'font-size:10.0pt'>typedef</span></span> that is not marked
+      with <span class="Annot"><span style=
+      'font-size:10.0pt'>/*@concrete@*/</span></span>.</p>
+<p class="TextFontCX">&nbsp;</p>
+<center>
+<table class="MsoNormalTable" border="0" cellspacing="0"
+cellpadding="0" style=
+'width:418.5pt;margin-left:.9pt;border-collapse:collapse; margin-left:-2.25pt;margin-right:-2.25pt'>
+<tr style='height:13.45pt'>
+<td valign="top" style=
+'width:211.5pt;border:solid black 1.5pt; border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt;height:13.45pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<span class="Keyword"><b><span style=
+'font-size:10.0pt; color:white'>palindrome.c</span></b></span></p></td>
+<td valign="top" style=
+'width:207.0pt;border-top:solid black 1.5pt; border-left:none;border-bottom:none;border-right:solid black 1.5pt; background:black;padding:0in 5.4pt 0in 5.4pt;height:13.45pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<b><span style='color:white'>Running
+Splint</span></b></p></td></tr>
+<tr style='height:196.2pt'>
+<td valign="top" style=
+'width:211.5pt;border:solid black 1.5pt; border-top:none;padding:0in 5.4pt 0in 5.4pt;height:196.2pt'>
+<p class="Verbatim"><span style='font-size:9.0pt'># include
+"bool.h"</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'># include
+"mstring.h"</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>&nbsp;</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>bool isPalindrome
+(mstring s)</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>{</span></p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>&nbsp;6</span></span> <span style=
+'font-size:9.0pt'>char *current = (char *) s;</span></p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>&nbsp;7</span></span> <span style=
+'font-size:9.0pt'>int i, len = (int) strlen (s);</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>&nbsp;</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>&nbsp; for (i =
+0; i &lt;= (len+1) / 2; i++)</span></p>
+<p class="Verbatim"><span style=
+'font-size:9.0pt'>&nbsp;&nbsp;&nbsp; {</span></p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>11</span></span><span style=
+'font-size:9.0pt'>&nbsp;&nbsp;&nbsp; if (current[i] !=
+s[len-i-1])</span></p>
+<p class="Verbatim"><span style=
+'font-size:9.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return
+FALSE;</span></p>
+<p class="Verbatim"><span style=
+'font-size:9.0pt'>&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>&nbsp; return
+TRUE;</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>}</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>&nbsp;</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>bool callPal
+(void)</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>{</span></p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>19</span></span><i><span style=
+'font-size:9.0pt;font-family:Arial'>&nbsp;</span></i>
+      <span style='font-size:9.0pt'>return (isPalindrome
+      ("bob"));</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>}</span></p></td>
+<td valign="top" style=
+'width:207.0pt;border-top:none;border-left: none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt;height:196.2pt'>
+<p class="lclintrun">&gt; splint palindrome.c</p>
+<p class="lclintrun">&nbsp;</p>
+<p class="lclintrun">palindrome.c:6: Cast from underlying</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; abstract type mstring:
+(char *)s</p>
+<p class="lclintrun">palindrome.c:7: Function strlen expects
+arg</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; 1 to be char * gets
+mstring: s</p>
+<p class="lclintrun">palindrome.c:11: Array fetch from
+non-array</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; (mstring): s[len - i -
+1]</p>
+<p class="lclintrun">palindrome.c:19: Function isPalindrome</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; expects arg 1 to be mstring
+gets char *:</p>
+<p class="lclintrun">&nbsp;&nbsp;&nbsp; "bob"</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="lclintrun">Finished checking --- 4 code warnings</p>
+<p class="TextFontCX"><span style=
+'font-size: 9.0pt;font-family:Times'>&nbsp;</span></p></td></tr></table>
+<table cellspacing="0" cellpadding="0" hspace="0" vspace="0">
+<tr>
+<td valign="top" style=
+'padding-top:0in;padding-right: 9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+<p class="MsoCaption"><a name="_Toc534824609"></a><a name=
+"_Toc347255385"></a><a name="_Ref344908730"></a><a name=
+"_Ref344908735">Figure 5</a>.&nbsp; Information Hiding
+Violations</p></td></tr></table></center>
+<p align="right"><i><span style=
+'font-size:9.0pt'>&nbsp;Traditionally, programming books wax
+mathematical when they arrive at the topic of abstract data
+types&#8230;<br>
+Such books make it seem as if you&#8217;d never actually use an
+abstract data type except as a sleep aid.</span></i></p>
+ 
+<p class="TextFontCX" align="right" style='text-align:right'>
+<i><span style=
+'font-size:9.0pt'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></i>
+<span style='font-size:9.0pt'>&nbsp;&nbsp;&nbsp;Steve
+McConnell</span></p>
+<p class="TextFontCX"><i>&nbsp;</i></p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974954"></a><a name="_Ref344892422"></a><a name=
+"_Ref344870884"></a><a name="_Toc344355398">4.3.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Controlling Access</a></h3>
+<p class="TextFontCX">Where code may manipulate the representation
+of an abstract type, we say the code has <i>access</i> to that
+type.&nbsp; If code has access to an abstract type, the
+representation of the type and the abstract type are
+indistinguishable.&nbsp; Usually, a single program module that is
+the only code that has access to the type representation implements
+an abstract type.&nbsp; Sometimes, more complicated access control
+is desired if the implementation of an abstract type is split
+across program files, or particular client code needs to access the
+representation.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="beforelist">There are a several ways of selecting what
+code has access the representation of an abstract type:</p>
+<p class="TextFontCX" style=
+'margin-left:12.95pt; text-indent:-12.95pt'><span style=
+'font-family:Symbol'>&#183;<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+Modules.&nbsp; An abstract type defined in <i><span style=
+'font-size: 10.0pt;font-family:Arial'>M</span></i><span class="Keyword">
+<span style=
+'font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>
+is accessible in <i><span style=
+'font-size:10.0pt;font-family:Arial'>M</span></i><span class=
+"Keyword"><span style=
+'font-size:10.0pt;font-family:Arial;color:windowtext'>.c</span></span>.&nbsp;
+Controlled by the <span class="Flag"><span style=
+'font-size:10.0pt'>accessmodule</span></span> flag.&nbsp; This
+means when <span class="Flag"><span style=
+'font-size:10.0pt'>accessmodule</span></span> is on, as it is by
+default, the module access rule is in effect.&nbsp; If
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>accessmodule</span></span> is off (when
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>-access-module</span></span> is used), the
+      module access rule is not in effect and an abstract type
+      defined in <i><span style=
+      'font-size:10.0pt;font-family:Arial'>M</span></i><span class=
+      "Keyword"><span style=
+      'font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>
+      is not necessarily accessible in <i><span style=
+      'font-size:10.0pt;font-family: Arial'>M</span></i><span class="Keyword">
+<span style=
+'font-size:10.0pt; font-family:Arial;color:windowtext'>.c</span></span>.</p>
+<p class="TextFontCX" style=
+'margin-left:12.95pt; text-indent:-12.95pt'><span style=
+'font-family:Symbol'>&#183;<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+File names.&nbsp; An abstract type named <span class=
+"CodeText"><i><span style='font-size:10.0pt'>type</span></i></span>
+is accessible in files named <span class=
+      "CodeText"><i><span style='font-size:10.0pt'>type.&lt;extension&gt;</span></i></span>.&nbsp;
+      For example, the representation of <span class=
+      "CodeText"><span style=
+      'font-size: 10.0pt'>mstring</span></span> is accessible in
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>mstring.h</span></span> and <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>mstring.c</span></span>.&nbsp; Controlled
+      by the <span class="Flag"><span style=
+      'font-size:10.0pt'>access-file</span></span>&nbsp;flag.</p>
+<p class="MsoListBullet"><span style=
+'font-family:Symbol'>&#183;<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+Function names.&nbsp; An abstract type named <span class=
+"CodeText"><i><span style=
+'font-size: 10.0pt'>type</span></i></span> may be accessible in a
+function named <span class="CodeText"><i><span style=
+'font-size:10.0pt'>type_name</span></i></span> or
+      <span class="CodeText"><i><span style=
+      'font-size:10.0pt'>typeName</span></i></span>.&nbsp; For
+      example, <span class="CodeText"><span style=
+      'font-size:10.0pt'>mstring_length</span></span> and
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>mstringLength</span></span> would have
+      access to the <span class="CodeText"><span style=
+      'font-size:10.0pt'>mstring</span></span> abstract type.&nbsp;
+      Controlled by <span class="Flag"><span style=
+      'font-size:10.0pt'>accessfunction</span></span>&nbsp;and the
+      naming convention&nbsp;(see Section 12).</p>
+<p class="TextFontCX" style=
+'margin-left:12.95pt; text-indent:-12.95pt'><span style=
+'font-family:Symbol'>&#183;<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+Access control comments. The syntax <span class=
+      "Annot"><span style='font-size:10.0pt'>/*@access
+      <i>type</i>,<sup>+</sup>@*/</span></span><a href="appNotes.html#_ftn2"
+      name="_ftnref2" title=""><span class=
+      "MsoFootnoteReference"><span class=
+      "MsoFootnoteReference"><span style=
+      'font-size:11.0pt;font-family:"Times New Roman"'>[2]</span></span></span></a>
+      allows the following code to access the representation of
+      <span class="CodeText"><i><span style=
+      'font-size:10.0pt'>type</span></i></span>.&nbsp; Similarly,
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>/*@noaccess</span></span> <span class=
+      "Annot"><span style=
+      'font-size:10.0pt'><i>type</i>,<sup>+</sup>@*/</span></span>
+      restricts access to the representation of <span class=
+      "CodeText"><i><span style=
+      'font-size: 10.0pt'>type</span></i></span>.&nbsp; The type in
+      a <span class="Annot"><span style=
+      'font-size:10.0pt'>noaccess</span></span> comment must have
+      been declared as an abstract type.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974955"></a><a name="_Toc344355399"></a><a name=
+"_Ref343240525"></a><a name="_Ref343240518">4.3.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Mutability</a></h3>
+<p class="TextFontCX">We can view types as being <i>mutable</i> or
+<i>immutable</i>.&nbsp; A type is mutable if passing it as a
+parameter to a function call can change the value of an instance of
+the type.&nbsp; For example, the primitive type <span class=
+"CodeText"><span style='font-size:10.0pt'>int</span></span> is
+immutable.&nbsp; If <span class="CodeText"><span style=
+'font-size:10.0pt'>i</span></span> is a local variable of type
+<span class="CodeText"><span style=
+'font-size:10.0pt'>int</span></span> and no variables point to the
+location where <span class="CodeText"><span style=
+'font-size:10.0pt'>i</span></span> is stored, the value of
+<span class="CodeText"><span style=
+'font-size:10.0pt'>i</span></span> must be the same before and
+after the call <span class="CodeText"><span style=
+'font-size:10.0pt'>f (i)</span></span>.&nbsp; Structure and union
+types are also immutable, since they are copied when they are
+passed as arguments.&nbsp; On the other hand, pointer types are
+mutable.&nbsp; If <span class="CodeText"><span style=
+'font-size:10.0pt'>x</span></span> is a local variable of type
+<span class="CodeText"><span style='font-size:10.0pt'>int
+*</span></span>, the value of <span class=
+      "CodeText"><span style='font-size:10.0pt'>*x</span></span>
+      (and hence, the value of the object <span class=
+      "CodeText"><span style='font-size:10.0pt'>x</span></span>)
+      can be changed by the function call <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>g(x)</span></span>.&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The mutability of a concrete type is
+determined by its type definition. For abstract types, mutability
+does not depend on the type representation but on what operations
+the type provides. If an abstract type has operations that may
+change the value of instances of the type, the type is
+mutable.&nbsp; If not, it is immutable.&nbsp; The value of an
+instance of an immutable type never changes.&nbsp; Since object
+sharing is noticeable only for mutable types, they are checked
+differently from immutable types.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="beforelist">The <span class="Annot"><span style=
+'font-size:10.0pt'>/*@mutable@*/</span></span> and
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>/*@immutable@*/</span></span> annotations
+      are used to declare an abstract type as mutable or
+      immutable.&nbsp; (If neither is used, the abstract type is
+      assumed to be mutable.)&nbsp; For example,</p>
+<p class="Verbatim">&nbsp;&nbsp; typedef /*@abstract@*/
+/*@mutable@*/ char *mstring;</p>
+<p class="Verbatim">&nbsp;&nbsp; typedef /*@abstract@*/
+/*@immutable@*/ int weekDay;</p>
+<p class="afterlist">declares <span class=
+      "CodeText"><span style='font-size:10.0pt'>mstring</span></span>
+      as a mutable abstract type and <span class=
+      "CodeText"><span style=
+      'font-size: 10.0pt'>weekDay</span></span> as an immutable
+      abstract type.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Clients of a mutable abstract type need to
+know the semantics of assignment.&nbsp; After the assignment
+expression <span class="CodeText"><span style='font-size:10.0pt'>s
+= t</span></span>, do <span class="CodeText"><span style=
+'font-size:10.0pt'>s</span></span> and <span class=
+"CodeText"><span style='font-size:10.0pt'>t</span></span> refer to
+the same object (that is, will changes to the value of
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>s</span></span> also change the value of
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>t</span></span>).</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Splint prescribes that all abstract types
+have sharing semantics, so <span class=
+      "CodeText"><span style='font-size:10.0pt'>s</span></span> and
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>t</span></span> would indeed be the same
+      object.&nbsp; Splint will produce a warning if a mutable type
+      is implemented with a representation (e.g., a <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>struct</span></span>) that does not
+      provide sharing semantics (controlled by <span class=
+      "Flag"><span style=
+      'font-size:10.0pt'>mutrep</span></span>&nbsp;flag).&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The mutability of an abstract type is not
+necessarily the same as the mutability of its representation. We
+could use the immutable concrete type <span class=
+"CodeText"><span style='font-size:10.0pt'>int</span></span> to
+represent mutable strings using an index into a string table, or
+declare <span class="CodeText"><span style=
+'font-size:10.0pt'>mstring</span></span> as immutable as long as no
+operations are provided that modify the value of an
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>mstring</span></span>.</p>
+
+      
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974956"></a><a name="_Toc344355422"></a><a name=
+"_Ref343109614">4.3.3<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Semi-Abstract Types</a></h2>
+<p class="TextFontCX">
+Sometimes it is useful to have a type that is abstract in some ways, but can be used with the standard numerical operators.  Splint supports numabstract types for this purpose.  The <span class="CodeText"><span style='font-size:10.0pt'>/*@numabstract@*/</span></span> annotation denotes a numabstract type.  Splint will report warnings when numabstract types are used inconsistently, but allow binary numeric operators to operate on two values of the same numabstract type.
+
+Several flags control the strictness of type checking for numabstract types:
+<span class="flag"><span style=
+      'font-size:10.0pt'>numabstract, numabstractcast, numabstractlit,  numabstractindex,
+</span></span>
+ and
+<span class="flag"><span style=
+      'font-size:10.0pt'> numabstractprint
+</span></span>.
+</p>
+
+
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974956"></a><a name="_Toc344355422"></a><a name=
+"_Ref343109614">4.4<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Polymorphism</a></h2>
+<p class="TextFontCX">In C, all declarators must be declared to
+have exactly one type.&nbsp; This makes it impossible to write
+functions that operate on more than one type of parameter &#8211;
+for example, we cannot use the same square function for
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span>s and <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>float</span></span>s.&nbsp; Because of the
+      stricter type checking made possible by Splint, it is often
+      useful to declare a parameter that has more than one possible
+      type.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Splint provides alternate types to indicate
+that a declaration may be one of several possible types.&nbsp; The
+<span class="Annot"><span style='font-size:10.0pt'>/*@alt
+<i>type</i>,<sup>+</sup>@*/</span></span> annotation creates a
+union type.&nbsp; For example, <span class=
+      "CodeText"><span style='font-size:10.0pt'>int</span></span>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>/*@alt </span></span><span class=
+      "Annot"><span style='font-size:10.0pt'>char,
+      unsigned</span></span> <span class=
+      "Annot"><span style=
+      'font-size:10.0pt'>char@*/</span></span><span class=
+      "CodeText"><span style='font-size:10.0pt'> c</span></span>
+      declares <span class="CodeText"><span style=
+      'font-size:10.0pt'>c</span></span> such that either an
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span>, <span class=
+      "CodeText"><span style='font-size:10.0pt'>char</span></span>
+      or <span class="CodeText"><span style=
+      'font-size:10.0pt'>unsigned char</span></span> value may be
+      assigned to it without warning.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">One use of alternate types is to specify the
+type of a macro that operates on multiple types of operands (see
+Section 11.2.1).&nbsp; Alternate types are also useful for
+declaring functions for which the return value may be safely
+ignored (see Section 8.4.2).&nbsp; A function can be declared to
+return <em>t</em> <span class="Annot"><span style=
+'font-size:10.0pt'>/*@alt void@*/</span></span> to indicate that it
+returns a value of type <span class=
+      "CodeText"><i><span style='font-size:10.0pt'>t</span></i></span>,
+      but there should be not warning if that value is ignored.</p>
+<p>
+<a href="sec5.html"><b>Next:</b> 5. Memory Management</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

@@ -1,0 +1,409 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="lclint-guide.css" title="style1">
+<title>LCLint User's Guide - Section 7: Value Constraints</title>
+</head>
+<body>
+#include "header.html"
+
+<h2>
+<a name="sec-7">
+7. Value Constraints
+</a></h2>
+LCLint can be used to constrain values of parameters, function results, global
+variables, and derived storage such as structure fields.  These constraints are
+checked at <i>interface points</i> -- where a function is called or returns.
+<a href="sec7.html#sec-7.1">Section 7.1</a> describes how to constrain parameters, return values and structures
+to detect use before definition errors.  A similar approach is used for
+restricting the use of possibly null pointers in <a
+href="sec7.html#sec-7.2">Section 7.2.</a>  To do both well, and avoid spurious errors, information about when and if a function returns if
+useful.  Annotations for documenting execution control are described in
+<a href="sec7.html#sec-7.3">Section 7.3</a>.<p>
+<p>
+
+<h2>
+<a name="RTFToC45">
+<a name="sec-7.1">7.1 Use Before Definition</A></a></a>
+</a></h2>
+Like many static checkers, LCLint detects instances where the value of a
+location is used before it is defined.  This analysis is done at the procedural
+level.  If there is a path through the procedure that  <p>
+uses a local variable before it is defined, a use before definition error is
+reported.  Use before definition checking is controlled by the <a href="appC.html#flag-usedef"><tt>usedef</tt></a> flag.<p>
+<p>
+LCLint can do more checking than standard checkers though, because the
+annotations can be used to describe what storage must be defined and what
+storage may be undefined at interface points. Unannotated references are
+expected to be completely defined at interface points.  This means all storage
+reachable from a global variable, parameter to a function, or function return
+value is defined before and after a function call.
+<a name="_Ref347204458"><a name="_Ref347811030"><a name="_Toc349905886">
+<h3>
+<a name="RTFToC46">
+<a name="sec-7.1.1">7.1.1 Undefined Parameters</A></a></a></a>
+</a></h3>
+Sometimes, function parameters or return values are expected to reference
+undefined or partially defined storage.  For example, a pointer parameter may
+be intended only as an address to store a result, or a memory allocator may
+return allocated but undefined storage.  The <tt>out</tt> annotation denotes a pointer
+to storage that may be undefined.<p>
+<p>
+LCLint does not report an error when a pointer to allocated but undefined
+storage is passed as an <tt>out</tt> parameter.  Within the body of a function, LCLint
+will assume an <tt>out</tt> parameter is allocated but not necessarily bound to a value,
+so an error is reported if its value is used before it is defined.  <p>
+<p>
+LCLint reports an error if storage reachable by the caller after the call is
+not defined when the function returns.  This can be suppressed by <a href="appC.html#flag-mustdefine"><tt>-mustdefine</tt></a>.
+When checking a call, an actual parameter corresponding to an <tt>out</tt> parameter is
+assumed to be completely defined after the call returns.<p>
+<p>
+When checking unannotated programs, many spurious use before definition errors
+may be reported   If <a href="appC.html#flag-impouts"><tt>impouts</tt></a> is on, no error is reported when an
+incompletely-defined parameter is passed to a formal parameter with no
+definition annotation, and the actual parameter is assumed to be defined after
+the call.  The <tt>/&#42;@in@&#42;/</tt> annotation can be used to denote a parameter that must
+be completely defined, even if impouts is on.  If impouts is off, there is an
+implicit in annotation on every parameter with no definition annotation.
+<a name="_Ref347853047"><a name="_Toc349905887">
+
+<p>
+<a href="fig13.html">Figure 13.  Use before definition.</a>
+</p>
+
+<h3>
+<a name="RTFToC47">
+<a name="sec-7.1.2">7.1.2 Relaxing Checking</A></a></a>
+</a></h3>
+The reldef annotation relaxes definition checking for a particular declaration.
+Storage declared with a reldef annotation is assumed to be defined when it is
+used, but no error is reported if it is not defined before it is returned or
+passed as a parameter.<p>
+<p>
+It is up to the programmer to check reldef fields are used correctly.   They
+should be avoided in most cases, but may be useful for fields of structures
+that may or may not be defined depending on other constraints.  
+<a name="_Ref347853043"><a name="_Toc349905888">
+<h3>
+<a name="RTFToC48">
+<a name="sec-7.1.3">7.1.3 Partially Defined Structures</A></a></a>
+</a></h3>
+The partial annotated can be used to relax checking of structure fields.  A
+structure with undefined fields may be passed as a partial parameter or
+returned as a partial result.  Inside a function body, no error is reported
+when the field of a partial structure is used.  After a call, all fields of a
+structure that is passed as a partial parameter are assumed to be completely
+defined.<p>
+
+
+<a name="_Ref347764461"><a name="_Toc349905889"></b>
+<h3>
+<a name="RTFToC49">
+<a name="sec-7.1.4">7.1.4 Global Variables</A></a></a>
+</a></h3>
+Special annotations can be used in the globals list of a function declaration
+(<a href="sec4.html#sec-4.2">Section 4.2</a>) to describe the states of global variables before and after the
+call.<p>
+<p>
+If a global is preceded by undef, it is assumed to be undefined before the
+call. Thus, no error is reported if the global is not defined when the function
+is called, but an error is reported if the global is used in the function body
+before it is defined.<p>
+<p>
+The killed annotation denotes a global variable that may be undefined when the
+call returns.  For globals that contain dynamically allocated storage, a killed
+global variable is similar to an only parameter (<a href="sec5.html#sec-5.2">Section 5.2</a>).  An error is
+reported if it contains the only reference to storage that is not released
+before the call returns.<p>
+<p>
+<a href="fig14.html">Figure 14.  Annotated globals lists.</a>
+<p>
+<a name="_Ref343064114"><a name="_Toc344355416"><a name="_Toc349905890"></b>
+<h2>
+<a name="RTFToC50">
+<a name="sec-7.2">7.2 Null Pointers</A></a></a></a>
+</a></h2>
+A common cause of program failures is when a null pointer is dereferenced.
+LCLint detects these errors by distinguishing possibly NULL pointers at
+interface boundaries.<p>
+<p>
+The null annotation is used to indicate that a pointer value may be NULL.  A
+pointer declared with no null annotation, may not be NULL.  If null checking is
+turned on (controlled by null), LCLint will report an error when a possibly
+null pointer is passed as a parameter, returned as a result, or assigned to an
+external reference with no null qualifier.<p>
+<p>
+If a pointer is declared with the null annotation, the code must check that it
+is not NULL on all paths leading to the a dereference of the pointer (or the
+pointer being returned or passed as a value with no null annotation).
+Dereferences of possibly null pointers may be protected by conditional
+statements or assertions (to see how assert is declared see <a href="sec7.html#sec-7.3">Section 7.3</a>) that
+check the pointer is not NULL.<p>
+<p>
+Consider two implementations of firstChar in <a href="fig15.html">Figure 15</a>. For firstChar1, LCLint
+reports an error since the pointer that is dereferenced is declared with a null
+annotation.  For firstChar2, no error is reported since the true branch of the
+s == NULL if statement returns, so the dereference of s is only reached if s is
+not NULL.<p>
+<h3>
+<a name="RTFToC51">
+<a name="sec-7.2.1">7.2.1 Predicate Functions</A></a></a>
+</a></h3>
+Another way to protect null dereference, is to declare a function using
+falsenull or truenull and call the function in a conditional statement before
+the null-annotated pointer is dereferenced.  The falsenull and truenull
+annotations may only be used on return values for functions that return a
+boolean<a href="guide_fn.html#fn19">[19]</a> result and whose first argument is
+a possibly null pointer.<p>
+<p>
+A function is annotated with <tt>truenull</tt> is assumed to return TRUE if its first
+parameter is NULL and FALSE otherwise. For example, if isNull is declared as,
+<pre>
+   /&#42;@truenull@&#42;/ bool isNull (/&#42;@null@&#42;/ char &#42;x);
+</pre>
+we could write firstChar2:
+<pre>
+   char firstChar2 (/&#42;@null@&#42;/ char &#42;s)
+   {
+      if (isNull (s)) return '\0';
+      return &#42;s;
+   }
+</pre>
+No error is reported since the dereference of s is only reached if isNull(s) is
+false, and since isNull is declared with the truenull annotation this means s
+must not be null.<p>
+<p>
+The <tt>falsenull</tt> annotation is not quite the opposite of truenull.  If a function
+declared with falsenull returns TRUE, it means its parameter is not NULL.  If
+it returns FALSE, the parameter may or may not be NULL.<p>
+<p>
+For example, we could define isNonEmpty to return TRUE if its parameter is not
+NULL and has least one character before the NUL terminator:
+<pre>
+   /&#42;@falsenull@&#42;/ bool isNonEmpty (/&#42;@null@&#42;/ char &#42;x)
+   {
+     return (x != NULL &amp;&amp; &#42;x != `\0');
+   }
+</pre>
+LCLint does not check that the implementation of a function declared with
+falsenull or truenull is consistent with its annotation, but assumes the
+annotation is correct when code that calls the function is checked.
+<a name="_Toc349905892">
+<h3>
+<a name="RTFToC52">
+<a name="sec-7.2.2">7.2.2 Overriding Null Types</A></a>
+</a></h3>
+The null annotation may be used in a type definition to indicate that all
+instances of the type may be NULL.  For declarations of a type declared using
+null, the null annotation in the type definition may be overridden with
+notnull. This is particularly useful for parameters to hidden static operations
+of abstract types where the null test has already been done before the function
+is called, or function results of the type which are never NULL.  For an
+abstract type, notnull may not be used for parameters to external functions,
+since clients should not be aware of when the concrete representation may by
+NULL.  Parameters to static functions in the implementation module, however,
+may be declared using notnull, since they may only be called from places where
+the representation is accessible.  Return values for static or external
+functions may be declared using notnull. <p>
+<p>
+<a href="fig16.html">Figure 16.  Using notnull.</a>
+<p>
+<a name="_Ref347853058"><a name="_Toc349905893"></b>
+<h3>
+<a name="RTFToC53">
+<a name="sec-7.2.3">7.2.3 Relaxing Null Checking</A></a></a>
+</a></h3>
+An additional annotation, relnull may be used to relax null checking (relnull
+is analogous to reldef for definition checking).  No error is reported when a
+relnull value is dereferenced, or when a possibly null value is assigned to an
+identifier declared using relnull. <p>
+<p>
+This is generally used for structure fields that may or may not be null
+depending on some other constraint.  LCLint does not report and error when NULL
+is assigned to a relnull reference, or when a relnull reference is
+dereferenced.  It is up to the programmer to ensure that this constraint is
+satisfied before the pointer is dereferenced.
+<a name="_Toc344355417"><a name="_Ref344873752"><a name="_Ref344894343"><a name="_Ref344907653"><a name="_Ref345859337"><a name="_Toc349905894">
+<h2>
+<a name="RTFToC54">
+<a name="sec-7.3">7.3 Execution</A></a></a></a></a></a></a>
+</a></h2>
+To detect certain errors and avoid spurious errors, it is important to know
+something about the control flow behavior of called functions. Without
+additional information, LCLint assumes that all functions eventually return and
+execution continues normally at the call site.  <p>
+<p>
+The exits annotation is used to denote a function that never returns.  For
+example,
+<pre>
+extern /&#42;@exits@&#42;/ void fatalerror (/&#42;@observer@&#42;/ char &#42;s);
+</pre>
+declares fatalerror to never return.  This allows LCLint to correctly analyze
+code like,
+<pre>
+   if (x == NULL) fatalerror ("Yikes!");
+   &#42;x = 3;
+</pre>
+Other functions may exit, but sometimes (or usually) return normally.  The
+mayexit annotation denotes a function that may or may not return.  This doesn't
+help checking much, since LCLint must assume that a function declared with
+mayexit returns normally when checking the code.<p>
+<p>
+To be more precise, the trueexit and falseexit annotations may be used
+Similar to truenull and falsenull (see <a href="sec7.html#sec-7.2.1">Section 7.2.1</a>), trueexit and falseexit
+mean that a function always exits if the value of its first argument is TRUE or
+FALSE respectively.  They may be used only on functions whose first argument
+has a boolean type.  <p>
+<p>
+A function declared with trueexit must exit if the value of its argument is
+TRUE, and a function declared with falseexit must exit if the value of its
+argument is FALSE.  For example, the standard library declares assert as<a
+href="guide_fn.html#fn20">[20]</a>:</a><p><pre>
+/&#42;@falseexit@&#42;/ void assert (/&#42;@sef@&#42;/ bool /&#42;@alt int@&#42;/ pred);
+</pre>
+This way, code like,
+<pre>
+   assert (x != NULL);<p>
+   &#42;x = 3;
+</pre>
+is checked correctly, since the falseexit annotation on assert means the
+deference of x is not reached is x != NULL is false.
+
+<h2>
+<a name="sec-7.4">7.4 Special Clauses
+</a></h2>
+
+Sometimes it is necessary to specify function interfaces at a lower
+level than is possible with the standard annotations.  For example, if a
+function defines some fields of a returned structure but does not define
+all the fields.  The <tt>/&#42;@special@&#42;/</tt> annotation is used to mark a
+parameter, global variable, or return value that is described using
+special clauses.  The usual implicit definition rules do not apply to a
+special declaration.
+<p>
+Special clauses may be used to constrain the state of a parameter or
+return value before or after a call.  One or more special clauses may
+appear in a function declaration, before the modifies or globals
+clauses.  Special clauses may be listed in any order, but the same
+special clause should not be used more than once.  Parameters used in
+special clauses must be annotated with <tt>/&#42;@special@&#42;/</tt> in the function
+header.  In a special clause list, result is used to refer to the return
+value of the function.  If result appears in a special clause, the
+function return value must be annotated with <tt>/&#42;@special@&#42;/</tt>.
+<p>
+The following special clauses are used to describe the definition state
+or parameters before and after the function is called and the return
+value after the function returns:
+<p>
+
+<tt>/&#42;@uses </tt><em>references</em><tt>@&#42;/</tt> 
+<blockquote>
+References in the uses clause must be completely defined before the
+function is called.  They are assumed to be defined at function entrance
+when the function is checked.
+</blockquote>
+
+<tt>/&#42;@sets </tt><em>references</em><tt>@&#42;/</tt>
+<blockquote>
+References in the sets clause must be allocated before the function is
+called.  They are completely defined after the function returns. When
+the function is checked, they are assumed to be allocated at function
+entrance and an error is reported if there is a path on which they are
+not defined before the function returns.
+</blockquote>
+
+<tt>/&#42;@defines </tt><em>references</em><tt>@&#42;/</tt>
+<blockquote>
+References in the defines clause must not refer to unshared, allocated
+storage before the function is called.  They are completely defined
+after the function returns. When the function is checked, they are
+assumed to be undefined at function entrance and an error is reported if
+there is a path on which they are not defined before the function
+returns.
+</blockquote>
+
+<tt>/&#42;@allocates </tt><em>references</em><tt>@&#42;/</tt>
+<blockquote>
+References in the allocates clause must not refer to unshared, allocated
+storage before the function is called.  They are allocated but not
+necessarily defined after the function returns. When the function is
+checked, they are assumed to be undefined at function entrance and an
+error is reported if there is a path on which they are not allocated
+before the function returns.
+</blockquote>
+
+<tt>/&#42;@releases </tt><em>references</em><tt>@&#42;/</tt>
+<blockquote>
+References in the releases clause are deallocated by the function.  They
+must correspond to storage which could be passed as an only parameter
+before the function is called, and are dead pointers after the function
+returns.  When the function is checked, they are assumed to be allocated
+at function entrance and an error is reported if they refer to live,
+allocated storage at any return point.
+</blockquote>
+<p>
+
+Additional generic special clauses can be used to describe other aspects
+of the state of inner storage before or after a call.  Generic special
+clauses have the form <em>state</em><tt>:</tt><em>constraint</em>.  The
+state is either <tt>pre</tt> (before the function is called), or
+<tt>post</tt> (after the function is called).  The constraint is similar
+to an annotation.  The following constraints are supported:
+
+<blockquote>
+<h4>Aliasing Annotations</h4>
+
+<tt>pre:only</tt>, <tt>post:only</tt><br>
+<tt>pre:shared</tt>, <tt>post:shared</tt><br>
+<tt>pre:owned</tt>, <tt>post:owned</tt><br>
+<tt>pre:dependent</tt>, <tt>post:dependent</tt><br>
+<blockquote>
+References refer to <tt>only</tt>, <tt>shared</tt>, <tt>owned</tt> or
+<tt>dependent</tt> storage before (<tt>pre</tt>) or after
+(<tt>post</tt>) the call.
+</blockquote>
+
+<h4>Exposure Annotations</h4>
+
+<tt>pre:observer</tt>, <tt>post:observer</tt><br>
+<tt>pre:exposed</tt>, <tt>post:exposed</tt><br>
+<blockquote>
+
+References refer to <tt>observer</tt> or <tt>exposed</tt> storage before
+(<tt>pre</tt>) or after (<tt>post</tt>) the call.
+
+</blockquote>
+
+<h4>Null State Annotations</h4>
+
+<tt>pre:isnull</tt>, <tt>post:isnull</tt>
+<blockquote>
+References have the value <tt>NULL</tt> before (<tt>pre</tt>) or after
+(<tt>post</tt>) the call. Note, this is not the same name or meaning as
+the null annotation (which means the value may be <tt>NULL</tt>.)  
+</blockquote>
+<tt>pre:notnull</tt>, <tt>post:notnull</tt>
+<blockquote>
+References do not have the value <tt>NULL</tt> before (<tt>pre</tt>) or
+after (<tt>post</tt>) the call. 
+</blockquote>
+</blockquote>
+
+Some examples of special clauses are shown in <a
+href="fig17.html">Figure 17</a>. The defines clause for
+<tt>record_new</tt> indicates that the <tt>id</tt> field of the
+structure pointed to by the result is defined, but the <tt>name</tt>
+field is not.  So, <tt>record_create</tt> needs to call
+<tt>record_setName</tt> to define the <tt>name</tt> field.  Similarly,
+the releases clause for <tt>record_clearName</tt> indicates that no
+storage is associated with the <tt>name</tt> field of its parameter
+after the return, so no failure to deallocate storage message is
+produced for the call to <tt>free</tt> in <tt>record_free</tt>.
+
+<p>
+<b>Next: <A HREF="sec8.html">Macros</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+#include "footer.html"
+

@@ -1,0 +1,308 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="lclint-guide.css" title="style1">
+<title>LCLint User's Guide - Section 3: Abstract Types</title>
+</head>
+<body>
+#include "header.html"
+
+<h2>
+<a name="sec-3">
+3. Abstract Types</a>
+</h2>
+<blockquote>
+<em>
+Traditionally, programming books wax mathematical when they arrive at the topic
+of abstract data types&#133; Such books make it seem as if you'd never actually
+use an abstract data type except as a sleep aid. </em>
+<p>
+- Steve McConnell
+</blockquote>
+<p>
+Information hiding is a technique for handling complexity.  By hiding
+implementation details, programs can be understood and developed in distinct
+modules and the effects of a change can be localized.  One technique for
+information hiding is data abstraction.  An abstract type is used to represent
+some natural program abstraction.  It provides functions for manipulating
+instances of the type.  The module that implements these functions is called
+the <i>implementation</i> module.  We call the functions that are part of the
+implementation of an abstract type the <i>operations</i> of the type.  Other
+modules that use the abstract type are called <i>clients</i>.<p>
+<p>
+Clients may use the type name and operations, but should not manipulate or rely
+on the actual representation of the type.  Only the implementation module may
+manipulate the representation of an abstract type.  This hides information,
+since implementers and maintainers of client modules should not need to know
+anything about how the abstract type is implemented. It provides modularity,
+since the representation of an abstract type can be changed without having to
+change any client code.<p>
+<p>
+LCLint supports abstract types by detecting places where client code depends on
+the concrete representation of an abstract type.  <p>
+To declare an abstract type, the abstract annotation is added to a typedef.
+For example (in <tt>mstring.h</tt>),
+<pre>
+typedef /&#42;@abstract@&#42;/ char &#42;mstring;
+</pre>
+declares <tt>mstring</tt> as an abstract type.  It is implemented using a <tt>char &#42;</tt>, but
+clients of the type should not depend on or need to be aware of this.  If it
+later becomes apparent that a better representation such as a string table
+should be used, we should be able to change the implementation of mstring
+without having to change or inspect any client code.<p>
+<p>
+In a client module, abstract types are checked by name, not structure.  LCLint
+reports an error if an instance of mstring is passed as a char &#42; (for instance,
+as an argument to strlen), since the correctness of this call depends on the
+representation of the abstract type.  LCLint also reports errors if any C
+operator except assignment (=) or sizeof is used on an abstract type.  The
+assignment operator is allowed since its semantics do not depend on the
+representation of the type.<a href="guide_fn.html#fn4">[4]</a>
+
+The use of <tt>sizeof</tt> is also permitted, since this is the only way for clients
+to allocate pointers to the abstract type.  Type casting objects to or from
+abstract types in a client module is an abstraction violation and will generate
+a warning message.</a><p>
+<p>
+Normally, LCLint will assume a type definition is not abstract unless the
+<tt>/&#42;@abstract@&#42;/</tt> qualifier is used.  If instead you want all user-defined types
+to be abstract types unless they are marked as concrete, the <a href="appC.html#flag-impabstract"><tt>+impabstract</tt></a> flag
+can be used.  This adds an implicit abstract annotation to any typedef that is
+not marked with <tt>/&#42;@concrete@&#42;/</tt>.<p>
+<p>
+Some examples of abstraction violations detected by LCLint are shown in
+<a href="fig2.html">Figure 2</a>.<p>
+
+<h2>
+<a name="RTFToC9">
+<a name="sec-3.1">3.1 Access</A></a></a></a></a>
+</a></h2>
+Where code may manipulate the representation of an abstract type, we say the
+code has <i>access</i> to that type.  If code has access to an abstract type,
+the representation of the type and the abstract type are indistinguishable.
+Usually, an abstract type is implemented by a single program module that is the
+only code that has access to the type representation.  Sometimes, more
+complicated access control is desired if the implementation of an abstract type
+is split across program files, or particular client code needs to access the
+representation.<p>
+<p>
+There are a several ways of selecting what code has access the representation
+of an abstract type:<p>
+<ul>
+<li>	Modules.  An abstract type defined in <i>M</i>.h is accessible in
+<i>M</i>.c.  Controlled by the accessmodule flag.  This means when accessmodule
+is on, as it is by default, the module access rule is in effect.  If
+accessmodule is off (when <a href="appC.html#flag-accessmodule"><tt>-accessmodule</tt></a> is used), the module access rule is not
+in effect and an abstract type defined in <i>M</i>.h is not necessarily
+accessible in <i>M</i>.c<p>
+<li>	File names.  An abstract type named <i>type</i> is accessible in files
+named <i>type</i>.<i>&lt;extenstion&gt;</i>.  For example, the representation
+of mstring is be accessible in mstring.h and mstring.c.  Controlled by the
+<a href="appC.html#flag-accessfile"><tt>accessfile</tt></a> flag.<p>
+<li>	Function names.  An abstract type named <i>type</i> may be accessible in
+a function named <i>type</i>_<i>name</i> or <i>typeName</i>.  For example,
+mstring_length and mstringLength would have access to the mstring abstract
+type.  Controlled by the naming convention (see <a
+href="sec9.html">Section 9</a>).<p>
+<li>	Access control comments. The syntax /&#42;@access <i>type</i>,+@&#42;/<a
+href="guide_fn.html#fn6">[6]</a> allows the following code to access the
+representation of <i>type</i>.  Similarly, /&#42;@noaccess <i>type</i>,+@&#42;/
+restricts access to the representation of <i>type</i>.  The type in a noaccess
+comment must have been declared as an abstract type.
+<a name="_Ref343240518"><a name="_Ref343240525"><a name="_Toc344355399"><a name="_Toc349905851">
+</ul>
+<h2>
+<a name="RTFToC10">
+<a name="sec-3.2">3.2 Mutability</A></a></a></a></a>
+</a></h2>
+We can view types as being <i>mutable</i> or <i>immutable</i>.  A type is
+mutable if the value of an instance of the type can be changed by passing it as
+a parameter to a function call.<a href="guide_fn.html#fn7">[7]</a>  For example, the
+primitive type <tt>int</tt> is immutable.  If i is a local variable of type int and
+no variables point to the location where i is stored, the value of i must be
+the same before and after the call f(i).  Structure and union types are also
+immutable, since they are copied when they are passed as arguments.  On the
+other hand, pointer types are mutable.  If x is a local variable of type int &#42;,
+the value of &#42;x (and hence, the value of the object x) can be changed by the
+function call g(x).  <p>
+<p>
+The mutability of a concrete type is determined by its type definition. For
+abstract types, mutability does not depend on the type representation but on
+what operations the type provides. If an abstract type has operations that may
+change the value of instances of the type, the type is mutable.  If not, it is
+immutable.  The value of an instance of an immutable type never changes.  Since
+object sharing is noticeable only for mutable types, they are checked
+differently from immutable types.<p>
+The <tt>/&#42;@mutable@&#42;/</tt> and <tt>/&#42;@immutable@&#42;/</tt> annotations are used to declare an
+abstract type as mutable or immutable.  (If neither is used, the abstract type
+is assumed to be mutable.)  For example,<p>
+<code>
+   typedef /&#42;@abstract@&#42;/ /&#42;@mutable@&#42;/ char &#42;mstring;
+   typedef /&#42;@abstract@&#42;/ /&#42;@immutable@&#42;/ int weekDay;
+</code>
+declares mstring as a mutable abstract type and weekDay as  an immutable
+abstract type.<p>
+<p>
+Clients of  a mutable abstract type need to know the semantics of assignment.
+After the assignment expression s = t, do s and t refer to the same object
+(that is, will changes to the value of s also change the value of t)?<p>
+<p>
+LCLint prescribes that all abstract types have sharing semantics, so s and t
+would indeed be the same object.  LCLint will report an error if a mutable type
+is implemented with a representation (e.g., a struct) that does not provide
+sharing semantics (controlled by mutrep flag).  <p>
+<p>
+The mutability of an abstract type is not necessarily the same as the
+mutability of its representation. We could use the immutable concrete type int
+to represent mutable strings using an index into a string table, or declare
+mstring as immutable as long as no operations are provided that modify the
+value of an mstring.
+<a name="_Toc344355400"><a name="_Ref344892413"><a name="_Toc349905852">
+<h2>
+<a name="RTFToC11">
+<a name="sec-3.3">3.3 Boolean Types</A></a></a></a>
+</a></h2>
+Standard C has no boolean representation - the result of a comparison operator
+is an integer, and no type checking is done for test expressions.  Many common
+errors can be detected by introducing a distinct boolean type and stronger type
+checking.<p>
+<p>
+Use the <tt>-booltype </tt><em>name</em> flag to select the type name
+used to represent boolean values<a
+href="guide_fn.html#fn8">[8]</a>  Relations,
+comparisons and certain standard library functions are declared to return bool
+types.<p>
+
+LCLint checks that the test expression in an if, while, or for statement
+or an operand to &amp;&amp;, || or ! is a boolean.  If the type of a test
+expression is not a boolean, LCLint will report an error depending on the type
+of the test expression and flag settings.  If the test expression has pointer
+type, LCLint reports an error if predboolptr is on (this can be used to prevent
+messages for the idiom of  testing if a pointer is not null without a
+comparison).  If it is type int, an error is reported if predboolint is on.
+For all other types, LCLint reports an error if predboolothers is on.<p>
+<p>
+Since using <tt>=</tt> instead of <tt>==</tt> is such a common bug, reporting of test expressions
+that are assignments is controlled by the separate predassign flag.  The
+message can be suppressed by adding extra parentheses around the test
+expression.<p>
+<p>
+<a href="appC.html">Apppendix C</a> (page 
+<a name="typeflags"></a>50)
+describes other flags for controlling boolean checking.
+<a name="_Toc344355401"><a name="_Toc349905853">
+<p>
+<a href="fig3.html">Figure 3.  Boolean Checking</a>
+<h2>
+<a name="RTFToC12">
+<a name="sec-3.4">3.4 Primitive C Types</A></a></a>
+</a></h2>
+<blockquote>
+<em>Two types have <i>compatible type</i> if their types are the same.</em><br>
+- ANSI C, 3.1.2.6.
+<br>
+<p>
+<em>Two types need not be identical to be compatible.</em><br>
+- ANSI C, footnote to 3.1.2.6.
+</blockquote>
+LCLint supports stricter checking of primitive C types.  The char and enum
+types can be checked as distinct types, and the different numeric types can be
+type-checked strictly.
+<a name="_Toc349905854">
+<h4>
+<a name="RTFToC13">
+<a name="sec-3.4.1">3.4.1 Characters</A></a>
+</a></h4>
+The primitive char type can be type-checked as a distinct type.  If char is
+used as a distinct type, common errors involving assigning ints to chars are
+detected.<p>
+<p>
+The <a href="appC.html#flag-charint"><tt>+charint</tt></a> flag can be used for checking legacy programs where char and int
+are used interchangeably.  If charint is on, char types indistinguishable from
+ints.  To keep char and int as distinct types, but allow chars to be used to
+index arrays, use <a href="appC.html#flag-charindex"><tt>+charindex</tt></a>.
+<a name="_Toc349905855">
+<h4>
+<a name="sec-3.4.2">3.4.2 Enumerators</A></a>
+</a></h4>
+Standard C treats user-declared enum types just like integers.  An arbitrary
+integral value may be assigned to an enum type, whether or not it was listed as
+an enumerator member.  LCLint checks each user-defined enum type as distinct
+type.  An error is reported if a value that is not an enumerator member is
+assigned to the enum type, or if an enum type is used as an operand to an
+arithmetic operator.<p>
+<p>
+If the enumint flag is on, enum and int types may be used interchangeably.
+Like charindex, if  the enumindex flag is on, enum types may be used to index
+arrays.
+<h4>
+<a name="sec-3.4.3">3.4.3 Numeric Types</A></a>
+</a></h4>
+LCLint reports where numeric types are used in dangerous or inconsistent ways.
+With the strictest checking, LCLint will report an error anytime numeric types
+do not match exactly.  If the relaxquals flag is on, only those
+inconsistencies which may corrupt values are reported.  For example, if an int
+is assigned to a variable of type long (or passed as a long formal parameter),
+LCLint will not report an error if relaxquals is on since a long must have
+at least enough bits to store an int without data loss.  On the other hand, an
+error would be reported if the long were assigned to an int, since the int type
+may not have enough bits to store the long value.<p>
+<p>
+Similarly, if a signed value is assigned to an unsigned, LCLint will report an
+error since an unsigned type cannot represent all signed values correctly.  If
+the ignoresigns flag is on, checking is relaxed to ignore all sign qualifiers
+in type comparisons (this is not recommended, since it will suppress reporting
+of real bugs, but may be necessary for quickly checking certain legacy code).  
+
+<h4>
+<a name="sec-3.4.4">3.4.4 Arbitrary Integral Types</A></a>
+</a></h4>
+
+LCLint supports three different kinds of arbitrary integral types:
+<p>
+<blockquote>
+<tt>/&#42;@integraltype@&#42;/</tt>
+<blockquote>
+An arbitrary integral type.  The actual type may be any one of
+<tt>short</tt>, <tt>int</tt>, <tt>long</tt>, <tt>unsigned short</tt>, <tt>unsigned</tt>, or <tt>unsigned long</tt>. 
+</blockquote>
+<p>
+<tt>/&#42;@unsignedintegraltype@&#42;/</tt>
+<blockquote>
+An arbitrary unsigned integral type.  The actual type may be any one of
+<tt>unsigned short</tt>, <tt>unsigned</tt>, or <tt>unsigned long</tt>.
+</blockquote>
+
+<p>
+<tt>/&#42;@signedintegraltype@&#42;/</tt>
+<blockquote>
+An arbitrary signed integral type.  The actual type may be any one of
+<tt>short</tt>, <tt>int</tt>, or <tt>long</tt>. 
+</blockquote>
+</blockquote>
+<p>
+LCLint reports an error if the code depends on the actual representation
+of a type declared as an arbitrary integral.  The <a
+href="appC.html#flag-matchanyintegral"><tt>match-any-integral</tt></a>
+flag relaxes checking and allows an arbitrary integral type is allowed
+to match any integral type. 
+
+<p>
+
+Other flags set the arbitrary integral types to a concrete type.  These
+should only be used if portability to platforms that may use different
+representations is not important.  The <tt>long-integral</tt> and
+<tt>long-unsigned-integral</tt> flags set the type corresponding to
+<tt>/&#42;@integraltype@&#42;/</tt> to be <tt>unsigned long</tt> and
+<tt>long</tt> respectively. The <tt>long-unsigned-unsigned-integral</tt>
+flag sets the type corresponding to <tt>/&#42;@unsignedintegraltype@&#42;/</tt>
+to be <tt>unsigned long</tt>. The <tt>long-signed-integral</tt>
+flag sets the type corresponding to <tt>/&#42;@signedintegraltype@&#42;/</tt> to
+be <tt>long</tt>.
+
+<p>
+<b>Next: <A HREF="sec4.html">Function Interfaces</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+#include "footer.html"
+

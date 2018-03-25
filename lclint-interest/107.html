@@ -1,0 +1,174 @@
+<h3>lclint-interest message 107</h3>
+<pre>
+From matteo@dotto.usr.dsi.unimi.it Thu Sep 26 11:55:50 1996
+From: Matteo Vaccari <matteo@dotto.usr.dsi.unimi.it>
+Subject: Re: Please subscribe
+To: lclint-interest@larch.lcs.mit.edu
+Date: Thu, 26 Sep 1996 17:46:31 +0200 (MET DST)
+X-Mailer: ELM [version 2.4 PL24]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Content-Length: 1829      
+
+
+
+> Please post a brief message introducing yourself and describing your
+> professional interests.  Feel free to also include any ideas you
+> have for lclint development or comments on your experiences using
+> lclint.
+
+
+I am a PhD student at the University of Milano.  My main field of
+interest is in derivation of programs, usually by means of
+paper-and-pencil.  I also did some work with automated theorem proving
+systems, mostly HOL.  I like HOL, but I prefer to concentrate on
+finding nice notations and formalisms to make derivations simpler and
+crisper.  
+
+While I think that learning program derivation techniques greatly
+enhances one's programming skills, it is clear that these techniques
+are not sufficient.  I'm very much in favor of powerful static
+analysis tools, rather than powerful debuggers.
+
+My interest in lclint is simply for personal use in my programming
+work.  Speaking of which, since I do most of my programming on the
+Macintosh, I hope to be able to use lclint to check Mac C code.  There
+are a few C extensions that are commonplace on the Mac; for instance
+this is a common idiom in header files:
+
+	pascal void Debugger(void) = 0xA9FF;
+
+and also this:
+
+	short ApFontID:0x984;
+
+(the latter means that variable ApFontID should be found at the given
+address). 
+
+My plan is to copy a set of Mac header files to a Linux machine, and
+edit them to take away all this clutter.  Then I could check my Mac
+sources on Linux.
+
+As far as I understand, in order to fully benefit from lclint I should
+also add annotations to function prototypes; it is a daunting task
+since there are several hundreds of them.  If someone else interested
+we could share some work (I do a few headers, you do some others).
+
+Regards,
+
+Matteo Vaccari
+
+-- 
+Matteo Vaccari                             http://eolo.usr.dsi.unimi.it/~matteo
+
+
+
+From erik@it.et.tudelft.nl Thu Sep 26 11:55:56 1996
+From: erik@it.et.tudelft.nl (Erik Mouw)
+Subject: Introduction
+To: lclint-interest@larch.lcs.mit.edu (LCLint interest mailing list)
+Date: Thu, 26 Sep 96 17:07:25 MET DST
+In-Reply-To: <9609261258.AA06153@larch.lcs.mit.edu>; from "David Evans" at Sep 26, 96 8:58 am
+X-Mailer: ELM [version 2.3 PL11]
+
+Hello everybody on the list,
+
+After my subscription to this list, I got the following message back:
+
+> Please post a brief message introducing yourself and describing your
+> professional interests.  Feel free to also include any ideas you have
+> for lclint development or comments on your experiences using lclint.
+
+So here I go:
+
+My name is Erik Mouw and I am a M.Sc. student in electrical
+engineering at the Delft University of Technology (T.U. Delft). I am
+a member of the Information Theory group. Currently I am working on
+error concealment techniques for MPEG-2 video bit streams over ATM
+networks, and therefore I'm to changing (hacking?) an MPEG-2 decoder.
+
+I started using lclint because I wanted a lint on my Linux machine at
+home. After some experiments I became more and more interested in
+lclint and discovered that it is much more powerful than the standard
+lint that we use over here on our Sun Sparc machines. I like the
+memory management checks in lclint and I've already discovered some
+memory leaks in my code.
+
+> Some topics I hope to see discussed on this list include:
+> 
+>    o Experiences using lclint ---
+> 	how is your organization using lclint?
+> 	how much effort spent on annotations (or specifications) is
+>            useful in practice?
+> 	what ways of using lclint are most effective?
+> 	which checks are most effective in catching real bugs?
+> 	are spurious messages a problem?
+
+I'm the first in our group (AFAIK) who uses lclint, there are already
+people asking about "those fancy comments" in my C code, but nobody
+is really really convinced -- yet.
+
+I'm currently fighting with the right annotations for a double linked
+list. This is what I currently use:
+
+typedef /*@abstract@*/ struct node
+{
+  /*@null@*/ /*@shared@*/ struct node * next;
+  /*@null@*/ /*@shared@*/ struct node * prev;
+  int val;
+} node;
+
+
+/* start of the list */
+/*@null@*/ /*@shared@*/ static node * start=NULL;
+
+/* the current node */
+/*@null@*/ static node * cur=NULL;
+
+/* end of the list */
+/*@null@*/ /*@shared@*/ static node * end=NULL;
+
+Is this OK or should I use other annotations?
+
+>    o Ideas for improvements to lclint ---
+> 	what checks should be done that are not?
+> 	what should be added to enable further checking?
+> 	what coding styles should be supported?
+
+Just a little idea: As gcc is the only C compiler on the Linux
+platform, I sometimes have to run lclint with +gnuextensions. Gcc has
+a nice __FUNCTION__ macro that expands to a string with the name of
+the current function (useful for debugging), but the problem is that
+it is expanded in the compiler, not in the preprocessor. Therefore,
+lclint thinks it is an undefined variable. The solution is to add the
+-D__FUNCTION__="anyfunction" to the commandline (thanks Dave!), but
+maybe it is a good idea to enable this automagicaly when you enable
++gnuextensions.
+
+
+Regards,
+Erik
+
+-- 
+Erik Mouw
+email: J.A.K.Mouw@ET.TUDelft.NL  erik@it.et.tudelft.nl
+WWW  : sorry, looking for a new site...
+
+
+</pre>
+<A HREF="106.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="108.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

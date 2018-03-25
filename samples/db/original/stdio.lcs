@@ -1,0 +1,155 @@
+%PASSED Output from LCLint 2.1a
+%LCLimports 
+%LCLSortTable
+%LCLsort bool immutable nil nil
+%LCLsort Bool synonym bool nil
+%LCLsort int primitive nil nil
+%LCLsort char primitive nil nil
+%LCLsort void primitive nil nil
+%LCLsort _char_Obj obj char nil
+%LCLsort __char_Obj_Ptr ptr _char_Obj nil
+%LCLsort __char_Obj_Arr arr _char_Obj nil
+%LCLsort _char_Vec vec char __char_Obj_Arr
+%LCLsort float primitive nil nil
+%LCLsort double primitive nil nil
+%LCLsort FILE immutable nil nil
+%LCLsort _FILE_Obj obj FILE nil
+%LCLsort __FILE_Obj_Ptr ptr _FILE_Obj nil
+%LCLsort __FILE_Obj_Arr arr _FILE_Obj nil
+%LCLsort _FILE_Vec vec FILE __FILE_Obj_Arr
+%LCLsort ___FILE_Obj_Ptr_Obj obj __FILE_Obj_Ptr nil
+%LCLsort _ioStream synonym __char_Obj_Arr nil
+%LCLSortTableEnd
+%LCLSymbolTable
+%LCLop div :int, int -> int
+%LCLop mod :int, int -> int
+%LCLop min :int, int -> int
+%LCLop max :int, int -> int
+%LCLop 0 : -> int
+%LCLop 0 : -> double
+%LCLop if __ then __ else __  :bool, bool, bool -> bool
+%LCLop if __ then __ else __  :bool, int, int -> int
+%LCLop if __ then __ else __  :bool, double, double -> double
+%LCLop if __ then __ else __  :bool, _char_Vec, _char_Vec -> _char_Vec
+%LCLop if __ then __ else __  :bool, char, char -> char
+%LCLop if __ then __ else __  :bool, FILE, FILE -> FILE
+%LCLop 1 : -> int
+%LCLop 1 : -> double
+%LCLop __ < __  :int, int -> bool
+%LCLop __ < __  :double, double -> bool
+%LCLop empty : -> _char_Vec
+%LCLop __ > __  :int, int -> bool
+%LCLop __ > __  :double, double -> bool
+%LCLop count :char, _char_Vec -> int
+%LCLop head :_char_Vec -> char
+%LCLop __ \inv :double -> double
+%LCLop init :_char_Vec -> _char_Vec
+%LCLop isEmpty :_char_Vec -> bool
+%LCLop last :_char_Vec -> char
+%LCLop __ \implies __  :bool, bool -> bool
+%LCLop len :_char_Vec -> int
+%LCLop prefix :_char_Vec, int -> _char_Vec
+%LCLop __ / __  :double, double -> double
+%LCLop removePrefix :_char_Vec, int -> _char_Vec
+%LCLop substring :_char_Vec, int, int -> _char_Vec
+%LCLop __ || __  :_char_Vec, _char_Vec -> _char_Vec
+%LCLop tail :_char_Vec -> _char_Vec
+%LCLop __ \in __  :char, _char_Vec -> bool
+%LCLop nullTerminated :_char_Vec -> bool
+%LCLop throughNull :_char_Vec -> _char_Vec
+%LCLop sameStr :_char_Vec, _char_Vec -> bool
+%LCLop lenStr :_char_Vec -> int
+%LCLop times10plus :int, int -> int
+%LCLop plus1 :int -> int
+%LCLop 2 : -> int
+%LCLop 3 : -> int
+%LCLop 4 : -> int
+%LCLop 5 : -> int
+%LCLop 6 : -> int
+%LCLop 7 : -> int
+%LCLop 8 : -> int
+%LCLop 9 : -> int
+%LCLop __ * __  :int, int -> int
+%LCLop __ * __  :double, double -> double
+%LCLop write :FILE, _char_Vec -> FILE
+%LCLop true : -> bool
+%LCLop getLine :FILE -> _char_Vec
+%LCLop \A :bool, bool -> bool
+%LCLop \A :FILE, bool -> bool
+%LCLop \A :_char_Vec, bool -> bool
+%LCLop false : -> bool
+%LCLop remLine :FILE -> FILE
+%LCLop \E :bool, bool -> bool
+%LCLop \E :FILE, bool -> bool
+%LCLop \E :_char_Vec, bool -> bool
+%LCLop __ \and __  :bool, bool -> bool
+%LCLop __ \or __  :bool, bool -> bool
+%LCLop __ \eq __  :bool, bool -> bool
+%LCLop __ \eq __  :int, int -> bool
+%LCLop __ \eq __  :double, double -> bool
+%LCLop __ \eq __  :_char_Vec, _char_Vec -> bool
+%LCLop __ \eq __  :char, char -> bool
+%LCLop __ \eq __  :FILE, FILE -> bool
+%LCLop \not __  :bool -> bool
+%LCLop __ \neq __  :bool, bool -> bool
+%LCLop __ \neq __  :int, int -> bool
+%LCLop __ \neq __  :double, double -> bool
+%LCLop __ \neq __  :_char_Vec, _char_Vec -> bool
+%LCLop __ \neq __  :char, char -> bool
+%LCLop __ \neq __  :FILE, FILE -> bool
+%LCLop __ \iff __  :bool, bool -> bool
+%LCLop { __ } :char -> _char_Vec
+%LCLop __ [] :__char_Obj_Ptr -> __char_Obj_Arr
+%LCLop __ [] :__FILE_Obj_Ptr -> __FILE_Obj_Arr
+%LCLop __ [__] :_char_Vec, int -> char
+%LCLop __ [__] :__char_Obj_Arr, int -> _char_Obj
+%LCLop __ [__] :_FILE_Vec, int -> FILE
+%LCLop __ [__] :__FILE_Obj_Arr, int -> _FILE_Obj
+%LCLop __ |- __  :_char_Vec, char -> _char_Vec
+%LCLop __ -| __  :char, _char_Vec -> _char_Vec
+%LCLop __ \leq __  :int, int -> bool
+%LCLop __ \leq __  :double, double -> bool
+%LCLop __ \geq __  :int, int -> bool
+%LCLop __ \geq __  :double, double -> bool
+%LCLop null : -> char
+%LCLop NIL : -> __char_Obj_Ptr
+%LCLop NIL : -> __FILE_Obj_Ptr
+%LCLop - __  :int -> int
+%LCLop - __  :double -> double
+%LCLop __ + __  :__char_Obj_Ptr, int -> __char_Obj_Ptr
+%LCLop __ + __  :int, __char_Obj_Ptr -> __char_Obj_Ptr
+%LCLop __ + __  :int, int -> int
+%LCLop __ + __  :double, double -> double
+%LCLop __ + __  :__FILE_Obj_Ptr, int -> __FILE_Obj_Ptr
+%LCLop __ + __  :int, __FILE_Obj_Ptr -> __FILE_Obj_Ptr
+%LCLop __ - __  :__char_Obj_Ptr, int -> __char_Obj_Ptr
+%LCLop __ - __  :__char_Obj_Ptr, __char_Obj_Ptr -> int
+%LCLop __ - __  :int, int -> int
+%LCLop __ - __  :double, double -> double
+%LCLop __ - __  :__FILE_Obj_Ptr, int -> __FILE_Obj_Ptr
+%LCLop __ - __  :__FILE_Obj_Ptr, __FILE_Obj_Ptr -> int
+%LCLop sizeof :bool -> int
+%LCLop sizeof :int -> int
+%LCLop sizeof :char -> int
+%LCLop sizeof :void -> int
+%LCLop sizeof :float -> int
+%LCLop sizeof :double -> int
+%LCLop sizeof :FILE -> int
+%LCLop isSub :_char_Vec, int -> bool
+%LCLop isSub :__char_Obj_Arr, int -> bool
+%LCLop isSub :_FILE_Vec, int -> bool
+%LCLop isSub :__FILE_Obj_Arr, int -> bool
+%LCLop succ :int -> int
+%LCLop pred :int -> int
+%LCLop abs :int -> int
+%LCLop abs :double -> double
+%LCLtype float float exposed
+%LCLtype bool bool immutable
+%LCLconst FALSE bool
+%LCLconst TRUE bool
+%LCLtype FILE FILE immutable
+%LCLvar stdin ___FILE_Obj_Ptr_Obj
+%LCLvar stdout ___FILE_Obj_Ptr_Obj
+%LCLvar stderr ___FILE_Obj_Ptr_Obj
+%LCLtype ioStream _ioStream exposed
+%LCLSymbolTableEnd

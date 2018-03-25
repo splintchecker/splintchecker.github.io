@@ -1,0 +1,156 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint User's Guide</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<H1>
+<center>
+LCLint User's Guide<BR>
+</center>
+</H1>
+<P>
+<H2>
+<center>
+Version 2.5<br>
+May 2000<br>
+</center>
+</H2>
+<p>
+
+<P>
+The LCLint User's Guide is also available in these formats:
+<ul>
+<li><a href="http://lclint.cs.virginia.edu/downloads/guide.pdf">Adobe PDF Format</a> (can be read using the <a href="http://www.adobe.com/acrobat/">Adobe
+Acrobat</a> reader)</li>
+<li><a href="guide-full.html">HTML Complete</a> - a single HTML file containing the entire User's Guide (Version 2.4, not updated)
+<li><a href="http://lclint.cs.virginia.edu/downloads/lclint-guide.tar.gz">HTML Tar File</a> - same as on-line version for easy off-line viewing.  Un-tars to <tt>lclint-guide/</tt> directory.</li>
+<li><a href="guide.doc">Microsoft Word document</a>
+     <li><a href="guide.ps">PostScript</a></li>
+</ul>
+
+<H3>
+<a name="contents">
+Contents<BR>
+</a>
+</H3>
+<P>
+<ol>
+<li><a href="sec1.html">Overview</a>
+<li><a href="sec2.html">Operation</a><ul>
+<li><a href="sec2.html#sec-2.1">Messages</a>
+<li><a href="sec2.html#sec-2.2">Flags</a>
+<li><a href="sec2.html#sec-2.3">Stylized Comments</a><ul>
+<li><a href="sec2.html#sec-2.3.1">Annotations</a>
+<li><a href="sec2.html#sec-2.3.2">Control Comments</a></ul></ul>
+<li><a href="sec3.html">Abstract Types</a><ul>
+<li><a href="sec3.html#sec-3.1">Access</a>
+<li><a href="sec3.html#sec-3.2">Mutability</a>
+<li><a href="sec3.html#sec-3.3">Boulean Types</a>
+<li><a href="sec3.html#sec-3.4">Primitive C Types</a><ul>
+<li><a href="sec3.html#sec-3.4.1">Characters</a>
+<li><a href="sec3.html#sec-3.4.2">Enumerators</a>
+<li><a href="sec3.html#sec-3.4.3">Numeric Types</a>
+<li><a href="sec3.html#sec-3.4.4">Arbitrary Integral Types</a></ul></ul>
+<li><a href="sec4.html">Function Interfaces</a><ul>
+<li><a href="sec4.html#sec-4.1">Modifications</a><ul>
+<li><a href="sec4.html#sec-4.1.1">Special Modifications</a>
+<li><a href="sec4.html#sec-4.1.2">Missing Modifies Clauses</a>
+<li><a href="sec4.html#sec-4.1.3">Limitations</a></ul>
+<li><a href="sec4.html#sec-4.2">Global Variables</a><ul>
+<li><a href="sec4.html#sec-4.2.1">Controlling Globals Checking</a></ul>
+<li><a href="sec4.html#sec-4.3">Declaration Consistency</a></ul>
+<li><a href="sec5.html">Memory Management</a><ul>
+<li><a href="sec5.html#sec-5.1">Storage Model</a>
+<li><a href="sec5.html#sec-5.2">Deallocation Errors</a><ul>
+<li><a href="sec5.html#sec-5.2.1">Unshared References</a>
+<li><a href="sec5.html#sec-5.2.2">Temporary Parameters</a>
+<li><a href="sec5.html#sec-5.2.3">Owned and Dependent References</a>
+<li><a href="sec5.html#sec-5.2.4">Kept Parameters</a>
+<li><a href="sec5.html#sec-5.2.5">Shared References</a>
+<li><a href="sec5.html#sec-5.2.6">Stack References</a>
+<li><a href="sec5.html#sec-5.2.7">Inner Storage</a></ul>
+<li><a href="sec5.html#sec-5.3">Implicit Memory Annotations</a>
+<li><a href="sec5.html#sec-5.4">Reference Counting</a></ul>
+<li><a href="sec6.html">Sharing</a><ul>
+<li><a href="sec6.html#sec-6.1">Aliasing</a><ul>
+<li><a href="sec6.html#sec-6.1.1">Unique Parameters</a>
+<li><a href="sec6.html#sec-6.1.2">Returned Parameters</a></ul>
+<li><a href="sec6.html#sec-6.2">Exposure</a><ul>
+<li><a href="sec6.html#sec-6.2.1">Read-Only Storage</a>
+<li><a href="sec6.html#sec-6.2.2">Exposed Storage</a></ul></ul>
+<li><a href="sec7.html">Value Constraints</a><ul>
+<li><a href="sec7.html#sec-7.1">Use Before Definition</a><ul>
+<li><a href="sec7.html#sec-7.1.1">Undefined Parameters</a>
+<li><a href="sec7.html#sec-7.1.2">Relaxing Checking</a>
+<li><a href="sec7.html#sec-7.1.3">Partially Defined Structures</a>
+<li><a href="sec7.html#sec-7.1.4">Global Variables</a></ul>
+<li><a href="sec7.html#sec-7.2">Null Pointers</a><ul>
+<li><a href="sec7.html#sec-7.2.1">Predicate Functions</a>
+<li><a href="sec7.html#sec-7.2.2">Overriding Null Types</a>
+<li><a href="sec7.html#sec-7.2.3">Relaxing Null Checking</a></ul>
+<li><a href="sec7.html#sec-7.3">Execution</a>
+<li><a href="sec7.html#sec-7.4">Special Clauses</a></ul>
+<li><a href="sec8.html">Macros</a><ul>
+<li><a href="sec8.html#sec-8.1">Constant Macros</a>
+<li><a href="sec8.html#sec-8.2">Function-like Macros</a><ul>
+<li><a href="sec8.html#sec-8.2.1">Side-Effect Free Parameters</a>
+<li><a href="sec8.html#sec-8.2.2">Polymorphism</a></ul>
+<li><a href="sec8.html#sec-8.3">Controlling Macro Checking</a>
+<li><a href="sec8.html#sec-8.4">Iterators</a></ul>
+<li><a href="sec9.html">Naming Conventions</a><ul>
+<li><a href="sec9.html#sec-9.1">Type-Based Naming Conventions</a><ul>
+<li><a href="sec9.html#sec-9.1.1">Czech Names</a>
+<li><a href="sec9.html#sec-9.1.2">Slovak Names</a>
+<li><a href="sec9.html#sec-9.1.3">Czechoslovak Names</a></ul>
+<li><a href="sec9.html#sec-9.2">Namespace Prefixes</a>
+<li><a href="sec9.html#sec-9.3">Naming Restrictions</a><ul>
+<li><a href="sec9.html#sec-9.3.1">Reserved Names</a>
+<li><a href="sec9.html#sec-9.3.2">Distinct Identifiers</a></ul></ul>
+<li><a href="sec10.html">Other Checks</a><ul>
+<li><a href="sec10.html#sec-10.1">Undefined Evaluation Order</a>
+<li><a href="sec10.html#sec-10.2">Problematic Control Structures</a><ul>
+<li><a href="sec10.html#sec-10.2.1">Likely Infinite Loops</a>
+<li><a href="sec10.html#sec-10.2.2">Switches</a>
+<li><a href="sec10.html#sec-10.2.3">Deep Breaks</a>
+<li><a href="sec10.html#sec-10.2.4">Loop and If Bodies</a>
+<li><a href="sec10.html#sec-10.2.5">Complete if-else Logic</a></ul>
+<li><a href="sec10.html#sec-10.3">Suspicious Statements</a><ul>
+<li><a href="sec10.html#sec-10.3.1">Statements with No Effects</a>
+<li><a href="sec10.html#sec-10.3.2">Ignored Return Values</a></ul>
+<li><a href="sec10.html#sec-10.4">Unused Declarations</a>
+<li><a href="sec10.html#sec-10.5">Complete Programs</a><ul>
+<li><a href="sec10.html#sec-10.5.1">Unnecessary External Names</a>
+<li><a href="sec10.html#sec-10.5.2">Declarations Missing from Headers</a></ul>
+<li><a href="sec10.html#sec-10.6">Compiler Limits</a><ul><ul><ul>
+</ul></ul></ul></ul></ol>
+<h3>
+Appendices
+</h3>
+<blockquote>
+<a href="appA.html">Appendix A.  Availability</a><br>
+<a href="appB.html">Appendix B.  Communication</a><br>
+<a href="appC.html">Appendix C.  Flags</a><br>
+<a href="appD.html">Appendix D.  Annotations</a><br>
+<a href="appE.html">Appendix E.  Control Comments</a><br>
+<a href="appF.html">Appendix F.  Libraries</a><br>
+<a href="appG.html">Appendix G.  Specifications</a><br>
+</blockquote>
+<p>
+<h3>
+<a href="figures.html">Figures</a><br>
+</h3>
+<p>
+<a href="references.html">References</a><br>
+<a href="../acknowledgements.html">Acknowledgements</a><br>
+<p>
+
+<b>Next: <A HREF="sec1.html">Overview</a>
+
+<p>
+<!--#include virtual="footer.html"-->
+
+
+

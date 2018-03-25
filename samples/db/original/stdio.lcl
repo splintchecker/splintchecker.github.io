@@ -1,0 +1,12 @@
+/* stdio.lcl */
+
+immutable type FILE;
+
+/* was uses file; */
+uses file (char [] for ioStream);
+
+const FILE *stdin;
+const FILE *stdout;
+const FILE *stderr;
+
+typedef char ioStream [];

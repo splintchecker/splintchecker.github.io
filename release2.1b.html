@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>Release 2.1b</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<center>
+<H2>
+LCLint Version 2.1b
+</H2>
+<em>7 May 1996</em>
+</center>
+<P>
+
+Version 2.1b is a maintenance upgrade to the last publically released
+version of LCLint, <a href="release2.1a.html">Version 2.1a</a>.
+
+<p>
+<h3> Bug Fixes </h3>
+<a href="release2.1b-bugs.html">All known bugs in Version 2.1a</a> have
+been fixed. 
+
+<h3> New Flags </h3>
+
+A few new flags are provided for more precise control of null pointer
+messages.  The <a
+href="guide/appC.html#flag-nullderef"><tt>nullderef</tt></a> flag
+controls reporting of dereferences of possibly null pointers; 
+<a href="guide/appC.html#flag-nullpass"><tt>nullpass</tt></a>,
+<a href="guide/appC.html#flag-nullret"><tt>nullret</tt></a>,
+<a href="guide/appC.html#flag-nullstate"><tt>nullstate</tt></a>, and
+<a href="guide/appC.html#flag-nullassign"><tt>nullassign</tt></a>
+control reporting of null errors at interface points.  The original
+<tt>null</tt> flag has the same meaning as before --- it sets all of the
+context-specific null flags.
+
+One additional flag provides more precise control of initializer block
+checking.  Errors for incomplete initializer blocks are only reported if
+<a href="guide/appC.html#flag-fullinitblock"><tt>fullinitblock</tt></a>
+is on.
+
+<h3>Previous release notices</h3>
+
+<ul>
+<li> <a href="release1.3.html">Version 1.3</a>
+<li> <a href="release1.4.html">Version 1.4</a>
+<li> <a href="release1.4a.html">Version 1.4a</a>
+<li> <a href="release1.4c.html">Version 1.4c</a>
+<li> <a href="release2.0.html">Version 2.0</a>
+<li> <a href="release2.1a.html">Version 2.1a</a>
+</ul>
+
+<HR>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

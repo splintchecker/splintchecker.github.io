@@ -1,0 +1,60 @@
+<h3>lclint-interest message 136</h3>
+<pre>
+From:	Peter Holm [pho@login.dknet.dk]
+Sent:	Monday, March 17, 1997 6:31 PM
+To:	lclint-interest@larch.lcs.mit.edu
+Subject:	List problem
+
+I have a problem with comma separated lists of statements. It seems as
+thou lclint doesn't recognise that xSysPanic will exit, if p == NULL.
+
+If I replace "sysPanic" in line 17 with "xSysPanic" all is fine.
+
+1	#include <stdlib.h>
+2   
+3	extern /*@observer@*/ const char *FileName;
+4	extern int LineNumber;
+5   
+6	extern /*@notnull@*/ /*@out @*/ /*@only@*/ void *myMalloc(size_t size);
+7   
+8	#define sysPanic FileName = __FILE__, LineNumber = __LINE__, xSysPanic
+9   
+10	extern /*@exits@*/ void xSysPanic(char *format, ...);
+11   
+12	void *
+13	myMalloc(size_t size) {
+14	void *p;
+15   
+16	p = malloc(size);
+17	if (p == NULL) sysPanic("malloc(%d) failed", size);
+18	return p;
+19	}
+
+LCLint 2.2a --- 04 Sep 96
+x.c: (in function myMalloc) x.c:18,16: Possibly null storage p returned as non-null: p Function returns a possibly null pointer, but is not declared using /*@null@*/ annotation of result.  If function may
+return NULL, add /*@null@*/ annotation to the return value declaration. (-nullret will suppress message)
+x.c:16,13: Storage p may become null
+Finished LCLint checking --- 1 code error found
+
+Am I doing some thing wrong?
+
+Regards,
+
+Peter Holm
+
+</pre>
+<A HREF="135.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="137.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

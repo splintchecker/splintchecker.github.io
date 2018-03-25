@@ -1,0 +1,76 @@
+<html><head>
+<title>test_bench.c</title>
+</head>
+
+<body>
+<PRE><CODE>
+/*1*/	emp_list add_employees(emp_list lst);
+/*2*/	
+/*3*/	int main()
+/*4*/	{
+/*5*/	  emp_record *zim = malloc(sizeof(*zim));
+/*6*/	  emp_list test_list = emp_list_create();
+/*7*/	  
+/*8*/	  printf("Adding employees...\n\n"); 
+/*9*/	  test_list = add_employees(test_list);
+/*10*/	  printf("Employee list:\n");
+/*11*/	  print_list(test_list);  
+/*12*/	
+/*13*/	  printf("Removing from the middle...\n\n");
+/*14*/	  test_list = delete_record(test_list, "Hatton");
+/*15*/	  printf("Employee list:\n");
+/*16*/	  print_list(test_list);
+/*17*/	
+/*18*/	  printf("Removing the first...\n\n");
+/*19*/	  test_list = delete_record(test_list, "Bodycombe");
+/*20*/	  printf("Employee list:\n");
+/*21*/	  print_list(test_list);
+/*22*/	
+/*23*/	  printf("Inserting an employee at the end...\n\n");
+/*24*/	  strncpy(zim->LastName,"Zimmerman", MAX_LENGTH);
+/*25*/	  strncpy(zim->FirstName, "Phillip", MAX_LENGTH);
+/*26*/	  zim->Salary = 8000.50;
+/*27*/	  zim->next = NULL;
+/*28*/	  test_list = insert_record(test_list, zim);
+/*29*/	  printf("Employee list:\n");
+/*30*/	  print_list(test_list);
+/*31*/	  
+/*32*/	  printf("Finding salary of employee Smullyan...\n\n");
+/*33*/	  free(zim);
+/*34*/	  zim = find_record(test_list, "Smullyan");
+/*35*/	  printf("Salary of Smullyan is: %.2f\n", zim->Salary);
+/*36*/	
+/*37*/	
+/*38*/	  printf("Revmoing the last employee(Zimmerman)...\n\n");
+/*39*/	  test_list = delete_record(test_list, "Zimmerman");
+/*40*/	  printf("Employee list:\n");
+/*41*/	  print_list(test_list);
+/*42*/	  
+/*43*/	
+/*44*/	  return 0;
+/*45*/	
+/*46*/	}
+/*47*/	
+/*48*/	
+/*49*/	emp_list add_employees(emp_list lst)
+/*50*/	{
+/*51*/	  emp_record *e = malloc(sizeof(*e));
+/*52*/	
+/*53*/	  FILE *fp = fopen("emp_data.txt", "r");
+/*54*/	  char ln[MAX_LENGTH];
+/*55*/	  char fn[MAX_LENGTH];
+/*56*/	  float sal;
+/*57*/	
+/*58*/	  char Line[3*MAX_LENGTH];
+/*59*/	  while(fgets(Line, 3*MAX_LENGTH+1, fp))
+/*60*/	    {
+/*61*/	      sscanf(Line, "%s%s%f", ln, fn, &sal);  
+/*62*/	      strncpy(e->LastName, ln, MAX_LENGTH);
+/*63*/	      strncpy(e->FirstName, fn, MAX_LENGTH);
+/*64*/	      e->Salary=sal;
+/*65*/	      lst = insert_record(lst, e);
+/*66*/	    }
+/*67*/	  return lst;
+/*68*/	}
+</PRE></CODE>
+</body></html>

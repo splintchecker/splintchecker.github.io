@@ -1,0 +1,5 @@
+LinkedList.c:29:3: Implicitly only storage a->next (type struct emp_rec *) not
+                      released before assignment: a->next = b->next
+  A memory leak has been detected. Only-qualified storage is not released
+  before the last reference to it is lost. (Use -mustfreeonly to inhibit
+  warning)

@@ -1,0 +1,827 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 8. Control Flow</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+<h1 style='margin-left:0in;text-indent:0in'><a name="_Toc534974986"></a><a
+name="_Ref534642886"></a><a name="_Ref483663682">8<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Control Flow</a></h1>
+
+<p class=TextFontCX>The section describes
+checking done by Splint related to control flow.  Many of these checks are
+significantly improved because of the extra information that is known about the
+program when annotations are provided.</p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534974987"></a><a
+name="_Ref345859337"></a><a name="_Ref344907653"></a><a name="_Ref344894343"></a><a
+name="_Ref344873752"></a><a name="_Toc344355417">8.1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Execution</a></h2>
+
+<p class=TextFontCX>To detect certain errors and
+avoid spurious errors, it is important to know something about the control flow
+behavior of called functions. Without additional information, Splint assumes
+that all functions eventually return and execution continues normally at the
+call site.  </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>The <span class=Annot><span
+style='font-size:10.0pt'>noreturn</span></span> annotation is used to denote a function that never returns<a href="#_ftn8" name="_ftnref8" title=""><span
+class=MsoFootnoteReference><span class=MsoFootnoteReference><span
+style='font-size:11.0pt;font-family:"Times New Roman"'>[8]</span></span></span></a>. 
+For example,</p>
+
+<p class=example><span class=Annot><span style='font-size:10.0pt'>extern
+/*@noreturn@*/ void fatalerror (/*@observer@*/ char *s);</span></span></p>
+
+<p class=beforelist>declares <span class=CodeText><span style='font-size:10.0pt'>fatalerror</span></span>
+to never return.  This enables Splint to correctly analyze code like,</p>
+
+<p class=TextFontCX><span class=Keyword><span
+style='font-size:10.0pt'>   if (x == NULL) fatalerror (&quot;Yikes!&quot;);</span></span></p>
+
+<p class=TextFontCX><span class=Keyword><span
+style='font-size:10.0pt'>   *x = 3;</span></span></p>
+
+<p class=afterlist>Other functions may return, but sometimes (or usually)
+return normally.  The <span class=Annot><span style='font-size:10.0pt'>maynotreturn</span></span>
+annotation denotes a function that may or may not return.  This may be useful
+for documentation, but does not help checking much, since Splint must assume
+that a function declared with <span class=Annot><span style='font-size:10.0pt'>maynotreturn</span></span>
+returns normally when checking the code.  The <span class=Annot><span
+style='font-size:10.0pt'>alwaysreturns</span></span> annotation denotes a
+function that always returns (but Splint does no checking to verify this).</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>To describe non-returning
+functions more precisely, the <span class=Annot><span style='font-size:10.0pt'>noreturnwhentrue</span></span> and <span class=Annot><span style='font-size:10.0pt'>noreturnwhenfalse</span></span> annotations may be used.  Similar to <span class=Annot><span style='font-size:
+10.0pt'>nullwhentrue</span></span> and <span class=Annot><span
+style='font-size:10.0pt'>falsewhennull</span></span> (see Section 2.1.1), <span
+class=Annot><span style='font-size:10.0pt'>noreturnwhentrue</span></span> and <span class=Annot><span style='font-size:10.0pt'>noreturnwhenfalse </span></span>mean
+that a function never returns if the value of its first argument is true (<span
+class=Annot><span style='font-size:10.0pt'>noreturnwhentrue</span></span>) or
+false (<span class=Annot><span style='font-size:10.0pt'>noreturnwhenfalse</span></span>). 
+They may be used only on functions whose first argument is a Boolean.   </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX style='margin-bottom:6.0pt'>Hence,
+a function declared with <span class=Annot><span style='font-size:10.0pt'>noreturnwhenwfalse</span></span>
+must not return if the value of its argument is false.  For example, the
+standard library declares <span class=Keyword><span style='font-size:10.0pt'>assert</span></span> as<a
+href="#_ftn9" name="_ftnref9" title=""><span class=MsoFootnoteReference><span
+class=MsoFootnoteReference><span style='font-size:11.0pt;font-family:"Times New Roman"'>[9]</span></span></span></a>:</p>
+
+<p class=example style='margin-top:0in;margin-right:.2in;margin-bottom:0in;
+margin-left:0in;margin-bottom:.0001pt;text-indent:.5in'>/*@noreturnwhenfalse@*/
+void </p>
+
+<p class=example style='margin-top:0in;margin-right:.2in;margin-bottom:0in;
+margin-left:0in;margin-bottom:.0001pt;text-indent:.5in'>assert (/*@sef@*/ bool
+/*@alt int@*/ pred);</p>
+
+<p class=beforelist style='margin-top:6.0pt'>This way, code like,</p>
+
+<p class=Verbatim>   assert (x != NULL);</p>
+
+<p class=Verbatim>   *x = 3;</p>
+
+<p class=TextFontCX>is checked without reporting
+a false warning, since the <span class=Annot><span style='font-size:10.0pt'>noreturnwhenwfalse
+</span></span>annotation on <span class=CodeText><span style='font-size:10.0pt'>assert</span></span>
+means the deference of <span class=CodeText><span style='font-size:10.0pt'>x</span></span>
+is not reached is <span class=CodeText><span style='font-size:10.0pt'>x != NULL</span></span>
+is false.</p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534974988"></a><a
+name="_Ref350066608">8.2<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Undefined </a>Behavior</h2>
+
+<p class=TextFontCX>The order in which side
+effects take place in a C program is not entirely defined by the code.  Certain
+execution points are known as <i>sequence points</i> — a function call (after the arguments have been evaluated), the end of a full expression (an initializer, expression in an expression statement, the control
+expression of an <span class=CodeText><span style='font-size:10.0pt'>if</span></span>,
+<span class=CodeText><span style='font-size:10.0pt'>switch</span></span>, <span
+class=CodeText><span style='font-size:10.0pt'>while</span></span> or <span
+class=CodeText><span style='font-size:10.0pt'>do</span></span> statement, each
+expression of a <span class=CodeText><span style='font-size:10.0pt'>for</span></span>
+statement, and the expression in a <span class=CodeText><span style='font-size:
+10.0pt'>return</span></span> statement), and after the first operand or a <span
+class=CodeText><span style='font-size:10.0pt'>&amp;&amp;</span></span>, <span
+class=CodeText><span style='font-size:10.0pt'>||</span></span>, <span
+class=CodeText><span style='font-size:10.0pt'>?</span></span> or <span
+class=CodeText><span style='font-size:10.0pt'>,</span></span> operand.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>All side effects before a
+sequence point must be complete before the sequence point, and no evaluations
+after the sequence point shall have taken place.  Between sequence points, side
+effects and evaluations may take place in any order.  Hence, the order in which
+expressions or arguments are evaluated is not specified.  Compilers are free to
+evaluate function arguments and parts of expressions (that do not contain
+sequence points) in any order.  The behavior of code is undefined if it uses a
+value that is modified by another expression that is not required to be
+evaluated before or after the other use.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Splint detects instances
+where undetermined order of evaluation produces undefined behavior.  If modifies clauses and globals lists are used, this checking is enabled in expressions
+involving function calls. Evaluation order checking is controlled by the <span
+class=Flag><span style='font-size:10.0pt'>eval-order</span></span> flag.</p>
+
+<p>
+<center>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ style='margin-left:13.05pt;border-collapse:collapse;
+ margin-left:-2.25pt;margin-right:-2.25pt'>
+ <tr>
+  <td  valign=top style='border:solid black 1.5pt;
+  border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt;height:13.45pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'>            <span class=Keyword><b><span
+  style='font-size:10.0pt;color:white'>order.c</span></b></span></p>
+  </td>
+  <td  valign=top style='width:198.8pt;border-top:solid black 1.5pt;
+  border-left:none;border-bottom:none;border-right:solid black 1.5pt;
+  background:black;padding:0in 5.4pt 0in 5.4pt;height:13.45pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><b><span style='color:white'>Running Splint</span></b></p>
+  </td>
+ </tr>
+
+
+ <tr>
+  <td  valign=top style='width:148.95pt;border:solid black 1.5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=Verbatim>extern int glob;</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>extern int mystery (void);</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>extern int modglob (void)</p>
+  <p class=Verbatim>   /*@globals glob@*/</p>
+  <p class=Verbatim>   /*@modifies glob@*/;</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>int f (int x, int y[])</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>11</span></span>
+  int i = x++ * x;</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>13</span></span>
+  y[i] = i++;</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>14</span></span>
+  i += modglob() * glob;</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>15</span></span>
+  i += mystery() * glob;</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>16</span></span>
+  return i;</p>
+  <p class=Verbatim>}</p>
+  </td>
+  <td  valign=top style='width:275.4pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=lclintrun>&gt; splint order.c +evalorderuncon </p>
+  <p class=lclintrun>order.c:11: Expression has undefined behavior (value of</p>
+  <p class=lclintrun>    right operand modified by left operand): x++ * x</p>
+  <p class=lclintrun>order.c:13: Expression has undefined behavior (left
+  operand</p>
+  <p class=lclintrun>    uses i, modified by right operand): y[i] = i++</p>
+  <p class=lclintrun>order.c:14: Expression has undefined behavior (value of</p>
+  <p class=lclintrun>    right operand modified by left operand):</p>
+  <p class=lclintrun>    modglob() * glob</p>
+  <p class=lclintrun>order.c:15: Expression has undefined behavior</p>
+  <p class=lclintrun>    (unconstrained function mystery used in left operand</p>
+  <p class=lclintrun>    may set global variable glob used in right operand):</p>
+  <p class=lclintrun>    mystery() * glob</p>
+  <p class=TextFontCX align=left
+  style='text-align:left'><i>&nbsp;</i></p>
+  <p class=TextFontCX align=left
+  style='text-align:left;page-break-after:avoid'><i>The warning for line 14 is
+  reported because the modifies clause of </i><span class=CodeText><span
+  style='font-size:10.0pt'>modglob</span></span><i> indicated that it may
+  modify </i><span class=CodeText><span style='font-size:10.0pt'>glob</span></span><i>. 
+  The behavior is undefined since we don’t  know if </i><span class=CodeText><span
+  style='font-size:10.0pt'>glob</span></span><i> is evaluated before, after or
+  during the</i><i> modification.  The line 15 warning would not be reported
+  without </i><span class=Flag><span style='font-size:10.0pt'>+evalorderuncon</span></span><i>.</i></p>
+  </td>
+ </tr>
+</table>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0>
+ <tr>
+  <td valign=top style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=MsoCaption><a name="_Toc534824620"></a><a name="_Ref534823183">Figure
+  16</a>.  Evaluation Order</p>
+  </td>
+ </tr>
+</table>
+
+</center>
+
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>When checking systems without
+modifies and globals information (see Section 7), evaluation order checking may report errors when unconstrained functions are called in procedure arguments.  Since Splint has no annotations to constrain what these functions may modify, it cannot be guaranteed that
+the evaluation order is defined if another argument calls an unconstrained
+function or uses a global variable or storage reachable from a parameter to the
+unconstrained function.  Its best to add modifies and globals clauses to
+constrain the unconstrained functions in ways that eliminate the possibility of
+undefined behavior.  For large legacy systems, this may require too much
+effort.  Instead, the <span class=Flag><span style='font-size:10.0pt'>&#8209;eval-order-uncon</span></span>
+flag may be used to prevent reporting of undefined behavior due to the order of
+evaluation of unconstrained functions.  Figure 16 illustrates detection of undefined behavior.</p>
+<p>
+<center>
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ style='margin-left:18.9pt;border-collapse:collapse;margin-left:-2.25pt;
+ margin-right:-2.25pt'>
+ <tr>
+  <td  valign=top style='border:solid black 1.5pt;
+  border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><span class=Keyword><b><span style='font-size:10.0pt;
+  color:white'>loop.c</span></b></span></p>
+  </td>
+  <td  valign=top style='border-top:solid black 1.5pt;
+  border-left:none;border-bottom:none;border-right:solid black 1.5pt;
+  background:black;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><b><span style='color:white'>Running Splint</span></b></p>
+  </td>
+ </tr>
+ <tr style='height:143.1pt'>
+  <td  valign=top style='border:solid black 1.5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt;height:143.1pt'>
+  <p class=Verbatim>extern int glob1, glob2;</p>
+  <p class=Verbatim>extern int f (void)</p>
+  <p class=Verbatim>  /*@globals glob1@*/</p>
+  <p class=Verbatim>  /*@modifies nothing@*/;</p>
+  <p class=Verbatim>extern void g (void)</p>
+  <p class=Verbatim>  /*@modifies glob2@*/ ;</p>
+  <p class=Verbatim>extern void h (void) ;</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>void upto (int x)</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>14</span></span> 
+  while (x &gt; f ()) g();</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>15</span></span> 
+  while (f () &lt; 3) h();</p>
+  <p class=Verbatim>}</p>
+  </td>
+  <td  valign=top style='border-top:none;border-left:
+  none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt;
+  padding:0in 5.4pt 0in 5.4pt;height:143.1pt'>
+  <p class=lclintrun>&gt; splint loop.c +infloopsuncon </p>
+  <p class=lclintrun>loop.c:14: Suspected infinite loop.  No value used in</p>
+  <p class=lclintrun>    loop test (x, glob1) is modified by test or loop</p>
+  <p class=lclintrun>    body.</p>
+  <p class=lclintrun>loop.c:15: Suspected infinite loop.  No condition</p>
+  <p class=lclintrun>    values modified.  Modification possible through</p>
+  <p class=lclintrun>    unconstrained calls: h </p>
+  <p class=TextFontCX style='page-break-after:
+  avoid'><i>An error is reported for line 14 since the only value modified by
+  <br>the loop test or body if </i><span class=CodeText><span style='font-size:
+  10.0pt'>glob2</span></span><i> and the value of the loop test <br>does not depend
+  on </i><span class=CodeText><span style='font-size:10.0pt'>glob2</span></span><i>. 
+  The error for line 15 would not be<br> reported without </i><span class=Flag><span
+  style='font-size:10.0pt'>+infloopsuncon</span></span><i>.</i></p>
+  </td>
+ </tr>
+</table>
+
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0>
+ <tr>
+  <td valign=top style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=MsoCaption><a name="_Toc534824621"></a><a name="_Ref534823256">Figure
+  17</a>.  Infinite Loops</p>
+  </td>
+ </tr>
+</table>
+
+</center>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534974989"></a><a
+name="_Ref344892701"></a><a name="_Toc344355430">8.3<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+</span>Problematic Control Structures</a></h2>
+
+<p class=TextFontCX>A number of control structures that are syntactically legal may indicate likely bugs in programs. 
+Splint can detect errors involving likely infinite loops (Section 8.3.1), fall through cases and missing cases in <span class=CodeText><span
+style='font-size:10.0pt'>switch</span></span> statements (Section 8.3.2), <span class=CodeText><span style='font-size:10.0pt'>break</span></span>
+statements within deeply nested loops or switches (Section 8.3.3), clauses of <span
+class=CodeText><span style='font-size:10.0pt'>if</span></span>, <span
+class=CodeText><span style='font-size:10.0pt'>while</span></span> or <span
+class=CodeText><span style='font-size:10.0pt'>for</span></span> statements that
+are empty statements or unblocked single statements (Section 8.3.4) and
+incomplete if-else logic (Section 8.3.5).  Although any of these may appear in
+a correct program, depending on the programming style used they may indicate
+likely bugs or style violations that should be detected and eliminated.</p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974990"></a><a
+name="_Ref344810086">8.3.1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Likely Infinite Loops</a></h3>
+
+<p class=TextFontCX>Splint reports an error if it
+detects a loop that appears to be infinite.  An error is reported for a loop
+that does not modify any value used in its condition test inside the body of
+the loop or in the condition test itself.  This checking is enhanced by
+modifies clauses and globals lists (see Section 7) since they <a
+name="_Ref344818734">provide more information about what global variable may be
+used in the condition test and what values may be modified by function calls in
+the loop body.</a></p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Figure 17 shows examples of infinite loops detected by Splint. An error is reported for the loop in line 14, since neither of the values used in the loop condition (<span class=CodeText><span style='font-size:10.0pt'>x</span></span>
+directly and <span class=CodeText><span style='font-size:10.0pt'>glob1</span></span>
+through the call to <span class=CodeText><span style='font-size:10.0pt'>f</span></span>)
+is modified by the body of the loop.  If the declaration of <span
+class=CodeText><span style='font-size:10.0pt'>g</span></span> is changed to
+include <span class=CodeText><span style='font-size:10.0pt'>glob1</span></span>
+in the modifies clause no error is reported.  (In this example, if we assume
+the annotations are correct, then the programmer has probably called the wrong
+function in the loop body.  This isn’t surprising, given the horrible choices
+of function and variable names!)</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>If an unconstrained function
+is called within the loop body, Splint will assume that it modifies a value
+used in the condition test and not report an infinite loop error, unless <span
+class=Flag><span style='font-size:10.0pt'>infloopsuncon</span></span> is on.  If <span class=Flag><span style='font-size:10.0pt'>infloopsuncon</span></span>
+is on, Splint will report infinite loop errors for loops where there is no
+explicit modification of a value used in the condition test, but where they may
+be an undetected modification through a call to an unconstrained function
+(e.g., line 12 in Figure 17). </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX align=center
+style='text-align:center'><span style='font-size:10.0pt'>&nbsp;</span></p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974991"></a><a
+name="_Ref349899747"></a><a name="_Ref345591205">8.3.2<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Switches</a></h3>
+
+<p class=TextFontCX>The automatic fall through of
+C switch statements is almost never the intended behavior.<a
+href="#_ftn10" name="_ftnref10" title=""><span class=MsoFootnoteReference><span
+class=MsoFootnoteReference><span style='font-size:11.0pt;font-family:"Times New Roman"'>[10]</span></span></span></a> 
+Splint detects <span class=CodeText><span style='font-size:10.0pt'>case</span></span>
+statements with code that may fall through to the next <span class=CodeText><span
+style='font-size:10.0pt'>case</span></span>.  The <span class=Flag><span
+style='font-size:10.0pt'>casebreak</span></span> flag controls reporting of fall through cases.  A single fall through case may be
+marked by preceding the <span class=CodeText><span style='font-size:10.0pt'>case</span></span>
+keyword with <span class=Annot><span style='font-size:10.0pt'>/*@fallthrough@*/</span></span> to indicate explicitly that execution falls through to this case.  See Figure 18 for an example.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>For switches on <span
+class=CodeText><span style='font-size:10.0pt'>enum</span></span> types, Splint
+reports an error if a member of the enumerator does not appear as a case in the
+switch body (and there is no <span class=CodeText><span style='font-size:10.0pt'>default</span></span>
+case).  (Controlled by <span class=Flag><span style='font-size:10.0pt'>misscase</span></span>.)</p>
+
+<p>
+<center>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ style='margin-left:.2in;border-collapse:collapse;margin-left:-2.25pt;
+ margin-right:-2.25pt'>
+ <tr>
+  <td  valign=top style='width:3.0in;border:solid black 1.5pt;
+  border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><span class=Keyword><b><span style='font-size:10.0pt;
+  color:white'>switch.c</span></b></span></p>
+  </td>
+  <td  valign=top style='border-top:solid black 1.5pt;
+  border-left:none;border-bottom:none;border-right:solid black 1.5pt;
+  background:black;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><b><span style='color:white'>Running Splint</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td  valign=top style='border:solid black 1.5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=Verbatim>typedef enum {</p>
+  <p class=Verbatim>  YES, NO, DEFINITELY,</p>
+  <p class=Verbatim>  PROBABLY, MAYBE } ynm;</p>
+  <p class=Verbatim>void decide (ynm y)</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim>  switch (y)</p>
+  <p class=Verbatim>    {</p>
+  <p class=Verbatim>    case PROBABLY:</p>
+  <p class=Verbatim>    case NO: printf (&quot;No!&quot;);</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>10 </span></span>  case
+  MAYBE: printf (&quot;Maybe&quot;);</p>
+  <p class=Verbatim>         /*@fallthrough@*/</p>
+  <p class=Verbatim>    case YES: printf (&quot;Yes!&quot;);</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>13 </span></span>  }</p>
+  <p class=Verbatim>}</p>
+  </td>
+  <td  valign=top style='border-top:none;border-left:
+  none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=lclintrun>&gt; splint switch.c</p>
+  <p class=lclintrun>switch.c:10: Fall through case (no preceding break)</p>
+  <p class=lclintrun>switch.c:13: Missing case in switch: DEFINITELY</p>
+  <p class=TextFontCX>&nbsp;</p>
+  <p class=MsoCaption align=left style='text-align:left'><i><span
+  style='font-weight:normal'>No fall through error is reported for the </span></i><span
+  class=CodeText><span style='font-weight:normal'>NO</span></span><i><span
+  style='font-weight:normal'> case,<br> since there are no statements associated
+  with the<br> previous case.  </span></i></p>
+  <p class=TextFontCX style='page-break-after:
+  avoid'><i>The </i><span class=Annot><span style='font-size:10.0pt'>/*@fallthrough@*/</span></span><i>
+  comment prevents <br>a message from being produced for the<br> </i><span class=Annot><span
+  style='font-size:10.0pt'>YES</span></span><i> case.</i></p>
+  </td>
+ </tr>
+</table>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0>
+ <tr>
+  <td valign=top style='padding-top:0in;padding-right:
+  9.0pt;padding-bottom:0in;padding-left:9.0pt'>
+  <p class=MsoCaption><a name="_Toc344355431"></a><a name="_Ref344881581"></a><a
+  name="_Toc534824622"></a><a name="_Ref534823308">Figure 18</a>.  Switch Cases</p>
+  </td>
+ </tr>
+</table>
+</center>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974992"></a><a
+name="_Ref534971227">8.3.3<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Deep Breaks</a></h3>
+
+<p class=TextFontCX>There is no syntax provided
+by C (other than <span class=CodeText><span style='font-size:10.0pt'>goto</span></span>)
+for breaking out of a nested loop.  All <span class=CodeText><span
+style='font-size:10.0pt'>break</span></span> and <span class=CodeText><span
+style='font-size:10.0pt'>continue</span></span> statements act only on the
+innermost surrounding loop or switch.  This can lead to serious problems<a
+href="#_ftn11" name="_ftnref11" title=""><span class=MsoFootnoteReference><span
+class=MsoFootnoteReference><span style='font-size:11.0pt;font-family:"Times New Roman"'>[11]</span></span></span></a>
+when a programmer intends to break the outer loop or switch instead.  Splint
+optionally reports warnings for <span class=CodeText><span style='font-size:
+10.0pt'>break</span></span> and <span class=CodeText><span style='font-size:
+10.0pt'>continue</span></span> statements in nested contexts.</p>
+
+<p class=beforelist>&nbsp;</p>
+
+<p class=beforelist>Four types of <span class=CodeText><span style='font-size:
+10.0pt'>break</span></span> warnings are reported:</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+class=CodeText><span style='font-size:10.0pt'>break</span></span> inside a loop
+(<span class=CodeText><span style='font-size:10.0pt'>while</span></span> or <span
+class=CodeText><span style='font-size:10.0pt'>for</span></span>) that is inside
+a loop.  Controlled by <span class=Flag><span style='font-size:10.0pt'>looploopbreak</span></span>.  To indicate that a <span
+class=CodeText><span style='font-size:10.0pt'>break</span></span> is inside an
+inner loop, precede the <span class=CodeText><span style='font-size:10.0pt'>break</span></span>
+by <a href="mailto:/*@innerbreak@*/"><span class=Annot><span style='font-size:
+10.0pt'>/*@innerbreak@*/</span></span></a>.</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+class=CodeText><span style='font-size:10.0pt'>break</span></span> inside a loop
+that is inside a <span class=CodeText><span style='font-size:10.0pt'>switch</span></span>
+statement.  Controlled by <span class=Flag><span style='font-size:10.0pt'>switchloopbreak</span></span>.  To mark the <span
+class=CodeText><span style='font-size:10.0pt'>break</span></span> as a loop
+break, precede the <span class=CodeText><span style='font-size:10.0pt'>break</span></span>
+by <span class=Annot><span style='font-size:10.0pt'>/*@loopbreak@*/</span></span>.</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+class=CodeText><span style='font-size:10.0pt'>break</span></span> inside a <span
+class=CodeText><span style='font-size:10.0pt'>switch</span></span> statement that
+is inside a loop.  Controlled by <span class=Flag><span style='font-size:10.0pt'>loopswitchbreak</span></span>.  To mark the <span
+class=CodeText><span style='font-size:10.0pt'>break</span></span> as a switch
+break, precede the <span class=CodeText><span style='font-size:10.0pt'>break</span></span>
+by <span class=Annot><span style='font-size:10.0pt'>/*@switchbreak@*/</span></span>.</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+class=CodeText><span style='font-size:10.0pt'>break</span></span> inside a <span
+class=CodeText><span style='font-size:10.0pt'>switch</span></span> inside
+another <span class=CodeText><span style='font-size:10.0pt'>switch</span></span>. 
+Controlled by <span class=Flag><span style='font-size:10.0pt'>switchswitchbreak</span></span>.  To indicate that the <span
+class=CodeText><span style='font-size:10.0pt'>break</span></span> is for the
+inner switch, use <span class=Annot><span style='font-size:10.0pt'>/*@innerbreak@*/</span></span>.</p>
+
+<p class=afterlist>Since <span class=CodeText><span style='font-size:10.0pt'>continue</span></span>
+only makes sense within loops, warnings are only reported for <span
+class=CodeText><span style='font-size:10.0pt'>continue</span></span> statements
+within nested loops.  (Controlled by <span class=Flag><span style='font-size:
+10.0pt'>looploopcontinue</span></span>.)  A safe inner <span
+class=CodeText><span style='font-size:10.0pt'>continue</span></span> may be
+preceded by <span class=Annot><span style='font-size:10.0pt'>/*@innercontinue@*/</span></span> to suppress error messages locally. The <span
+class=Flag><span style='font-size:10.0pt'>deepbreak</span></span> flag sets all nested break and continue checking flags.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Splint warns if the marker
+preceding a <span class=CodeText><span style='font-size:10.0pt'>break</span></span>
+is not consistent with its placement.  A warning results if <span class=Annot><span
+style='font-size:10.0pt'>innerbreak</span></span> precedes a <span
+class=CodeText><span style='font-size:10.0pt'>break</span></span> that is not
+breaking an inner loop, <span class=Annot><span style='font-size:10.0pt'>switchbreak</span></span>
+precedes a <span class=CodeText><span style='font-size:10.0pt'>break</span></span>
+that is not breaking a switch, or <span class=Annot><span style='font-size:
+10.0pt'>loopbreak</span></span> precedes a <span class=CodeText><span
+style='font-size:10.0pt'>break</span></span> that is not breaking a loop.</p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974993"></a><a
+name="_Ref347246280">8.3.4<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></a>Loop and If Bodies</h3>
+
+<p class=beforelist>An empty statement after an <span class=CodeText><span
+style='font-size:10.0pt'>if</span></span>, <span class=CodeText><span
+style='font-size:10.0pt'>while</span></span> or <span class=CodeText><span
+style='font-size:10.0pt'>for</span></span> often indicates a potential bug.  A
+single statement (i.e., not a compound block) after an <span class=CodeText><span
+style='font-size:10.0pt'>if</span></span>, <span class=CodeText><span
+style='font-size:10.0pt'>while</span></span> or <span class=CodeText><span
+style='font-size:10.0pt'>for</span></span> is not likely to indicate a bug, but
+make the code harder to read and edit.  Splint can report errors for if or loop
+statements with empty bodies or bodies that are not compound statements. 
+Separate flags control checking for statements following an <span
+class=CodeText><span style='font-size:10.0pt'>if</span></span>, <span
+class=CodeText><span style='font-size:10.0pt'>while</span></span> or <span
+class=CodeText><span style='font-size:10.0pt'>for</span></span>:</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+class=Flag><span style='font-size:10.0pt'>[if</span></span>,<span class=Flag><span
+style='font-size:10.0pt'> while</span></span>,<span class=Flag><span
+style='font-size:10.0pt'> for]empty</span></span> — report errors for empty
+bodies (e.g., <span class=CodeText><span style='font-size:10.0pt'>if (x &gt; 3)
+;</span></span> )</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+class=Flag><span style='font-size:10.0pt'>[if</span></span>,<span class=Flag><span
+style='font-size:10.0pt'> while</span></span>,<span class=Flag><span
+style='font-size:10.0pt'> for]block</span></span> — report errors for non-block
+bodies (e.g., <span class=CodeText><span style='font-size:10.0pt'>if (x &gt; 3)
+x++;</span></span>)</p>
+
+<p class=MsoListBullet style='margin-left:0in;text-indent:0in'><span
+class=Keyword><span style='font-size:10.0pt'>&nbsp;</span></span></p>
+
+<p class=afterlist>The <span class=CodeText><span style='font-size:10.0pt'>if</span></span>
+statement checks also apply to the body of the <span class=CodeText><span
+style='font-size:10.0pt'>else</span></span> clause.  No <span class=Flag><span
+style='font-size:10.0pt'>ifblock</span></span> warning is reported if the body
+of the <span class=CodeText><span style='font-size:10.0pt'>else</span></span>
+clause is an <span class=CodeText><span style='font-size:10.0pt'>if</span></span>
+statement, to allow conventional <span class=CodeText><span style='font-size:
+10.0pt'>else if</span></span> chains.  </p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974994"></a><a
+name="_Ref347246283">8.3.5<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Complete Logic</a></h3>
+
+<p class=beforelist>Although it may be perfectly reasonable in many contexts,
+an <span class=CodeText><span style='font-size:10.0pt'>if</span></span>-<span
+class=CodeText><span style='font-size:10.0pt'>else</span></span> chain with no
+final <span class=CodeText><span style='font-size:10.0pt'>else</span></span>
+may indicate missing logic or forgetting to check error cases.  If <span
+class=Flag><span style='font-size:10.0pt'>elseif-complete</span></span> is on, Splint warns when an <span class=CodeText><span style='font-size:10.0pt'>if</span></span>
+statement that is the body of an <span class=CodeText><span style='font-size:
+10.0pt'>else</span></span> clause does not have a matching <span
+class=CodeText><span style='font-size:10.0pt'>else</span></span> clause.  For
+example, the code,</p>
+
+<p class=Verbatim>   if (x == 0) { return &quot;nil&quot;; }</p>
+
+<p class=Verbatim>   else if (x == 1) { return &quot;many&quot;; }</p>
+
+<p class=afterlist>results in a warning since the second <span class=CodeText><span
+style='font-size:10.0pt'>if</span></span> has no matching <span class=CodeText><span
+style='font-size:10.0pt'>else</span></span> branch.</p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534974995"></a><a
+name="_Ref344892802">8.4<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Suspicious Statements</a></h2>
+
+<p class=TextFontCX>Splint detects errors involving
+statements with no apparent effects (Section 8.4.1) and statements that ignore
+the result of a called function (Section 8.4.2). </p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974996"></a><a
+name="_Ref347247824">8.4.1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Statements with No Effects</a></h3>
+
+<p class=TextFontCX>Splint can report errors for
+statements that have no effect.  (Controlled by <span class=Flag><span
+style='font-size:10.0pt'>no-effect</span></span>.)   Because of modifies clauses, Splint can detect more errors than traditional checkers.  Unless the <span class=Flag><span style='font-size:10.0pt'>no-effect-uncon</span></span> flag is on, errors are not reported for statements that involve calls to unconstrained functions since the unconstrained function may cause a modification.  Figure 19 shows examples of Splint’s no effect checking.</p>
+<p>
+<center>
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 
+  style='margin-left:5.4pt;border-collapse:collapse;
+ margin-left:-2.25pt;margin-right:-2.25pt'>
+ <tr>
+  <td  valign=top style='border:solid black 1.5pt;
+  border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><a name="_Ref344893305"></a><a name="_Ref344874935"><span
+  class=StyleKeywordBold><span style='font-size:10.0pt'>noeffect.c</span></span></a></p>
+  </td>
+  <td  valign=top style='border-top:solid black 1.5pt;
+  border-left:none;border-bottom:none;border-right:solid black 1.5pt;
+  background:black;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><b><span style='color:white'>Running Splint</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td  valign=top style='border:solid black 1.5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=Verbatim>extern void </p>
+  <p class=Verbatim>  nomodcall (int *x) /*@*/;</p>
+  <p class=IndentText><i>Recall /*@*/ is shorthand for<br> modifies nothing and use<br>
+  no globals.</i></p>
+  <p class=Verbatim>extern void mysterycall (int *x);</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>int noeffect (int *x, int y)</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim>  y == *x;</p>
+  <p class=Verbatim>  nomodcall (x);</p>
+  <p class=Verbatim>  mysterycall (x);</p>
+  <p class=Verbatim>  return *x;</p>
+  <p class=Verbatim>}</p>
+  </td>
+  <td  valign=top style='border-top:none;border-left:
+  none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=lclintrun>&gt; splint noeffect.c +noeffectuncon</p>
+  <p class=lclintrun>noeffect.c:6: Statement has no effect: y == *x</p>
+  <p class=lclintrun>noeffect.c:7: Statement has no effect: nomodcall(x)</p>
+  <p class=lclintrun>noeffect.c:8: Statement has no effect (possible</p>
+  <p class=lclintrun>    undetected modification through call to</p>
+  <p class=lclintrun>    unconstrained function mysterycall):</p>
+  <p class=lclintrun>    mysterycall(x)</p>
+  <p class=IndentText><i>&nbsp;</i></p>
+  <p class=IndentText style='page-break-after:avoid'><i>The warning for line 8
+  would not be<br>reported without</i> <span class=Flag><span style='font-size:
+  10.0pt'>+noeffectuncon</span></span>.</p>
+  </td>
+ </tr>
+</table>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0>
+ <tr>
+  <td valign=top style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=MsoCaption><a name="_Ref534813977"></a><a name="_Toc534824623"></a><a
+  name="_Ref534823396">Figure 19</a>.  Statements with No Effect</p>
+  </td>
+ </tr>
+</table>
+</center>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Ref534978820"></a><a
+name="_Toc534974997">8.4.2<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Ignored Return Values</a></h3>
+
+<p class=TextFontCX>Splint reports an error when a return value is ignored.  Checking may be controlled based on the type of
+the return value: <span class=Flag><span style='font-size:10.0pt'>ret-val-int</span></span>
+controls reporting of ignored return values of type <span class=Keyword><span
+style='font-size:10.0pt'>int</span></span>, and <span class=Flag><span
+style='font-size:10.0pt'>ret-val-bool</span></span> for return values of type <span class=Keyword><span style='font-size:10.0pt'>bool</span></span>,
+and <span class=Flag><span style='font-size:10.0pt'>ret-val-others</span></span> for all other types.  A function statement may be cast to <span class=Keyword><span
+style='font-size:10.0pt'>void</span></span> to prevent this error from being
+reported. </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Alternate types (Section 4.4) can be used to declare functions that return values that may safely
+be ignored by declaring the result type to alternately be <span class=Keyword><span
+style='font-size:10.0pt'>void</span></span>.  Several functions in the standard
+library are specified to alternately return <span class=Keyword><span
+style='font-size:10.0pt'>void</span></span> to prevent ignored return value
+errors for standard library functions (e.g., <span class=Keyword><span
+style='font-size:10.0pt'>strcpy</span></span>) where the result may be safely
+ignored (see Section 14.1).  Figure 20 shows examples of ignored return value errors reported by Splint.</p>
+
+<p class=MsoNormal align=left style='text-align:left;background:white'><span
+style='font-size:10.0pt'>&nbsp;</span></p>
+<p>
+<center>
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 
+ style='margin-left:9.9pt;border-collapse:collapse'>
+ <tr>
+  <td  valign=top style='border:solid black 1.5pt;
+  border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><span class=Keyword><b><span style='font-size:10.0pt;
+  color:white'>ignore.c</span></b></span></p>
+  </td>
+  <td  valign=top style='border-top:solid black 1.5pt;
+  border-left:none;border-bottom:none;border-right:solid black 1.5pt;
+  background:black;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><b><span style='color:white'>Running Splint</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td  valign=top style='border:solid black 1.5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=Verbatim># include “bool.h”</p>
+  <p class=Verbatim>extern int fi (void);</p>
+  <p class=Verbatim>extern bool fb (void);</p>
+  <p class=Verbatim>extern int /*@alt void@*/</p>
+  <p class=Verbatim>  fv (void);</p>
+  <p class=Verbatim>&nbsp;</p>
+  <p class=Verbatim>int ignore (void)</p>
+  <p class=Verbatim>{</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>  8</span></span> 
+  fi ();</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>  9</span></span> 
+  (void) fi ();</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>10</span></span> 
+  fb ();</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>11</span></span> 
+  fv ();</p>
+  <p class=Verbatim><span class=Line><span style='font-size:8.0pt'>12</span></span> 
+  return fv ();</p>
+  <p class=Verbatim>}</p>
+  </td>
+  <td  valign=top style='border-top:none;border-left:
+  none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=lclintrun>&gt; splint ignore.c</p>
+  <p class=lclintrun>&nbsp;</p>
+  <p class=lclintrun>ignore.c:8: Return value (type int) ignored: fi()</p>
+  <p class=lclintrun>ignore.c:10: Return value (type bool) ignored: fb()</p>
+  <p class=lclintrun>&nbsp;</p>
+  <p class=MsoNormal style='background:white'><i><span style='font-size:10.0pt'>The
+  message for line 8 would not be reported if </span></i><span class=Flag><span
+  style='font-size:10.0pt'>&#8209;retvalint</span></span><i><span
+  style='font-size:10.0pt'> </span></i><i><span
+  style='font-size:10.0pt'>is set;<br> for line 10, if </span></i><span class=Flag><span
+  style='font-size:10.0pt'>&#8209;retvalbool</span></span><i><span
+  style='font-size:10.0pt'> </span></i><i><span
+  style='font-size:10.0pt'>is set. </span></i></p>
+  <p class=MsoNormal style='background:white'><i><span style='font-size:10.0pt'>&nbsp;</span></i></p>
+  <p class=MsoNormal style='background:white'><i><span style='font-size:10.0pt'> No
+  message is reported for line 9 because the result is cast to </span></i><span
+  class=CodeText><span style='font-size:10.0pt'>void</span></span><i><span
+  style='font-size:10.0pt'>,<br> and no message is reported for line 11 because </span></i><span
+  class=CodeText><span style='font-size:10.0pt'>fv</span></span><i><span
+  style='font-size:10.0pt'> is declared<br> to alternately return </span></i><span
+  class=CodeText><span style='font-size:10.0pt'>void</span></span><i><span
+  style='font-size:10.0pt'>.</span></i></p>
+  <p class=TextFontCX style='page-break-after:
+  avoid'>&nbsp;</p>
+  </td>
+ </tr>
+</table>
+
+<div>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0>
+ <tr>
+  <td valign=top style='padding-top:0in;padding-right:
+  9.0pt;padding-bottom:0in;padding-left:9.0pt'>
+  <p class=MsoCaption><a name="_Toc534824624"></a><a name="_Ref534823436">Figure
+  20</a>.  Ignored Return Values</p>
+  </td>
+ </tr>
+</table>
+</center>
+
+<p class=MsoNormal align=left style='text-align:left;background:white'><span
+style='font-size:10.0pt'>&nbsp;</span></p>
+
+<b><span style='font-size:16.0pt;font-family:"Times New Roman"'><br clear=all
+style='page-break-before:always'>
+</span></b>
+
+
+<p>
+<a href="sec9.html"><b>Next:</b> 9. Buffer Sizes</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

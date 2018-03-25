@@ -1,0 +1,76 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint Output</title>
+</head>
+<body>
+<!--#include virtual="../../../header.html"-->
+<pre>
+lclint +lh +checks -allimponly +allmacros +showsummary -uncheckedmacroprefix "^~*" -enumprefix "^^~*" +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.0+ --- Sat Feb 17 18:58:53 EST 1996
+
+< reading spec <A HREF="employee.lcl.html">employee.lcl</A> >
+<A HREF="employee.lcl.html#line6">employee.lcl:6,30</A>: Enum member gender_ANY name is not consistent with enum
+                      member namespace prefix "^^~*"
+  An enum member does not start with the enumprefix.  Use -enumprefix to
+  suppress message.
+<A HREF="employee.lcl.html#line7">employee.lcl:7,29</A>: Enum member job_ANY name is not consistent with enum member
+                      namespace prefix "^^~*"
+< reading spec <A HREF="eref.lcl.html">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html">dbase.lcl</A> >
+<A HREF="dbase.lcl.html#line4">dbase.lcl:4,15</A>: Enum member db_OK name is not consistent with enum member
+                   namespace prefix "^^~*"
+<A HREF="dbase.lcl.html#line4">dbase.lcl:4,22</A>: Enum member salERR name is not consistent with enum member
+                   namespace prefix "^^~*"
+<A HREF="dbase.lcl.html#line4">dbase.lcl:4,30</A>: Enum member genderERR name is not consistent with enum member
+                   namespace prefix "^^~*"
+<A HREF="dbase.lcl.html#line4">dbase.lcl:4,41</A>: Enum member jobERR name is not consistent with enum member
+                   namespace prefix "^^~*"
+<A HREF="dbase.lcl.html#line5">dbase.lcl:5,15</A>: Enum member duplERR name is not consistent with enum member
+                   namespace prefix "^^~*"
+<A HREF="dbase.lcl.html#line5">dbase.lcl:5,24</A>: Enum member missERR name is not consistent with enum member
+                   namespace prefix "^^~*"
+< preprocessing >
+< checking <A HREF="employee.c.html">employee.c</A> >
+< checking <A HREF="eref.c.html">eref.c</A> >
+<A HREF="eref.h.html#line9">eref.h:9,29</A>: Enum member used name is not consistent with enum member namespace
+                prefix "^^~*"
+<A HREF="eref.h.html#line9">eref.h:9,29</A>: Enum member avail name is not consistent with enum member
+                namespace prefix "^^~*"
+< checking <A HREF="empset.c.html">empset.c</A> >
+< checking <A HREF="ereftab.c.html">ereftab.c</A> >
+< checking <A HREF="erc.c.html">erc.c</A> >
+< checking <A HREF="dbase.c.html">dbase.c</A> >
+<A HREF="dbase.c.html#line7">dbase.c:7,2</A>: Enum member mMGRS name is not consistent with enum member
+                namespace prefix "^^~*"
+<A HREF="dbase.c.html#line7">dbase.c:7,2</A>: Enum member fMGRS name is not consistent with enum member
+                namespace prefix "^^~*"
+<A HREF="dbase.c.html#line7">dbase.c:7,2</A>: Enum member mNON name is not consistent with enum member namespace
+                prefix "^^~*"
+<A HREF="dbase.c.html#line7">dbase.c:7,2</A>: Enum member fNON name is not consistent with enum member namespace
+                prefix "^^~*"
+< checking <A HREF="drive.c.html">drive.c</A> >
+< checking macros <A HREF="bool.h.html">bool.h</A> >
+< global checks >
+< cleaning ......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+usedef                       0           1
+exporttype                   0           5
+macroempty                   0           1
+compdef                      0           1
+enumprefix                  14           0
+sizeoftype                   0           6
+                          ========  =========
+Total:                      14          14
+
+Finished LCLint checking --- 14 code errors found
+392 spec, 2840 source (1270 before pre-processing) lines in 4.80 s.
+</pre>
+<p>
+<b><a href="index.html">Return</b></br>
+<!--#include virtual="../../../footer.html"-->

@@ -1,0 +1,378 @@
+<p><h4>Changes in <A HREF="bool.h.html">bool.h</A> (<A HREF="../namechecks/bool.h.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="bool.h.html#line34">line 34</A> (was <A HREF="../namechecks/bool.h.html#line33">line 33</A>)<pre>
+&gt; /*@noaccess bool@*/
+</pre><p><p>
+<p><h4>Changes in <A HREF="dbase.c.html">dbase.c</A> (<A HREF="../namechecks/dbase.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line6">line 6</A> with <A HREF="dbase.c.html#line6">line 6</A><pre>
+&lt;   mMGRS, fMGRS, mNON, fNON
+---
+&gt;   KND_MMGRS, KND_FMGRS, KND_MNON, KND_FNON
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line10">line 10</A> with <A HREF="dbase.c.html#line10">line 10</A><pre>
+&lt; # define firstERC mMGRS
+---
+&gt; # define firstERC KND_MMGRS
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line13">line 13</A> with <A HREF="dbase.c.html#line13">line 13</A><pre>
+&lt; # define lastERC fNON
+---
+&gt; # define lastERC KND_FNON
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line59">line 59</A> with <A HREF="dbase.c.html#line59">line 59</A><pre>
+&lt;   return erefNIL;
+---
+&gt;   return eref_undefined;
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line69">line 69</A> with <A HREF="dbase.c.html#line69">line 69</A> to <A HREF="dbase.c.html#line70">line 70</A><pre>
+&lt;       if (!eref_equal (er, erefNIL))
+---
+&gt; 
+&gt;       if (eref_isDefined (er))
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line75">line 75</A> with <A HREF="dbase.c.html#line76">line 76</A><pre>
+&lt;   return erefNIL;
+---
+&gt;   return eref_undefined;
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line98">line 98</A> with <A HREF="dbase.c.html#line99">line 99</A><pre>
+&lt; db_status hire (employee e)
+---
+&gt; db_status db_hire (employee e)
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line100">line 100</A> to <A HREF="../namechecks/dbase.c.html#line101">line 101</A> with <A HREF="dbase.c.html#line101">line 101</A> to <A HREF="dbase.c.html#line102">line 102</A><pre>
+&lt;   if (e.gen == gender_ANY)
+&lt;     return genderERR;
+---
+&gt;   if (e.gen == GENDER_UNKNOWN)
+&gt;     return DBS_GENDERERR;
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line103">line 103</A> to <A HREF="../namechecks/dbase.c.html#line104">line 104</A> with <A HREF="dbase.c.html#line104">line 104</A> to <A HREF="dbase.c.html#line105">line 105</A><pre>
+&lt;   if (e.j == job_ANY)
+&lt;     return jobERR;
+---
+&gt;   if (e.j == JOB_UNKNOWN)
+&gt;     return DBS_JOBERR;
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line107">line 107</A> with <A HREF="dbase.c.html#line108">line 108</A><pre>
+&lt;     return salERR;
+---
+&gt;     return DBS_SALERR;
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line109">line 109</A> to <A HREF="../namechecks/dbase.c.html#line110">line 110</A> with <A HREF="dbase.c.html#line110">line 110</A> to <A HREF="dbase.c.html#line111">line 111</A><pre>
+&lt;   if (!eref_equal (db_keyGet (e.ssNum), erefNIL))
+&lt;     return duplERR;
+---
+&gt;   if (eref_isDefined (db_keyGet (e.ssNum)))
+&gt;     return DBS_DUPLERR;
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line112">line 112</A> to <A HREF="../namechecks/dbase.c.html#line113">line 113</A> with <A HREF="dbase.c.html#line113">line 113</A> to <A HREF="dbase.c.html#line114">line 114</A><pre>
+&lt;   uncheckedHire (e);
+&lt;   return db_OK;
+---
+&gt;   db_uncheckedHire (e);
+&gt;   return DBS_OK;
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line116">line 116</A> with <A HREF="dbase.c.html#line117">line 117</A><pre>
+&lt; void uncheckedHire (employee e)
+---
+&gt; void db_uncheckedHire (employee e)
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line126">line 126</A> with <A HREF="dbase.c.html#line127">line 127</A><pre>
+&lt;       erc_insert (db[(int) mMGRS], er);
+---
+&gt;       erc_insert (db[(int) KND_MMGRS], er);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line128">line 128</A> with <A HREF="dbase.c.html#line129">line 129</A><pre>
+&lt;       erc_insert (db[(int) mNON], er);
+---
+&gt;       erc_insert (db[(int) KND_MNON], er);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line131">line 131</A> with <A HREF="dbase.c.html#line132">line 132</A><pre>
+&lt;       erc_insert (db[(int) fMGRS], er);
+---
+&gt;       erc_insert (db[(int) KND_FMGRS], er);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line133">line 133</A> with <A HREF="dbase.c.html#line134">line 134</A><pre>
+&lt;       erc_insert (db[(int) fNON], er);
+---
+&gt;       erc_insert (db[(int) KND_FNON], er);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line136">line 136</A> with <A HREF="dbase.c.html#line137">line 137</A><pre>
+&lt; bool fire (int ssNum)
+---
+&gt; bool db_fire (int ssNum)
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line154">line 154</A> with <A HREF="dbase.c.html#line155">line 155</A><pre>
+&lt; bool promote (int ssNum)
+---
+&gt; bool db_promote (int ssNum)
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line162">line 162</A> with <A HREF="dbase.c.html#line163">line 163</A><pre>
+&lt;   er = db_ercKeyGet (db[(int) mNON], ssNum);
+---
+&gt;   er = db_ercKeyGet (db[(int) KND_MNON], ssNum);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line164">line 164</A> with <A HREF="dbase.c.html#line165">line 165</A><pre>
+&lt;   if (eref_equal (er, erefNIL))
+---
+&gt;   if (!eref_isDefined (er))
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line166">line 166</A> to <A HREF="../namechecks/dbase.c.html#line167">line 167</A> with <A HREF="dbase.c.html#line167">line 167</A> to <A HREF="dbase.c.html#line168">line 168</A><pre>
+&lt;       er = db_ercKeyGet (db[(int) fNON], ssNum);
+&lt;       if (eref_equal (er, erefNIL))
+---
+&gt;       er = db_ercKeyGet (db[(int) KND_FNON], ssNum);
+&gt;       if (!eref_isDefined (er))
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line178">line 178</A> to <A HREF="../namechecks/dbase.c.html#line179">line 179</A> with <A HREF="dbase.c.html#line179">line 179</A> to <A HREF="dbase.c.html#line180">line 180</A><pre>
+&lt;       erc_delete (db[(int) mNON], er);
+&lt;       erc_insert (db[(int) mMGRS], er);
+---
+&gt;       erc_delete (db[(int) KND_MNON], er);
+&gt;       erc_insert (db[(int) KND_MMGRS], er);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line183">line 183</A> to <A HREF="../namechecks/dbase.c.html#line184">line 184</A> with <A HREF="dbase.c.html#line184">line 184</A> to <A HREF="dbase.c.html#line185">line 185</A><pre>
+&lt;       erc_delete (db[(int) fNON], er);
+&lt;       erc_insert (db[(int) fMGRS], er);
+---
+&gt;       erc_delete (db[(int) KND_FNON], er);
+&gt;       erc_insert (db[(int) KND_FMGRS], er);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line190">line 190</A> with <A HREF="dbase.c.html#line191">line 191</A><pre>
+&lt; db_status setSalary (int ssNum, int sal)
+---
+&gt; db_status db_setSalary (int ssNum, int sal)
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line197">line 197</A> with <A HREF="dbase.c.html#line198">line 198</A><pre>
+&lt;       return salERR;
+---
+&gt;       return DBS_SALERR;
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line202">line 202</A> with <A HREF="dbase.c.html#line203">line 203</A><pre>
+&lt;   if (eref_equal (er, erefNIL))
+---
+&gt;   if (!eref_isDefined (er))
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line204">line 204</A> with <A HREF="dbase.c.html#line205">line 205</A><pre>
+&lt;       return missERR;
+---
+&gt;       return DBS_MISSERR;
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line211">line 211</A> with <A HREF="dbase.c.html#line212">line 212</A><pre>
+&lt;   return db_OK;
+---
+&gt;   return DBS_OK;
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line214">line 214</A> with <A HREF="dbase.c.html#line215">line 215</A><pre>
+&lt; int query (db_q q, empset s)
+---
+&gt; int db_query (db_q q, empset s)
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line225">line 225</A> with <A HREF="dbase.c.html#line226">line 226</A><pre>
+&lt;     case gender_ANY:
+---
+&gt;     case GENDER_UNKNOWN:
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line228">line 228</A> with <A HREF="dbase.c.html#line229">line 229</A><pre>
+&lt;         case job_ANY:
+---
+&gt;         case JOB_UNKNOWN:
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line238">line 238</A> to <A HREF="../namechecks/dbase.c.html#line239">line 239</A> with <A HREF="dbase.c.html#line239">line 239</A> to <A HREF="dbase.c.html#line240">line 240</A><pre>
+&lt;           numAdded = db_addEmpls (db[(int) mMGRS], l, h, s);
+&lt;           numAdded += db_addEmpls (db[(int) fMGRS], l, h, s);
+---
+&gt;           numAdded = db_addEmpls (db[(int) KND_MMGRS], l, h, s);
+&gt;           numAdded += db_addEmpls (db[(int) KND_FMGRS], l, h, s);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line242">line 242</A> to <A HREF="../namechecks/dbase.c.html#line243">line 243</A> with <A HREF="dbase.c.html#line243">line 243</A> to <A HREF="dbase.c.html#line244">line 244</A><pre>
+&lt;           numAdded = db_addEmpls (db[(int) mNON], l, h, s);
+&lt;           numAdded += db_addEmpls (db[(int) fNON], l, h, s);
+---
+&gt;           numAdded = db_addEmpls (db[(int) KND_MNON], l, h, s);
+&gt;           numAdded += db_addEmpls (db[(int) KND_FNON], l, h, s);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line249">line 249</A> to <A HREF="../namechecks/dbase.c.html#line251">line 251</A> with <A HREF="dbase.c.html#line250">line 250</A> to <A HREF="dbase.c.html#line252">line 252</A><pre>
+&lt;         case job_ANY:
+&lt;           numAdded = db_addEmpls (db[(int) mMGRS], l, h, s);
+&lt;           numAdded += db_addEmpls (db[(int) mNON], l, h, s);
+---
+&gt;         case JOB_UNKNOWN:
+&gt;           numAdded = db_addEmpls (db[(int) KND_MMGRS], l, h, s);
+&gt;           numAdded += db_addEmpls (db[(int) KND_MNON], l, h, s);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line254">line 254</A> with <A HREF="dbase.c.html#line255">line 255</A><pre>
+&lt;           return db_addEmpls (db[(int) mMGRS], l, h, s);
+---
+&gt;           return db_addEmpls (db[(int) KND_MMGRS], l, h, s);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line256">line 256</A> with <A HREF="dbase.c.html#line257">line 257</A><pre>
+&lt;           return db_addEmpls (db[(int) mNON], l, h, s);
+---
+&gt;           return db_addEmpls (db[(int) KND_MNON], l, h, s);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line261">line 261</A> to <A HREF="../namechecks/dbase.c.html#line263">line 263</A> with <A HREF="dbase.c.html#line262">line 262</A> to <A HREF="dbase.c.html#line264">line 264</A><pre>
+&lt;         case job_ANY:
+&lt;           numAdded = db_addEmpls (db[(int) fMGRS], l, h, s);
+&lt;           numAdded += db_addEmpls (db[(int) fNON], l, h, s);
+---
+&gt;         case JOB_UNKNOWN:
+&gt;           numAdded = db_addEmpls (db[(int) KND_FMGRS], l, h, s);
+&gt;           numAdded += db_addEmpls (db[(int) KND_FNON], l, h, s);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line266">line 266</A> with <A HREF="dbase.c.html#line267">line 267</A><pre>
+&lt;           return db_addEmpls (db[(int) fMGRS], l, h, s);
+---
+&gt;           return db_addEmpls (db[(int) KND_FMGRS], l, h, s);
+</pre><br>Replaced <A HREF="../namechecks/dbase.c.html#line268">line 268</A> with <A HREF="dbase.c.html#line269">line 269</A><pre>
+&lt;           return db_addEmpls (db[(int) fNON], l, h, s);
+---
+&gt;           return db_addEmpls (db[(int) KND_FNON], l, h, s);
+</pre><p><p>
+<p><h4>Changes in <A HREF="dbase.lcl.html">dbase.lcl</A> (<A HREF="../namechecks/dbase.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../namechecks/dbase.lcl.html#line4">line 4</A> to <A HREF="../namechecks/dbase.lcl.html#line5">line 5</A> with <A HREF="dbase.lcl.html#line4">line 4</A> to <A HREF="dbase.lcl.html#line5">line 5</A><pre>
+&lt; typedef enum {db_OK, salERR, genderERR, jobERR,
+&lt;               duplERR, missERR} db_status;
+---
+&gt; typedef enum { DBS_OK, DBS_SALERR, DBS_GENDERERR, DBS_JOBERR,
+&gt;                DBS_DUPLERR, DBS_MISSERR } db_status;
+</pre><br>Replaced <A HREF="../namechecks/dbase.lcl.html#line17">line 17</A> with <A HREF="dbase.lcl.html#line17">line 17</A><pre>
+&lt; db_status hire(employee e) db d; 
+---
+&gt; db_status db_hire (employee e) db d; 
+</pre><br>Replaced <A HREF="../namechecks/dbase.lcl.html#line32">line 32</A> with <A HREF="dbase.lcl.html#line32">line 32</A><pre>
+&lt; void uncheckedHire(employee e) db d; 
+---
+&gt; void db_uncheckedHire (employee e) db d; 
+</pre><br>Replaced <A HREF="../namechecks/dbase.lcl.html#line41">line 41</A> with <A HREF="dbase.lcl.html#line41">line 41</A><pre>
+&lt; bool fire(int ssNum) db d; 
+---
+&gt; bool db_fire (int ssNum) db d; 
+</pre><br>Replaced <A HREF="../namechecks/dbase.lcl.html#line49">line 49</A> with <A HREF="dbase.lcl.html#line49">line 49</A><pre>
+&lt; int query(db_q q, empset s) db d; 
+---
+&gt; int db_query (db_q q, empset s) db d; 
+</pre><br>Replaced <A HREF="../namechecks/dbase.lcl.html#line57">line 57</A> with <A HREF="dbase.lcl.html#line57">line 57</A><pre>
+&lt; bool promote(int ssNum) db d; 
+---
+&gt; bool db_promote (int ssNum) db d; 
+</pre><br>Replaced <A HREF="../namechecks/dbase.lcl.html#line68">line 68</A> with <A HREF="dbase.lcl.html#line68">line 68</A><pre>
+&lt; db_status setSalary(int ssNum, int sal) db d; 
+---
+&gt; db_status db_setSalary (int ssNum, int sal) db d; 
+</pre><br>Added <A HREF="dbase.lcl.html#line97">line 97</A> (was <A HREF="../namechecks/dbase.lcl.html#line96">line 96</A>)<pre>
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="drive.c.html">drive.c</A> (<A HREF="../namechecks/drive.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../namechecks/drive.c.html#line125">line 125</A> with <A HREF="drive.c.html#line125">line 125</A><pre>
+&lt;           check (hire(e) == db_OK); 
+---
+&gt;           check (db_hire(e) == DBS_OK); 
+</pre><br>Replaced <A HREF="../namechecks/drive.c.html#line129">line 129</A> with <A HREF="drive.c.html#line129">line 129</A><pre>
+&lt;           uncheckedHire(e); status = hire(e);
+---
+&gt;           db_uncheckedHire(e); status = db_hire(e);
+</pre><br>Replaced <A HREF="../namechecks/drive.c.html#line134">line 134</A> with <A HREF="drive.c.html#line134">line 134</A><pre>
+&lt;          bool_unparse (/*@-usedef@*/ status == duplERR /*@=usedef@*/)); 
+---
+&gt;          bool_unparse (/*@-usedef@*/ status == DBS_DUPLERR /*@=usedef@*/)); 
+</pre><br>Replaced <A HREF="../namechecks/drive.c.html#line138">line 138</A> to <A HREF="../namechecks/drive.c.html#line139">line 139</A> with <A HREF="drive.c.html#line138">line 138</A> to <A HREF="drive.c.html#line139">line 139</A><pre>
+&lt;   check (fire(17));
+&lt;   q.g = FEMALE; q.j = job_ANY; q.l = 158; q.h = 185;
+---
+&gt;   check (db_fire(17));
+&gt;   q.g = FEMALE; q.j = JOB_UNKNOWN; q.l = 158; q.h = 185;
+</pre><br>Replaced <A HREF="../namechecks/drive.c.html#line144">line 144</A> with <A HREF="drive.c.html#line144">line 144</A><pre>
+&lt;   i = query(q, em1 = empset_create());
+---
+&gt;   i = db_query(q, em1 = empset_create());
+</pre><br>Replaced <A HREF="../namechecks/drive.c.html#line151">line 151</A> with <A HREF="drive.c.html#line151">line 151</A><pre>
+&lt;   i = query(q, em2 = empset_create());
+---
+&gt;   i = db_query(q, em2 = empset_create());
+</pre><br>Replaced <A HREF="../namechecks/drive.c.html#line165">line 165</A> with <A HREF="drive.c.html#line165">line 165</A><pre>
+&lt;   check (fire(empset_choose(em3).ssNum));
+---
+&gt;   check (db_fire(empset_choose(em3).ssNum));
+</pre><p><p>
+<p><h4>Changes in <A HREF="employee.c.html">employee.c</A> (<A HREF="../namechecks/employee.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../namechecks/employee.c.html#line34">line 34</A> with <A HREF="employee.c.html#line34">line 34</A><pre>
+&lt;   (void) sprintf (s, employeeFormat, e.ssNum, e.name,
+---
+&gt;   (void) sprintf (s, FORMATEMPLOYEE, e.ssNum, e.name,
+</pre><p><p>
+<p><h4>Changes in <A HREF="employee.h.html">employee.h</A> (<A HREF="../namechecks/employee.h.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../namechecks/employee.h.html#line8">line 8</A> with <A HREF="employee.h.html#line8">line 8</A><pre>
+&lt; # define employeeFormat "%9d  %-20s  %-6s  %-11s  %6d.00"
+---
+&gt; # define FORMATEMPLOYEE "%9d  %-20s  %-6s  %-11s  %6d.00"
+</pre><p><p>
+<p><h4>Changes in <A HREF="employee.lcl.html">employee.lcl</A> (<A HREF="../namechecks/employee.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../namechecks/employee.lcl.html#line6">line 6</A> to <A HREF="../namechecks/employee.lcl.html#line7">line 7</A> with <A HREF="employee.lcl.html#line6">line 6</A> to <A HREF="employee.lcl.html#line7">line 7</A><pre>
+&lt; typedef enum { MALE, FEMALE, gender_ANY } gender;
+&lt; typedef enum { MGR, NONMGR, job_ANY } job;
+---
+&gt; typedef enum { MALE, FEMALE, GENDER_UNKNOWN } gender;
+&gt; typedef enum { MGR, NONMGR, JOB_UNKNOWN } job;
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset.c.html">empset.c</A> (<A HREF="../namechecks/empset.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../namechecks/empset.c.html#line15">line 15</A> with <A HREF="empset.c.html#line15">line 15</A><pre>
+&lt;   return erefNIL;
+---
+&gt;   return eref_undefined;
+</pre><br>Replaced <A HREF="../namechecks/empset.c.html#line20">line 20</A> with <A HREF="empset.c.html#line20">line 20</A><pre>
+&lt;   return (!eref_equal(empset_get (e, s), erefNIL));
+---
+&gt;   return (eref_isDefined (empset_get (e, s)));
+</pre><br>Replaced <A HREF="../namechecks/empset.c.html#line30">line 30</A> with <A HREF="empset.c.html#line30">line 30</A><pre>
+&lt;   if (!eref_equal (empset_get (e, s), erefNIL)) 
+---
+&gt;   if (eref_isDefined (empset_get (e, s)))
+</pre><br>Replaced <A HREF="../namechecks/empset.c.html#line47">line 47</A> with <A HREF="empset.c.html#line47">line 47</A><pre>
+&lt;   if (eref_equal (er, erefNIL)) 
+---
+&gt;   if (!eref_isDefined (er))
+</pre><br>Replaced <A HREF="../namechecks/empset.c.html#line63">line 63</A> with <A HREF="empset.c.html#line63">line 63</A><pre>
+&lt;   if (eref_equal (er, erefNIL)) 
+---
+&gt;   if (!eref_isDefined (er))
+</pre><br>Added <A HREF="empset.c.html#line67">line 67</A> (was <A HREF="../namechecks/empset.c.html#line66">line 66</A>)<pre>
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.c.html">eref.c</A> (<A HREF="../namechecks/eref.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../namechecks/eref.c.html#line5">line 5</A> with <A HREF="eref.c.html#line5">line 5</A><pre>
+&lt; static eref_ERP eref_Pool;     /* private */
+---
+&gt; static erefTable eref_Pool;     /* private */
+</pre><br>Replaced <A HREF="../namechecks/eref.c.html#line14">line 14</A> with <A HREF="eref.c.html#line14">line 14</A><pre>
+&lt;   for (i=0; (eref_Pool.status[i] == used) && (i &lt; eref_Pool.size); i++);
+---
+&gt;   for (i=0; (eref_Pool.status[i] == ST_USED) && (i &lt; eref_Pool.size); i++);
+</pre><br>Replaced <A HREF="../namechecks/eref.c.html#line31">line 31</A> to <A HREF="../namechecks/eref.c.html#line32">line 32</A> with <A HREF="eref.c.html#line31">line 31</A> to <A HREF="eref.c.html#line32">line 32</A><pre>
+&lt;         (eref_status *) realloc (eref_Pool.status,
+&lt;                                  2 * eref_Pool.size * sizeof (eref_status));
+---
+&gt;         (erefStatus *) realloc (eref_Pool.status,
+&gt;                                  2 * eref_Pool.size * sizeof (erefStatus));
+</pre><br>Replaced <A HREF="../namechecks/eref.c.html#line43">line 43</A> with <A HREF="eref.c.html#line43">line 43</A><pre>
+&lt;         eref_Pool.status[i] = avail;
+---
+&gt;         eref_Pool.status[i] = ST_AVAIL;
+</pre><br>Replaced <A HREF="../namechecks/eref.c.html#line46">line 46</A> with <A HREF="eref.c.html#line46">line 46</A><pre>
+&lt;   eref_Pool.status[res] = used;
+---
+&gt;   eref_Pool.status[res] = ST_USED;
+</pre><br>Replaced <A HREF="../namechecks/eref.c.html#line74">line 74</A> with <A HREF="eref.c.html#line74">line 74</A><pre>
+&lt;   eref_Pool.status = (eref_status *) malloc (size * sizeof (eref_status));
+---
+&gt;   eref_Pool.status = (erefStatus *) malloc (size * sizeof (erefStatus));
+</pre><br>Replaced <A HREF="../namechecks/eref.c.html#line87">line 87</A> with <A HREF="eref.c.html#line87">line 87</A><pre>
+&lt;       eref_Pool.status[i] = avail;
+---
+&gt;       eref_Pool.status[i] = ST_AVAIL;
+</pre><br>Replaced <A HREF="../namechecks/eref.c.html#line96">line 96</A> with <A HREF="eref.c.html#line96">line 96</A><pre>
+&lt;   eref_Pool.status[er] = avail;
+---
+&gt;   eref_Pool.status[er] = ST_AVAIL;
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.h.html">eref.h</A> (<A HREF="../namechecks/eref.h.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../namechecks/eref.h.html#line9">line 9</A> with <A HREF="eref.h.html#line9">line 9</A><pre>
+&lt; typedef enum { used, avail } eref_status;
+---
+&gt; typedef enum { ST_USED, ST_AVAIL } erefStatus;
+</pre><br>Replaced <A HREF="../namechecks/eref.h.html#line12">line 12</A> with <A HREF="eref.h.html#line12">line 12</A><pre>
+&lt;   /*@only@*/ eref_status *status;
+---
+&gt;   /*@only@*/ erefStatus *status;
+</pre><br>Replaced <A HREF="../namechecks/eref.h.html#line14">line 14</A> with <A HREF="eref.h.html#line14">line 14</A><pre>
+&lt; } eref_ERP;
+---
+&gt; } erefTable;
+</pre><br>Replaced <A HREF="../namechecks/eref.h.html#line18">line 18</A> with <A HREF="eref.h.html#line18">line 18</A> to <A HREF="eref.h.html#line20">line 20</A><pre>
+&lt; # define erefNIL -1
+---
+&gt; # define eref_undefined -1
+&gt; 
+&gt; # define eref_isDefined(e)    ((e) != eref_undefined)
+</pre><br>Added <A HREF="eref.h.html#line24">line 24</A> (was <A HREF="../namechecks/eref.h.html#line21">line 21</A>)<pre>
+&gt; 
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.lcl.html">eref.lcl</A> (<A HREF="../namechecks/eref.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="eref.lcl.html#line4">line 4</A> to <A HREF="eref.lcl.html#line5">line 5</A> (was <A HREF="../namechecks/eref.lcl.html#line3">line 3</A>)<pre>
+&gt; constant eref eref_undefined;
+&gt; 
+</pre><br>Deleted <A HREF="../namechecks/eref.lcl.html#line7">line 7</A> (matches <A HREF="eref.lcl.html#line8">line 8</A>)<pre>
+&lt; constant eref erefNIL;
+</pre><br>Added <A HREF="eref.lcl.html#line15">line 15</A> to <A HREF="eref.lcl.html#line16">line 16</A> (was <A HREF="../namechecks/eref.lcl.html#line13">line 13</A>)<pre>
+&gt; 
+&gt; bool eref_isDefined (eref er) map m; { }
+</pre><p><p>
+<p><h4>Changes in <A HREF="ereftab.c.html">ereftab.c</A> (<A HREF="../namechecks/ereftab.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../namechecks/ereftab.c.html#line37">line 37</A> with <A HREF="ereftab.c.html#line37">line 37</A> to <A HREF="ereftab.c.html#line38">line 38</A><pre>
+&lt;   return erefNIL;
+---
+&gt; 
+&gt;   return eref_undefined;
+</pre><p><p>

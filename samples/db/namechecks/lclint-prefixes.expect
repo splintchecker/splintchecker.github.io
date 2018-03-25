@@ -1,0 +1,70 @@
+lclint +lh +checks -allimponly +allmacros +showsummary -uncheckedmacroprefix "^~*" -enumprefix "^^~*" +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.0+ --- Sat Feb 17 18:58:53 EST 1996
+
+< reading spec employee.lcl >
+employee.lcl:6,30: Enum member gender_ANY name is not consistent with enum
+                      member namespace prefix "^^~*"
+  An enum member does not start with the enumprefix.  Use -enumprefix to
+  suppress message.
+employee.lcl:7,29: Enum member job_ANY name is not consistent with enum member
+                      namespace prefix "^^~*"
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+dbase.lcl:4,15: Enum member db_OK name is not consistent with enum member
+                   namespace prefix "^^~*"
+dbase.lcl:4,22: Enum member salERR name is not consistent with enum member
+                   namespace prefix "^^~*"
+dbase.lcl:4,30: Enum member genderERR name is not consistent with enum member
+                   namespace prefix "^^~*"
+dbase.lcl:4,41: Enum member jobERR name is not consistent with enum member
+                   namespace prefix "^^~*"
+dbase.lcl:5,15: Enum member duplERR name is not consistent with enum member
+                   namespace prefix "^^~*"
+dbase.lcl:5,24: Enum member missERR name is not consistent with enum member
+                   namespace prefix "^^~*"
+< preprocessing >
+employee.h:8: Expanded macro employeeFormat name is not consistent with
+                 unchecked macro namespace prefix "^~*"
+  An unchecked macro name does not start with the uncheckedmacroprefix  Use
+  -uncheckedmacroprefix to suppress message.
+< more preprocessing . >
+< checking employee.c >
+< checking eref.c >
+eref.h:9,29: Enum member used name is not consistent with enum member namespace
+                prefix "^^~*"
+eref.h:9,29: Enum member avail name is not consistent with enum member
+                namespace prefix "^^~*"
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+dbase.c:7,2: Enum member mMGRS name is not consistent with enum member
+                namespace prefix "^^~*"
+dbase.c:7,2: Enum member fMGRS name is not consistent with enum member
+                namespace prefix "^^~*"
+dbase.c:7,2: Enum member mNON name is not consistent with enum member namespace
+                prefix "^^~*"
+dbase.c:7,2: Enum member fNON name is not consistent with enum member namespace
+                prefix "^^~*"
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+usedef                       0           1
+exporttype                   0           5
+macroempty                   0           1
+compdef                      0           1
+enumprefix                  14           0
+uncheckedmacroprefix         1           0
+sizeoftype                   0           6
+                          ========  =========
+Total:                      15          14
+
+Finished LCLint checking --- 15 code errors found
+392 spec, 2840 source (1270 before pre-processing) lines in 4.80 s.

@@ -1,0 +1,110 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint Sample - All Macros</title>
+</head>
+<body>
+<!--#include virtual="../../../header.html"-->
+
+<center><h1>
+All Macros
+</h1></center>
+
+<H3> Changes from <A HREF="../memchecks3/index.html">Memory Checks 3</A> </H3>
+
+<A HREF="diffs.html">Differences</A><P>
+
+Fixed all messages reported in third run using memory checks.  
+<P>
+Now running LCLint reports <A HREF="lclint-nomacros.out.html">no
+anomalies</A>.
+
+<P>
+
+<H3> Modules </H3>
+
+<UL>
+<LI>employee - employee datatype (<A HREF="employee.lcl.html">LCL</A>,
+<A HREF="employee.c.html">Code</A>,  <A HREF="employee.h.html">Header</A>)
+<LI>empset - sets of employees (<A HREF="empset.lcl.html">LCL</A>,
+<A HREF="empset.c.html">Code</A>,  <A HREF="empset.h.html">Header</A>)
+<LI>dbase - database of employees (<A HREF="dbase.lcl.html">LCL</A>, 
+<A HREF="dbase.c.html">Code</A>,  <A HREF="dbase.h.html">Header</A>)
+<LI>eref - reference to an employee (<A HREF="eref.lcl.html">LCL</A>,
+<A HREF="eref.c.html">Code</A>,  <A HREF="eref.h.html">Header</A>)
+<LI>erc - collection of erefs (<A HREF="erc.lcl.html">LCL</A>, <A
+HREF="erc.c.html">Code</A>,  <A HREF="erc.h.html">Header</A>)
+<LI>ereftab - table of employees and erefs (<A
+HREF="ereftab.lcl.html">LCL</A>, <A HREF="ereftab.c.html">Code</A>, <A HREF="ereftab.h.html">Header</A>)
+</UL>
+
+<H3><A href="../../../guide/sec8.html">All Macros</a></h3>
+
+Without the <tt>+allmacros</tt> flag, only macros corresponding to
+specified iterators, functions and constants are checked.  Other macros
+are expanded normally.  Using <tt>+allmacros</tt>, causes all macros
+declared with parameter lists to be checked as macros and all other
+macros (except those with empty definitions that are used for
+preprocessing) are checked as constants.
+
+With <tt>+allmacros</tt> LCLint reports <A HREF="lclint.out.html">6
+anomalies</a>.
+
+<h4>Unrecognized Identifiers</h4>
+
+LCLint generates two messages concerning unrecognized identifiers:
+<pre>
+dbase.c: (in macro firstERC)
+<A HREF="dbase.c.html#line4">dbase.c:4,20</A>: Unrecognized identifier in macro definition: mMGRS
+dbase.c: (in macro lastERC)
+<A HREF="dbase.c.html#line5">dbase.c:5,19</A>: Unrecognized identifier in macro definition: fNON
+</pre>
+
+The macro definitions are before the enumerator definition, so
+<tt>mMGRS</tt> and <tt>fNON</tt> are not yet defined.  (Without macro
+checking, no error was reported since they are defined where the macro
+is used.)
+
+We move the macro definitions after the enumerator definitions.
+
+<h4>Missing Declarations</h4>
+
+LCLint reports macros that do not correspond to declarations:
+<pre>
+<A HREF="employee.h.html#line5">employee.h:5</A>: Macro constant employeeFormat not declared
+  Macro constant has no declaration.  Use /*@constant ...@*/ to declare the
+  macro.  Use -macroconstdecl to suppress message.
+<A HREF="dbase.c.html#line4">dbase.c:4</A>: Macro constant firstERC not declared
+<A HREF="dbase.c.html#line5">dbase.c:5</A>: Macro constant lastERC not declared
+<A HREF="dbase.c.html#line6">dbase.c:6</A>: Macro constant numERCS not declared
+</pre>
+
+Since there is no declaration, the type of the macro cannot be checked, and it
+is allowed to match any type.  
+
+For the three errors in <tt>dbase.c</tt>, we add <tt>/*@constant
+...@*/</tt> declarations for the macros:
+<pre>
+/*@constant static employeeKinds firstERC;@*/
+# define firstERC mMGRS
+
+/*@constant static employeeKinds lastERC;@*/
+# define lastERC fNON
+
+/*@constant static int numERCS;@*/
+# define numERCS (lastERC - firstERC + 1)
+</pre>
+
+We could do the same thing for <tt>employeeFormat</tt>, but then we
+would not get checking for the printf arguments where
+<tt>employeeFormat</tt> is <A HREF="employee.c.html#line32">used</A>.
+Instead, we put <tt>/*@notfunction@*/</tt> before the definition, so
+<tt>employeeFormat</tt> is expanded normally.
+<P>
+
+<b><A HREF="../checkchecks1/index.html">Next: Continue to Check Checks 1</a></b><br>
+<A HREF="../index.html">Return to Summary</A>
+
+<!--#include virtual="../../../footer.html"-->
+
+

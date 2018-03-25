@@ -1,0 +1,17 @@
+<h3>LCLint Output</h3>
+<pre>
+LCLint 2.2 --- 25 Aug 96
+
+loop.c: (in function upto)
+<A HREF="loop.c.html#line14" target="source">loop.c:14,10</A>: Suspected infinite loop.  No value used
+    in loop test (x, glob1) is modified by test or
+    loop body.
+  This appears to be an infinite loop. Nothing in the
+  body of the loop or the loop test modifies the value
+  of the loop test. Perhaps the specification of a
+  function called in the loop body is missing a
+  modification. (-infloops will suppress message)
+
+Finished LCLint checking --- 1 code error found
+</pre>
+</html>

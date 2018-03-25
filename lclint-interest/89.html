@@ -1,0 +1,77 @@
+<h3>lclint-interest message 89</h3>
+<pre>
+From mikee@rd.bbc.co.uk Thu Jul 18 15:22:08 1996
+X-Mailer: exmh version 1.6.7 5/3/96
+To: lclint-interest@larch.lcs.mit.edu
+Cc: justin.mitchell@rd.bbc.co.uk
+Subject: Initialising arrays in loops
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Thu, 18 Jul 1996 16:11:41 +0100
+From: Mike Ellis <mikee@rd.bbc.co.uk>
+
+
+Hiya!
+
+Can anyone out there help with this please?
+
+% cat lclint.c
+int main(void)
+{
+  int array[4];
+  int count;
+
+  for (count = 0; count <= 3; count++)
+    {
+      array[count] = count;
+    }
+
+  /* initialised array[] */
+  
+  return array[0];
+}
+% lclint lclint.c
+LCLint 2.1b --- 15 May 96
+ 
+lclint.c: (in function main)
+lclint.c:12,10: Array element array[0] used before definition
+  An rvalue is used that may not be initialized to a value on some execution
+  path. (-usedef will suppress message)
+ 
+Finished LCLint checking --- 1 code error found
+%
+
+Obviously,  what we would like to do is have the comment carry some weight 
+- I "tell" LCLint that array[] has been initialised.  Is there any way of 
+achieving this?
+
+Cheers,
+
+Mike.
+
+
+
+      Mike Ellis,  Research and Development Engineer,  BBC R & D
+mike.ellis@rd.bbc.co.uk  DDI:(+44) 1737 836663   Fax:(+44) 1737 836667
+BBC R&D, Kingswood Warren, Woodland Way, Tadworth, Surrey KT20 6NP, UK
+Any opinions expressed are my own and may not reflect those of the BBC 
+
+
+
+
+</pre>
+<A HREF="88.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="90.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

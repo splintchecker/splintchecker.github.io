@@ -1,0 +1,80 @@
+<h3>lclint-interest message 78</h3>
+<pre>
+From evans@cs.virginia.edu Mon Jun  3 12:30:37 1996
+Date: Mon, 3 Jun 96 12:03:44 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: apang@mindlink.bc.ca
+In-Reply-To: Anthon Pang's message of Thu, 30 May 96 00:01:52 -0800 <m0uP1k5-0004KRC@dewey.mindlink.net>
+Subject: Subscription request
+
+
+Sorry for the slow response...I was out of town last week.
+
+A few things on your wish list are currently done by lclint:
+
+> Let's see...what would be on my wish list for lclint?  How about:
+> - being able to parse C++ files
+
+Nope, sorry.  It would be very useful to see a lclint-like tool
+developed for C++, but there are no immediate plans to do this here.
+
+> - adding some simple software metrics, eg LOC and cyclomatic complexity
+
+Again, would be worth doing, but not likely anytime soon.  There are
+lots of other tools available that do these kind of metrics.  I believe
+some perhaps more revelant metrics could be derived that take advantage
+of some of the extra information used in lclint checking, but don't have
+a clear idea on what kind of metrics would really be useful.
+
+> - integrating Unix portability checks -- autoconf, meta-config
+
+The standard library can be used to check conformance to library calls,
+but the problem with porting unix applications is often that the
+standard library is not supported (at least, in my experience, this is
+usually by things like autoconf and configure are needed).  I'm not sure
+how lclint would be useful in checking this, other than providing
+smaller subsets of the libraries that more platforms are believed to
+support.
+
+> - value tracking (ala PCLint 7)
+
+LCLint does something similar for null pointers (i.e., figures out at a
+given point in the code if a pointer may be null), but doesn't do
+anything to try to approximate the ranges of numerical values at compile
+time --- its not clear to me exactly what PCLint does here, other than
+what they show in the examples (which seems to be limited to simple, but
+very useful things, like knowing the range of values a loop bound can
+hold).
+
+> - support for traditional lint annotations (if not already), eg /*NOTREACHED*/
+
+These are supported already.  See
+http://lclint.cs.virginia.edu/guide/appE.html
+("Traditional Lint Comments") for details.
+
+--- Dave
+
+
+
+
+
+
+
+
+</pre>
+<A HREF="77.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="79.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

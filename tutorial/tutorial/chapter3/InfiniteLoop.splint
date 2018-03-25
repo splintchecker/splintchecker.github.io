@@ -1,0 +1,12 @@
+Splint 3.0.1.4 --- 19 Jan 2002
+
+InfiniteLoop.c: (in function main)
+InfiniteLoop.c:7:10: Suspected infinite loop.  No value used in loop test (i,
+                        n) is modified by test or loop body.
+  This appears to be an infinite loop. Nothing in the body of the loop or the
+  loop test modifies the value of the loop test. Perhaps the specification of a
+  function called in the loop body is missing a modification. (Use -infloops to
+  inhibit warning)
+
+Finished checking --- 1 code warning
+14 source lines in 0.02 s.

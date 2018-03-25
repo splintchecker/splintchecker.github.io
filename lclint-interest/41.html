@@ -1,0 +1,69 @@
+<h3>lclint-interest message 41</h3>
+<pre>
+From ropella@lvs-emh.lvs.loral.com Tue Mar 19 15:31:24 1996
+From: ropella@lvs-emh.lvs.loral.com
+Date: Mon, 4 Mar 1996 18:25:43 -0600
+To: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: David Evans's message of Mon, 4 Mar 96 18:16:28 -0500 <9603042316.AA12675@larch.lcs.mit.edu>
+Subject: Looking for LCLint success stories
+
+
+OK, guys....  I tried to build lclint on a Sun
+Solaris 2.3 box.  This is what the make tells me:
+
+   ld: fatal: file values-Xa.o: cannot open file; errno=2
+   ld: fatal: File processing errors.  No output written to lclint
+   make[3]: [lclint] Error 1 (ignored)
+   mv: cannot access src/lclint
+   make: *** [bin/lclint] Error 2
+
+In response to the following command:
+***
+*** Linking:
+***
+gcc  -DSTDC_HEADERS=1 -O2 -o lclint llgrammar.o cgrammar.o cscanner.o signature.o uentry.o cprim.o macrocache.o qual.o qtype.o ctype.o cvar.o clabstract.o pcpp.o idDecl.o clause.o exprChecks.o exprNode.o structNames.o aliasChecks.o varKinds.o nameChecks.o cstring.o fileloc.o fileStack.o mapping.o message.o fileTable.o hashTable.o llerror.o messageLog.o indxMap.o flagMarker.o aliasTable.o ynm.o sRefTable.o context.o globals.o flags.o llmain.o lclscanline.o ltoken.o  lclsyntable.o lcltokentable.o sort.o symtable.o lclinit.o shift.o out.o general.o osd.o lclscan.o lsymbol.o  tokentable.o scan.o scanline.o lslparse.o source.o lh.o checking.o lclctypes.o imports.o lslinit.o syntable.o  cstringSList.o ctypeList.o declaratorInvNodeList.o declaratorNodeList.o enumNameList.o enumNameSList.o exprNodeList.o exprNodeSList.o fcnNodeList.o fileIdList.o filelocList.o flagMarkerList.o idDeclList.o importNodeList.o initDeclNodeList.o interfaceNodeList.o letDeclNodeList.o lslOperatorList.o ls!
+ ymbolList.o ltokenList.o pairNodeList.o paramNodeList.o programNodeList.o qualList.o quantifierNodeList.o replaceNodeList.o sRefSetList.o sortList.o sortSetList.o stDeclNodeList.o storeRefNodeList.o termNodeList.o traitRefNodeList.o typeNameNodeList.o uentryList.o varDeclarationNodeList.o varNodeList.o clauseStack.o filelocStack.o globSet.o guardSet.o intSet.o lslOperatorSet.o lsymbolSet.o sRefSet.o sigNodeSet.o sortSet.o typeIdSet.o usymIdSet.o ekind.o usymtab.o usymtab_interface.o multiVal.o lltok.o sRef.o abstract.o lcllib.o   -ll
+
+
+I did, however, notice that only 119 files of the supposed
+120 were compiled.  
+*** Compiling lcllib.c / compiled:  119  (of 120 files)
+
+Am I missing a file called "values-Xa.c"?  I grepped for
+the reference to that object file but couldn't find it.
+That makes me think that my problem is with my system as
+opposed to the lclint distribution.
+
+I am using a version of gcc that was placed over the top 
+of our standard distribution.  But, in the Makefile, there
+is the line:
+
+SYSTEM_LIBDIR   = "/usr/include"
+
+And my gcc include files are in:
+$ gcc -v
+Reading specs from /proj/cronus/class/SunOS5/gnat-3.01-sparc-sun-solaris2.3-bin//lib/gcc-lib/sparc-sun-solaris2.3/2.7.2/specs
+gcc version 2.7.2
+
+Could this be my problem?
+
+Thanks.
+glen
+
+
+</pre>
+<A HREF="40.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="42.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

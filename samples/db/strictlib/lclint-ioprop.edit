@@ -1,0 +1,127 @@
+lclint +lh +strict +showsummary -exportconstant -exportlocal +strictlib +showscan +stats employee eref empset ereftab erc dbase drive.c bool.lcl check.lcl
+LCLint 2.0+ --- Wed Feb 21 19:07:11 EST 1996
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< reading spec bool.lcl >
+< reading spec check.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+< checking empset.c >
+empset.c: (in function empset_insertUnique)
+empset.c:54,12: Called procedure eref_alloc may access global stderr
+  A checked global variable is used in the function, but not listed in its
+  globals clause.  By default, only globals specified in .lcl files are
+  checked.  To check all globals, use +allglobals.  To check globals
+  selectively use /*@checked@*/ in the global declaration.  Use -globs to
+  suppress message.
+empset.c:54,12: Undocumented modification of *stderr possible from call to
+                   eref_alloc: eref_alloc()
+  An externally-visible object is modified by a function, but not listed in its
+  modifies clause.  Use -mods to suppress message.
+empset.c:59,3: Called procedure erc_insert may access global stderr
+empset.c:59,3: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(s, er)
+empset.c: (in function empset_disjointUnion)
+empset.c:83,12: Called procedure erc_create may access global stderr
+empset.c:83,12: Undocumented modification of *stderr possible from call to
+                   erc_create: erc_create()
+empset.c: (in function empset_union)
+empset.c:107,12: Called procedure erc_create may access global stderr
+empset.c:107,12: Undocumented modification of *stderr possible from call to
+                    erc_create: erc_create()
+empset.c: (in function empset_intersect)
+empset.c:130,18: Called procedure erc_create may access global stderr
+empset.c:130,18: Undocumented modification of *stderr possible from call to
+                    erc_create: erc_create()
+empset.c: (in function empset_initMod)
+empset.c:172,3: Called procedure eref_initMod may access global stderr
+empset.c:172,3: Undocumented modification of *stderr possible from call to
+                   eref_initMod: eref_initMod()
+empset.h: (in macro empset_create)
+empset.h:26,28: Called procedure erc_create may access global stderr
+empset.h:26,28: Undocumented modification of *stderr possible from call to
+                   erc_create: erc_create()
+empset.h: (in macro empset_sprint)
+empset.h:30,29: Called procedure erc_sprint may access global stderr
+empset.h:30,29: Undocumented modification of *stderr possible from call to
+                   erc_sprint: erc_sprint(es)
+< checking ereftab.c >
+ereftab.c: (in function ereftab_create)
+ereftab.c:10,10: Called procedure erc_create may access global stderr
+ereftab.c:10,10: Undocumented modification of *stderr possible from call to
+                    erc_create: erc_create()
+ereftab.c: (in function ereftab_insert)
+ereftab.c:16,3: Called procedure erc_insert may access global stderr
+ereftab.c:16,3: Undocumented modification of *stderr possible from call to
+                   erc_insert: erc_insert(t, er)
+ereftab.c: (in function ereftab_initMod)
+ereftab.c:48,3: Called procedure eref_initMod may access global stderr
+ereftab.c:48,3: Undocumented modification of *stderr possible from call to
+                   eref_initMod: eref_initMod()
+< checking erc.c >
+erc.c: (in function erc_join)
+erc.c:129,7: Called procedure erc_insert may access global stderr
+erc.c:129,7: Undocumented modification of *stderr possible from call to
+                erc_insert: erc_insert(c1, tmpc->val)
+erc.h: (in macro erc_initMod)
+erc.h:19,77: Called procedure eref_initMod may access global stderr
+erc.h:19,77: Undocumented modification of *stderr possible from call to
+                eref_initMod: eref_initMod()
+< checking dbase.c >
+dbase.c: (in function db_initMod)
+dbase.c:39,3: Called procedure eref_initMod may access global stderr
+dbase.c:39,3: Undocumented modification of *stderr possible from call to
+                 eref_initMod: eref_initMod()
+dbase.c:45,21: Called procedure erc_create may access global stderr
+dbase.c:45,21: Undocumented modification of *stderr possible from call to
+                  erc_create: erc_create()
+dbase.c: (in function db_uncheckedHire)
+dbase.c:133,8: Called procedure eref_alloc may access global stderr
+dbase.c:133,8: Undocumented modification of *stderr possible from call to
+                  eref_alloc: eref_alloc()
+dbase.c:140,4: Called procedure erc_insert may access global stderr
+dbase.c:140,4: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MMGRS], er)
+dbase.c:144,4: Called procedure erc_insert may access global stderr
+dbase.c:144,4: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MNON], er)
+dbase.c:151,4: Called procedure erc_insert may access global stderr
+dbase.c:151,4: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FMGRS], er)
+dbase.c:155,4: Called procedure erc_insert may access global stderr
+dbase.c:155,4: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FNON], er)
+dbase.c: (in function db_promote)
+dbase.c:207,7: Called procedure erc_insert may access global stderr
+dbase.c:207,7: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MMGRS], er)
+dbase.c:212,7: Called procedure erc_insert may access global stderr
+dbase.c:212,7: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FMGRS], er)
+dbase.c: (in function db_print)
+dbase.c:310,18: Called procedure erc_sprint may access global stderr
+dbase.c:310,18: Undocumented modification of *stderr possible from call to
+                   erc_sprint: erc_sprint(db[(int)ek])
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning .......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+usedef                       0           1
+exporttype                   0           3
+globs                       23           0
+compdef                      0           1
+mods                        23           0
+                          ========  =========
+Total:                      46           5
+
+Finished LCLint checking --- 46 code errors found
+404 spec, 2998 source (1368 before pre-processing) lines in 6.22 s.

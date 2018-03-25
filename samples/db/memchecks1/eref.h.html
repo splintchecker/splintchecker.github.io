@@ -1,0 +1,101 @@
+<A NAME="line26"></A><html><head>
+<title>eref.h</title>
+</head><body>
+<h3>eref.h</h3>
+<PRE>
+<A NAME="line1"></A># ifndef EREF_H
+<A NAME="line2"></A># define EREF_H
+<A NAME="line3"></A> 
+<A NAME="line4"></A>#include "<A HREF="employee.h.html">employee.h</A>"
+<A NAME="line5"></A> 
+<A NAME="line6"></A>typedef int eref;
+<A NAME="line7"></A> 
+<A NAME="line8"></A>/* Private typedefs used in macros  */
+<A NAME="line9"></A>typedef enum { used, avail } eref_status;
+<A NAME="line10"></A>typedef struct {
+<A NAME="line11"></A>  employee *conts;
+<A NAME="line12"></A>  eref_status *status;
+<A NAME="line13"></A>  int size;
+<A NAME="line14"></A>} eref_ERP;
+<A NAME="line15"></A> 
+<A NAME="line16"></A>/* Declared here so that macros can use it  */
+<A NAME="line17"></A>extern eref_ERP eref_Pool;
+<A NAME="line18"></A> 
+<A NAME="line19"></A>#include "<A HREF="eref.lh.html">eref.lh</A>"
+<A NAME="line20"></A> 
+<A NAME="line21"></A># define erefNIL -1
+<A NAME="line22"></A> 
+<A NAME="line23"></A># define eref_free(er)        (eref_Pool.status[er] = avail)
+<A NAME="line24"></A># define eref_assign(er, e)   (eref_Pool.conts[er] = (e))
+<A NAME="line25"></A># define eref_get(er)         (eref_Pool.conts[er])
+<A NAME="line26"></A># define eref_equal(er1, er2) ((er1) == (er2))
+<A NAME="line27"></A> 
+<A NAME="line28"></A># endif
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

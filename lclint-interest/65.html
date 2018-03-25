@@ -1,0 +1,103 @@
+<h3>lclint-interest message 65</h3>
+<pre>
+From eric@rrinc.com Fri Mar 29 18:39:27 1996
+Sender: eric@access.rrinc.com
+Date: Fri, 29 Mar 1996 16:30:40 -0500
+From: Eric Bloodworth <eric@rrinc.com>
+Organization: Recognition Research, Inc
+X-Mailer: Mozilla 2.01 (X11; I; AIX 2)
+Mime-Version: 1.0
+To: David Evans <evans@cs.virginia.edu>
+Cc: lclint-interest@larch.lcs.mit.edu
+Subject: Re: can lclint detect this leak? 
+References: <9603251714.AA24209@larch.lcs.mit.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+David Evans wrote:
+> 
+> Yes, I think you're right that some extensions to lclint to allow this
+> to be described would be worthwhile.
+> 
+> Currently, what I have in mind is to add a /*@special@*/ annotation on
+> parameters to indicate that none of the implicit assumptions apply to
+> storage derived from the parameter.  Then clauses can be used to
+> describe derived storage.  I think 4 clauses are needed:
+> 
+>         /*@uses x->size, x->num@*/
+>                 References that are used in the implementation.  Must be
+>                 defined before the call, assumed to be defined checking
+>                 the implementation.
+>         /*@defines x->elements@*/
+>                 References that are defined in all possible paths
+>                 through the implementation.  Must not refer to allocated
+>                 storage before the call (or a memory leak), assumed to
+>                 be undefined checking the implementation, assumed to
+>                 be defined after the call returns.
+>         /*@allocates x->stuff@*/
+>                 Same as defines, except storage is allocated but not
+>                 defined.
+>         /*@releases x->name@*/
+>                 References that are released in the implementation.
+>                 Must be allocated before the call, and a memory leak
+>                 is reported if it is not deallocated in the
+>                 implementation.  After the call, the corresponding
+>                 reference is dead storage.
+> 
+> Then, you would be able to specify
+> 
+>         extern int alloc_booga_s (/*@special@*/ booga_s *stuff)
+>             /*@allocates stuff->bar@*/
+>         or  /*@allocates *stuff@*/     [ semantics of this might be unclear? ]
+> 
+>         extern int free_booga_s (/*@special@*/ booga_s *stuff)
+>             /*@releases stuff->bar@*/
+>         or  /*@releases *stuff@*/
+> 
+> This would also have the advantage that instead of using /*@partial@*/
+> to indicate structure fields may not be defined on call but are checked
+> as though they are defined, programmers can explicitly specify what
+> fields are used and defined.
+> 
+> Perhaps, this should be extended to allow /*@special@*/ annotations on
+> the return value also, and use a special name (e.g., "result") to
+> specify the return values in the uses, defines, allocates, releases
+> lists.
+> 
+> I'm open to suggestions of alternate ways of doing this, especially with
+> respect to what kinds of (simple) things programmers would like to
+> specify about function interfaces that cannot be done with the current
+> lclint annotations, and I'll add something like this to an update
+> release.
+> 
+> --- Dave
+
+You should consider improving support for internal storage (reference: LUG 5.2.7) 
+ It's unreasonable to require an existing API's types to be changed just to 
+annotate inner storage.  Example:
+
+/* this function returns and int * in resp which is read-only */
+int foo(/*@special@*/ int **resp)  /*@observer *resp@*/; 
+
+It would be ideal if you could apply of the usual suspects (out, only, dependent, observer, etc)
+to arguments in this fashion, in addition to the ones you defined above. 
+
+-- Eric
+
+
+</pre>
+<A HREF="64.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="66.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

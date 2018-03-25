@@ -1,0 +1,15 @@
+LCLint 2.0 --- 28 Feb 96
+
+ignore.c: (in function ignore)
+<A HREF="ignore.c.html#line8" target="source">ignore.c:8,3</A>: Return value (type int) ignored: fi()
+  Result returned by function call is not used.  If
+  this is intended, can cast result to (void) to
+  eliminate message.  Use -retvalint to suppress
+  message.
+<A HREF="ignore.c.html#line10" target="source">ignore.c:10,3</A>: Return value (type bool) ignored: fb()
+  Result returned by function call is not used.  If
+  this is intended, can cast result to (void) to
+  eliminate message.  Use -retvalbool to suppress
+  message.
+
+Finished LCLint checking --- 2 code errors found

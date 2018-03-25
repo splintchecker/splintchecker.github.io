@@ -1,0 +1,52 @@
+<h3>lclint-interest message 15</h3>
+<pre>
+Date: 09 Nov 94 12:42:22 EST
+From: "JR (John Rogers)" <72634.2402@compuserve.com>
+To: LCLint interest list <lclint-interest@larch.lcs.mit.edu>
+Subject: Other Boolean types with LCLint
+
+Hi!  I can I tell LCLint about other Boolean types?  I can see where
+I can do stuff with the type 'bool'.  However, other environments use
+other names for Boolean types, including:
+
+   BOOL (with values of TRUE and FALSE, for instance in Microsoft Windows)
+   Boolean (with values of True and False, for instance in Xlib)
+   Boolean_T (with values of Boolean_True and Boolean_False, my invention)
+
+Is there a way I can tell LCLint that 'bool' and 'Boolean_T' are
+equivalent?  In the case of Boolean_T (a type name I invented), perhaps I
+could do something like this:
+
+   /* in my boolean.h header file: */
+   #ifdef LCLINT
+   #include "bool.h"   /* get LCLint bool, TRUE, FALSE. */
+   typedef bool Boolean_T;
+   #define Boolean_TRUE  TRUE
+   #define Boolean_FALSE FALSE
+   #else
+   typedef enum {Boolean_False,Boolean_True} Boolean_T;
+   #endif
+
+However, this may not be helpful to other users of LCLint.  For instance,
+they may not be in a position to modify their local copies of the Xlib
+header files, or the zillions of source files that use them.
+
+Thanks in advance...
+--JR (John Rogers)
+Internet: 72634.2402@CompuServe.com
+</pre>
+<A HREF="14.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="16.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

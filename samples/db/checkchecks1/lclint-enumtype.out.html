@@ -1,0 +1,87 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/checkchecks1'
+lclint +lh -enumint +enumindex -allimponly +allmacros +showscan +stats +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+Warning: setting +showscan redundant with current value
+Warning: setting +stats redundant with current value
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+dbase.c: (in macro numERCS)
+<A HREF="dbase.c.html#line16" target="source">dbase.c:16,20</A>: Incompatible types for + (enum { mMGRS, fMGRS, mNON, fNON },
+                  int): lastERC - firstERC + 1
+  Types are incompatible. Use -type to suppress message.
+dbase.c: (in function db_initMod)
+<A HREF="dbase.c.html#line37" target="source">dbase.c:37,8</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line37" target="source">dbase.c:37,22</A>: Operands of <= have incompatible types (int, employeeKinds):
+                  i <= lastERC
+<A HREF="dbase.c.html#line37" target="source">dbase.c:37,22</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                  test): i <= lastERC
+dbase.c: (in function _db_keyGet)
+<A HREF="dbase.c.html#line60" target="source">dbase.c:60,8</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line60" target="source">dbase.c:60,22</A>: Operands of <= have incompatible types (int, employeeKinds):
+                  i <= lastERC
+<A HREF="dbase.c.html#line60" target="source">dbase.c:60,22</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                  test): i <= lastERC
+dbase.c: (in function fire)
+<A HREF="dbase.c.html#line132" target="source">dbase.c:132,8</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line132" target="source">dbase.c:132,22</A>: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+<A HREF="dbase.c.html#line132" target="source">dbase.c:132,22</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+dbase.c: (in function query)
+<A HREF="dbase.c.html#line222" target="source">dbase.c:222,9</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line222" target="source">dbase.c:222,23</A>: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+<A HREF="dbase.c.html#line222" target="source">dbase.c:222,23</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+dbase.c: (in function db_print)
+<A HREF="dbase.c.html#line268" target="source">dbase.c:268,8</A>: Assignment of employeeKinds to int: i = firstERC
+<A HREF="dbase.c.html#line268" target="source">dbase.c:268,22</A>: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+<A HREF="dbase.c.html#line268" target="source">dbase.c:268,22</A>: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+drive.c: (in function main)
+<A HREF="drive.c.html#line128" target="source">drive.c:128,22</A>: Assignment of db_status to int: j = hire(e)
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 17 code errors found
+391 spec, 2967 source (1247 before pre-processing) lines in 4.92 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/checkchecks1'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

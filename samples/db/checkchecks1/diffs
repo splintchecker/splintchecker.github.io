@@ -1,0 +1,24 @@
+diff memchecks3//drive.c checkchecks//drive.c
+139a140
+>   empset_final (em1);
+145a147
+>   empset_final (em2);
+146a149
+>   empset_final (em3);
+162c165,168
+<   
+---
+> 
+>   empset_final (em1);
+>   empset_final (em2);
+>   empset_final (em3);
+diff memchecks3//erc.c checkchecks//erc.c
+4d3
+< 
+104a104
+> 		  assert (prev != NULL);
+diff memchecks3//eref.c checkchecks//eref.c
+56c56
+<       return;
+---
+>       /*@-compdef@*/ return; /*@=compdef@*/

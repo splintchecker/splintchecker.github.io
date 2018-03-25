@@ -1,0 +1,38 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/namechecks'
+lclint +lh +checks -allimponly +allmacros +distinctexternalnames -externalnamelength 12 +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+empset.lcl:27: External identifier empset_insertUnique is not distinguishable
+                  from empset_insert in the first 12 characters (empset_inser)
+  An external name is not distinguishable from another external name using the
+  number of significant characters. According to ANSI Standard (3.1), an
+  implementation may only consider the first 6 characters significant, and
+  ignore alphabetical case distinctions. The +externalnamelen <n> flag may be
+  used to change the number of significant characters, and -externalnamecaseinse
+  nsitive to make alphabetical case significant in external names. Use
+  -distinctexternalnames to suppress message.
+   empset.lcl:21: Specification of empset_insert
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+dbase.c:21,58: External identifier employeeKinds_all is not distinguishable
+                  from employeeKinds in the first 12 characters (employeeKind)
+   dbase.c:7,3: Declaration of employeeKinds
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 2 code errors found
+392 spec, 2986 source (1275 before pre-processing) lines in 4.70 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/namechecks'

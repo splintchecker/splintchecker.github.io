@@ -1,0 +1,67 @@
+<h3>lclint-interest message 9</h3>
+<pre>
+Date: Mon, 7 Nov 94 13:33:37 -0500
+From: evs (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: David Evans's message of Mon, 7 Nov 94 13:09:27 -0500
+Subject: [johnm@vlibs.com: experiences with lclint]
+
+
+John,
+
+Thanks very much for the message.  Your experience sounds very
+encouraging.
+
+> PS - the only problem which occured, and i believe there really is a
+> solution at hand, has to do with object creation and deletion.  a
+> classic example of the original code is ... 
+>
+> the error that i made was not recognizing the need of adding the first
+> of the *-d statements.  i could swear that i can specify the need for
+> numb_init() to be called but i haven't yet figured out how.
+
+Currently, there is no way to specify this in LCL and get it checked by
+LCLint.  LCL does include a special operator "<type>_initMod()" which
+clients of a module are supposed to call before using any of the type's
+other operations (including creators).  We considered checking this with
+LCLint, but don't currently.  Checking that a module is initialized
+before any uses would require more general inter-procedural flow
+analysis, but I don't think this is nearly as useful as checking
+instances (as your example indicates).
+
+A similar construct could be added to require initialization (and
+descruction) of instances.  One possible extension would be to have type
+qualifiers to declare functions as "modInitializer", "insInitializer",
+"insFinalizer", "modFinalizer" and then if an abstract type has any
+instance initializer functions check that one of them is called before
+the new instance is used (and likewise for finalizer).  
+
+Olender and Osterweil ("Interprocedural Static Analysis of Sequencing
+Constraints", ACM Transactions on Software Engineering and Methodology,
+Jan 1992) have done some work on allowing programmers to specify more
+general sequencing constraints using regular expressions and detecting
+violations of the constraints statically.  From my own experience, I
+think it is very unusal to have code which depends on sequencing
+constraints other than initialization before use.  
+
+Does anyone have any conflicting experience suggesting more general
+sequencing constraints are useful in real programs?
+
+--- Dave
+
+</pre>
+<A HREF="8.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="10.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

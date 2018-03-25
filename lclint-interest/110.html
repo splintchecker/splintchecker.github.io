@@ -1,0 +1,61 @@
+<h3>lclint-interest message 110</h3>
+<pre>
+From evans@cs.virginia.edu Fri Sep 27 10:51:52 1996
+Date: Fri, 27 Sep 96 10:40:50 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: matteo@dotto.usr.dsi.unimi.it
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Matteo Vaccari's message of Thu, 26 Sep 1996 17:46:31 +0200 (MET DST) <199609261546.RAA05411@eolo.usr.dsi.unimi.it>
+Subject: Please subscribe
+
+
+> My interest in lclint is simply for personal use in my programming
+> work.  Speaking of which, since I do most of my programming on the
+> Macintosh, I hope to be able to use lclint to check Mac C code.  There
+> are a few C extensions that are commonplace on the Mac; for instance
+> this is a common idiom in header files:
+>
+>	pascal void Debugger(void) = 0xA9FF;
+>
+> and also this:
+>
+>	short ApFontID:0x984;
+>
+> (the latter means that variable ApFontID should be found at the given
+> address). 
+
+There's no easy way to get lclint to handle non-standard syntax.  Other
+than actually changing the parser to handle it, you could use macros to
+make the non-standard syntax look standard when lclint is used.  For
+example,
+
+# ifdef __LCLINT__
+# define pascal
+# define FUNC_ADDR(x)
+# else
+# define FUNC_ADDR(x) = x
+# endif
+
+pascal void Debugger(void) FUNC_ADDR(0xA9FF) ;
+
+Of course, this can get a bit kludgey after a while.
+
+--- Dave
+
+
+</pre>
+<A HREF="109.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="111.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

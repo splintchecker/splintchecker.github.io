@@ -1,0 +1,91 @@
+Plain Differences between current directory and weakchecks
+33a34,37
+> extern /*@falseexit@*/ void check (bool x);
+> # define check(x) \
+>   do { bool m_res = x; assert (m_res); } while (FALSE)
+> 
+210,211d209
+<   eref er;             
+<   employee e;           
+5a6
+> # include <assert.h>
+123c124
+<           hire(e); 
+---
+>           check (hire(e) == db_OK); 
+7c7
+<   int i;
+---
+>   size_t i;
+1c1,3
+< constant int maxEmployeeName;
+---
+> imports <stdio> ;
+> 
+> constant size_t maxEmployeeName;
+28,29d27
+<   eref er; 
+<   
+84a83
+>   /*@-mods@*/
+86a86
+>   /*@=mods@*/
+107a108
+>   /*@-mods@*/
+110a112
+>   /*@=mods@*/
+135d136
+<   employee e; 
+138a140
+>   /*@-mods@*/  
+141a144
+>   /*@=mods@*/
+3a4,24
+> static size_t int_toSize (int x)
+> {
+>   if (x < 0)
+>     {
+>       fprintf (stderr, "Error: int_toSize is negative: %d", x);
+>       return 0;
+>     }
+>   else
+>     {
+>       size_t s = (size_t) x;
+> 
+>       if ((int) s != x)
+>         {
+>           fprintf (stderr, "Error: int_toSize is inconsistent: %d", x);
+>           return 0;
+>         }
+> 
+>       return s;
+>     }
+> }
+> 
+47c68
+<     if (tmpc->val == er) return TRUE; 
+---
+>     if (eref_equal (tmpc->val, er)) return TRUE; 
+78c99
+<       if (elem->val == er) 
+---
+>       if (eref_equal (elem->val, er))
+141c162
+<     malloc (erc_size (c) * (employeePrintSize + 1) + 1);
+---
+>     malloc (int_toSize (erc_size (c) * (employeePrintSize + 1) + 1));
+150a172
+>   /*@-mods@*/
+156a179
+>   /*@=mods@*/  
+33a34
+>   /*@-mods@*/
+37c38,40
+<       if (employee_equal (&e, &e1)) return er;
+---
+>       if (employee_equal (&e, &e1))
+>         {
+>           erc_iterReturn (it, er);
+38a42,43
+>     }
+>   /*@=mods@*/

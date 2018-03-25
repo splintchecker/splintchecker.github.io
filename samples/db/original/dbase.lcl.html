@@ -1,0 +1,146 @@
+<A NAME="line12"></A><html><head>
+<title>dbase.lcl</title>
+</head><body>
+<h3>dbase.lcl</h3>
+<PRE>
+<A NAME="line1"></A>imports <A HREF="employee.lcl.html">employee</A>, <A HREF="empset.lcl.html">empset</A>, <A HREF="stdio.lcl.html">stdio</A>;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>typedef struct{gender g; job j; int l; int h;} db_q;
+<A NAME="line4"></A>typedef enum {db_OK, salERR, genderERR, jobERR,
+<A NAME="line5"></A>              duplERR, missERR} db_status;
+<A NAME="line6"></A>spec immutable type db;
+<A NAME="line7"></A>spec db d;
+<A NAME="line8"></A> 
+<A NAME="line9"></A>uses <A HREF="dbase.lsl.html">dbase</A>, <A HREF="sprint.lsl.html">sprint</A>(ioStream, db);
+<A NAME="line10"></A> 
+<A NAME="line11"></A>claims UniqueKeys(employee e1, employee e2) db d; {
+<A NAME="line12"></A>   ensures
+<A NAME="line13"></A>     (e1 \in d\any /\ e2 \in d\any  /\ e1.ssNum = e2.ssNum)
+<A NAME="line14"></A>       =&gt; (e1 = e2);
+<A NAME="line15"></A>   }
+<A NAME="line16"></A> 
+<A NAME="line17"></A>db_status hire(employee e) db d; {
+<A NAME="line18"></A>   modifies d;
+<A NAME="line19"></A>   ensures
+<A NAME="line20"></A>     (if result = db_OK
+<A NAME="line21"></A>      then d' = hire(e, d^) else d' = d^)
+<A NAME="line22"></A>        /\ result =
+<A NAME="line23"></A>          (if e.gen = gender_ANY then genderERR
+<A NAME="line24"></A>           else if e.j = job_ANY then jobERR
+<A NAME="line25"></A>           else if e.salary &lt; 0 then salERR
+<A NAME="line26"></A>           else if employed(d^, e.ssNum) then duplERR
+<A NAME="line27"></A>           else db_OK);
+<A NAME="line28"></A>   }
+<A NAME="line29"></A>void uncheckedHire(employee e) db d; {
+<A NAME="line30"></A>   requires e.gen \neq gender_ANY /\ e.j \neq job_ANY
+<A NAME="line31"></A>           /\ e.salary &gt;= 0 /\ ~employed(d^, e.ssNum);
+<A NAME="line32"></A>   modifies d;
+<A NAME="line33"></A>   ensures d' = hire(e, d^);
+<A NAME="line34"></A>   }
+<A NAME="line35"></A>bool fire(int ssNum) db d; {
+<A NAME="line36"></A>   modifies d;
+<A NAME="line37"></A>   ensures result = employed(d^, ssNum)
+<A NAME="line38"></A>     /\ d' = fire(d^, ssNum);
+<A NAME="line39"></A>   }
+<A NAME="line40"></A>int query(db_q q, empset s) db d; {
+<A NAME="line41"></A>   modifies s;
+<A NAME="line42"></A>   ensures s' = s^ \U query(d^, q)
+<A NAME="line43"></A>           /\ result = size(query(d^, q));
+<A NAME="line44"></A>   }
+<A NAME="line45"></A>bool promote(int ssNum) db d; {
+<A NAME="line46"></A>   modifies d;
+<A NAME="line47"></A>   ensures
+<A NAME="line48"></A>     result = (employed(d^, ssNum)
+<A NAME="line49"></A>              /\ find(d^, ssNum).j = NONMGR)
+<A NAME="line50"></A>     /\ (if result then d' = promote(d^, ssNum)
+<A NAME="line51"></A>         else d' = d^);
+<A NAME="line52"></A>   }
+<A NAME="line53"></A>db_status setSalary(int ssNum, int sal) db d; {
+<A NAME="line54"></A>    modifies d;
+<A NAME="line55"></A>    ensures
+<A NAME="line56"></A>      result =
+<A NAME="line57"></A>        (if employed(d^, ssNum)
+<A NAME="line58"></A>           then (if sal &lt; 0 then salERR else db_OK)
+<A NAME="line59"></A>           else missERR)
+<A NAME="line60"></A>      /\ (if result = db_OK
+<A NAME="line61"></A>            then d' = setSal(d^, ssNum, sal)
+<A NAME="line62"></A>            else d' = d^);
+<A NAME="line63"></A>    }
+<A NAME="line64"></A>void db_print(void) db d; FILE *stdout; {
+<A NAME="line65"></A>    modifies *stdout^;
+<A NAME="line66"></A>    ensures 
+<A NAME="line67"></A>	\exists s:ioStream ((*stdout^)' = write((*stdout^)^, s) /\ isSprint(d^, s));
+<A NAME="line68"></A> 
+<A NAME="line69"></A>    }
+<A NAME="line70"></A>void db_initMod(void) db d; {
+<A NAME="line71"></A>   modifies d;
+<A NAME="line72"></A>   ensures d' = new;
+<A NAME="line73"></A>   }
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

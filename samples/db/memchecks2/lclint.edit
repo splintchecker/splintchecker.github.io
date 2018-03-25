@@ -1,0 +1,31 @@
+<HTML>
+<PRE>
+lclint -allimponly +showscan +showfunc +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.0 --- 11 Feb 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+< checking empset.c >
+empset.h: (in macro empset_final)
+<A HREF="empset.h.html#line29">empset.h:29,37</A>: Implicitly temp storage s passed as only param: erc_final (s)
+  Temp storage (associated with a formal parameter) is transferred to a
+  non-temporary reference.  The storage may be released or new aliases created.
+   Use -temptrans to suppress message.
+< checking erc.c >
+< checking dbase.c >
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 10 code errors found
+391 spec, 2863 source (1206 before pre-processing) lines in 7.02 s.
+</PRE>
+</HTML>

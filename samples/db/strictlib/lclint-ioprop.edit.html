@@ -1,0 +1,147 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body>
+<pre>
+lclint +lh +strict +showsummary -exportconstant -exportlocal +strictlib +showscan +stats employee eref empset ereftab erc dbase drive.c bool.lcl check.lcl
+LCLint 2.0+ --- Wed Feb 21 19:07:11 EST 1996
+
+< reading spec <A HREF="employee.lcl.html">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html">dbase.lcl</A> >
+< reading spec <A HREF="bool.lcl.html">bool.lcl</A> >
+< reading spec <A HREF="check.lcl.html">check.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html">employee.c</A> >
+< checking <A HREF="eref.c.html">eref.c</A> >
+< checking <A HREF="empset.c.html">empset.c</A> >
+empset.c: (in function empset_insertUnique)
+<A HREF="empset.c.html#line54">empset.c:54,12</A>: Called procedure eref_alloc may access global stderr
+  A checked global variable is used in the function, but not listed in its
+  globals clause.  By default, only globals specified in .lcl files are
+  checked.  To check all globals, use +allglobals.  To check globals
+  selectively use /*@checked@*/ in the global declaration.  Use -globs to
+  suppress message.
+<A HREF="empset.c.html#line54">empset.c:54,12</A>: Undocumented modification of *stderr possible from call to
+                   eref_alloc: eref_alloc()
+  An externally-visible object is modified by a function, but not listed in its
+  modifies clause.  Use -mods to suppress message.
+<A HREF="empset.c.html#line59">empset.c:59,3</A>: Called procedure erc_insert may access global stderr
+<A HREF="empset.c.html#line59">empset.c:59,3</A>: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(s, er)
+empset.c: (in function empset_disjointUnion)
+<A HREF="empset.c.html#line83">empset.c:83,12</A>: Called procedure erc_create may access global stderr
+<A HREF="empset.c.html#line83">empset.c:83,12</A>: Undocumented modification of *stderr possible from call to
+                   erc_create: erc_create()
+empset.c: (in function empset_union)
+<A HREF="empset.c.html#line107">empset.c:107,12</A>: Called procedure erc_create may access global stderr
+<A HREF="empset.c.html#line107">empset.c:107,12</A>: Undocumented modification of *stderr possible from call to
+                    erc_create: erc_create()
+empset.c: (in function empset_intersect)
+<A HREF="empset.c.html#line130">empset.c:130,18</A>: Called procedure erc_create may access global stderr
+<A HREF="empset.c.html#line130">empset.c:130,18</A>: Undocumented modification of *stderr possible from call to
+                    erc_create: erc_create()
+empset.c: (in function empset_initMod)
+<A HREF="empset.c.html#line172">empset.c:172,3</A>: Called procedure eref_initMod may access global stderr
+<A HREF="empset.c.html#line172">empset.c:172,3</A>: Undocumented modification of *stderr possible from call to
+                   eref_initMod: eref_initMod()
+empset.h: (in macro empset_create)
+<A HREF="empset.h.html#line26">empset.h:26,28</A>: Called procedure erc_create may access global stderr
+<A HREF="empset.h.html#line26">empset.h:26,28</A>: Undocumented modification of *stderr possible from call to
+                   erc_create: erc_create()
+empset.h: (in macro empset_sprint)
+<A HREF="empset.h.html#line30">empset.h:30,29</A>: Called procedure erc_sprint may access global stderr
+<A HREF="empset.h.html#line30">empset.h:30,29</A>: Undocumented modification of *stderr possible from call to
+                   erc_sprint: erc_sprint(es)
+< checking <A HREF="ereftab.c.html">ereftab.c</A> >
+ereftab.c: (in function ereftab_create)
+<A HREF="ereftab.c.html#line10">ereftab.c:10,10</A>: Called procedure erc_create may access global stderr
+<A HREF="ereftab.c.html#line10">ereftab.c:10,10</A>: Undocumented modification of *stderr possible from call to
+                    erc_create: erc_create()
+ereftab.c: (in function ereftab_insert)
+<A HREF="ereftab.c.html#line16">ereftab.c:16,3</A>: Called procedure erc_insert may access global stderr
+<A HREF="ereftab.c.html#line16">ereftab.c:16,3</A>: Undocumented modification of *stderr possible from call to
+                   erc_insert: erc_insert(t, er)
+ereftab.c: (in function ereftab_initMod)
+<A HREF="ereftab.c.html#line48">ereftab.c:48,3</A>: Called procedure eref_initMod may access global stderr
+<A HREF="ereftab.c.html#line48">ereftab.c:48,3</A>: Undocumented modification of *stderr possible from call to
+                   eref_initMod: eref_initMod()
+< checking <A HREF="erc.c.html">erc.c</A> >
+erc.c: (in function erc_join)
+<A HREF="erc.c.html#line129">erc.c:129,7</A>: Called procedure erc_insert may access global stderr
+<A HREF="erc.c.html#line129">erc.c:129,7</A>: Undocumented modification of *stderr possible from call to
+                erc_insert: erc_insert(c1, tmpc->val)
+erc.h: (in macro erc_initMod)
+<A HREF="erc.h.html#line19">erc.h:19,77</A>: Called procedure eref_initMod may access global stderr
+<A HREF="erc.h.html#line19">erc.h:19,77</A>: Undocumented modification of *stderr possible from call to
+                eref_initMod: eref_initMod()
+< checking <A HREF="dbase.c.html">dbase.c</A> >
+dbase.c: (in function db_initMod)
+<A HREF="dbase.c.html#line39">dbase.c:39,3</A>: Called procedure eref_initMod may access global stderr
+<A HREF="dbase.c.html#line39">dbase.c:39,3</A>: Undocumented modification of *stderr possible from call to
+                 eref_initMod: eref_initMod()
+<A HREF="dbase.c.html#line45">dbase.c:45,21</A>: Called procedure erc_create may access global stderr
+<A HREF="dbase.c.html#line45">dbase.c:45,21</A>: Undocumented modification of *stderr possible from call to
+                  erc_create: erc_create()
+dbase.c: (in function db_uncheckedHire)
+<A HREF="dbase.c.html#line133">dbase.c:133,8</A>: Called procedure eref_alloc may access global stderr
+<A HREF="dbase.c.html#line133">dbase.c:133,8</A>: Undocumented modification of *stderr possible from call to
+                  eref_alloc: eref_alloc()
+<A HREF="dbase.c.html#line140">dbase.c:140,4</A>: Called procedure erc_insert may access global stderr
+<A HREF="dbase.c.html#line140">dbase.c:140,4</A>: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MMGRS], er)
+<A HREF="dbase.c.html#line144">dbase.c:144,4</A>: Called procedure erc_insert may access global stderr
+<A HREF="dbase.c.html#line144">dbase.c:144,4</A>: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MNON], er)
+<A HREF="dbase.c.html#line151">dbase.c:151,4</A>: Called procedure erc_insert may access global stderr
+<A HREF="dbase.c.html#line151">dbase.c:151,4</A>: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FMGRS], er)
+<A HREF="dbase.c.html#line155">dbase.c:155,4</A>: Called procedure erc_insert may access global stderr
+<A HREF="dbase.c.html#line155">dbase.c:155,4</A>: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FNON], er)
+dbase.c: (in function db_promote)
+<A HREF="dbase.c.html#line207">dbase.c:207,7</A>: Called procedure erc_insert may access global stderr
+<A HREF="dbase.c.html#line207">dbase.c:207,7</A>: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MMGRS], er)
+<A HREF="dbase.c.html#line212">dbase.c:212,7</A>: Called procedure erc_insert may access global stderr
+<A HREF="dbase.c.html#line212">dbase.c:212,7</A>: Undocumented modification of *stderr possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FMGRS], er)
+dbase.c: (in function db_print)
+<A HREF="dbase.c.html#line310">dbase.c:310,18</A>: Called procedure erc_sprint may access global stderr
+<A HREF="dbase.c.html#line310">dbase.c:310,18</A>: Undocumented modification of *stderr possible from call to
+                   erc_sprint: erc_sprint(db[(int)ek])
+< checking <A HREF="drive.c.html">drive.c</A> >
+< checking macros <A HREF="bool.h.html">bool.h</A> >
+< global checks >
+< cleaning .......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+usedef                       0           1
+exporttype                   0           3
+globs                       23           0
+compdef                      0           1
+mods                        23           0
+                          ========  =========
+Total:                      46           5
+
+Finished LCLint checking --- 46 code errors found
+404 spec, 2998 source (1368 before pre-processing) lines in 6.22 s.
+</pre>
+
+<P>
+<HR>
+<A HREF="index.html">Return to Index</A> | <A
+HREF="http://lclint.cs.virginia.edu/index.html">LCLint Home
+Page</A> <BR> <BR>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<A NAME="line96"></A><html><head>
+<title>erc.lcl</title>
+</head><body>
+<h3>erc.lcl</h3>
+<PRE>
+<A NAME="line1"></A>imports <A HREF="eref.lcl.html">eref</A>, &lt;stdio&gt;;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>mutable type erc;
+<A NAME="line4"></A> 
+<A NAME="line5"></A>only erc erc_create(void) FILE *stderr;
+<A NAME="line6"></A>{
+<A NAME="line7"></A>  modifies *stderr^;
+<A NAME="line8"></A>  /* ensures fresh(result) /\ result' = { }; */
+<A NAME="line9"></A>}
+<A NAME="line10"></A> 
+<A NAME="line11"></A>void erc_clear(erc c) 
+<A NAME="line12"></A>{
+<A NAME="line13"></A>  /* requires c^.activeIters = 0; */
+<A NAME="line14"></A>  modifies c;
+<A NAME="line15"></A>  /* ensures c' = { }; */
+<A NAME="line16"></A>}
+<A NAME="line17"></A> 
+<A NAME="line18"></A>void erc_insert(erc c, eref er) FILE *stderr;
+<A NAME="line19"></A>{
+<A NAME="line20"></A>  /* requires c^.activeIters = 0 /\ er \neq erefNIL; */
+<A NAME="line21"></A>  modifies c, *stderr^;
+<A NAME="line22"></A>  /* ensures c' = [insert(er, c^.val), 0]; */
+<A NAME="line23"></A>}
+<A NAME="line24"></A> 
+<A NAME="line25"></A>| bool : void | erc_delete(erc c, eref er) 
+<A NAME="line26"></A>{
+<A NAME="line27"></A>  /* requires c^.activeIters = 0; */
+<A NAME="line28"></A>  modifies c;
+<A NAME="line29"></A>  /* ensures result = er \in c^.val
+<A NAME="line30"></A>     /\ c' = [delete(er, c^.val), 0]; */
+<A NAME="line31"></A>}
+<A NAME="line32"></A> 
+<A NAME="line33"></A>bool erc_member(eref er, erc c) 
+<A NAME="line34"></A>{
+<A NAME="line35"></A>  /* ensures result = er \in c^.val; */
+<A NAME="line36"></A>}
+<A NAME="line37"></A> 
+<A NAME="line38"></A>eref erc_choose(erc c) 
+<A NAME="line39"></A>{
+<A NAME="line40"></A>  /* requires size(c^.val) \neq 0; */
+<A NAME="line41"></A>  /* ensures result \in c^.val; */
+<A NAME="line42"></A>}
+<A NAME="line43"></A> 
+<A NAME="line44"></A>int erc_size(erc c) 
+<A NAME="line45"></A>{
+<A NAME="line46"></A>  /* ensures result = size(c^.val); */
+<A NAME="line47"></A>}
+<A NAME="line48"></A> 
+<A NAME="line49"></A>void erc_join(erc c1, erc c2) FILE *stderr; 
+<A NAME="line50"></A>{
+<A NAME="line51"></A>  /* requires c1^.activeIters = 0; */
+<A NAME="line52"></A>  modifies c1, *stderr^;
+<A NAME="line53"></A>  /* ensures c1' = [c1^.val \U c2^.val, 0]; */
+<A NAME="line54"></A>}
+<A NAME="line55"></A> 
+<A NAME="line56"></A>only char *erc_sprint(erc c) FILE *stderr; 
+<A NAME="line57"></A>{
+<A NAME="line58"></A>  modifies *stderr^;
+<A NAME="line59"></A>  /* ensures isSprint(result[]', c^) /\ fresh(result[]); */
+<A NAME="line60"></A>}
+<A NAME="line61"></A> 
+<A NAME="line62"></A>void erc_final (only erc c) 
+<A NAME="line63"></A>{
+<A NAME="line64"></A>  modifies c;
+<A NAME="line65"></A>  /* ensures trashed(c); */
+<A NAME="line66"></A>}
+<A NAME="line67"></A> 
+<A NAME="line68"></A>void erc_initMod (void) internalState; FILE *stderr;
+<A NAME="line69"></A>{
+<A NAME="line70"></A>  modifies internalState, *stderr^;
+<A NAME="line71"></A>  ensures true;
+<A NAME="line72"></A>}
+<A NAME="line73"></A> 
+<A NAME="line74"></A>iter erc_elements (erc c, yield eref el);  
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

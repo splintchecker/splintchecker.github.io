@@ -1,0 +1,59 @@
+<h3>lclint-interest message 157</h3>
+<pre>
+From richard@harlequin.co.uk Mon Sep 22 15:27:33 1997
+X-Sender: richard@mailhost.long.harlequin.co.uk
+In-Reply-To: <199709221443.QAA06683@s424.iitb.fhg.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Mon, 22 Sep 1997 15:52:40 +0100
+To: kir@iitb.fhg.de (Harald Kirsch)
+From: Richard Brooksby <richard@harlequin.co.uk>
+Subject: Re: How to annotate
+Cc: lclint-interest@larch.lcs.mit.edu
+
+Harald Kirsch wrote:
+
+> Again I am having trouble with annotating some code. Please have a look
+> at that:
+>
+> ------------------------------------------------------------------------
+> int
+> main(void)
+> {
+>   float f;
+>   int i=19;
+>
+>   if( i>0 ) {
+>     f = 1.0;
+>   }
+>
+>   if( i>0 ) {
+>     float g = f;	/***** Variable f used before definition */
+>   }
+>
+>   return 0;
+> }
+> ------------------------------------------------------------------------
+
+You should not annotate this code to make the warnings go away, you should
+re-write it.
+
+
+
+
+</pre>
+<A HREF="156.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="158.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

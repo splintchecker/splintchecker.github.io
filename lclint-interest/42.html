@@ -1,0 +1,51 @@
+<h3>lclint-interest message 42</h3>
+<pre>
+From evs Tue Mar 19 15:31:02 1996
+Date: Tue, 5 Mar 96 16:30:50 -0500
+From: evs (David Evans)
+To: ropella@lvs-emh.lvs.loral.com
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: ropella@lvs-emh.lvs.loral.com's message of Mon, 4 Mar 1996 18:25:43 -0600 <199603050025.SAA03091@plato.lvs.loral.com>
+Subject: Looking for LCLint success stories
+
+
+> OK, guys....  I tried to build lclint on a Sun
+> Solaris 2.3 box.  This is what the make tells me:
+>
+>   ld: fatal: file values-Xa.o: cannot open file; errno=2
+>
+
+I'm not sure what the problem is here.  values-Xa.o is not part of the
+lclint source package, it is probably a system file that is needed by
+the compiler.  Maybe someone who has experience with solaris can explain
+this. 
+
+> I did, however, notice that only 119 files of the supposed
+> 120 were compiled.  
+> *** Compiling lcllib.c / compiled:  119  (of 120 files)
+
+This is correct.  compiler: 119, means you have already compiled 119
+files, and are about to compile the 120th.
+
+I'd recommend trying the solaris binary
+(ftp://ftp.sds.lcs.mit.edu/pub/lclint/lclint.solaris.tar.gz) instead.
+
+--- Dave
+
+
+</pre>
+<A HREF="41.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="43.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

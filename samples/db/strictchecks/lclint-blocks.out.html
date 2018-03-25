@@ -1,0 +1,104 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/strictchecks'
+lclint +lh +checks +allblock +allempty +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+employee.c: (in function employee_setName)
+<A HREF="employee.c.html#line11" target="source">employee.c:11,40</A>: Body of if statement is not a block: return FALSE
+  If body is a single statement, not a compound block. Use -ifblock to suppress
+  message.
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+eref.c: (in function eref_alloc)
+<A HREF="eref.c.html#line14" target="source">eref.c:14,76</A>: Body of for statement is empy
+  For statement has no body. Use -forempty to suppress message.
+<A HREF="eref.c.html#line43" target="source">eref.c:43,9</A>: Body of for statement is not a block:
+                eref_Pool.status[i] = ST_AVAIL
+  Loop body is a single statement, not a compound block. Use -forblock to
+  suppress message.
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+empset.c: (in function empset_get)
+<A HREF="empset.c.html#line12" target="source">empset.c:12,9</A>: Body of if statement is not a block: return er
+empset.c: (in function empset_union)
+<A HREF="empset.c.html#line115" target="source">empset.c:115,2</A>: Body of if statement is not a block: empset_insert(result, emp)
+empset.c: (in function empset_intersect)
+<A HREF="empset.c.html#line128" target="source">empset.c:128,2</A>: Body of if statement is not a block:
+                   empset_insert(toDelete, emp)
+empset.c: (in function empset_subset)
+<A HREF="empset.c.html#line143" target="source">empset.c:143,43</A>: Body of if statement is not a block: return FALSE
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+ereftab.c: (in function ereftab_lookup)
+<A HREF="ereftab.c.html#line35" target="source">ereftab.c:35,43</A>: Body of if statement is not a block: return er
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+erc.c: (in function erc_member)
+<A HREF="erc.c.html#line60" target="source">erc.c:60,44</A>: Body of if statement is not a block: return TRUE
+<A HREF="erc.c.html#line60" target="source">erc.c:60,9</A>: Body of for statement is not a block:
+               if (eref_equal(tmpc->val, er)) return TRUE
+erc.c: (in function erc_join)
+<A HREF="erc.c.html#line122" target="source">erc.c:122,5</A>: Body of for statement is not a block: erc_insert(c1, tmpc->val)
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+dbase.c: (in function db_ercKeyGet)
+<A HREF="dbase.c.html#line56" target="source">dbase.c:56,45</A>: Body of if statement is not a block: return (er)
+dbase.c: (in function db_hire)
+<A HREF="dbase.c.html#line102" target="source">dbase.c:102,12</A>: Body of if statement is not a block: return DBS_GENDERERR
+<A HREF="dbase.c.html#line105" target="source">dbase.c:105,12</A>: Body of if statement is not a block: return DBS_JOBERR
+<A HREF="dbase.c.html#line108" target="source">dbase.c:108,12</A>: Body of if statement is not a block: return DBS_SALERR
+<A HREF="dbase.c.html#line111" target="source">dbase.c:111,12</A>: Body of if statement is not a block: return DBS_DUPLERR
+dbase.c: (in function db_uncheckedHire)
+<A HREF="dbase.c.html#line127" target="source">dbase.c:127,7</A>: Body of if clause of if statement is not a block:
+                  erc_insert(db[(int)KND_MMGRS], er)
+<A HREF="dbase.c.html#line129" target="source">dbase.c:129,7</A>: Body of else clause of if statement is not a block:
+                  erc_insert(db[(int)KND_MNON], er)
+<A HREF="dbase.c.html#line132" target="source">dbase.c:132,7</A>: Body of if clause of if statement is not a block:
+                  erc_insert(db[(int)KND_FMGRS], er)
+<A HREF="dbase.c.html#line134" target="source">dbase.c:134,7</A>: Body of else clause of if statement is not a block:
+                  erc_insert(db[(int)KND_FNON], er)
+<A HREF="dbase.c.html#line129" target="source">dbase.c:129,7</A>: Body of if clause of if statement is not a block:
+    if (e.j == MGR) erc_insert(db[(int)KND_MMGRS], er) else
+    erc_insert(db[(int)KND_MNON], er)
+dbase.c: (in function db_promote)
+<A HREF="dbase.c.html#line169" target="source">dbase.c:169,9</A>: Body of if statement is not a block: return FALSE
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+drive.c: (in function main)
+<A HREF="drive.c.html#line118" target="source">drive.c:118,19</A>: Body of if clause of if statement is not a block: e.gen = MALE
+<A HREF="drive.c.html#line118" target="source">drive.c:118,38</A>: Body of else clause of if statement is not a block:
+                   e.gen = FEMALE
+<A HREF="drive.c.html#line119" target="source">drive.c:119,19</A>: Body of if clause of if statement is not a block: e.j = NONMGR
+<A HREF="drive.c.html#line119" target="source">drive.c:119,38</A>: Body of else clause of if statement is not a block: e.j = MGR
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+< cleaning .......... >
+
+Finished LCLint checking --- 26 code errors found
+396 spec, 3040 source (1283 before pre-processing) lines in 5.47 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/strictchecks'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

@@ -1,0 +1,5 @@
+Rosen Kenneth 1000
+Gardner Martin 2000
+Hatton Les 4000
+Smullyan Raymond 5000.33
+Bodycombe David  6000

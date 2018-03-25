@@ -1,0 +1,134 @@
+<A NAME="line118"></A><html><head>
+<title>eref.c</title>
+</head><body>
+<h3>eref.c</h3>
+<PRE>
+<A NAME="line1"></A>#include &lt;stdio.h&gt;
+<A NAME="line2"></A>#include "<A HREF="eref.h.html">eref.h</A>"
+<A NAME="line3"></A> 
+<A NAME="line4"></A>eref_ERP eref_Pool;            /* private */
+<A NAME="line5"></A>static bool needsInit = TRUE;  /* private */
+<A NAME="line6"></A> 
+<A NAME="line7"></A>eref eref_alloc(void) {
+<A NAME="line8"></A>  int i, res;
+<A NAME="line9"></A> 
+<A NAME="line10"></A>  for (i=0;
+<A NAME="line11"></A>       (eref_Pool.status[i] == used)
+<A NAME="line12"></A>         && (i &lt; eref_Pool.size);
+<A NAME="line13"></A>       i++);
+<A NAME="line14"></A>  res = i;
+<A NAME="line15"></A>  if (res == eref_Pool.size) {
+<A NAME="line16"></A>    eref_Pool.conts =
+<A NAME="line17"></A>     (employee*) realloc(eref_Pool.conts,
+<A NAME="line18"></A>                         2*eref_Pool.size*sizeof(employee));
+<A NAME="line19"></A> 
+<A NAME="line20"></A>    if (eref_Pool.conts == 0) {
+<A NAME="line21"></A>      printf("Malloc returned null in eref_alloc\n");
+<A NAME="line22"></A>      exit(1);
+<A NAME="line23"></A>    }
+<A NAME="line24"></A>    eref_Pool.status =
+<A NAME="line25"></A>     (eref_status*)realloc(eref_Pool.status,
+<A NAME="line26"></A>                      2*eref_Pool.size*sizeof(eref_status));
+<A NAME="line27"></A>    if (eref_Pool.status == 0) {
+<A NAME="line28"></A>      printf("Malloc returned null in eref_alloc\n");
+<A NAME="line29"></A>      exit(1);
+<A NAME="line30"></A>    }
+<A NAME="line31"></A>    eref_Pool.size = 2*eref_Pool.size;
+<A NAME="line32"></A>    for (i = res+1; i &lt; eref_Pool.size; i++)
+<A NAME="line33"></A>        eref_Pool.status[i] = avail;
+<A NAME="line34"></A>  }
+<A NAME="line35"></A>  eref_Pool.status[res] = used;
+<A NAME="line36"></A>  return (eref) res;
+<A NAME="line37"></A>}
+<A NAME="line38"></A>void eref_initMod(void) {
+<A NAME="line39"></A>  int i;
+<A NAME="line40"></A>  const int size = 16;
+<A NAME="line41"></A> 
+<A NAME="line42"></A>  if (needsInit == FALSE) return;
+<A NAME="line43"></A>  needsInit = FALSE;
+<A NAME="line44"></A>  bool_initMod();
+<A NAME="line45"></A>  employee_initMod();
+<A NAME="line46"></A>  eref_Pool.conts =
+<A NAME="line47"></A>      (employee *) malloc(size*sizeof(employee));
+<A NAME="line48"></A>  if (eref_Pool.conts == 0) {
+<A NAME="line49"></A>    printf("Malloc returned null in eref_initMod\n");
+<A NAME="line50"></A>    exit(1);
+<A NAME="line51"></A>  }
+<A NAME="line52"></A>  eref_Pool.status =
+<A NAME="line53"></A>      (eref_status *) malloc(size*sizeof(eref_status));
+<A NAME="line54"></A>  if (eref_Pool.status == 0) {
+<A NAME="line55"></A>    printf("Malloc returned null in eref_initMod\n");
+<A NAME="line56"></A>    exit(1);
+<A NAME="line57"></A>  }
+<A NAME="line58"></A>  eref_Pool.size = size;
+<A NAME="line59"></A>  for (i = 0; i &lt; size; i++) eref_Pool.status[i] = avail;
+<A NAME="line60"></A>}
+<A NAME="line61"></A> 
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

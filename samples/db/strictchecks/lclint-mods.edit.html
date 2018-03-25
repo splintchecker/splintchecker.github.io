@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>LCLint Output (extracted)</title>
+</head>
+
+<body>
+<pre>
+dbase.c: (in function db_uncheckedHire)
+<A HREF="dbase.c.html#line140">dbase.c:140,4</A>: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MMGRS], er)
+  An externally-visible object is modified by a function, but not listed in its
+  modifies clause.  Use -mods to suppress message.
+<A HREF="dbase.c.html#line144">dbase.c:144,4</A>: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MNON], er)
+<A HREF="dbase.c.html#line151">dbase.c:151,4</A>: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FMGRS], er)
+<A HREF="dbase.c.html#line155">dbase.c:155,4</A>: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FNON], er)
+dbase.c: (in function db_fire)
+<A HREF="dbase.c.html#line169">dbase.c:169,8</A>: Undocumented modification of db[] possible from call to
+                  erc_delete: erc_delete(db[(int)ek], er)
+dbase.c: (in function db_promote)
+<A HREF="dbase.c.html#line206">dbase.c:206,7</A>: Undocumented modification of db[] possible from call to
+                  erc_delete: erc_delete(db[(int)KND_MNON], er)
+<A HREF="dbase.c.html#line207">dbase.c:207,7</A>: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_MMGRS], er)
+<A HREF="dbase.c.html#line211">dbase.c:211,7</A>: Undocumented modification of db[] possible from call to
+                  erc_delete: erc_delete(db[(int)KND_FNON], er)
+<A HREF="dbase.c.html#line212">dbase.c:212,7</A>: Undocumented modification of db[] possible from call to
+                  erc_insert: erc_insert(db[(int)KND_FMGRS], er)
+</pre>
+
+<P>
+<HR>
+<A HREF="index.html">Return to Index</A> | <A
+HREF="http://lclint.cs.virginia.edu/index.html">LCLint Home
+Page</A> <BR> <BR>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+

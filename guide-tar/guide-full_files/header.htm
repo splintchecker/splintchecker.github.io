@@ -1,0 +1,309 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link id=Main-File rel=Main-File href="../guide-full.html">
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div style='mso-element:header' id=eh1>
+
+<p class=MsoHeader><!--[if supportFields]><span class=MsoPageNumber><span
+style='font-size:10.5pt;mso-bidi-font-size:10.0pt'><span style='mso-element:
+field-begin'></span><span style="mso-spacerun: yes"> </span>PAGE <span
+style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-size:10.5pt;mso-bidi-font-size:10.0pt'>ii</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-size:10.5pt;mso-bidi-font-size:10.0pt'><span
+style='mso-element:field-end'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-size:10.5pt;mso-bidi-font-size:10.0pt'><span
+style='mso-tab-count:2'>                                                                      </span></span></span><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>LCLint
+User’s Guide<span style="mso-spacerun:
+yes">                                                                       
+</span></span></span></p>
+
+</div>
+
+<div style='mso-element:header' id=h1>
+
+<p class=MsoHeader><span style='font-style:normal'>Abstract Types<span
+style='mso-tab-count:2'>                                                                                                                     </span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='mso-element:field-begin'></span> PAGE <span
+style='mso-element:field-separator'></span></span><![endif]--><span
+class=MsoPageNumber>90</span><!--[if supportFields]><span class=MsoPageNumber><span
+style='mso-element:field-end'></span></span><![endif]--></p>
+
+</div>
+
+<div style='mso-element:footer' id=ef1>
+
+<div style='mso-element:frame;mso-element-wrap:auto;mso-element-anchor-vertical:
+paragraph;mso-element-anchor-horizontal:margin;mso-element-left:outside;
+mso-element-top:.05pt;mso-height-rule:exactly'>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0 align=right>
+ <tr>
+  <td valign=top align=left style='padding-top:0in;padding-right:0in;
+  padding-bottom:0in;padding-left:0in'>
+  <p class=MsoFooter style='mso-element:frame;mso-element-wrap:auto;mso-element-anchor-vertical:
+  paragraph;mso-element-anchor-horizontal:margin;mso-element-left:outside;
+  mso-element-top:.05pt;mso-height-rule:exactly'><span class=MsoPageNumber><span
+  style='font-size:11.0pt;mso-bidi-font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=MsoFooter style='margin-right:.25in;text-indent:.25in'><span
+style='font-size:10.5pt;mso-bidi-font-size:10.0pt;font-family:"Century Schoolbook"'><span
+style="mso-spacerun: yes"> </span><o:p></o:p></span></p>
+
+<p class=MsoFooter style='margin-right:.25in;text-indent:.25in'><span
+style='font-size:10.5pt;mso-bidi-font-size:10.0pt;font-family:"Century Schoolbook"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoFooter style='margin-right:.25in;text-indent:.25in'><span
+style='font-size:10.5pt;mso-bidi-font-size:10.0pt'><span style="mso-spacerun:
+yes"> </span><o:p></o:p></span></p>
+
+</div>
+
+<div style='mso-element:footer' id=f1>
+
+<div style='mso-element:frame;mso-element-wrap:auto;mso-element-anchor-vertical:
+paragraph;mso-element-anchor-horizontal:margin;mso-element-left:outside;
+mso-element-top:.05pt;mso-height-rule:exactly'>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0 align=right>
+ <tr>
+  <td valign=top align=left style='padding-top:0in;padding-right:0in;
+  padding-bottom:0in;padding-left:0in'>
+  <p class=MsoFooter style='mso-element:frame;mso-element-wrap:auto;mso-element-anchor-vertical:
+  paragraph;mso-element-anchor-horizontal:margin;mso-element-left:outside;
+  mso-element-top:.05pt;mso-height-rule:exactly'><span class=MsoPageNumber><span
+  style='font-size:11.0pt;mso-bidi-font-size:10.0pt'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=MsoFooter style='margin-right:.25in;text-indent:.25in'><span
+style='font-size:10.5pt;mso-bidi-font-size:10.0pt;font-family:"Century Schoolbook"'><span
+style="mso-spacerun: yes"> </span><o:p></o:p></span></p>
+
+<p class=MsoFooter style='margin-right:.25in;text-indent:.25in'><span
+style='font-size:10.5pt;mso-bidi-font-size:10.0pt;font-family:"Century Schoolbook"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=MsoFooter style='margin-right:.25in;text-indent:.25in'><span
+style='font-size:10.5pt;mso-bidi-font-size:10.0pt'><span style="mso-spacerun:
+yes"> </span><o:p></o:p></span></p>
+
+</div>
+
+<div style='mso-element:header' id=eh2>
+
+<p class=MsoHeader><!--[if supportFields]><span class=MsoPageNumber><span
+style='font-weight:normal;font-style:normal'><span style='mso-element:field-begin'></span><span
+style="mso-spacerun: yes"> </span>PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>ii</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-size:10.5pt;mso-bidi-font-size:10.0pt'><span
+style='mso-tab-count:2'>                                                                      </span></span>LCLint
+User’s Guide<span style="mso-spacerun: yes">   </span><span
+style="mso-spacerun:
+yes">                                                                     </span></span></p>
+
+</div>
+
+<div style='mso-element:header' id=h2>
+
+<p class=MsoHeader>Contents<span style='mso-tab-count:2'>                                                                                                                                 </span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-begin'></span> PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>v</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--></p>
+
+</div>
+
+<div style='mso-element:header' id=eh3>
+
+<p class=MsoHeader><span class=MsoPageNumber><span style='font-size:10.5pt;
+mso-bidi-font-size:10.0pt;font-weight:normal;font-style:normal'>vi</span></span><span
+class=MsoPageNumber><span style='font-size:10.5pt;mso-bidi-font-size:10.0pt'><span
+style='mso-tab-count:2'>                                                                     </span></span>LCLint
+User’s Guide<span style="mso-spacerun:
+yes">                                                                       
+</span></span></p>
+
+</div>
+
+<div style='mso-element:header' id=eh5>
+
+<p class=MsoHeader><!--[if supportFields]><span class=MsoPageNumber><span
+style='font-weight:normal;font-style:normal'><span style='mso-element:field-begin'></span><span
+style="mso-spacerun: yes"> </span>PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>48</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-size:10.5pt;mso-bidi-font-size:10.0pt'><span
+style='mso-tab-count:2'>                                                                    </span></span>LCLint
+User’s Guide<span style="mso-spacerun: yes">                                  
+</span><span style="mso-spacerun:
+yes">                                     </span></span></p>
+
+</div>
+
+<div style='mso-element:header' id=h5>
+
+<p class=MsoHeader>Operation<span style='mso-tab-count:2'>                                                                                                                               </span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-begin'></span> PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>3</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--><span
+style='font-weight:normal;font-style:normal'><o:p></o:p></span></p>
+
+</div>
+
+<div style='mso-element:header' id=h6>
+
+<p class=MsoHeader>Function Interfaces<span style='mso-tab-count:2'>                                                                                                               </span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-begin'></span> PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>13</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--></p>
+
+</div>
+
+<div style='mso-element:header' id=h7>
+
+<p class=MsoHeader>Memory Management<span style='mso-tab-count:2'>                                                                                                           </span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-begin'></span> PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>23</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--></p>
+
+</div>
+
+<div style='mso-element:header' id=h8>
+
+<p class=MsoHeader>Macros<span style='mso-tab-count:2'>                                                                                                                                 </span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-begin'></span> PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>35</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--><span
+style='font-weight:normal;font-style:normal'><o:p></o:p></span></p>
+
+</div>
+
+<div style='mso-element:header' id=h9>
+
+<p class=MsoHeader>Naming Conventions<span style='mso-tab-count:2'>                                                                                                             </span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-begin'></span> PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>43</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--><span
+style='font-weight:normal;font-style:normal'><o:p></o:p></span></p>
+
+</div>
+
+<div style='mso-element:header' id=h10>
+
+<p class=MsoHeader>Other Checks<span style='mso-tab-count:2'>                                                                                                                        </span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-begin'></span> PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>51</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--></p>
+
+</div>
+
+<div style='mso-element:header' id=eh11>
+
+<p class=MsoHeader><!--[if supportFields]><span class=MsoPageNumber><span
+style='font-weight:normal;font-style:normal'><span style='mso-element:field-begin'></span><span
+style="mso-spacerun: yes"> </span>PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>96</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-size:10.5pt;mso-bidi-font-size:10.0pt'><span
+style='mso-tab-count:2'>                                                                    </span></span>LCLint
+User’s Guide Appendix<span style="mso-spacerun: yes">      </span><span
+style="mso-spacerun:
+yes">                                                                 </span></span></p>
+
+</div>
+
+<div style='mso-element:header' id=h12>
+
+<p class=MsoHeader>Annotations<span style='mso-tab-count:2'>                                                                                                                          </span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-begin'></span> PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>81</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--></p>
+
+</div>
+
+<div style='mso-element:header' id=h13>
+
+<p class=MsoHeader>Control Comments<span style='mso-tab-count:2'>                                                                                                                </span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-begin'></span> PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>87</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--></p>
+
+</div>
+
+<div style='mso-element:header' id=h14>
+
+<p class=MsoHeader>Libraries<span style='mso-tab-count:2'>                                                                                                                               </span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-begin'></span> PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>91</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--></p>
+
+</div>
+
+<div style='mso-element:header' id=h15>
+
+<p class=MsoHeader>Specifications<span style='mso-tab-count:2'>                                                                                                                        </span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-begin'></span> PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>95</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--><span
+style='font-weight:normal;font-style:normal'><o:p></o:p></span></p>
+
+</div>
+
+<div style='mso-element:header' id=h16>
+
+<p class=MsoHeader>References<span style='mso-tab-count:2'>                                                                                                                            </span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-begin'></span> PAGE <span style='mso-element:field-separator'></span></span></span><![endif]--><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'>97</span></span><!--[if supportFields]><span
+class=MsoPageNumber><span style='font-weight:normal;font-style:normal'><span
+style='mso-element:field-end'></span></span></span><![endif]--></p>
+
+</div>
+
+</body>
+
+</html>

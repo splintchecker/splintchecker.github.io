@@ -1,0 +1,94 @@
+diff weakchecks//dbase.c useiters//dbase.c
+210,211d209
+<   eref er;	       
+<   employee e;		
+diff weakchecks//drive.c useiters//drive.c
+5a6
+> # include <assert.h>
+123c124
+< 	  hire(e); 
+---
+> 	  assert (hire(e) == db_OK); 
+diff weakchecks//employee.c useiters//employee.c
+6c6
+<   int i;
+---
+>   size_t i;
+diff weakchecks//employee.lcl useiters//employee.lcl
+1c1,3
+< constant int maxEmployeeName;
+---
+> imports <stdio> ;
+> 
+> constant size_t maxEmployeeName;
+diff weakchecks//empset.c useiters//empset.c
+28,29d27
+<   eref er; 
+<   
+84a83
+>   /*@-mods@*/
+86a86
+>   /*@=mods@*/
+107a108
+>   /*@-mods@*/
+110a112
+>   /*@=mods@*/
+135d136
+<   employee e; 
+138c139,140
+<   
+---
+> 
+>   /*@-mods@*/  
+142c144,145
+<   
+---
+>   /*@=mods@*/
+> 
+diff weakchecks//erc.c useiters//erc.c
+3a4,17
+> 
+> static unsigned int_toUnsigned (int x)
+> {
+>   if (x < 0)
+>     {
+>       fprintf (stderr, "Error: int_toUnsigned is negative: %d", x);
+>       return 0;
+>     }
+>   else
+>     {
+>       return (unsigned) x;
+>     }
+> }
+> 
+47c61
+<     if (tmpc->val == er) return TRUE; 
+---
+>     if (eref_equal (tmpc->val, er)) return TRUE; 
+78c92
+<       if (elem->val == er) 
+---
+>       if (eref_equal (elem->val, er))
+141c155
+<     malloc (erc_size (c) * (employeePrintSize + 1) + 1);
+---
+>     malloc (int_toUnsigned (erc_size (c) * (employeePrintSize + 1) + 1));
+150a165
+>   /*@-mods@*/
+157c172,173
+<   
+---
+>   /*@=mods@*/  
+> 
+diff weakchecks//ereftab.c useiters//ereftab.c
+33a34
+>   /*@-mods@*/
+37c38,41
+<       if (employee_equal (&e, &e1)) return er;
+---
+>       if (employee_equal (&e, &e1))
+> 	{
+> 	  erc_iterReturn (it, er);
+> 	}
+38a43
+>   /*@=mods@*/

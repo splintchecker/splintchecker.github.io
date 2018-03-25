@@ -1,0 +1,136 @@
+<h3>lclint-interest message 6</h3>
+<pre>
+
+From: wilma@deis65.cineca.it (Wilma Penzo)
+Subject: ``imports'' clause
+To: lclint-interest@larch.lcs.mit.edu
+Date: Mon, 7 Nov 1994 18:08:49 +0100 (MET)
+X-Mailer: ELM [version 2.4 PL23]
+Content-Type: text
+Content-Length: 3117      
+
+
+Hi,
+
+my name is Wilma Penzo and I am a Ph.D. student at the
+University of Bologna. My topics of interest deal with
+formal methods in software engineering and I am very
+interested in the use of Larch as a specification language.
+
+At present I am involved in the specification of a simple
+case study and the use of the LCLint tool is giving me
+some problems.
+
+In particular, I'd have a question about the use of the 
+``imports'' clause in the description of LCL modules.
+With reference to the book ``Larch: languages and tools for
+formal specification'' - Guttag - Horning, ``imports'' is
+used with the aim of allowing the access to constants, types
+and functions previously defined in the ``imported'' module.
+Unfortunately no explicit example is made about a possible
+reuse of functions and I can not understand why LCLint
+does not pass the check for modules like the following 
+(which are simplified so as to be clearer):
+
+# BirthdayBook.lcl
+^^^^^^^^^^^^^^^^^^
+
+immutable type NAME;
+immutable type DATE;
+
+mutable type BDB;
+
+uses BirthdayBook;
+
+void Addbirthday(BDB bdb, NAME n, DATE d) {
+  modifies bdb;
+  ensures bdb'.k = addName(n, bdb^.k) /\
+          bdb'.b = addBirthday(bdb^.b, n , d);
+}
+
+
+# Error_Messages.lcl
+^^^^^^^^^^^^^^^^^^^^
+
+immutable type REP;
+
+uses RepBirth;
+
+REP Success() {
+  ensures result = Okay;
+}
+
+REP AlreadyKnown() {
+  ensures result = Already_Known;
+}
+
+
+# Complete_BDB.lcl
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+imports BirthdayBook;
+imports Error_Messages;
+
+REP RAddbirthday(BDB bdb, NAME n, DATE d) {
+
+  modifies bdb;
+  ensures if \not(n \in bdb^.k) then (Addbirthday(bdb, n, d) /\
+                                     result = Success)
+                                else result = AlreadyKnown;
+}
+
+
+The corresponding LCLint output message is:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+LCLint 1.4 --- Thu Sep 29 14:37:28 EDT 1994
+
+Complete_BDB.lcl:8,47: Unrecognized identifier (constant, variable or operator):
+                          Success
+Complete_BDB.lcl:9,47: Unrecognized identifier (constant, variable or operator):
+                          AlreadyKnown
+Complete_BDB.lcl:7,39: Undeclared operator: Addbirthday
+Finished LCLint checking --- 3 spec errors found / no code processed
+
+
+
+It seems as if the specified operators have not been exported in the
+right way. Nevertheless, the .lcs and .lh files are produced.
+
+Does anyone know why the tool behaves in this way? 
+Where could have been possible mistakes? 
+Is there a special option to be considered while the lclint program
+is called?
+
+Thanks in advance.
+
+
+Wilma
+
+
+---------------------------------------------------------------
+*          Wilma Penzo       | Phone: ++39-51-6443542         *
+*		             | Fax  : ++39-51-6443540         *
+*          DEIS - CIOC       |                                *
+*    University of Bologna   | Email: wpenzo@deis.unibo.it    * 
+*    V.le Risorgimento, 2    |        wilma@deis64.cineca.it  *
+*    I 40136 Bologna         |        penzo@cs.unibo.it       *
+*            ITALY           |        penzo@cirfid.unibo.it   *
+---------------------------------------------------------------
+
+</pre>
+<A HREF="5.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="7.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

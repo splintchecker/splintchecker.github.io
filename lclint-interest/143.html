@@ -1,0 +1,50 @@
+<h3>lclint-interest message 143</h3>
+<pre>
+From evans@cs.virginia.edu Thu Jul  3 12:54:23 1997
+Date: Thu, 3 Jul 97 12:51:04 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: J.J.vanderHeijden@student.utwente.nl
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Jan-Jaap van der Heijden's message of Wed, 2 Jul 1997 22:57:05 +0100 (WET DST) <Pine.LNX.3.96.970702222504.1284A-100000@zoo-station.student.utwente.nl>
+Subject: out of memory
+
+
+Hi JanJaap,
+
+This does indeed look like an lclint bug.  Lclint doesn't handle parse
+errors well (hence the "tryto" in +trytorecover).  From the messages, it
+looks like module_t is a type name the is not defined, leading to the
+parse error.  
+
+Possibly, the module_t type is defined in one of the standard header
+files.  Note that lclint does NOT include these files by default,
+instead using a standard library following the ANSI (or POSIX when you
+have the +posixlib) spec.  Probably one of the posix headers for your
+system is defining module_t, which (unless there is a bug in the
+library!) isn't defined in the POSIX spec, hence the parse error.  You
+could try the -skipposixheaders flag to force lclint to use your local
+posix headers.  (This may lead to other problems, if the headers use
+non-standard extensions.)  Another workaround would be to just add a
+type definition.
+
+--- Dave
+
+
+
+
+</pre>
+<A HREF="142.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="144.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

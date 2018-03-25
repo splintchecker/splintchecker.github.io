@@ -1,0 +1,81 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/memchecks3'
+lclint +lh -allimponly -macrovarprefixexclude +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+eref.c: (in function eref_initMod)
+<A HREF="eref.c.html#line56" target="source">eref.c:56,14</A>: Global storage eref_Pool contains 2 undefined fields when call
+                 returns: status, size
+  Storage derivable from a parameter, return value or global is not defined.
+  Use /*@out@*/ to denote passed or returned storage which need not be defined.
+  Use -compdef to suppress message.
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+erc.c: (in function erc_delete)
+<A HREF="erc.c.html#line112" target="source">erc.c:112,5</A>: Arrow access from possibly null pointer prev: prev->next
+  A possibly null pointer is dereferenced or misused. Value is either the
+  result of a function which may return null (in which case, code should check
+  it is not null), or a global, parameter or structure field declared with the
+  null qualifier. Use -null to suppress message.
+   <A HREF="erc.c.html#line108" target="source">erc.c:108,29</A>: Storage prev may become null
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+drive.c: (in function main)
+<A HREF="drive.c.html#line140" target="source">drive.c:140,16</A>: Fresh storage em1 not released before assignment:
+                   em1 = empset_create()
+  A memory leak has been detected. Newly-allocated or only-qualified storage is
+  not released before the last reference to is it lost. Use -mustfree to
+  suppress message.
+   <A HREF="drive.c.html#line35" target="source">drive.c:35,3</A>: Fresh storage em1 allocated
+<A HREF="drive.c.html#line146" target="source">drive.c:146,16</A>: Fresh storage em2 not released before assignment:
+                   em2 = empset_create()
+   <A HREF="drive.c.html#line74" target="source">drive.c:74,3</A>: Fresh storage em2 allocated
+<A HREF="drive.c.html#line147" target="source">drive.c:147,3</A>: Fresh storage em3 not released before assignment:
+                  em3 = empset_disjointUnion(em2, em1)
+   <A HREF="drive.c.html#line87" target="source">drive.c:87,3</A>: Fresh storage em3 allocated
+<A HREF="drive.c.html#line163" target="source">drive.c:163,12</A>: Fresh storage em1 not released before return
+   <A HREF="drive.c.html#line140" target="source">drive.c:140,16</A>: Fresh storage em1 allocated
+<A HREF="drive.c.html#line163" target="source">drive.c:163,12</A>: Fresh storage em2 not released before return
+   <A HREF="drive.c.html#line146" target="source">drive.c:146,16</A>: Fresh storage em2 allocated
+<A HREF="drive.c.html#line163" target="source">drive.c:163,12</A>: Fresh storage em3 not released before return
+   <A HREF="drive.c.html#line147" target="source">drive.c:147,3</A>: Fresh storage em3 allocated
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 8 code errors found
+391 spec, 3001 source (1232 before pre-processing) lines in 4.25 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/memchecks3'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

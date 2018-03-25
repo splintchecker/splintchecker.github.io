@@ -1,0 +1,9 @@
+Splint 3.0.1.4 --- 19 Jan 2002
+
+Uninitialized.c: (in function main)
+Uninitialized.c:5:43: Variable a used before definition
+  An rvalue is used that may not be initialized to a value on some execution
+  path. (Use -usedef to inhibit warning)
+
+Finished checking --- 1 code warning
+7 source lines in 0.02 s.

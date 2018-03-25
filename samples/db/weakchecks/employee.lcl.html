@@ -1,0 +1,124 @@
+<A NAME="line96"></A><html><head>
+<title>employee.lcl</title>
+</head><body>
+<h3>employee.lcl</h3>
+<PRE>
+<A NAME="line1"></A>constant int maxEmployeeName;
+<A NAME="line2"></A>constant int employeePrintSize;
+<A NAME="line3"></A> 
+<A NAME="line4"></A>typedef enum { MALE, FEMALE, gender_ANY } gender;
+<A NAME="line5"></A>typedef enum { MGR, NONMGR, job_ANY } job;
+<A NAME="line6"></A> 
+<A NAME="line7"></A>typedef struct 
+<A NAME="line8"></A>{
+<A NAME="line9"></A>  int ssNum;
+<A NAME="line10"></A>  char name[maxEmployeeName];
+<A NAME="line11"></A>  int salary;
+<A NAME="line12"></A>  gender gen;
+<A NAME="line13"></A>  job j;
+<A NAME="line14"></A>} employee;
+<A NAME="line15"></A> 
+<A NAME="line16"></A>void employee_sprint (out char s[], employee e) 
+<A NAME="line17"></A>{
+<A NAME="line18"></A>  /* requires maxIndex(s) &gt;= employeePrintSize; */
+<A NAME="line19"></A>  modifies s;
+<A NAME="line20"></A>  /* ensures isSprint(s', e)
+<A NAME="line21"></A>        /\ lenStr(s') = employeePrintSize;
+<A NAME="line22"></A>  */
+<A NAME="line23"></A>}
+<A NAME="line24"></A> 
+<A NAME="line25"></A>bool employee_equal (employee *e1, employee *e2) 
+<A NAME="line26"></A>{
+<A NAME="line27"></A>  /* ensures result = sameStr(e1-&gt;name^, e2-&gt;name^)
+<A NAME="line28"></A>           /\ (e1-&gt;ssNum^ = e2-&gt;ssNum^)
+<A NAME="line29"></A>           /\ (e1-&gt;salary^ = e2-&gt;salary^)
+<A NAME="line30"></A>           /\ (e1-&gt;gen^ = e2-&gt;gen^)
+<A NAME="line31"></A>           /\ (e1-&gt;j^ = e2-&gt;j^);
+<A NAME="line32"></A>  */
+<A NAME="line33"></A>}
+<A NAME="line34"></A> 
+<A NAME="line35"></A>bool employee_setName(employee *e, char na[]) 
+<A NAME="line36"></A>{
+<A NAME="line37"></A>  /* requires nullTerminated(na^); */
+<A NAME="line38"></A>  modifies e-&gt;name;
+<A NAME="line39"></A>  /* ensures result = lenStr(na^) &lt; maxEmployeeName
+<A NAME="line40"></A>           /\ (if result
+<A NAME="line41"></A>               then sameStr(e-&gt;name', na^)
+<A NAME="line42"></A>                     /\ nullTerminated(e-&gt;name')
+<A NAME="line43"></A>               else e-&gt;name' = e-&gt;name^);
+<A NAME="line44"></A>  */
+<A NAME="line45"></A>}
+<A NAME="line46"></A> 
+<A NAME="line47"></A>void employee_initMod(void) 
+<A NAME="line48"></A>{
+<A NAME="line49"></A>  ensures true;
+<A NAME="line50"></A>}
+<A NAME="line51"></A> 
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

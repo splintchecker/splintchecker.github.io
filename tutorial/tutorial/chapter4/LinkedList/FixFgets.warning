@@ -1,0 +1,3 @@
+FixFgets.c:197:7: Return value (type int) ignored: sscanf(Line, "%s...
+  Result returned by function call is not used. If this is intended, can cast
+  result to (void) to eliminate message. (Use -retvalint to inhibit warning)

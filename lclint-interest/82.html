@@ -1,0 +1,41 @@
+<h3>lclint-interest message 82</h3>
+<pre>
+From seebs@intran.xerox.com Mon Jun 24 16:46:12 1996
+Date: Mon, 24 Jun 1996 12:52:57 PDT
+From: seebs@intran.xerox.com (Peter Seebach)
+To: lclint-interest@larch.lcs.mit.edu
+Subject: lclint warnings, disablement, help please!
+
+I seem to be fundementally clueless.  Does lclint have a .rc file for
+putting in the dozen or so options I generally want to turn on?  If so,
+does anyone have one which suppresses warnings on the majority of well-defined
+conversions?  I do *not* want a warning for
+	char a[10];
+
+	a[0] = 0;
+
+because the code is correct.  I also don't want a warning for
+	int i = '\0';
+because '\0' is an int, and there's no type conflict.
+
+But I don't want to suppress *all* type warnings.
+
+-s
+
+
+</pre>
+<A HREF="81.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="83.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

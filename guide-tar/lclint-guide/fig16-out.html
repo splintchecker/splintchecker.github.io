@@ -1,0 +1,18 @@
+<h3>LCLint Output</h3>
+<pre>
+LCLint 2.2 --- 25 Aug 96
+
+mstringnn.c: (in function mstring_space1)
+<A HREF="mstringnn.c.html#line10" target="source">mstringnn.c:10,4</A>: Dereference of possibly null pointer
+                     m: *m
+  A possibly null pointer is dereferenced.  Value is
+  either the result of a function which may return
+  null (in which case, code should check it is not
+  null), or a global, parameter or structure field
+  declared with the null qualifier. (-nullderef will
+  suppress message)
+   <A HREF="mstringnn.c.html#line7" target="source">mstringnn.c:7,15</A>: Storage m may become null
+
+Finished LCLint checking --- 1 code error found
+</pre>
+</html>

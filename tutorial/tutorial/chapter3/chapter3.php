@@ -1,0 +1,621 @@
+<html>
+<head>
+<title>Flow Control </title>
+</head>
+<body>
+
+<h1>Flow Control </h1>
+
+<h2> Overview </h2>
+Flow control is about what parts of the program
+get executed when and it what order.
+
+
+<h2>Conditional Execution</h2>
+The <code> if </code> statement is used to conditionally
+execute pieces of code. 
+The following program will output <code>Hello World!</code>:
+
+<pre><code>
+<!--#include virtual="IfExample.c"-->
+</pre></code>
+
+<p>
+Only if the argument inside the parenthesis is true does it execute the block.
+
+<p>
+The <code> else </code> statement is very similar. The following piece
+of code will output <code>Goodbye!</code>:
+
+<pre><code>
+<!--#include virtual="ElseExample.c"-->
+</pre></code>
+
+Here is an <code> else if </code> block. 
+
+<pre><code>
+<!--#include virtual="ElseIfExample.c"-->
+</pre></code>
+
+<p>
+This piece of code will output: "l'chaim!"
+
+<p>
+Guess what the following will output:
+
+<pre><code>
+<!--#include virtual="IfQuiz.c"-->
+</pre></code>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+<p>
+This program will output "Life is a highway".
+Successive <code> else if </code>
+statements are executed sequentialy, in the order they occur
+in the file, and it executes the first that is true. 
+
+<p>
+Let's write a simple program using <code>if</code>,
+<code>else</code>, and <code>else if</code> which calculates
+body mass index. 
+
+<p>
+Body mass index is the ratio of a 
+person's weight in kilograms divided by the square
+of their height in meters.  
+
+<pre><code>
+<!--#include virtual="BMI.c"-->
+</pre></code>
+
+<p>
+Trace through the execution of this program.
+Is there anything missing?
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+<p>
+One thing this program does not do is check if the input
+is valid. If someone entered a negative value for their height
+this program would execute without printing anything.
+
+<p>
+We could add:
+
+<code><pre>
+else
+{
+	printf("Error: Body Mass index less than 0");
+}
+</code></pre>
+
+Splint will actually catch this kind of error if you run it on the program
+with the flag <code>elseifcomplete</code>
+
+<code><pre>
+<!--#include virtual="BMI.splint"-->
+</code></pre>
+
+<p>
+The last warning here is about
+"incomplete <code>elseif</code> logic".
+
+<p>
+The other warning is about "dangerous"
+floating point comparision. Why 
+is it dangerous to compare
+floating point types?
+
+<p>
+<A HREF="FloatAnswer.php">
+Answer</A>
+
+
+<p>
+<h2>Looping (<code>for</code> and <code>while</code>)</h2>
+
+
+<p>
+Consider the following program which prints out the perfect
+squares from 1 through  5:
+
+<code><pre>
+<!--#include virtual="NeedLoop.c"-->
+</code></pre>
+
+<p>
+This program will work correctly, but there is a lot of redundancy. 
+We can remove the redundancy with a <code>while</code> statement.
+
+<code><pre>
+<!--#include virtual="FirstLoop.c"-->
+</code></pre>
+
+<p>
+The while statement tells the computer to "keep executing
+this body of code enclosed by the curly brackets while this condition is true".
+As soon as the condition is false, (as soon as i > 5) the program
+moves on to the next statement. 
+
+<p>
+Without looping printing out the perfect
+squares from 1 to 100 would require 100 separate
+statements, but with a loop all we need to do is change the value in
+the test condition (<code>i <= 100</code>).
+
+<p>
+We can use while loops in a variety of ways.
+For example, we could use it to write a program
+that finds the sum:
+
+<p>
+S = 1 + 2 + ... n
+<br>
+<br>
+Like this: 
+
+<code><pre>
+<!--#include virtual="Sum.c"--> 
+</code></pre>
+
+
+What would happen if we forgot to iterate
+the variable <code>i</code>? Try
+compiling and running the following
+program:
+
+<code><pre>
+<!--#include virtual="InfiniteLoop.c"-->
+</code></pre>
+
+<p>
+The program will keep
+executing the same statement over and over again. 
+If not stopped it will run forever. 
+Control+c will kill the process.
+
+<p>
+Splint can identify infinite loops. Here is
+Splint's output:
+
+
+<code><pre>
+<!--#include virtual="InfiniteLoop.splint"-->
+</code></pre>
+
+<h2><code>for</code> statements</h2>
+<p>
+A <code>for</code> statement is very similar
+to a <code>while</code> statement.
+
+<p>
+We could have used a <code>for</code> loop instead
+of a <code>while</code> in our sum program:
+
+<pre><code>
+<!--#include virtual="SumFor.c"-->
+</pre></code>
+
+<p>
+It is just a <code>while</code>
+loop with the initialization and iteration
+step built in. The first statement in the
+<code>for</code> loop:
+
+<code><pre>
+i = 1;
+</code></pre>
+
+<p>
+initializes the index variable. The second statement:
+
+<code><pre>
+i <= n; 
+</code></pre>
+
+<p>
+tells 
+program when it can exit the loop.
+
+<p>
+and the third statement:
+
+<code><pre>
+i++
+</code></pre>
+
+<p>
+tells the program what to do once all
+the statements enclosed in curly brackets
+have been executed. 
+
+
+<p>
+A <code>for</code> loop has these three components:
+
+<pre><code><i>
+for(initilization; test; iteration)
+{
+	body;
+}
+</pre></code></i>
+
+
+<p>
+Try writing a few of these programs
+with loops:
+
+<ol>
+<li>Print out the perfect cubes from 1 to 10
+<li>Convert a number from decimal to reverse binary. (e.g. 19 would
+get converted to 11001)
+<li>Calculate the factorial function (n! = n*n-1*n-2...1)
+<li>Find the integer solutions to the equation a<sup>2</sup> + 
+b<sup>2</sup> + c<sup>2</sup> + d<sup>2</sup>=200 
+</ol> 
+
+<p>
+<A HREF="LoopExerciseAnswers.php">Answers</A>
+
+<p>
+Question: Is it possible to convert
+any <code>for</code> loop to a <code>while</code> loop?
+Scroll down for the answer.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<p>
+Yes. Any <code>while</code> loop:
+<pre><code>
+wihle (i <= n)
+{
+   /* do somethings */
+	
+}
+</pre></code>
+<p>
+can be converted into a <code>for</code> loop:
+
+<pre><code>
+for(;i <= n;)
+{
+	/*do something*/
+}
+</pre></code>
+
+<p>
+The semi-colons 
+at the beginning say "do nothing".
+So it will execute this block of code as
+long as <code>i <= n</code>. 
+
+<h2>The <code>switch</code> Statement</h2>
+
+<p>
+Consider the following program: 
+
+<pre><code>
+<!--#include virtual="GradeAsk.c"-->
+</pre></code>
+
+This is a reasonable way to write this program. But C provides
+another control construct which does the same thing with less typing. 
+
+<pre><code>
+<!--#include virtual="GradeAskSwitch.c"-->
+</pre></code>
+
+<p>
+The program will go through
+cases till one matches, and
+execute the code corresponding to that case. 
+
+<p>
+For some practice with <code>switch</code> statements
+write a short program which prompts the user
+for a month number and outputs the number of days in that month.
+
+<p>
+For February the program
+could just output "it either has
+28 days or 29", but a more sophisticated program
+would prompt for the year
+and determine how many days it actually has for that year.
+A leap year is any year which is a multiple of 4, but not of
+100 unless it is also a multiple of 400, so 1984 is a leap year
+1900 is not, but 2000 is.
+
+<p>
+<A HREF="Month.php">Answer</A>
+
+<p>
+You can only apply the <code>switch</code> statement to an integer
+or character variable. 
+
+<p>
+Notice how each list of possible cases
+is followed by a <code>break</code>. Those <code>
+break</code>s are important.
+What does the program do if they are
+not there? 
+
+<p>
+Before answering that question
+let's talk about the <code>
+break </code> statement in the context of a <code> for </code>
+or <code> while </code> loop. 
+
+<p> 
+In this case, the <code>break</code> statement just breaks out of the current
+loop. As in example, consider this program which finds the first number 
+larger than 10:
+
+<pre><code>
+<!--#include virtual="LargerThanTen.c"-->
+</pre></code>
+
+<p>
+The output of this program is
+<pre><code>
+<!--#include virtual="LargerThanTen.output"-->
+</pre></code>
+
+<p>
+By using the <code>break</code> we exit from the loop once we have found
+the first number larger than 10. We could continue executing the rest of
+the loop, but since we have already found what we needed that computation
+would be wasted, and could be computationally expensive.
+
+<p>
+We could also add a break statement to a <code>while</code> loop.
+
+<p>
+Now that you know what a <code>break</code> statement does for
+loops what do you think it does for <code>switch</code> statements?
+
+<p>
+Try and figure out the output of the following program:
+
+<code><pre>
+<!--#include virtual="GradeAskSwitchNoBreak.c"-->
+</code></pre>
+
+<p>
+Scroll down for the answer.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+ 
+<p>
+Here is the output:
+
+<pre><code>
+<!--#include virtual="GradeAskSwitchNoBreak.output"-->
+</pre></code>
+
+<p>
+It entered the first <code>case</code>
+which evaluated to true, but then just kept executing or 
+"falling through" since it did not encounter a <code>break</code>
+statement. 
+
+<p>
+An error similar to this caused 
+<A HREF="http://www.splint.org/manual/manual.html#_ftn11">
+AT&T's 
+entire network to go down in 1990.</A>
+
+
+<p>
+Splint catches these kinds of mistakes:
+
+<pre><code>
+<!--#include virtual="GradeAskSwitchNoBreak.splint"-->
+</pre></code>
+
+
+<p>
+Sometimes (rarely) 
+a fall through case might be
+what you want. Consider
+the following program:
+
+<pre><code>
+<!--#include virtual="SwitchFallThrough.c"-->
+</pre></code>
+
+<p>
+By not including the <code>break</code> statement we "fall through" and
+correctly report that 3,5,7 are both prime and odd (although
+this program fails to identify 2 as a valid prime number). 
+Leaving out the <code>break</code> was intentional, but
+Splint will still report a warning:
+
+<pre><code>
+<!--#include virtual="SwitchFallThrough.splint"-->
+</pre></code>
+
+<p>
+We need a way to tell Splint that we "meant" to fall through
+and left the <code>break</code> out intentionally. We can do
+this by adding an annotation 
+directly to the source code:
+<pre><code>
+<!--#include virtual="SwitchFallThroughAnnotated.c"-->
+</pre></code>
+
+<p>
+Now running Splint does not produce a warning:
+
+<pre><code>
+<!--#include virtual="SwitchFallThroughAnnotated.splint"-->
+</pre></code>
+
+<p>
+By adding annotations to the code we can tell Splint what we are
+trying to do or what we expect to be true, and in this way Splint can
+do more thorough, efficient and accurate checking.
+
+
+<h2>Two More Errors</h2>
+
+<h3>= and ==</h3>
+
+<p>
+The operators = and == are often confused.
+
+<p> The = sign means assignment while the == sign tests for 
+equality. 
+
+<p>
+Consider the following code:
+
+<pre><code>
+<!--#include virtual="EqualMistake.c"-->
+</pre></code>
+
+<p>
+What is the output? Keep in mind that the '=' returns the value of the assignment, and that in C zero means false, and non-zero means true. Scroll down for the answer.
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<p>
+The output of this program is:
+<pre><code>
+<!--#include virtual="EqualMistake.output"-->
+</pre></code>
+
+<p>
+This is because the '=' operator returns a 0 which in C is false,
+and so the <code>else</code> branch is taken. 
+
+<p>
+Splint will catch this particular error:
+
+<pre><code>
+<!--#include virtual="EqualMistake.splint"-->
+</pre></code>
+
+<p>
+Splint reports two warnings for this kind of error one because = was used
+instead of == inside of the <code>if</code> and the other because the
+expression inside the <code>if</code> is not boolean. 
+
+<p>
+Similar to using the '=' for the '==' is the error of using the '=='
+for the '='. Consider the following program:
+
+<pre><code>
+<!--#include virtual="FindMax.c"-->
+</pre></code>
+
+<p>
+Determine what the output of this program will be, and suggest how to fix it.
+Scroll down for the answer.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<p>
+Here is the output of the program:
+
+<pre><code>
+<!--#include virtual="FindMax.output"-->
+</pre></code>
+
+<p>
+The statement:
+<pre><code>
+max == array[i];
+</pre></code>
+
+<p>
+has absolutley no effect. 
+
+<p>
+We would fix is just by changing it to:
+<pre><code>
+max = array[i];
+</pre></code>
+
+<p>
+Splint will also catch this mistake:
+
+<pre><code>
+<!--#include virtual="FindMax.splint"-->
+</pre></code>
+
+<h3>Deep Breaks</h3>
+
+<p>
+Take a look at the following piece of code which finds
+the first number larger than 10 in a matrix:
+
+<pre><code>
+<!--#include virtual="Matrix.c"-->
+</pre></code>
+
+<p>
+Is the output the following?
+
+<pre><code>
+We found a number larger than 10!
+matrix[1][1] is 17
+</pre></code>
+
+<p>
+Scroll down for the answer.
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<p>
+No. The output also includes 21:
+
+<code><pre>
+<!--#include virtual="Matrix.output"-->
+</code></pre>
+
+<p>
+The <code>break</code> statement only breaks out on the 
+<i>innermost</i> loop. For this program that is  the loop which goes through a given row of the 
+matrix. A programmer may put a 
+<code>break</code> in thinking it breaks out of every loop, so 
+Splint will report this if run with <code>looploopbreak</code>
+flag. 
+
+<pre><code>
+<!--#include virtual="Matrix.splint"-->
+</pre></code>
+
+<p>
+Similar to the "fall through" case we can add an annotation telling
+Splint that we realize it is okay:
+
+<pre><code>
+<!--#include virtual="MatrixWithAnnotation.c"-->
+</pre></code>
+
+
+<p>
+And now splint will not produce a warning:
+
+<pre><code>
+<!--#include virtual="MatrixWithAnnotation.splint"-->
+</pre></code>
+
+
+<p>
+<A HREF="../chapter4/chapter4.html">Next</A>
+<p>
+<A HREF="../index.html">Contents</A>
+<p>
+</body>
+</html>
+
+
+
+
+
+
+

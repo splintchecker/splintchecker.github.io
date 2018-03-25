@@ -1,0 +1,194 @@
+<h3>lclint-interest message 84</h3>
+<pre>
+From ok@yallara.cs.rmit.EDU.AU Fri Jul  5 13:09:39 1996
+Date: Fri, 5 Jul 1996 12:19:13 +1000 (EST)
+From: Richard A OKeefe <ok@yallara.cs.rmit.EDU.AU>
+To: lclint-interest@larch.lcs.mit.edu, lclint@larch.lcs.mit.edu
+Subject: Formal array size check request
+
+I've been using lclint to help me mark student code.
+There is one thing that the students are rather confused about
+(or rather, the students actually have it right, but C is confused).
+
+If they have an array,
+	char line[COLUMNS];
+and they want to pass that array to a function foo,
+they _will_ insist on declaring
+	void foo(char line[COLUMNS]);
+in the prototype and
+	void foo(char line[COLUMNS]) { ... }
+in the definition.
+
+Problem 1:
+
+    It is a bad idea to put formal parameter names in prototypes.
+    To an audience concerned with writing correct code, I don't need
+    to explain why.
+
+    I can find no lclint flag to warn about this.
+
+    Sometimes people put "_" on prototype formal parameter names, which
+    is safer.  Given the prefix checking that is already built into
+    lc lint, a new flag in the spirit of lclint would be
+
+	protoformalprefix	- if set, every formal parameter name
+				- in a prototype must begin with this
+				- Default:  "".
+
+
+Problem 2:
+
+    Many students are putting prototypes inside functions.
+    I don't suppose I need to explain the dangers of this either.
+    This is one of the checks I still have to use GCC for: -Wnested-externs
+    There are actually two separable things:
+
+	'extern' declarations inside functions,
+	whether they are function declarations or prototypes, or variables.
+
+	function declarations or prototypes inside functions,
+	whether they are implicitly extern, explicitly extern,
+	or explicitly static
+
+    The name of the GCC option suggests only the former.  Both things are
+    bad, however, so it might be as well to stick with a single option
+    covering both.
+
+	nestedexterns		- if set, warn about function declarations
+				- or prototypes of any sort and about
+				- extern declarations of any sort, within
+				- blocks.
+				- Default: +
+
+Problem 3:
+
+    The constant-expression-opt in an array direct-declarator of
+    a parameter-declaration (or a declaration, in an old-style
+    function definition) is ignored, if present.
+
+	void foo(char line[80]);		is identical to
+	void foo(char line[967]);		is identical to
+	void foo(char line[]);			is identical to
+	void foo(char *line);
+
+    and the same is true in a function definition.  (Of course, if there
+    is a series of [sizes] then only the first array size is ignored;
+    that's the one I'm talking about.)
+
+    It is arguable that including the size is good documentation.
+    However, there are several problems.
+
+    (a) Whatever the number in the brackets, the parameter IS NOT AN ARRAY,
+	it's a pointer.  sizeof may legally be applied to the parameter,
+	and the result will be the size of the appropriate pointer, the
+	number in the brackets being completely ignored.
+
+    (b) Students expect the compiler to _check_ that actual parameters are
+	compatible with the declaration of the formal parameter, but it
+	won't.
+
+    Here is a sample program, together with the output of several checkers:
+
+    /* begin foo.c */
+    #include <stddef.h>
+
+    static void
+    foo(char line[80]) {
+	size_t i;
+
+	for (i = 0; i < sizeof line; i++) line[i] = ' ';
+    }
+
+    int
+    main(void) {
+	char line[15];
+
+	foo(line);
+	return 0;
+    }
+    /* end foo.c */
+    y% cc foo.c
+    y% lint foo.c
+    y% glint foo.c
+    y% gcc -O2 -Wall foo.c
+    y% lclint foo.c
+    LCLint 2.1b --- 07 May 96
+
+    < preprocessing >
+    < checking foo.c >
+    < global checks >
+
+    Finished LCLint checking --- no code errors found
+    17 source (18 before pre-processing) lines in 0.14 s.
+
+    lclint +strict complains about four things, caused by lack of
+    annotations.  It does not detect either of the two mistakes present.
+
+    (a) The student who wrote the code this example is based on
+	expected sizeof line to be 80.  In fact it was 4.
+    (b) The student expected the compiler to check that actual parameters
+	would have 80 elements; all the tools were perfectly happy with
+	an array of only 15 elements being passed.
+
+    There is no way of "fixing" the first problem, given the definition of C.
+    The best we can do is to report an error if sizeof is applied to a formal
+    parameter declared like an array:
+
+	sizeofformalarray	- if set, warn whenever 'sizeof' is applied
+				- to a formal parameter identifier that was
+				- declared like an array instead of the
+				- pointer it really is.
+				- Default: +
+
+    In an ideal world, lclint would do the conformance checks that students
+    familiar with Ada and Pascal expect it to do on these parameters.  I've
+    no idea how hard that would be.  Even if it did, I would still think it
+    a good idea to avoid such parameter declarations.  So
+
+	formalarray		- if set, warn whenever a formal pointer
+				- parameter is declared using array syntax.
+				- Default: (weak, -), (standard..., +)
+
+    There is room for disagreement about whether "char line[]" should
+    provoke a warning as well as "char line[80]".  I suspect this option
+    would be welcomed by more people if it didn't, and I could live with
+    that.
+
+Problem 4:
+
+    I've just proposed four new flags:
+
+	protoformalprefix
+	nestedexterns
+	sizeofformalarray
+	formalarray
+
+    The problem is that I find lotsofwordsruntogether withoutevenacaseshift
+    hard to read, and therefore hard to type.
+
+    How would it be if lclint were always to squish underscores and hyphens
+    out of flag names, so that these flags could also be written as
+
+	proto_formal_prefix
+	nested-externs
+	sizeof_formal_array
+	formal-array
+
+
+
+</pre>
+<A HREF="83.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="85.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

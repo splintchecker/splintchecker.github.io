@@ -1,0 +1,57 @@
+<h3>lclint-interest message 32</h3>
+<pre>
+From: Jon Freeman <freeman_jon@jpmorgan.com>
+Date: Wed, 14 Jun 1995 13:16:27 -0400
+To: lclint-interest@larch.lcs.mit.edu
+Subject: Introduction
+
+My name is Jon Freeman, and I've just started using lclint here at
+J. P. Morgan.  I've already played around with it a little on some
+of our source code, and I'm very impressed with its thoroughness and
+customizability.  If the other people in my group agree with me, I'll
+modify our best practices document to recommend that lclint be run on
+all of our source code prior to a new release.
+
+Here are my current questions and problems, in decreasing order of
+importance:
+
+1.  We have a routine for logging error messages that has exactly the
+same arguments as printf and fprintf.  On two occasions, we've gotten
+burned by calling this routine with the wrong number of arguments
+vis-a-vis the format string.  This was my primary motivation for looking
+around for a better version of lint.  If it's at all possible to get
+lclint to check these arguments as it does with printf, I would be
+extremely grateful.
+
+2.  lclint is giving me false used-before-set warnings in the following
+way:  A lot of our routines have a local uninitialized char buffer that
+gets filled by passing it to a second, lower-level routine.  What's the
+best way to indicate to lclint that these buffers ARE getting initialized
+by the lower-level routines?
+
+3.  I've already gotten lclint to die painfully on a couple of occasions.
+I'll send transcripts later when it's convenient.  My question:  Have any
+of the lclint developers tried using a tool like Purify to catch memory-
+corruption problems?  It works like a charm for us, and it could greatly
+improve lclint's robustness.
+
+			Thanks,
+			 Jon
+			 (freeman_jon@jpmorgan.com)
+
+</pre>
+<A HREF="31.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="33.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

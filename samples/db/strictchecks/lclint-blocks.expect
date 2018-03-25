@@ -1,0 +1,80 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/sample/strictchecks'
+lclint +lh +checks +allblock +allempty +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.0 --- 21 Feb 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+employee.c: (in function employee_setName)
+employee.c:11,40: Body of if statement is not a block: return FALSE
+  If body is a single statement, not a compound block.  Use -ifblock to
+  suppress message.
+< checking eref.c >
+eref.c: (in function eref_alloc)
+eref.c:14,76: Body of for statement is empy
+  For statement has no body.  Use -forempty to suppress message.
+eref.c:43,9: Body of for statement is not a block:
+                eref_Pool.status[i] = ST_AVAIL
+  Loop body is a single statement, not a compound block.  Use -forblock to
+  suppress message.
+< checking empset.c >
+empset.c: (in function empset_get)
+empset.c:12,9: Body of if statement is not a block: return er
+empset.c: (in function empset_union)
+empset.c:115,2: Body of if statement is not a block: empset_insert(result, emp)
+empset.c: (in function empset_intersect)
+empset.c:128,2: Body of if statement is not a block:
+                   empset_insert(toDelete, emp)
+empset.c: (in function empset_subset)
+empset.c:143,43: Body of if statement is not a block: return FALSE
+< checking ereftab.c >
+ereftab.c: (in function ereftab_lookup)
+ereftab.c:35,43: Body of if statement is not a block: return er
+< checking erc.c >
+erc.c: (in function erc_member)
+erc.c:60,44: Body of if statement is not a block: return TRUE
+erc.c:60,9: Body of for statement is not a block:
+               if (eref_equal(tmpc->val, er)) return TRUE
+erc.c: (in function erc_join)
+erc.c:122,5: Body of for statement is not a block: erc_insert(c1, tmpc->val)
+< checking dbase.c >
+dbase.c: (in function db_ercKeyGet)
+dbase.c:55,45: Body of if statement is not a block: return (er)
+dbase.c: (in function db_hire)
+dbase.c:101,12: Body of if statement is not a block: return DBS_GENDERERR
+dbase.c:104,12: Body of if statement is not a block: return DBS_JOBERR
+dbase.c:107,12: Body of if statement is not a block: return DBS_SALERR
+dbase.c:110,12: Body of if statement is not a block: return DBS_DUPLERR
+dbase.c: (in function db_uncheckedHire)
+dbase.c:126,7: Body of if clause of if statement is not a block:
+                  erc_insert(db[(int)KND_MMGRS], er)
+dbase.c:128,7: Body of else clause of if statement is not a block:
+                  erc_insert(db[(int)KND_MNON], er)
+dbase.c:131,7: Body of if clause of if statement is not a block:
+                  erc_insert(db[(int)KND_FMGRS], er)
+dbase.c:133,7: Body of else clause of if statement is not a block:
+                  erc_insert(db[(int)KND_FNON], er)
+dbase.c:128,7: Body of if clause of if statement is not a block:
+    if (e.j == MGR) erc_insert(db[(int)KND_MMGRS], er) else
+    erc_insert(db[(int)KND_MNON], er)
+dbase.c: (in function db_promote)
+dbase.c:168,9: Body of if statement is not a block: return FALSE
+< checking drive.c >
+drive.c: (in function main)
+drive.c:118,19: Body of if clause of if statement is not a block: e.gen = MALE
+drive.c:118,38: Body of else clause of if statement is not a block:
+                   e.gen = FEMALE
+drive.c:119,19: Body of if clause of if statement is not a block: e.j = NONMGR
+drive.c:119,38: Body of else clause of if statement is not a block: e.j = MGR
+< checking macros bool.h >
+< global checks >
+< cleaning .......... >
+
+Finished LCLint checking --- 26 code errors found
+396 spec, 2923 source (1282 before pre-processing) lines in 5.63 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/sample/strictchecks'

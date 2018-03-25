@@ -1,0 +1,59 @@
+<h3>lclint-interest message 178</h3>
+<pre>
+From evans@cs.virginia.edu Thu Nov  6 12:09:19 1997
+Date: Thu, 6 Nov 97 12:06:15 -0500
+From: evans@cs.virginia.edu (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: paolo.argenton@elsag.it
+In-Reply-To: Paolo Argenton's message of Thu, 06 Nov 1997 08:56:20 +0100 <1.5.4.32.19971106075620.008e1360@srs-exch.elsag.it>
+Subject: Subscription request
+
+
+> 1) bounds checking: it would be nice to have it, at least for statically
+> declared arrays.
+
+Yes, I've thought about this and it definitely would be useful.  Its
+quite difficult to do something general here, but there may be partial
+check that are useful.  Gimpel PC-Lint does some value checking with
+array bounds.
+
+> 2) Compiler specific extensions: I gave a look at the scanner; I was
+> thinking about a quick hack like considering extension keywords like
+> "__declspec( attribute )" as blanks.
+
+You can usually manage by writing a macro, e.g., #define __declspec(x).
+LCLint supports some of the GNU compiler extensions, but theres no limit
+on the kinds of extensions compiler-writers will make.  In general, I
+don't think there's anyway to easily avoid having to modify the scanner
+directly if you want lclint to support a new compiler extension.
+
+> 3) Cyclomatic measure. I don't know if this could be easy to add, but it
+> could be nice
+> to have a warning for cyclomatic number too high.
+
+I've thought about adding some kind of metrics to lclint, but generally
+find most metrics unsatisfying.  Genenerally, the programmer knows
+intuitively when code is too complex.  It makes sense if an institution
+want to declare some rules that all code must meet, but there are always
+contrived ways to make the code satisfy the metric (and these usually
+end up making the code more complex).
+
+--- Dave
+
+
+</pre>
+<A HREF="177.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="179.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

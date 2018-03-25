@@ -1,0 +1,32 @@
+LCLint 2.2 --- 25 Aug 96
+
+order.c: (in function f)
+<A HREF="order.c.html#line11" target="source">order.c:11,17</A>: Expression has undefined behavior
+    (value of right operand modified by left operand):
+    x++ * x
+  Code has unspecified behavior. Order of evaluation
+  of function parameters or subexpressions is not
+  defined, so if a value is used and modified in
+  different places not separated by a sequence point
+  constraining evaluation order, then the result of
+  the expression is unspecified. (-evalorder will
+  suppress message)
+<A HREF="order.c.html#line13" target="source">order.c:13,11</A>: Expression has undefined behavior (left
+    operand uses i, modified by right operand):
+    y[i] = i++
+<A HREF="order.c.html#line14" target="source">order.c:14,20</A>: Expression has undefined behavior
+    (value of right operand modified by left operand):
+    modglob() * glob
+<A HREF="order.c.html#line15" target="source">order.c:15,20</A>: Expression has undefined behavior
+    (unconstrained function mystery used in left
+    operand may set global variable glob used in right
+    operand): mystery() * glob
+  Code involving a call to function with no modifies
+  or globals clause may have undefined or
+  implementation-dependent behavior (LCLint assumes
+  the unconstrained call may modify any reachable
+  state or use any global). Add a specification for
+  the function. (-evalorderuncon will suppress
+  message)
+
+Finished LCLint checking --- 4 code errors found

@@ -1,0 +1,288 @@
+Plain Differences between current directory and checkchecks1
+16c16
+< # define numERCS (lastERC - firstERC + 1)
+---
+> # define numERCS (/*@+enumint@*/ (lastERC - firstERC + 1) /*@=enumint@*/)
+18c18,19
+< erc db[numERCS];
+---
+> typedef /*@only@*/ erc o_erc;
+> static o_erc db[numERCS];
+20c21,23
+< bool initDone = FALSE;
+---
+> /*@iter employeeKinds_all (yield employeeKinds ek); @*/
+> # define employeeKinds_all(m_ek) \
+>   { employeeKinds m_ek; for (m_ek = firstERC; m_ek <= lastERC; m_ek++) {
+21a25,28
+> # define end_employeeKinds_all }}
+> 
+> static bool initDone = FALSE;
+> 
+22a30,31
+>   /*@globals initDone, undef db@*/
+>   /*@modifies initDone, db@*/
+24,25d32
+<   int i;
+<   
+37c44
+<   for (i = firstERC; i <= lastERC; i++)
+---
+>   employeeKinds_all (ek)
+39,40c46,47
+<       db[i] = erc_create ();
+<     }
+---
+>       db[(int)ek] = erc_create ();
+>     } end_employeeKinds_all ;
+45c52
+< eref _db_ercKeyGet (erc c, int key) 
+---
+> static eref db_ercKeyGet(erc c, int key) 
+55c62
+< eref _db_keyGet (int key)
+---
+> static eref db_keyGet (int key)
+57d63
+<   int i;
+60c66
+<   for (i = firstERC; i <= lastERC; i++)
+---
+>   employeeKinds_all (ek)
+62c68
+<       er = _db_ercKeyGet (db[i], key);
+---
+>       er = db_ercKeyGet (db[(int) ek], key);
+67c73
+<     }
+---
+>     } end_employeeKinds_all ;
+72c78,79
+< int _db_addEmpls (erc c, int l, int h, empset s)
+---
+> static int db_addEmpls (erc c, int l, int h, empset s)
+>   /*@modifies s@*/
+102c109
+<   if (!eref_equal (_db_keyGet (e.ssNum), erefNIL))
+---
+>   if (!eref_equal (db_keyGet (e.ssNum), erefNIL))
+109a117
+>    /*@globals db@*/
+118c126
+<       erc_insert (db[mMGRS], er);
+---
+>       erc_insert (db[(int) mMGRS], er);
+120c128
+<       erc_insert (db[mNON], er);
+---
+>       erc_insert (db[(int) mNON], er);
+123c131
+<       erc_insert (db[fMGRS], er);
+---
+>       erc_insert (db[(int) fMGRS], er);
+125c133
+<       erc_insert (db[fNON], er);
+---
+>       erc_insert (db[(int) fNON], er);
+128a137
+>   /*@globals db@*/
+130,132c139
+<   int i;
+<   
+<   for (i = firstERC; i <= lastERC; i++)
+---
+>   employeeKinds_all (ek)
+134c141
+<       erc_elements(db[i], er)
+---
+>       erc_elements (db[(int) ek], er)
+138c145
+<               erc_delete(db[i], er);
+---
+>               erc_delete (db[(int) ek], er);
+142c149
+<     }
+---
+>     } end_employeeKinds_all ;
+147a155
+>   /*@globals db@*/
+154c162
+<   er = _db_ercKeyGet (db[mNON], ssNum);
+---
+>   er = db_ercKeyGet (db[(int) mNON], ssNum);
+158c166
+<       er = _db_ercKeyGet (db[fNON], ssNum);
+---
+>       er = db_ercKeyGet (db[(int) fNON], ssNum);
+170,171c178,179
+<       erc_delete (db[mNON], er);
+<       erc_insert (db[mMGRS], er);
+---
+>       erc_delete (db[(int) mNON], er);
+>       erc_insert (db[(int) mMGRS], er);
+175,176c183,184
+<       erc_delete (db[fNON], er);
+<       erc_insert (db[fMGRS], er);
+---
+>       erc_delete (db[(int) fNON], er);
+>       erc_insert (db[(int) fMGRS], er);
+192c200
+<   er = _db_keyGet (ssNum);
+---
+>   er = db_keyGet (ssNum);
+206a215
+>   /*@globals db@*/
+210d218
+<   int i;
+222,223c230,235
+<           for (i = firstERC; i <= lastERC; i++)
+<             numAdded += _db_addEmpls (db[i], l, h, s);
+---
+> 
+>           employeeKinds_all (ek)
+>             {
+>               numAdded += db_addEmpls (db[(int) ek], l, h, s);
+>             } end_employeeKinds_all
+> 
+226,227c238,239
+<           numAdded = _db_addEmpls (db[mMGRS], l, h, s);
+<           numAdded += _db_addEmpls (db[fMGRS], l, h, s);
+---
+>           numAdded = db_addEmpls (db[(int) mMGRS], l, h, s);
+>           numAdded += db_addEmpls (db[(int) fMGRS], l, h, s);
+230,231c242,243
+<           numAdded = _db_addEmpls (db[mNON], l, h, s);
+<           numAdded += _db_addEmpls (db[fNON], l, h, s);
+---
+>           numAdded = db_addEmpls (db[(int) mNON], l, h, s);
+>           numAdded += db_addEmpls (db[(int) fNON], l, h, s);
+238,239c250,251
+<           numAdded = _db_addEmpls (db[mMGRS], l, h, s);
+<           numAdded += _db_addEmpls (db[mNON], l, h, s);
+---
+>           numAdded = db_addEmpls (db[(int) mMGRS], l, h, s);
+>           numAdded += db_addEmpls (db[(int) mNON], l, h, s);
+242c254
+<           return _db_addEmpls (db[mMGRS], l, h, s);
+---
+>           return db_addEmpls (db[(int) mMGRS], l, h, s);
+244c256
+<           return _db_addEmpls (db[mNON], l, h, s);
+---
+>           return db_addEmpls (db[(int) mNON], l, h, s);
+250,251c262,263
+<           numAdded = _db_addEmpls (db[fMGRS], l, h, s);
+<           numAdded += _db_addEmpls (db[fNON], l, h, s);
+---
+>           numAdded = db_addEmpls (db[(int) fMGRS], l, h, s);
+>           numAdded += db_addEmpls (db[(int) fNON], l, h, s);
+254c266
+<           return _db_addEmpls (db[fMGRS], l, h, s);
+---
+>           return db_addEmpls (db[(int) fMGRS], l, h, s);
+256c268
+<           return _db_addEmpls (db[fNON], l, h, s);
+---
+>           return db_addEmpls (db[(int) fNON], l, h, s);
+261a274
+>   /*@globals db@*/
+263d275
+<   int i;
+268c280
+<   for (i = firstERC; i <= lastERC; i++)
+---
+>   employeeKinds_all (ek)
+270c282
+<       printVal = erc_sprint (db[i]);
+---
+>       printVal = erc_sprint (db[(int) ek]);
+273c285
+<     }
+---
+>     } end_employeeKinds_all ;
+18c18,19
+<   int i, j;
+---
+>   int i;
+>   db_status status;
+128c129
+<           uncheckedHire(e); j = hire(e);
+---
+>           uncheckedHire(e); status = hire(e);
+132c133,135
+<   printf("Should print 4: %d\n", /*@-usedef@*/ j /*@=usedef@*/); 
+---
+>   printf("Should print true: %s\n", 
+>          bool_unparse (/*@-usedef@*/ status == duplERR /*@=usedef@*/)); 
+> 
+26a27,28
+> typedef /*@observer@*/ char *obscharp;
+> 
+29,30c31,32
+<   static char *gender[] ={ "male", "female", "?" };
+<   static char *jobs[] = { "manager", "non-manager", "?" };
+---
+>   static obscharp gender[] ={ "male", "female", "?" };
+>   static obscharp jobs[] = { "manager", "non-manager", "?" };
+33c35
+<                   gender[e.gen], jobs[e.j], e.salary);
+---
+>                   gender[(int) e.gen], jobs[(int) e.j], e.salary);
+5c5
+< eref _empset_get (employee e, erc s) 
+---
+> static eref empset_get (employee e, erc s) 
+16a17,21
+> bool empset_member (employee e, erc s)
+> {
+>   return (!eref_equal(empset_get (e, s), erefNIL));
+> }
+> 
+24c29
+<   if (!eref_equal (_empset_get (e, s), erefNIL)) 
+---
+>   if (!eref_equal (empset_get (e, s), erefNIL)) 
+33a39
+>    /*@globals known@*/
+53c59
+<   er = _empset_get (e, s);
+---
+>   er = empset_get (e, s);
+138a145,146
+>   /*@globals initDone, undef known@*/
+>   /*@modifies initDone, known@*/
+10c10
+< ereftab known;
+---
+> /*@only@*/ ereftab known;
+30,31d29
+< # define empset_member(e, s) \
+<          (!(eref_equal(_empset_get(e, s), erefNIL)))
+13,21c13
+<       size_t s = (size_t) x;
+< 
+<       if ((int) s != x)
+<         {
+<           fprintf (stderr, "Error: int_toSize is inconsistent: %d", x);
+<           return 0;
+<         }
+< 
+<       return s;
+---
+>       return (size_t) x;
+8a9,10
+>    /*@globals eref_Pool@*/
+>    /*@modifies eref_Pool@*/
+49c51,52
+<    /*@globals undef eref_Pool@*/
+---
+>    /*@globals undef eref_Pool, needsInit@*/
+>    /*@modifies eref_Pool, needsInit@*/
+89a93,94
+>   /*@globals eref_Pool@*/
+>   /*@modifies eref_Pool@*/
+94a100,101
+>   /*@globals eref_Pool@*/
+>   /*@modifies eref_Pool@*/
+99a107
+>    /*@globals eref_Pool@*/

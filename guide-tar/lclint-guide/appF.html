@@ -1,0 +1,280 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="lclint-guide.css" title="style1">
+<title>LCLint User's Guide - Appendix F: Libraries</title>
+</head>
+<body>
+<table border="0" rules="none" bgcolor="#FFFFBD" width=100% cellpadding=6 cellspacing=2>
+<tr>
+<td valign=top align=center width=5%>
+<a href="http://lclint.cs.virginia.edu/"><img border=0 align=center width=129 height=86 src="lclint-logo1.gif"></a><br>
+</td>
+<td valign=top>
+<b><a href="index.html">Guide Contents</a></b><br>
+<a href="sec1.html">1. Overview</a><br>
+<a href="sec2.html">2. Operation</a><br>
+<a href="sec3.html">3. Abstract Types</a><br>
+</td>
+<td valign=top>
+<a href="sec4.html">4. Function Interfaces</a><br>
+<a href="sec5.html">5. Memory Management</a><br>
+<a href="sec6.html">6. Sharing</a><br>
+<a href="sec7.html">7. Value Constraints</a><br>
+</td>
+<td valign=top>
+<a href="sec8.html">8. Macros</a><br>
+<a href="sec9.html">9. Naming Conventions</a><br>
+<a href="sec10.html">10. Other Checks</a><br>
+Contact: <a href="mailto:lclint@cs.virginia.edu"><em>lclint@cs.virginia.edu</em></a>
+</td>
+</tr>
+</table>
+<blockquote>
+
+<a name="app-F"></a>
+<h2>Appendix F  Libraries</h2></a></a></a></b><p>
+<b></b>Libraries can be used to record interface information.  A library
+containing information about the  Standard C Library is used to enable checking
+of library calls.  Program libraries can be created to enable fast checking of
+single modules in a large program.
+<p>
+<b><i>Standard Libraries</i></b>
+<p>
+In order to check calls to library functions, LCLint uses an
+annotated standard library.  This contains more information about function
+interfaces then is available in the system header files since it uses
+annotations.  Further, it contains only those functions documented in the ANSI
+Standard.  Many systems include extra functions in their system libraries;
+programs that use these functions cannot be compiled on other systems that do
+not provide them.  Certain types defined by the library are treated as abstract
+types (e.g., a program should not rely on how the FILE type is implemented).
+When checking source code, LCLint does include system headers according to
+include directive in the source code, but instead uses the library description
+of the standard library.<p>
+<p>
+
+The LCLint distribution includes several different standard libraries:
+the ANSI standard library, the POSIX standard library , and an ad hoc
+UNIX library.  Each library comes in two versions: the standard version
+and the strict version.
+<p>
+<b>ANSI Library</b>
+<p>
+
+The default behavior of LCLint is to use the ANSI standard library
+(loaded from <tt>ansi.lcd</tt>).  This library is based on the standard library
+described in the ANSI C Standard.  It includes functions and types added
+by Amendment 1 to the ANSI C Standard.
+<p>
+
+<b>POSIX Library</b>
+<p>
+
+The POSIX library is selected by the <tt>+posixlib</tt> flag.  The POSIX library
+is based on the IEEE Std 1003.1-1990.  
+<p>
+
+<b>UNIX Library</b>
+<p>
+
+The UNIX library is selected by the <tt>+unixlib</tt> flag.  This
+library is an ad hoc attempt to capture additional functionality
+provided by many UNIX platforms. Unfortunately, UNIX systems vary widely
+and very few are consistent with the ANSI Standard.
+<p>
+The differences between the UNIX library and the POSIX library are:
+<ul>
+<li>  In the UNIX library, <tt>free</tt> is declared with a non-null
+parameter.  ANSI C specifies that <tt>free</tt> should handle the
+argument <tt>NULL</tt>, but several UNIX platforms crash if <tt>NULL</tt> is
+passed to <tt>free</tt>. 
+<li>   Extra variables, constants and functions are included in the UNIX
+library.  Some declarations are not  part of the POSIX library, but are
+believed to be available on many UNIX systems.  See <tt>lib/1.h</tt>
+for a list of the UNIX-only declarations. 
+</ul>
+<p>
+Code checked using the UNIX library can probably be ported to some UNIX
+systems without difficulty.  To enhance the likelihood that a program is
+portable, the POSIX library should be used instead.
+<p>
+<b>Strict Libraries</b>
+<p>
+Stricter versions of the libraries are used if the
+<tt>-ansi-strict</tt>, <tt>posix-strict-lib</tt> or
+<tt>1-strct-lib</tt> flag is used. These libraries use a stricter
+interpretation of the library.  They will detect more errors in some programs, but may to produce many spurious errors for typical code. 
+<p>
+The differences between the standard libraries and the strict libraries
+are:
+<ul>
+<li> The standard libraries declare the printing functions
+(<tt>fprintf</tt>, <tt>printf</tt>, and <tt>sprintf</tt>) that may
+return error codes to return <tt>int</tt> or <tt>void</tt>.  This prevents typical
+programs from leading to deluge of ignored return value errors, but may
+mean some relevant errors are not detected.  In the strict libraries, they
+are declared to return <tt>int</tt>, so ignored return value errors will
+be reported (depending on other flag settings).  Programs should check
+that this return value is non-negative. 
+
+<li> 
+The standard libraries declare some parameters and return values to be
+alternate types (<tt>int</tt> or <tt>bool</tt>, or <tt>int</tt> or
+<tt>char</tt>).  The ANSI standard specifies these types as int to be
+compatible with older versions of the library, but logically they make
+more sense as <tt>bool</tt> or <tt>char</tt>.  In the strict libraries,
+the stronger type is used.  The parameter to <tt>assert</tt> is
+<tt>int</tt> or <tt>bool</tt> in the standard library, and <tt>bool</tt>
+in the strict library.  The parameter to the character functions
+isalnum, isalpha, iscntrl, isdigit, isgraph, islower, isprint, ispunct,
+isspace, isupper, isxdigit, tolower and toupper is char or int in the
+standard library and char in the strict library.  The type of the return
+value of the character classification functions (all of the previous
+character functions except tolower and toupper) is bool or int in the
+standard library and bool in the strict library.  The type of the first
+parameter to ungetc is char or int in the standard library and char in
+the strict library (EOF should not be passed to ungetc).  The second
+parameter to strchr and strrchr is char or int in the standard library
+and char in the strict library.
+
+<li> The global variables stdin, stdout and stderr are declared as
+unchecked variables (see <a href="sec4.html#sec-4.2.1">Section
+4.2.1</a>) in the standard libraries.  In the strict libraries, they are checked.  The global variable errno is declared unchecked in the standard
+libraries, but declared checkedstrict in the strict libraries.
+</ul>
+<p>
+
+<b>Generating the Standard Libraries</b>
+<p>
+
+The standard libraries are generated from header files included in the
+LCLint distribution.  Some libraries are generated from more than one
+header file.  Since the POSIX library includes the ANSI library, the
+headers for the ANSI and POSIX libraries are combined to produce the
+POSIX library.  Similarly, the UNIX library is composed of the ANSI,
+POSIX and UNIX headers.  The header files include some sections that are
+conditionally selected by defining <tt>STRICT</tt>.
+<p>
+The commands to generate the standard libraries are:
+<blockquote>
+<pre>
+lclint -nolib ansi.h -dump ansi 
+lclint -nolib -DSTRICT ansi.h -dump ansistrict
+lclint -nolib ansi.h posix.h -dump posix
+lclint -nolib -DSTRICT ansi.h posix.h -dump posixstrict
+lclint -nolib ansi.h posix.h 1.h -dump 1
+lclint -nolib -DSTRICT ansi.h posix.h 1.h -dump unixstrict
+</pre>
+</blockquote>
+
+<p>
+<b><i>User Libraries</a></a></i></b><p>
+<b><i></i></b>To enable running LCLint on large systems, mechanisms are
+provided for creating libraries containing necessary information.  This means
+source files can be checked independently, after a library has been created.
+The command line option -dump <i>library</i> stores information in the file
+<i>library</i> (the default extension, <tt>.lcd</tt><a href="guide_fn.html#fn27">[27]</a>, is
+added). Then, <tt>-load </tt><i>library</i> loads the library.  The library
+contains interface information from the files checked when the library was
+created.
+<p>
+<a name="headers">
+<b><i>
+Header File Inclusion
+</i></b>
+<p>
+The standard behavior of LCLint on encountering 
+<pre>
+   #include &lt;X.h&gt;
+</pre>
+
+is to search for a file named <tt>X.h</tt> on the include search path
+(set using <tt>-I</tt>) and then the system base include path (usually
+<tt>/usr/include</tt>, default is set when LCLint is compiled).  If <tt>X.h</tt> is the name of a header file in a loaded standard library (either
+ANSI or POSIX) and <tt>X.h</tt> is found in a directory that is a system
+directory (as set by the <tt>-sysdirs</tt> flag; the default is <tt>/usr/include</tt>),
+<tt>X.h</tt> will not be included if <tt>skip-ansi-headers</tt> or
+<tt>skip-posix-headers</tt> (depending on whether <tt>X.h</tt> is an
+ANSI or POSIX header file) is on (both are on by default).  To force all
+headers to be included normally, use <tt>-skip-ansi-headers</tt> and
+<tt>-skip-posix-headers</tt>.
+<p>
+
+Sometimes headers in system directories contain non-standard syntax
+which LCLint is unable to parse.  The <tt>+skip-sys-headers</tt> flag
+may be used to prevent any include file in a system directory from being
+included. 
+
+<p>
+LCLint is fast enough that it can be run on medium-size (10,000
+line) programs without performance concerns.  It takes about one second to
+process a thousand source lines on a DEC Alpha.  Libraries can be used to
+enable efficient checking of small modules in large programs.  To further
+improve performance, header file inclusion can be optimized.<p>
+<p>
+When processing a complete system in which many files include the same headers,
+a large fraction of processing time is wasted re-reading header files
+unnecessarily.  If you are checking a 100-file program, and every file includes
+<tt>utils.h</tt>, LCLint will have to process utils.h 100 times (as would most C
+compilers).  If the <a href="appC.html#flag-singleinclude"><tt>+singleinclude</tt></a> flag is used, each header file is processed
+only once.  Single header file processing produces a significant efficiency
+improvement when checking large programs split into many files, but is only
+safe if the same header file included in different contexts always has the same
+meaning (i.e., it does not depend on preprocessor variable defined differently
+at different inclusion sites).<p>
+<p>
+When processing a single file in a large system, a large fraction of the time
+is spent processing included header files.  This can be avoided if the
+information in the header files is stored in a library instead.  If
+<a href="appC.html#flag-neverinclude"><tt>+neverinclude</tt></a> is set, inclusion of files ending in .h is prevented.  Files with
+different suffixes are included normally.  To do this the header files must not
+include any expanded macros. That is, the header file must be processed with
+<a href="appC.html#flag-allmacros"><tt>+allmacros</tt></a>, and there must be no <tt>/&#42;@notfunction@*/</tt> control comments in the
+header.  Then, the <a href="appC.html#flag-neverinclude"><tt>+neverinclude</tt></a> flag may be used to prevent inclusion of header
+files.  Alternately, non-function macros can be moved to a different file with
+a name that does not end in <tt>.h</tt>.  Remember, that this file must be included
+directly from the <tt>.c</tt> file, since if it is included from a <tt>.h</tt> file indirectly,
+that <tt>.h</tt> file is ignored so the other file is never included.<p>
+<p>
+These options can be used for significant performance improvements on large
+systems.  The performance depends on how the code is structured, but checking a
+single module in a large program is several times faster if libraries and
+<a href="appC.html#flag-neverinclude"><tt>+neverinclude</tt></a> are used.
+<a name="_Ref348788300"><a name="_Toc349905968"><a name="_Ref350066976"><p>
+
+<p>
+<b>Next: <A HREF="appG.html">Appendix G. Specifications</a></b><br>
+<a href="index.html">Contents</a>
+
+<p>
+</blockquote>
+
+<table border="0" rules="none" bgcolor="#FFFFBD" width=100% cellpadding=6 cellspacing=2>
+<tr>
+<td valign=top align=center width=5%>
+<a href="http://lclint.cs.virginia.edu/"><img border=0 align=center width=129 height=86 src="lclint-logo1.gif"></a><br>
+</td>
+<td valign=top>
+<b><a href="index.html">Guide Contents</a></b><br>
+<a href="sec1.html">1. Overview</a><br>
+<a href="sec2.html">2. Operation</a><br>
+<a href="sec3.html">3. Abstract Types</a><br>
+</td>
+<td valign=top>
+<a href="sec4.html">4. Function Interfaces</a><br>
+<a href="sec5.html">5. Memory Management</a><br>
+<a href="sec6.html">6. Sharing</a><br>
+<a href="sec7.html">7. Value Constraints</a><br>
+</td>
+<td valign=top>
+<a href="sec8.html">8. Macros</a><br>
+<a href="sec9.html">9. Naming Conventions</a><br>
+<a href="sec10.html">10. Other Checks</a><br>
+Contact: <a href="mailto:lclint@cs.virginia.edu"><em>lclint@cs.virginia.edu</em></a>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+

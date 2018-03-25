@@ -1,0 +1,1 @@
+falseexit void check (bool x) { modifies nothing; }

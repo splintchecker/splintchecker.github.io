@@ -1,0 +1,90 @@
+<A NAME="line7"></A><html><head>
+<title>erc.lsl</title>
+</head><body>
+<h3>erc.lsl</h3>
+<PRE>
+<A NAME="line1"></A>erc: trait
+<A NAME="line2"></A>  assumes CTrait
+<A NAME="line3"></A>  includes Bag(eref, ercElems)
+<A NAME="line4"></A>  erc tuple of val:ercElems, activeIters: int
+<A NAME="line5"></A>  ercIter tuple of toYield: ercElems, eObj: ercObj
+<A NAME="line6"></A>  introduces
+<A NAME="line7"></A>    {}: -&gt; erc
+<A NAME="line8"></A>    yielded: eref, ercIter, ercIter -&gt; bool
+<A NAME="line9"></A>    startIter: erc -&gt; erc
+<A NAME="line10"></A>    endIter: erc -&gt; erc
+<A NAME="line11"></A>  asserts
+<A NAME="line12"></A>    \forall e: eref, it1, it2: ercIter, c: erc
+<A NAME="line13"></A>      {} == [{}, 0];
+<A NAME="line14"></A>      yielded(e, it1, it2) == e \in it1.toYield
+<A NAME="line15"></A>          /\ it2 = [delete(e, it1.toYield), it1.eObj];
+<A NAME="line16"></A>      startIter(c) == [c.val, c.activeIters + 1];
+<A NAME="line17"></A>      endIter(c) == [c.val, c.activeIters - 1]
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

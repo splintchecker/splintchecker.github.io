@@ -1,0 +1,63 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/checkchecks1'
+lclint +lh -enumint +enumindex -allimponly +allmacros +showscan +stats +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+Warning: setting +showscan redundant with current value
+Warning: setting +stats redundant with current value
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+dbase.c: (in macro numERCS)
+dbase.c:16,20: Incompatible types for + (enum { mMGRS, fMGRS, mNON, fNON },
+                  int): lastERC - firstERC + 1
+  Types are incompatible. Use -type to suppress message.
+dbase.c: (in function db_initMod)
+dbase.c:37,8: Assignment of employeeKinds to int: i = firstERC
+dbase.c:37,22: Operands of <= have incompatible types (int, employeeKinds):
+                  i <= lastERC
+dbase.c:37,22: Incompatible types for <= (int, employeeKinds) (in post loop
+                  test): i <= lastERC
+dbase.c: (in function _db_keyGet)
+dbase.c:60,8: Assignment of employeeKinds to int: i = firstERC
+dbase.c:60,22: Operands of <= have incompatible types (int, employeeKinds):
+                  i <= lastERC
+dbase.c:60,22: Incompatible types for <= (int, employeeKinds) (in post loop
+                  test): i <= lastERC
+dbase.c: (in function fire)
+dbase.c:132,8: Assignment of employeeKinds to int: i = firstERC
+dbase.c:132,22: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+dbase.c:132,22: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+dbase.c: (in function query)
+dbase.c:222,9: Assignment of employeeKinds to int: i = firstERC
+dbase.c:222,23: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+dbase.c:222,23: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+dbase.c: (in function db_print)
+dbase.c:268,8: Assignment of employeeKinds to int: i = firstERC
+dbase.c:268,22: Operands of <= have incompatible types (int, employeeKinds):
+                   i <= lastERC
+dbase.c:268,22: Incompatible types for <= (int, employeeKinds) (in post loop
+                   test): i <= lastERC
+< checking drive.c >
+drive.c: (in function main)
+drive.c:128,22: Assignment of db_status to int: j = hire(e)
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 17 code errors found
+391 spec, 2967 source (1247 before pre-processing) lines in 4.32 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/checkchecks1'

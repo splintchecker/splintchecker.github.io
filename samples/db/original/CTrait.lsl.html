@@ -1,0 +1,159 @@
+<A NAME="line12"></A><html><head>
+<title>CTrait.lsl</title>
+</head><body>
+<h3>CTrait.lsl</h3>
+<PRE>
+<A NAME="line1"></A>% Skeleton CTrait.lsl 
+<A NAME="line2"></A> 
+<A NAME="line3"></A>%      This version of CTrait introduces operators on four sorts (int, double, 
+<A NAME="line4"></A>% char, and String), but does not axiomatize the properties of those operators.
+<A NAME="line5"></A>% Axioms can be obtained from the LSL Handbook using the following complete
+<A NAME="line6"></A>% version of CTrait.
+<A NAME="line7"></A> 
+<A NAME="line8"></A>%    CTrait: trait
+<A NAME="line9"></A>%      includes 
+<A NAME="line10"></A>%        Integer(int for Int),
+<A NAME="line11"></A>%        FloatingPoint(double for F),
+<A NAME="line12"></A>%	 FloatingPoint(float for F),
+<A NAME="line13"></A>%        cstring
+<A NAME="line14"></A> 
+<A NAME="line15"></A>% In an LCL specification, these four sorts provide semantics for the five C
+<A NAME="line16"></A>% data types int, double, float, char, and char[].  
+<A NAME="line17"></A> 
+<A NAME="line18"></A>CTrait: trait
+<A NAME="line19"></A>  % includes Integer(int for Int)
+<A NAME="line20"></A>  includes DecimalLiterals(int for N)
+<A NAME="line21"></A>  introduces
+<A NAME="line22"></A>    succ:     int      -&gt; int
+<A NAME="line23"></A>    pred:     int      -&gt; int
+<A NAME="line24"></A>    - __:     int      -&gt; int
+<A NAME="line25"></A>    __ + __:  int, int -&gt; int
+<A NAME="line26"></A>    __ - __:  int, int -&gt; int
+<A NAME="line27"></A>    __ * __:  int, int -&gt; int
+<A NAME="line28"></A>    __ &lt; __:  int, int -&gt; Bool
+<A NAME="line29"></A>    __ &gt; __:  int, int -&gt; Bool
+<A NAME="line30"></A>    __ &lt;= __: int, int -&gt; Bool
+<A NAME="line31"></A>    __ &gt;= __: int, int -&gt; Bool
+<A NAME="line32"></A>    abs:      int      -&gt; int
+<A NAME="line33"></A>    div:      int, int -&gt; int
+<A NAME="line34"></A>    mod:      int, int -&gt; int
+<A NAME="line35"></A>    min:      int, int -&gt; int
+<A NAME="line36"></A>    max:      int, int -&gt; int
+<A NAME="line37"></A>  % includes FloatingPoint(double for F)
+<A NAME="line38"></A>    0:                        -&gt; double
+<A NAME="line39"></A>    1:                        -&gt; double
+<A NAME="line40"></A>    - __:      double         -&gt; double
+<A NAME="line41"></A>    __ \inv:   double         -&gt; double
+<A NAME="line42"></A>    __ + __:   double, double -&gt; double
+<A NAME="line43"></A>    __ - __:   double, double -&gt; double
+<A NAME="line44"></A>    __ * __:   double, double -&gt; double
+<A NAME="line45"></A>    __ / __:   double, double -&gt; double
+<A NAME="line46"></A>    __ &lt; __:   double, double -&gt; Bool
+<A NAME="line47"></A>    __ &gt; __:   double, double -&gt; Bool
+<A NAME="line48"></A>    __ &lt;= __:  double, double -&gt; Bool
+<A NAME="line49"></A>    __ &gt;= __:  double, double -&gt; Bool
+<A NAME="line50"></A>  % includes FloatingPoint(float for F)
+<A NAME="line51"></A>    0:                      -&gt; float
+<A NAME="line52"></A>    1:                      -&gt; float
+<A NAME="line53"></A>    - __:      float        -&gt; float
+<A NAME="line54"></A>    __ \inv:   float        -&gt; float
+<A NAME="line55"></A>    __ + __:   float, float -&gt; float
+<A NAME="line56"></A>    __ - __:   float, float -&gt; float
+<A NAME="line57"></A>    __ * __:   float, float -&gt; float
+<A NAME="line58"></A>    __ / __:   float, float -&gt; float
+<A NAME="line59"></A>    __ &lt; __:   float, float -&gt; Bool
+<A NAME="line60"></A>    __ &gt; __:   float, float -&gt; Bool
+<A NAME="line61"></A>    __ &lt;= __:  float, float -&gt; Bool
+<A NAME="line62"></A>    __ &gt;= __:  float, float -&gt; Bool
+<A NAME="line63"></A>  % includes String(char, String)
+<A NAME="line64"></A>    empty: -&gt;       String
+<A NAME="line65"></A>    __ |- __:       String, char     -&gt; String
+<A NAME="line66"></A>    __ -| __:       char, String     -&gt; String
+<A NAME="line67"></A>    __ || __:       String, String   -&gt; String
+<A NAME="line68"></A>    __ [ __ ]:      String, int      -&gt; char
+<A NAME="line69"></A>    __ \in __:      char, String     -&gt; Bool
+<A NAME="line70"></A>    { __ }:         char             -&gt; String
+<A NAME="line71"></A>    count:          char, String     -&gt; int
+<A NAME="line72"></A>    head:           String           -&gt; char
+<A NAME="line73"></A>    init:           String           -&gt; String
+<A NAME="line74"></A>    isEmpty:        String           -&gt; Bool
+<A NAME="line75"></A>    last:           String           -&gt; char
+<A NAME="line76"></A>    len:            String           -&gt; int
+<A NAME="line77"></A>    prefix:         String, int      -&gt; String
+<A NAME="line78"></A>    removePrefix:   String, int      -&gt; String
+<A NAME="line79"></A>    substring:      String, int, int -&gt; String
+<A NAME="line80"></A>    tail:           String           -&gt; String
+<A NAME="line81"></A>  % includes cstring
+<A NAME="line82"></A>    null:                            -&gt; char
+<A NAME="line83"></A>    nullTerminated: String           -&gt; Bool
+<A NAME="line84"></A>    throughNull:    String           -&gt; String
+<A NAME="line85"></A>    sameStr:        String, String   -&gt; Bool
+<A NAME="line86"></A>    lenStr:         String           -&gt; int
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

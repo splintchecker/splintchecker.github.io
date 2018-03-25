@@ -1,0 +1,23 @@
+LCLint 2.2 --- 25 Aug 96
+
+palindrome.c: (in function isPalindrome)
+<A HREF="palindrome.c.html#line6" target="source">palindrome.c:6,29</A>: Cast from underlying abstract type
+                      mstring: (char *)s
+  An abstraction barrier is broken. If necessary, use
+  /*@access <type>@*/ to allow access to an abstract
+  type. (-abstract will suppress message)
+<A HREF="palindrome.c.html#line7" target="source">palindrome.c:7,31</A>: Function strlen expects arg 1 to be
+                      char * gets mstring: s
+  Underlying types match, but mstring is an abstract
+  type that is not accessible here.
+<A HREF="palindrome.c.html#line11" target="source">palindrome.c:11,27</A>: Array fetch from non-array
+                       (mstring): s[len - i - 1]
+  Types are incompatible. (-type will suppress
+  message)
+palindrome.c: (in function callPal)
+<A HREF="palindrome.c.html#line19" target="source">palindrome.c:19,26</A>: Function isPalindrome expects arg
+    1 to be mstring gets char *: "bob"
+  Underlying types match, but mstring is an abstract
+  type that is not accessible here.
+
+Finished LCLint checking --- 4 code errors found

@@ -1,0 +1,203 @@
+<html>
+<head>
+<title> Bugs Fixed</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<h1>
+Bugs Fixed<BR>
+</h1>
+
+This page documents reported bugs in LCLint 2.2a that are (believed to
+be) fixed in LCLint 2.3f.
+<p>
+
+<p>
+
+
+<h4>bug in <tt>list_grow</tt> functions</h4>
+<blockquote>
+A bug in the <tt>list_grow</tt> function may lead to the incorrect
+amount of space being allocated (reported and fixed by Florian Weimer).
+</blockquote>
+
+<h4><tt># define</tt> inside struct declaration</h4>
+<blockquote>
+Pre-processor command inside struct declarations confuse the parser.
+</blockquote>
+
+<h4>nested <tt>sizeof</tt></h4>
+
+<h4>modifies clause for old-style function produces internal error</h4>
+
+<h4>annotations on gmtime and localtime</h4>
+<blockquote>
+The return values were annotated with <tt>only</tt>, should be
+<tt>observer</tt>.
+</blockquote>
+
+<h4>bool declarations</h4>
+<blockquote>
+<tt>-booltype</tt> does not work correctly.
+</blockquote>
+
+<h4>library state information</h4>
+<blockquote>
+Library files may lose null state information for some constants.
+</blockquote>
+
+<h4>hex constants</h4>
+<blockquote>
+LCLint incorrectly assigns value to hexidecimal constants
+(<tt>0x42</tt>).
+</blockquote>
+
+<h4>implicit types</h4>
+<blockquote>
+LCLint reports erroneous errors for initializations like,
+<pre>
+	static const dummy[] = { 0x0 }
+</pre>
+because of the unknown (implicitly int) type.  The <tt>imptype</tt> flag
+was added to control reporting of declarations with implicit types.
+</blockquote>
+
+<h4>local static declarations</h4>
+<blockquote>
+LCLint view local static declarations as global (for namespace
+checking).
+</blockquote>
+
+<h4>Duff's Device</h4>
+<blockquote>
+LCLint fails with internal error on Duff's Device.  (Some may claim this
+as a feature, but it is fixed regardless!)
+</blockquote>
+
+<h4>+= operators lose modification information and are not fully typechecked</h4>
+<blockquote>
+Modification information in the right operand of a += is not propagated
+correctly.  This may lead to spurious infinite loop messages:
+<pre>
+        while (*name != '\0') h += *name++;
+</pre>
+</blockquote>
+
+<h4>notreached doesn't prevent path with no return messages</h4>
+<blockquote>
+The <tt>/*@notreached@*/</tt> comment does not prevent path with no
+return messages from being issued.
+</blockquote>
+
+<h4>obvious infinite loop constructs</h4>
+<blockquote>
+LCLint doesn't interpret <tt>for (;;)</tt> or <tt>while (TRUE)</tt> as
+obvious infinite loops, and may generate spurious
+function-without-return and related errors.
+</blockquote>
+
+<h4>declaration parameter names in pre-ANSI declarations</h4>
+<blockquote>
+"Declaration parameter has name" errors are produced for old-style
+declarations under certain conditions.
+</blockquote>
+
+<h4>floating point comparisons</h4>
+<blockquote>
+LCLint produces an unclear message when floats are compared to
+<tt>FLT_EPSILON</tt> using > or < (instead of >= and <=).
+</blockquote>
+
+<h4>bsearch declaration</h4>
+<blockquote>
+The declaration of <tt>bsearch</tt> in the standard library,
+<tt>ansi.h</tt> is missing a <tt>/*@dependent@*/</tt> annotation.  It
+should be:
+<pre>
+extern /*@null@*/ /*@dependent@*/ void *
+  bsearch (void *key, void *base, 
+	   size_t n, size_t size, 
+	   int (*compar)(void *, void *)) /*@*/ ;
+</pre>
+</blockquote>
+
+<h4>initializations</h4>
+<blockquote>
+Some initializations lead to an internal error.
+<pre>
+static char x[20];
+char **p = &x;
+</pre>
+</blockquote>
+
+<h4>bit ops</h4>
+<blockquote>
+LCLint does not report errors when bitwise operations are used on signed
+integral types.  (The +bitwiseops flag was added to control this checking.)
+</blockquote>
+
+<p>
+<h4>scanf arguments</h4>
+<blockquote>
+LCLint misinterprets modifiers in scanf arguments (e.g.,
+<tt>%lf</tt>).<br>
+</blockquote>
+<p>
+
+<h4>manifest arrays</h4>
+<blockquote>
+LCLint reports an incorrect manifest array error for declarations like
+<tt>int x[][10]</tt>.<br>
+</blockquote><br>
+
+<p>
+
+<h4>array/pointer branches</h4>
+<blockquote>
+LCLint may report an internal error (and crash) if the same storage is
+used as both an array and pointer in different branches of one
+conditional, followed by another branching construct.<br>
+</blockquote>
+
+<p>
+
+These bugs were present in the original 2.2 release, but were believed to
+be fixed in the current 2.2a release:
+
+<h4>structure fields</h4>
+<blockquote>
+LCLint may incorrectly match untagged structure fields (e.g., <tt>typedef struct {
+float a; } s1; typedef struct { double a; } s2;</tt>), leading to the
+<tt>a</tt> field of <tt>s2</tt> incorrectly having type <tt>float</tt>.
+</blockquote>
+
+<h4>compdestroy recursion</h4>
+<blockquote>
+LCLint processes a too-deep alias nest when checking undefined <tt>regex_t</tt>
+structures in <tt>rx.h</tt>.
+</blockquote>
+
+<h4>internal bug <tt>buildNCField --- no field ...:</tt></h4>
+<blockquote>
+When structures are cast to different types, and then a deep structure
+field is accessed, LCLint may produce an internal bug report.  
+</blockquote>
+
+<p>
+<a href="release2.2-bugs.html">Bugs in Version 2.1b that are fixed in Version
+2.2</a>
+
+<HR>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

@@ -1,0 +1,44 @@
+<h3>lclint-interest message 86</h3>
+<pre>
+From seebs@solon.com Fri Jul  5 13:24:47 1996
+Date: Fri, 5 Jul 1996 12:24:19 -0500
+From: Peter Seebach <seebs@solon.com>
+To: lclint-interest@larch.lcs.mit.edu
+Subject: formal param names in prototypes...
+
+
+What's wrong with them is this:
+
+Assume string.h says
+	extern int strcmp(const char *s1, const char *s2);
+
+now, consider
+	#define s1 (void)
+	#define s2 (int)
+
+	#include <string.h>
+
+... Perfectly legal, if stupid, code suddenly generates compiler errors.
+
+The names given to the parameters must be in the implementation namespace,
+and should generally be *far* from anything anyone would ever use.
+
+-s
+
+
+</pre>
+<A HREF="85.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="87.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

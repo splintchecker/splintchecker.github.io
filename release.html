@@ -1,0 +1,129 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>Splint - Release 3.0.1</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<center><h2>
+Splint Release 3.1.2
+</h2>
+<b>12 July 2007</b>
+</center>
+This release contains minor bug fixes, most of which were in the CVS
+code previously, but had not been released in an updated source
+distribution. See the <a href="changes.html">change log</a> for
+details. 
+
+<p>
+
+<center><h2>
+Splint Release 3.1.0
+</h2>
+<b>21 April 2003</b>
+</center>
+This release  contains numerous enhancements.  Among other imporvements, the accuracy of the bounds checking code has improved; Splint can produce output in html or comma separated value(CSV) format; and support for numabstract types has been added.  Additionally the code  contains numerous bugs fixes and house keeping updates.  
+See the <a href="changes.html">change log</a> for details.
+
+<p>
+
+
+<center><h2>
+Splint Release 3.0.1.6
+</h2>
+<b>11 February 2002</b>
+</center>
+<p>
+The main changes in this release are extensions to the grammar.  The grammar was extended to support ISO C99 and gcc obsolete extensions for initializing structure fields and array elements using explicit designators.  Additionally we relaxed the grammar to allow null statements as external declarations.  The release also fixes some internal bugs.  See the <a href="changes.html">change log</a> for details.
+
+<center><h2>
+Splint Release 3.0.1.5
+</h2>
+<b>5 February 2002</b>
+</center>
+<p>
+Some changes have been made which affect the format of splint error messages for bounds errors.  Additionally the flag bounds-compact-error-messages has been added.  This release also fixes some bugs in Splint 3.0.1.4.  See the <a href="changes.html">change log</a> for details.
+
+
+<center><h2>
+Splint Release 3.0.1
+</h2>
+<b>7 January 2002</b>
+</center>
+<p>
+
+Splint 3.0.1 is the successor to LCLint 2.5q.  The main changes are
+support for detection of security vulnerabilities (including buffer
+overflows) and extensible checks and annotations.
+
+<p>
+<b><a href="download.html">Download</a></b>
+<p>
+
+For information on the new features, see:
+<blockquote>
+<a href="http://www.cs.virginia.edu/evans/pubs/ieeesoftware-abstract.html">
+<em>Improving Security Using Extensible Lightweight Static
+Analysis</em></a>
+<blockquote>
+David Evans and David Larochelle. In  <a href="http://www.computer.org/software/">IEEE Software</a>, Jan/Feb
+2002.  (<a
+href="http://www.cs.virginia.edu/evans/pubs/ieeesoftware-revised.pdf">PDF</a>,
+12 pages)
+<p>
+Most security attacks exploit instances of well-known classes of
+implementations flaws.  This article describes how Splint can be used to
+detect common security vulnerabilities (including buffer overflows and
+format string vulnerabilities).
+
+</blockquote>
+
+<a href="http://www.cs.virginia.edu/~evans/usenix01-abstract.html"><em>Statically Detecting Likely Buffer Overflow Vulnerabilities</em></a>
+<blockquote>
+David Larochelle and David Evans.  In
+<a
+href="http://www.usenix.org/events/sec01/"<em>
+2001 USENIX Security Symposium</em></a>, Washington, D. C., August
+13-17, 2001.  (<a
+href="http://lclint.cs.virginia.edu/usenix01.pdf">PDF</a>, <a
+href="http://lclint.cs.virginia.edu/usenix01.html">HTML</a>, 13 pages)
+
+(<a href="http://www.cs.virginia.edu/evans/talks/usenix.ppt">Talk slides</a> [<a
+href="http://www.cs.virginia.edu/evans/talks/usenix.ppt">PPT</a>]
+ [<a
+href="http://www.cs.virginia.edu/evans/talks/usenix.pdf">PDF</a>])
+<p>
+Buffer overflow attacks may be today's single most important security
+threat. This paper presents a new approach to mitigating buffer
+overflow vulnerabilities by detecting likely vulnerabilities through
+an analysis of the program source code. Our approach exploits
+information provided in semantic comments and uses lightweight and
+efficient static analyses. This paper describes an implementation of
+our approach that extends the LCLint annotation-assisted static
+checking tool. Our tool is as fast as a compiler and nearly as easy to
+use. We present experience using our approach to detect buffer
+overflow vulnerabilities in two security-sensitive programs.
+</blockquote>
+</blockquote>
+
+<!--#include virtual="footer.html"-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,37 @@
+LCLint 2.2 --- 25 Aug 96
+
+only.c: (in function f)
+<A HREF="only.c.html#line11" target="source">only.c:11,3</A>: Only storage glob not released before
+                assignment: glob = y
+  A memory leak has been detected. Newly-allocated or
+  only-qualified storage is not released before the
+  last reference to it is lost. (-mustfree will
+  suppress message)
+   <A HREF="only.c.html#line1" target="source">only.c:1,24</A>: Storage glob becomes only
+<A HREF="only.c.html#line11" target="source">only.c:11,3</A>: Implicitly temp storage y assigned to
+                only: glob = y
+  Temp storage (associated with a formal parameter) is
+  transferred to a non-temporary reference. The
+  storage may be released or new aliases created.
+  (-temptrans will suppress message)
+<A HREF="only.c.html#line13" target="source">only.c:13,4</A>: Dereference of possibly null pointer m:
+                *m
+  A possibly null pointer is dereferenced.  Value is
+  either the result of a function which may return
+  null (in which case, code should check it is not
+  null), or a global, parameter or structure field
+  declared with the null qualifier. (-nullderef will
+  suppress message)
+   <A HREF="only.c.html#line8" target="source">only.c:8,12</A>: Storage m may become null
+<A HREF="only.c.html#line13" target="source">only.c:13,9</A>: Variable x used after being released
+  Memory is used after it has been released (either by
+  passing as an only param or assigning to and only
+  global. (-usereleased will suppress message)
+   <A HREF="only.c.html#line12" target="source">only.c:12,9</A>: Storage x released
+<A HREF="only.c.html#line14" target="source">only.c:14,10</A>: Implicitly temp storage z returned as
+                 only: z
+<A HREF="only.c.html#line14" target="source">only.c:14,12</A>: Fresh storage m not released before
+                 return
+   <A HREF="only.c.html#line9" target="source">only.c:9,27</A>: Fresh storage m allocated
+
+Finished LCLint checking --- 6 code errors found

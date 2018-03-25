@@ -1,0 +1,83 @@
+<h3>lclint-interest message 180</h3>
+<pre>
+From davidv@hsa.com.au Tue Jan  6 18:40:19 1998
+Sender: davidv@stimpy.lcs.mit.edu
+To: lclint-interest@larch.lcs.mit.edu
+Subject: annotation help
+X-Face: #1jPhTl4Z])\d):;KBYaC_+6'h"JFu>eQ:"AE2D`h7(7[dwPE`lK+*K.m)s0m
+        O_qcZvZNj_a[nMN_HA>b_<Q0"YU)h-OL-Y`F~?Bb`U5`~afCz~tl)&n3
+From: David A Vincent <davidv@hsa.com.au>
+Lines: 53
+Date: 07 Jan 1998 10:30:06 +1100
+
+Hello
+
+I am trying to annotate a Motif application written in C.  I have had
+some success with parts of it, but I have encountered a problem. 
+
+I would like to be able to annotate some of the function prototypes in
+the Motif and X11 headers.  For example, XtFree() causes problems
+(Fresh storage foo not released before return) which I would like fix
+by annotating its parameter with an /*@only@*/ comment.
+
+I don't want to start annotating our shared X11 header files, and I
+don't really want to create my own copies and start annotating them.
+What I hoped to be able to do was create my own small header file (xhints.h)
+and/or library (xhints.lcd) that I could use to contain annotated
+versions of prototypes from the library.  I created a file xhints.h
+that looked like this:
+
+    #include <Xm/Xm.h>
+
+    void XtAddCallback(
+               Widget w,
+               String callback_name,
+               XtCallbackProc callback,
+               /*@null@*/ XtPointer client_data
+    );
+
+This gave me the error:
+
+        Parameter client_data inconsistently redeclared as possibly
+                   null storage, previously declared without null qualifier
+  A function, variable or constant is redefined with a different type.
+  (-incondefs will suppress message)
+   /usr/openwin/include/X11/Intrinsic.h:1359: Declaration of client_data
+
+Which was not what I wanted, but does seem to make sense.  lclint
+treats the earlier declaration (within Xm/Xm.h) as being 'definitive',
+even though it has no annotations.  I was hoping, I suppose, that
+lclint would treat the later declaration as an `augmentation' of the
+earlier one, and not complain unless the later annotations
+contradicted earlier ones (of which there were none in this case.  
+
+Is there a way I can annotate only those X functions that I want to,
+without duplicating <X*/X*.h>?  Or is there some other approach to my
+problem that I am not seeing?
+
+Thanks
+
+...dav
+-- 
+David A Vincent   <mailto:davidv@hsa.com.au>    JUNK E-MAIL NOT WELCOME
+Working (not speaking) for      Hydrographic Sciences Australia Pty Ltd
+HSA phone extension number 27    within HSA, web site <http://marilyn/>
+GCS C++++$ US++$ P+$ E++$ W++ N+++ w--- M++ Y+ PGP+ t-- G e++ h--- b+++
+
+
+</pre>
+<A HREF="179.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="181.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

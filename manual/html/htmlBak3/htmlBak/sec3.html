@@ -1,0 +1,233 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 3. Undefined Values</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+<h1 style='margin-left:0in;text-indent:0in'><a name="_Ref348845237"></a><a
+name="_Ref347254431"></a><a name="_Ref347169350"></a><a name="_Ref344916590"></a><a
+name="_Ref344907893"></a><a name="_Toc344355407"></a><a name="_Toc534974942"></a><a
+name="_Ref534641444"></a><a name="_Ref534093775"></a><a name="_Ref534093769"></a><a
+name="_Ref534049950">3<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Undefined Values</a></h1>
+
+<p class=TextFontCX>Like many static checkers,
+Splint detects instances where the value of a location is used before it is
+defined.  This analysis is done at the procedural level.  If there is a path
+through the procedure that uses a local variable before it is defined, a use
+before definition error is reported.  The <span class=Flag><span
+style='font-size:10.0pt'>usedef</span></span> flag controls use before
+definition checking.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Splint can do more checking
+than standard checkers though, because the annotations can be used to describe
+what storage must be defined and what storage may be undefined at interface
+points. Unannotated references are expected to be completely defined at
+interface points.  This means all storage reachable from a global variable, parameter to a function, or function return value is defined before and
+after a function call.</p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974943"></a><a
+name="_Ref347811030"></a><a name="_Ref347204458">3.1.1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Undefined Parameters</a></h3>
+
+<p class=TextFontCX>Sometimes, function
+parameters or return values are expected to reference undefined or partially
+defined storage.  For example, a pointer parameter may be intended only as an
+address to store a result, or a memory allocator may return allocated but
+undefined storage.  The <span class=Annot><span style='font-size:10.0pt'>out</span></span> annotation denotes a pointer to storage that may be undefined.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Splint does not report an
+error when a pointer to allocated but undefined storage is passed as an <span
+class=Annot><span style='font-size:10.0pt'>out</span></span> parameter.  Within
+the body of a function, Splint will assume an <span class=Annot><span
+style='font-size:10.0pt'>out</span></span> parameter is allocated but not
+necessarily bound to a value, so an error is reported if its value is used
+before it is defined.  </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Splint reports an error if
+storage reachable by the caller after the call is not defined when the function
+returns.  This can be suppressed by <span class=Flag><span style='font-size:
+10.0pt'>-must-define</span></span>.  After a call returns, an actual parameter corresponding to an <span
+class=Annot><span style='font-size:10.0pt'>out</span></span> parameter is
+assumed to be completely defined.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>When checking unannotated
+programs, many spurious use before definition errors may be reported   If <span
+class=Flag><span style='font-size:10.0pt'>impouts</span></span> is on, no error is reported when an incompletely-defined parameter is passed to a
+formal parameter with no definition annotation, and the actual parameter is
+assumed to be defined after the call.  The <span class=Annot><span
+style='font-size:10.0pt'>/*@in@*/</span></span> annotation can be used to denote a parameter that must be completely defined, even if <span class=Flag><span
+style='font-size:10.0pt'>imp-outs</span></span> is on.  If <span class=Flag><span
+style='font-size:10.0pt'>imp-outs</span></span> is off, there is an implicit <span
+class=Annot><span style='font-size:10.0pt'>in</span></span> annotation on every
+parameter with no definition annotation.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 
+ style='margin-left:.9pt;border-collapse:collapse'>
+ <tr>
+  <td width="40%" valign=top style='border:solid black 1.5pt;
+  border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><span class=Keyword><b><span style='font-size:10.0pt;
+  color:white'>usedef.c</span></b></span></p>
+  </td>
+  <td valign=top style='border-top:1.5pt solid black;
+  border-left:medium none;border-bottom:medium none;border-right:1.5pt solid black;
+  background:black;padding-left:5.4pt; padding-right:5.4pt; padding-top:0in; padding-bottom:0in'>
+  <p class=TextFontCX align=center
+  style='text-align:center'><b><span style='color:white'>Running Splint</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td  valign=top style='border:solid black 1.5pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>extern void</span></span></p>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>  setVal (/*@out@*/ int *x);</span></span></p>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>extern int</span></span></p>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>  getVal (/*@in@*/ int *x);</span></span></p>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>extern int mysteryVal </span></span></p>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>  (int *x);</span></span></p>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>&nbsp;</span></span></p>
+  <p class=MsoNormal align=left style='text-align:left'><span class=Keyword><span
+  style='font-size:10.0pt;color:windowtext'>int dumbfunc </span></span></p>
+  <p class=MsoNormal align=left style='text-align:left'><span class=Keyword><span
+  style='font-size:10.0pt;color:windowtext'>   (/*@out@*/ int *x, int i)</span></span></p>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>{</span></span></p>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>  if (i &gt; 3)</span></span></p>
+  <p class=MsoNormal><span class=Line><span style='font-size:8.0pt'>11</span></span><span
+  class=Keyword><span style='font-size:10.0pt;color:windowtext'>   return *x;</span></span></p>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>  else if (i &gt; 1)</span></span></p>
+  <p class=MsoNormal><span class=Line><span style='font-size:8.0pt'>13</span></span><span
+  class=Keyword><span style='font-size:10.0pt;color:windowtext'>   return
+  getVal (x);</span></span></p>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>  else if (i == 0)</span></span></p>
+  <p class=MsoNormal><span class=Line><span style='font-size:8.0pt'>15</span></span><span
+  class=Keyword><span style='font-size:10.0pt;color:windowtext'>   return
+  mysteryVal (x);</span></span></p>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>  else</span></span></p>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>    {</span></span></p>
+  <p class=MsoNormal><span class=Line><span style='font-size:8.0pt'>18</span></span><span
+  class=Keyword><span style='font-size:10.0pt;color:windowtext'>    setVal (x);</span></span></p>
+  <p class=MsoNormal><span class=Line><span style='font-size:8.0pt'>19</span></span><span
+  class=Keyword><span style='font-size:10.0pt;color:windowtext'>    return *x;</span></span></p>
+  <p class=MsoNormal><span class=Keyword><span style='font-size:10.0pt;
+  color:windowtext'>    }</span></span></p>
+  <p class=Verbatim><span class=Keyword><span style='color:windowtext'>}</span></span></p>
+  </td>
+  <td  valign=top style='border-top:medium none;border-left:medium none;
+  border-bottom:1.5pt solid black;border-right:1.5pt solid black;padding-left:5.4pt; padding-right:5.4pt; padding-top:0in; padding-bottom:0in'>
+  <p class=lclintrun>&gt; splint usedef.c</p>
+  <p class=lclintrun>usedef.c:11: Value *x used before definition</p>
+  <p class=lclintrun>usedef.c:13: Passed storage x not completely defined</p>
+  <p class=lclintrun>                (*x is undefined): getVal (x)</p>
+  <p class=lclintrun>usedef.c:15: Passed storage x not completely defined</p>
+  <p class=lclintrun>                (*x is undefined): mysteryVal (x)</p>
+  <p class=lclintrun>&nbsp;</p>
+  <p class=lclintrun>Finished checking --- 3 code warnings</p>
+  <p class=TextFontCX><i>&nbsp;</i></p>
+  <p class=IndentText style='margin-top:0in;margin-right:.85pt;margin-bottom:
+  0in;margin-left:0in;margin-bottom:.0001pt;page-break-after:avoid'><i>No error
+  is reported for line 18, since the incompletely defined storage </i><span
+  class=CodeText><span style='font-size:10.0pt'>x</span></span><i> is passed as
+  an </i><span class=CodeText><span style='font-size:10.0pt'>out</span></span><i>
+  parameter.  After the call, </i><span class=CodeText><span style='font-size:
+  10.0pt'>x</span></span><i> may be dereferenced, since </i><span class=Annot><span
+  style='font-size:10.0pt'>setVal</span></span><i> is assumed to completely
+  define its </i><span class=Annot><span style='font-size:10.0pt'>out</span></span><i>
+  parameter.  The warning for line 15 would not appear if </i><span class=Flag><span
+  style='font-size:10.0pt'>+impouts</span></span><i> were used since there is no </i><span class=Annot><span style='font-size:10.0pt'>in</span></span><i>
+  annotation on the parameter to </i><span class=Flag><span style='font-size:
+  10.0pt'>mysteryVal</span></span><i>.</i></p>
+  </td>
+ </tr>
+</table>
+
+<div>
+
+<div align="center">
+  <center>
+
+<table cellspacing=0 cellpadding=0 hspace=0 vspace=0  style="border-collapse: collapse" bordercolor="#111111">
+ <tr>
+  <td valign=top align=left style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=MsoCaption><a name="_Ref347764461"></a><a name="_Ref347853047"></a><a
+  name="_Toc534824607">Figure 3.  Use before Definition</a></p>
+  </td>
+ </tr>
+</table>
+
+  </center>
+</div>
+
+</div>
+
+<br clear=ALL>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974944">3.1.2<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Relaxing Checking</a></h3>
+
+<p class=TextFontCX>The <span class=Annot><span
+style='font-size:10.0pt'>reldef</span></span> annotation relaxes definition checking for a particular declaration.  Storage declared with a <span class=Annot><span
+style='font-size:10.0pt'>reldef</span></span> annotation is assumed to be
+defined when it is used, but no error is reported if it is not defined before
+it is returned or passed as a parameter.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>It is up to the programmer to
+check <span class=Annot><span style='font-size:10.0pt'>reldef</span></span>
+fields are used correctly.   They should be avoided in most cases, but may be
+useful for fields of structures that may or may not be defined depending on
+other constraints.  </p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974945"></a><a
+name="_Ref347853043">3.1.3<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Partially Defined Structures</a></h3>
+
+<p class=TextFontCX>The <span class=Annot><span
+style='font-size:10.0pt'>partial</span></span> annotation can be used to relax checking of structure fields.  A structure with
+undefined fields may be passed as a <span class=Annot><span style='font-size:
+10.0pt'>partial</span></span> parameter or returned as a <span class=Annot><span
+style='font-size:10.0pt'>partial</span></span> result.  Inside a function body,
+no error is reported when the field of a <span class=Annot><span
+style='font-size:10.0pt'>partial</span></span> structure is used.  After a
+call, all fields of a structure that is passed as a <span class=Annot><span
+style='font-size:10.0pt'>partial</span></span> parameter are assumed to be
+completely defined.</p>
+
+
+<p>
+<a href="sec4.html"><b>Next:</b> 4. Types</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

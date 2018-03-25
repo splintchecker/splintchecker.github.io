@@ -1,0 +1,40 @@
+<h3>lclint-interest message 124</h3>
+<pre>
+From evans@cs.virginia.edu Tue Nov 26 15:31:26 1996
+Date: Tue, 26 Nov 96 15:26:57 -0500
+From: evans@cs.virginia.edu (David Evans)
+To: alt@vlibs.com
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: "Albert L. Ting"'s message of Tue, 26 Nov 1996 11:14:45 -0800 (PST) <199611261914.LAA18517@seal.vlibs.com>
+Subject: lclint format-type question
+
+
+Hi Albert,
+
+In this case the important difference is that +relaxquals is set in weak
+mode but not in strict or checks mode.  +relaxquals means that error are
+not reported for qualifier mismatches when no data is lost.  In fact, an
+error SHOULD be reported for the case where %d is scanf'd as a pointer
+to short, since data could be lost, but not if it were in a printf.
+(So, this is really a bug...but you'll get the message you want is
+-relaxquals is set.)
+
+--- Dave
+
+
+</pre>
+<A HREF="123.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="125.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,78 @@
+diff memchecks2//empset.lcl memchecks3//empset.lcl
+4c4
+< empset empset_create(void) 
+---
+> only empset empset_create(void) 
+9c9
+< void empset_final(empset s) 
+---
+> void empset_final (only empset s) 
+40c40
+< empset empset_union(empset s1, empset s2) 
+---
+> only empset empset_union(empset s1, empset s2) 
+45c45
+< empset empset_disjointUnion(empset s1, empset s2) 
+---
+> only empset empset_disjointUnion(empset s1, empset s2) 
+78c78
+< char *empset_sprint(empset s) 
+---
+> only char *empset_sprint(empset s) 
+diff memchecks2//erc.c memchecks3//erc.c
+151a152,156
+> eref erc_choose (erc c) 
+> {
+>   assert (c->vals != NULL);
+>   return c->vals->val;
+> }
+diff memchecks2//erc.h memchecks3//erc.h
+6c6
+< typedef struct _elem { eref val; struct _elem *next; } ercElem;
+---
+> typedef struct _elem { eref val; /*@null@*/ struct _elem *next; } ercElem;
+14c14
+< # define erc_choose(c) (((c)->vals)->val)
+---
+> 
+22c22
+<       eref M_x = M_ec->val; M_ec = M_ec->next; M_i++; 
+---
+>       eref M_x; assert (M_ec != NULL); M_x = M_ec->val; M_ec = M_ec->next; M_i++; 
+diff memchecks2//eref.c memchecks3//eref.c
+5c5
+< eref_ERP eref_Pool;            /* private */
+---
+> static eref_ERP eref_Pool;     /* private */
+48a49
+>    /*@globals undef eref_Pool@*/
+87a89,102
+> void eref_free (eref er)
+> {
+>   eref_Pool.status[er] = avail;
+> }
+> 
+> void eref_assign (eref er, employee e) 
+> {
+>   eref_Pool.conts[er] = e;
+> }
+> 
+> employee eref_get (eref er) 
+> {
+>   return eref_Pool.conts[er];
+> }
+diff memchecks2//eref.h memchecks3//eref.h
+16,18d15
+< /* Declared here so that macros can use it  */
+< extern eref_ERP eref_Pool;
+< 
+22,25d18
+< 
+< # define eref_free(er)        (eref_Pool.status[er] = avail)
+< # define eref_assign(er, e)   (eref_Pool.conts[er] = (e))
+< # define eref_get(er)         (eref_Pool.conts[er])
+diff memchecks2//ereftab.lcl memchecks3//ereftab.lcl
+5c5
+< ereftab ereftab_create(void) 
+---
+> only ereftab ereftab_create(void) 

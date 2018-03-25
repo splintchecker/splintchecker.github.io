@@ -1,0 +1,816 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 5. Memory Management</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+
+<h1 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974957"></a><a name="_Ref534008388">5<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a id="memory" name="memory">
+Memory Management</a>
+</a></h1>
+<p class="TextFontCX">About half the bugs in typical C programs can
+be attributed to memory management problems.&nbsp; Memory
+management bugs are notoriously difficult to detect through
+traditional techniques.&nbsp; Often, the symptom of the bug is far
+removed from its actual source.&nbsp; Memory management bugs often
+only appear sporadically and some bugs may only be apparent when
+compiler optimizations are turned on or the code is compiled on a
+different platform.&nbsp; Run-time tools offer some help, but are
+cumbersome to use and limited to detecting errors that occur when
+test cases are run.&nbsp; By detecting these errors statically, we
+can be confident that certain types of errors will never occur and
+provide verified documentation on the memory management behavior of
+a program.&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="beforelist">Splint can detect many memory management
+errors at compile time including using storage that may have been
+deallocated (Section 5.2), memory leaks&nbsp;(Section 5.2), or
+returning a pointer to stack-allocated storage&nbsp;(Section
+5.2.6).</p>
+<p align="right"><i><span style='font-size:9.0pt'>Yea, from the
+table of my memory I'll wipe away all trivial fond records, all
+saws of books,<br>
+all forms, all pressures past, that youth and observation copied
+there.</span></i><br>
+ <span style='font-size:9.0pt'>Hamlet prefers
+garbage&nbsp;collection (Shakespeare, Hamlet. Act I, Scene
+v)</span></p>
+<p class="afterlist">Most of these checks depend on annotations
+added to programs to document assumptions related to memory
+management and pointer values.&nbsp; By documenting these
+assumptions for function interfaces, variables, type definitions
+and structure fields, memory management bugs can be detected at
+their source &#8212; where an assumption is violated.&nbsp; In
+addition, precise documentation about memory management decisions
+makes it easier to change code.</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974958"></a><a name="_Toc344355408">5.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Storage Model</a></h2>
+<p class="TextFontCX">This section describes execution-time
+concepts for describing the state of storage more precisely than
+can be done using standard C terminology.&nbsp; Certain uses of
+storage are likely to indicate program bugs, and are reported as
+anomalies.<a href="#_ftn3" name="_ftnref3" title=
+      ""><span class="MsoFootnoteReference"><b><span class=
+      "MsoFootnoteReference"><b><span style=
+      'font-size:11.0pt;font-family:"Times New Roman"'>[3]</span></b></span></b></span></a></p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Splint assumes a CLU-like object storage
+model.<a href="#_ftn4" name="_ftnref4" title=""><span class=
+"MsoFootnoteReference"><span class=
+"MsoFootnoteReference"><span style=
+'font-size:11.0pt;font-family:"Times New Roman"'>[4]</span></span></span></a>&nbsp;
+An <i>object</i> is a typed region of storage.&nbsp; Some objects
+use a fixed amount of storage that is allocated and deallocated
+automatically by the compiler.&nbsp; Other objects use dynamic
+storage that must be managed by the program.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Storage is <i>undefined</i> if it has not
+been assigned a value, and <i>defined</i> after it has been
+assigned a value.&nbsp; An object is <i>completely defined</i> if
+all storage that may be reached from it is defined.&nbsp; What
+storage is reachable from an object depends on the type and value
+of the object.&nbsp; For example, if <span class=
+"CodeText"><span style='font-size:10.0pt'>p</span></span> is a
+pointer to a structure, <span class="CodeText"><span style=
+'font-size:10.0pt'>p</span></span> is completely defined if the
+value of <span class="CodeText"><span style=
+'font-size:10.0pt'>p</span></span> is <span class=
+"CodeText"><span style='font-size:10.0pt'>NULL</span></span>, or if
+every field of the structure <span class=
+      "CodeText"><span style='font-size:10.0pt'>p</span></span>
+      points to is completely defined.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">When an expression is used as the left side
+of an assignment expression we say it is <i>used as an
+lvalue</i>.&nbsp; Its location in memory is used, but not its
+value.&nbsp; Undefined storage may be used as an lvalue since only
+its location is needed.&nbsp; When storage is used in any other
+way, such as on the right side of an assignment, as an operand to a
+primitive operator (including the indirection operator,
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>*</span></span>),<a href="#_ftn5" name=
+      "_ftnref5" title=""><span class=
+      "MsoFootnoteReference"><span class=
+      "MsoFootnoteReference"><span style=
+      'font-size:11.0pt;font-family:"Times New Roman"'>[5]</span></span></span></a>
+      or as a function parameter, we say it is <i>used as an
+      rvalue</i>.&nbsp; It is an anomaly to use undefined storage
+      as an rvalue.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">A <i>pointer</i> is a typed memory
+address.&nbsp; A pointer is either <i>live</i> or
+<i>dead</i>.&nbsp; A live pointer is either <span class=
+"CodeText"><span style='font-size:10.0pt'>NULL</span></span> or an
+address within allocated storage.&nbsp; A pointer that points to an
+object is an <i>object</i> pointer.&nbsp; A pointer that points
+inside an object (e.g., to the third element of an allocated block)
+is an <i>offset</i> pointer.&nbsp; A pointer that points to
+allocated storage that is not defined is an <i>allocated</i>
+pointer.&nbsp; The result of dereferencing an allocated pointer is
+undefined storage.&nbsp; Hence, it is an anomaly to use it as an
+rvalue.&nbsp; A dead (or &#8220;dangling&#8221;) pointer does not
+point to allocated storage.&nbsp; A pointer becomes dead if the
+storage it points to is deallocated (e.g., the pointer is passed to
+the <span class="CodeText"><span style=
+'font-size:10.0pt'>free</span></span> library function.)&nbsp; It
+is an anomaly to use a dead pointer as an rvalue.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">There is a special object <i>null</i>
+corresponding to the <span class="CodeText"><span style=
+'font-size:10.0pt'>NULL</span></span>pointer in a C program.&nbsp;
+A pointer that may have the value <span class=
+"CodeText"><span style='font-size:10.0pt'>NULL</span></span> is a
+<i>possibly-null</i> pointer.&nbsp; It is an anomaly to use a
+possibly-null pointer where a non-null pointer is expected (e.g.,
+certain function arguments or the indirection operator).</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974959"></a><a name="_Ref347476065"></a><a name=
+"_Ref347469133"></a><a name="_Ref347465595"></a><a name=
+"_Ref344893840"></a><a name="_Toc344355409">5.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Deallocation Errors</a></h2>
+<p class="TextFontCX">There are two kinds of deallocation errors
+with which we are concerned:&nbsp; deallocating storage when there
+are other live references to the same storage, or failing to
+deallocate storage before the last reference to it is lost.&nbsp;
+To handle these deallocation errors, we introduce a concept of an
+obligation to release storage.&nbsp; Every time storage is
+allocated, it creates an obligation to release the storage.&nbsp;
+This obligation is attached to the reference to which the storage
+is assigned.<a href="#_ftn6" name="_ftnref6" title=
+      ""><span class="MsoFootnoteReference"><span class=
+      "MsoFootnoteReference"><span style=
+      'font-size:11.0pt;font-family:"Times New Roman"'>[6]</span></span></span></a>&nbsp;
+      Before the scope of the reference is exited or it is assigned
+      to a new value, the storage to which it points must be
+      released.&nbsp; Annotations&nbsp;can be used to indicate that
+      this obligation is transferred through a return value,
+      function parameter or assignment to an external
+      reference.</p>
+<p align="right"><i><span style='font-size:9.0pt'>&#8216;Tis in my
+memory lock&#8217;d, and you yourself shall keep the key of
+it.</span></i><br>
+<span style='font-size:9.0pt'>Ophelia prefers&nbsp;explicit
+deallocation (Hamlet. Act I, Scene iii)</span></p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974960">5.2.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Unshared References</a></h3>
+<p class="TextFontCX">The <span class="Annot"><span style=
+'font-size:10.0pt'>only</span></span> annotation is used to
+indicate a reference is the only pointer to the object it points
+to.&nbsp; We can view the reference as having an obligation to
+release this storage.&nbsp; This obligation is satisfied by
+transferring it to some other reference in one of three ways:</p>
+<p class="MsoListBullet"><span style=
+'font-family:Symbol'>&#183;<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+pass it as an actual parameter corresponding to a formal parameter
+declared with an <span class="Annot"><span style=
+'font-size:10.0pt'>only</span></span>
+annotation&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p class="MsoListBullet"><span style=
+'font-family:Symbol'>&#183;<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+assign it to an external reference declared with an
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>only</span></span> annotation</p>
+<p class="MsoListBullet"><span style=
+'font-family:Symbol'>&#183;<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+return it as a result declared with an <span class=
+"Annot"><span style='font-size:10.0pt'>only</span></span>
+annotation</p>
+<p class="afterlist">After the release obligation is transferred,
+the original reference is a dead pointer and the storage it points
+to may not be used.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">All obligations to release storage stem from
+primitive allocation routines (e.g., <span class=
+"CodeText"><span style='font-size:10.0pt'>malloc</span></span>),
+and are ultimately satisfied by calls to <span class=
+"CodeText"><span style='font-size:10.0pt'>free</span></span>.&nbsp;
+The standard library declared the primitive allocation and
+deallocation routines.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The basic memory allocator,
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>malloc</span></span>, is declared:</p>
+<p class="example"><a href="mailto:/*@only@*/">/*@only@*/</a>
+/*@null@*/ void *malloc (size_t size);</p>
+<p class="TextFontCX">It returns an object that is referenced only
+by the function return value.&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The deallocator, <span class=
+"CodeText"><span style='font-size:10.0pt'>free</span></span>, is
+declared:<a href="#_ftn7" name="_ftnref7" title=
+      ""><span class="MsoFootnoteReference"><span class=
+      "MsoFootnoteReference"><span style=
+      'font-size:11.0pt;font-family:"Times New Roman"'>[7]</span></span></span></a></p>
+<p class="example">void free (/*@only@*/ <a href=
+"mailto:/*@out@*/">/*@out@*/</a> <a href=
+"mailto:/*@null@*/">/*@null@*/</a> void *ptr);</p>
+<center>
+<table class="MsoNormalTable" border="0" cellspacing="0"
+cellpadding="0" style=
+'margin-left:5.4pt;border-collapse:collapse;margin-left:-2.25pt; margin-right:-2.25pt'>
+<tr>
+<td valign="top" style=
+'width:193.5pt;border:solid black 1.5pt; border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<a name="_Ref344990094"><span class="Keyword"><b><span style=
+'font-size:10.0pt;color:white'>only.c</span></b></span></a></p></td>
+<td valign="top" style=
+'width:225.0pt;border-top:solid black 1.5pt; border-left:none;border-bottom:none;border-right:solid black 1.5pt; background:black;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<b><span style='color:white'>Running
+Splint</span></b></p></td></tr>
+<tr>
+<td valign="top" style=
+'width:193.5pt;border:solid black 1.5pt; border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+<p class="Verbatim"><i><span style=
+'font-size:8.0pt;font-family:Arial'>1&nbsp;</span></i>
+      <span style='font-size:9.5pt'>extern /*@only@*/ int
+      *glob;</span></p>
+<p class="Verbatim"><span style='font-size:9.5pt'>&nbsp;</span></p>
+<p class="Verbatim"><span style='font-size:9.5pt'>/*@only@*/ int
+*</span></p>
+<p class="Verbatim"><span style='font-size:9.5pt'>f (/*@only@*/ int
+*x, int *y,</span></p>
+<p class="Verbatim"><span style='font-size:9.5pt'>&nbsp;&nbsp; int
+*z)</span></p>
+<p class="Verbatim"><span style='font-size:9.5pt'>&nbsp; /*@globals
+glob;@*/</span></p>
+<p class="Verbatim"><span style='font-size:9.5pt'>{</span></p>
+<p class="Verbatim"><i><span style=
+'font-size:8.0pt;font-family:Arial'>&nbsp;8</span></i>
+      <span style='font-size:9.5pt'>int *m = (int *)</span></p>
+<p class="Verbatim"><i><span style=
+'font-size:8.0pt;font-family:Arial'>&nbsp;9</span></i><span style='font-size:9.5pt'>
+&nbsp;&nbsp;&nbsp; malloc (sizeof (int));</span></p>
+<p class="Verbatim"><span style='font-size:9.5pt'>&nbsp;</span></p>
+<p class="Verbatim"><i><span style=
+'font-size:8.0pt;font-family:Arial'>11</span></i>
+      <span style='font-size:9.5pt'>glob =
+      y;&nbsp;&nbsp;&nbsp;</span> <i><span style=
+      'font-size:9.5pt; font-family:"Times New Roman"'>Memory
+      leak</span></i></p>
+<p class="Verbatim"><i><span style=
+'font-size:8.0pt;font-family:Arial'>12</span></i>
+      <span style='font-size:9.5pt'>free (x);</span></p>
+<p class="Verbatim"><i><span style=
+'font-size:8.0pt;font-family:Arial'>13</span></i>
+      <span style='font-size:9.5pt'>*m =
+      *x;&nbsp;&nbsp;&nbsp;&nbsp;</span> <i><span style=
+      'font-size:9.5pt; font-family:"Times New Roman"'>Use after
+      free</span></i></p>
+<p class="Verbatim"><i><span style=
+'font-size:8.0pt;font-family:Arial'>14</span></i>
+      <span style='font-size:9.5pt'>return
+      z;&nbsp;&nbsp;&nbsp;</span> <i><span style=
+      'font-size:9.5pt; font-family:"Times New Roman"'>Memory leak
+      detected</span></i><i><span style=
+      'font-size:9.5pt;font-family:Arial'>&nbsp;</span></i></p>
+<p class="TextFontCX"><span style=
+'font-size: 9.5pt'>}</span></p></td>
+<td valign="top" style=
+'width:225.0pt;border-top:none;border-left: none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="lclintrun">&gt; splint only.c</p>
+<p class="lclintrun">only.c:11: Only storage glob (type int *) not
+released</p>
+<p class="lclintrun">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+before assignment: glob = y</p>
+<p class="lclintrun">&nbsp;&nbsp; only.c:1: Storage glob becomes
+only</p>
+<p class="lclintrun">only.c:11: Implicitly temp storage y assigned
+to only:</p>
+<p class="lclintrun">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+glob = y</p>
+<p class="lclintrun">only.c:13: Dereference of possibly null
+pointer m: *m</p>
+<p class="lclintrun">&nbsp;&nbsp; only.c:8: Storage m may become
+null</p>
+<p class="lclintrun">only.c:13: Variable x used after being
+released</p>
+<p class="lclintrun">&nbsp;&nbsp; only.c:12: Storage x released</p>
+<p class="lclintrun">only.c:14: Implicitly temp storage z returned
+as only: z</p>
+<p class="lclintrun">only.c:14: Fresh storage m not released before
+return</p>
+<p class="lclintrun" style='page-break-after:avoid'>&nbsp;&nbsp;
+only.c:9: Fresh storage m
+allocated&nbsp;&nbsp;</p></td></tr></table>
+<table cellspacing="0" cellpadding="0" hspace="0" vspace="0">
+<tr>
+<td valign="top" align="left" style=
+'padding-top:0in;padding-right: 9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+<p class="MsoCaption"><a name="_Toc534824610">Figure 6.&nbsp;
+Memory Management</a></p></td></tr></table>
+<p class="TextFontCX">The parameter to <span class=
+"CodeText"><span style='font-size:10.0pt'>free</span></span> must
+reference an unshared object.&nbsp; Since the parameter is declared
+using <span class="Annot"><span style=
+'font-size:10.0pt'>only</span></span>, the caller may not use the
+referenced object after the call, and may not pass in a reference
+to a shared object.&nbsp; There is nothing special about
+<span class="CodeText"><span style=
+'font-size:10.0pt'>malloc</span></span> and <span class=
+"CodeText"><span style='font-size:10.0pt'>free</span></span>
+&#8212; their behavior can be described entirely in terms of the
+provided annotations.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Ref347468963"></a><a name="_Toc534974961"></a><a name=
+"_Ref347469360">5.2.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Temporary Parameters</a></h3>
+<p class="TextFontCX">The <span class="Annot"><span style=
+'font-size:10.0pt'>temp</span></span>&nbsp;annotation is used to
+declare a function parameter that is used temporarily by the
+function.&nbsp; An error is reported if the function releases the
+storage associated with a <span class="Annot"><span style=
+'font-size:10.0pt'>temp</span></span> formal parameter or creates
+new aliases to it that are visible after the function
+returns.&nbsp; Any storage may be passed as a <span class=
+"Annot"><span style='font-size:10.0pt'>temp</span></span>
+parameter, and it satisfies its original memory constraints after
+the function returns.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974962">5.2.3<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Owned and Dependent References</a></h3>
+<p class="TextFontCX">In real programs it is sometimes necessary to
+have storage that is shared between several possibly
+references.&nbsp; The <span class="Annot"><span style=
+'font-size:10.0pt'>owned</span></span> and <span class=
+"Annot"><span style='font-size:10.0pt'>dependent</span></span>
+annotations provide a more flexible way of managing storage, at the
+cost of less checking.&nbsp; The <span class=
+      "Annot"><span style='font-size:10.0pt'>owned</span></span>
+      annotation denotes a reference with an obligation to release
+      storage.&nbsp; Unlike <span class="Annot"><span style=
+      'font-size:10.0pt'>only</span></span>, however, other
+      external references marked with <span class=
+      "Annot"><span style=
+      'font-size:10.0pt'>dependent</span></span> annotations may
+      share this object.&nbsp; It is up to the programmer to ensure
+      that the lifetime of a <span class="Annot"><span style=
+      'font-size:10.0pt'>dependent</span></span> reference is
+      contained within the lifetime of the corresponding
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>owned</span></span> reference.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974963"></a><a name="_Ref347805800">5.2.4<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Keep Parameters</a></h3>
+<p class="TextFontCX">The <span class="Annot"><span style=
+'font-size:10.0pt'>keep</span></span> annotation is similar to
+<span class="Annot"><span style=
+'font-size:10.0pt'>only</span></span>, except the caller may use
+the reference after the call.&nbsp; The called function must assign
+the <span class="Annot"><span style=
+'font-size:10.0pt'>keep</span></span> parameter to an
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>only</span></span> reference, or pass it
+      as a <span class="Annot"><span style=
+      'font-size:10.0pt'>keep</span></span> parameter to another
+      function.&nbsp; It is up to the programmer to make sure that
+      the calling function does not use this reference after it is
+      released.&nbsp; The <span class="Annot"><span style=
+      'font-size:10.0pt'>keep</span></span> annotation is useful
+      for adding an object to a collection (e.g., a symbol table),
+      where it is known that it will not be deallocated until the
+      collection is.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974964"></a><a name="_Ref347469304">5.2.5<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Shared References</a></h3>
+<p class="TextFontCX">If Splint is used to check a program designed
+to be used in a garbage-collected environment, there may be storage
+that is shared by one or more references and never explicitly
+released.&nbsp; The <span class="Annot"><span style=
+'font-size:10.0pt'>shared</span></span> annotation declares storage
+that may be shared arbitrarily, but never released.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974965"></a><a name="_Ref348341639">5.2.6<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Stack References</a></h3>
+<p class="TextFontCX">Local variables that are not allocated
+dynamically are stored on a call stack. &nbsp;When a function
+returns, its stack frame is deallocated, destroying the storage
+associated with the function&#8217;s local variables.&nbsp; A
+memory error occurs if a pointer into this storage is live after
+the function returns.&nbsp; Splint detects errors involving stack
+references exported from a function through return values or
+assignments to references reachable from global variables or actual
+parameters.&nbsp; No annotations are needed to detect stack
+reference errors, since it is clear from a declaration if storage
+is allocated on the function stack.&nbsp; Figure 7 gives and
+example of errors reported involving stack-allocated storage.</p>
+<center>
+<table class="MsoNormalTable" border="0" cellspacing="0"
+cellpadding="0" style=
+'margin-left:5.4pt;border-collapse:collapse;margin-left:-2.25pt; margin-right:-2.25pt'>
+<tr>
+<td valign="top" style=
+'width:2.25in;border:solid black 1.5pt; border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<span class="Keyword"><b><span style=
+'font-size:10.0pt; color:white'>stack.c</span></b></span></p></td>
+<td valign="top" style=
+'width:256.5pt;border-top:solid black 1.5pt; border-left:none;border-bottom:none;border-right:solid black 1.5pt; background:black;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<b><span style='color:white'>Running
+Splint</span></b></p></td></tr>
+<tr>
+<td valign="top" style=
+'width:2.25in;border:solid black 1.5pt; border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+<p class="Verbatim">int *glob;</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">/*@dependent@*/ int *</p>
+<p class="Verbatim">&nbsp; f (int **x)</p>
+<p class="Verbatim">{</p>
+<p class="Verbatim">&nbsp; int sa[2] = { 0, 1 };</p>
+<p class="Verbatim">&nbsp; int loc = 3;</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>&nbsp;9</span></span> glob = &amp;loc;</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>10</span></span> *x = &amp;sa[0];</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>12</span></span> return &amp;loc;</p>
+<p class="Verbatim">}&nbsp;</p></td>
+<td valign="top" style=
+'width:256.5pt;border-top:none;border-left: none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="lclintrun">&gt; splint stack.c</p>
+<p class="lclintrun">stack.c:12: Stack-allocated storage &amp;loc
+reachable</p>
+<p class="lclintrun">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+from return value: &amp;loc</p>
+<p class="lclintrun">stack.c:12: Stack-allocated storage *x
+reachable from</p>
+<p class="lclintrun">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+parameter x</p>
+<p class="lclintrun">&nbsp;&nbsp; stack.c:10: Storage *x becomes
+stack</p>
+<p class="lclintrun">stack.c:12: Stack-allocated storage glob
+reachable</p>
+<p class="lclintrun">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+from global glob</p>
+<p class="lclintrun">&nbsp;&nbsp; stack.c:9: Storage glob becomes
+stack</p>
+<p class="lclintrun">&nbsp;</p>
+<p class="TextFontCX" align="left" style=
+'text-align:left;page-break-after:avoid'><i>A</i>
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>dependent</span></span> <i>annotation is
+      used on the return value.&nbsp; Without this, other warnings
+      would be reported, since the result would have an
+      implicit</i> <span class="Annot"><span style=
+      'font-size: 10.0pt'>only</span></span>
+      <i>annotation.</i></p></td></tr></table>
+<table cellspacing="0" cellpadding="0" hspace="0" vspace="0">
+<tr>
+<td valign="top" style=
+'padding-top:5.05pt;padding-right: 9.35pt;padding-bottom:5.05pt;padding-left:9.35pt'>
+<p class="MsoCaption"><a name="_Toc534824611"></a><a name=
+"_Ref534821941">Figure 7</a>.&nbsp; Stack-Allocated
+Storage</p></td></tr></table></center>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974966">5.2.7<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Inner Storage</a></h3>
+<p class="TextFontCX">An annotation always applies to the outermost
+level of storage.&nbsp; For example,</p>
+<p class="example">/*@only@*/ int **x;</p>
+<p class="beforelist">declares <span class=
+      "CodeText"><span style='font-size:10.0pt'>x</span></span> as
+      an unshared pointer to a pointer to an <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>int</span></span>.&nbsp; The <span class=
+      "Flag"><span style='font-size:10.0pt'>only</span></span>
+      annotation applies to <span class="CodeText"><span style=
+      'font-size:10.0pt'>x</span></span>, but not to <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>*x</span></span>.&nbsp; To apply
+      annotations to inner storage a type definition may be
+      used:</p>
+<p class="Verbatim">&nbsp; typedef /*@only@*/ int *oip;</p>
+<p class="Verbatim">&nbsp; /*@only@*/ oip *x;</p>
+<p class="afterlist">Now, x is an <span class=
+      "Annot"><span style='font-size:10.0pt'>only</span></span>
+      pointer to an <span class="Annot"><span style=
+      'font-size:10.0pt'>oip</span></span>, which is an
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>only</span></span> pointer to an
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>int</span></span>.</p>
+<p class="afterlist">When annotations are used in type definitions,
+they may be overridden in instance declarations.&nbsp; For
+example,</p>
+<p class="example">/*@dependent@*/ oip x;</p>
+<p class="TextFontCX">makes <span class=
+      "CodeText"><span style='font-size:10.0pt'>x</span></span> a
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>dependent</span></span> pointer to an
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span>.&nbsp; Another way to
+      apply annotations to inner storage is to use a state clause
+      (see Section 7.4).</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974967"></a><a name="_Ref347812243"></a><a name=
+"_Ref344893978"></a><a name="_Toc344355410">5.3<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Implicit Memory Annotations</a></h2>
+<p class="TextFontCX">Since it is important that Splint can check
+unannotated programs effectively, the meaning of declarations with
+no memory annotations is chosen to minimize the number of
+annotations needed to get useful checking on an unannotated
+program.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">An implicit memory management annotation may
+be assumed for declarations with no explicit memory management
+annotation.&nbsp; Implicit annotations are checked identically to
+the corresponding explicit annotation, except error messages
+indicate that they result from an implicit annotation.&nbsp; Figure
+8 illustrates some implicit annotations.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Unannotated function parameters are assumed
+to be <span class="Annot"><span style=
+'font-size:10.0pt'>temp</span></span>.&nbsp; This means if memory
+checking is turned on for an unannotated program, all functions
+that release storage referenced by a parameter or assign a global
+variable to alias the storage will produce error messages.&nbsp;
+(Controlled by <span class="Flag"><span style=
+'font-size:10.0pt'>paramimptemp</span></span>.)</p>
+<p class="TextFontCX">&nbsp;</p>
+<center>
+<table class="MsoNormalTable" border="0" cellspacing="0"
+cellpadding="0" style=
+'width:423.0pt;margin-left:.9pt;border-collapse:collapse; margin-left:-2.25pt;margin-right:-2.25pt'>
+<tr style='page-break-inside:avoid'>
+<td colspan="2" valign="top" style=
+'width:423.0pt;border:solid black 1.5pt; border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<span class="Keyword"><b><span style=
+'font-size:10.0pt; color:white'>implicit.c</span></b></span></p></td></tr>
+<tr>
+<td valign="top" style=
+'width:207.0pt;border-top:none;border-left: solid black 1.5pt;border-bottom:solid black 1.5pt;border-right:none; padding:0in 5.4pt 0in 5.4pt'>
+<p class="Verbatim">typedef struct {</p>
+<p class="Verbatim">&nbsp;&nbsp; <span class=
+"implicit"><b>only</b></span> char *name;</p>
+<p class="Verbatim">&nbsp;&nbsp; int&nbsp;&nbsp; val;</p>
+<p class="Verbatim">} *rec;</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">extern <span class=
+"implicit"><b>only</b></span> rec rec_last ;</p>
+<p class="Verbatim">&nbsp;</p>
+<p class="Verbatim">extern <span class=
+"implicit"><b>only</b></span> rec</p>
+<p class="Verbatim">&nbsp;&nbsp; rec_create (<span class=
+"implicit"><b>temp</b></span> char *name,</p>
+<p class="Verbatim">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+int val) ;</p>
+<p class="TextFontCX"><i>Annotations in</i> <span class=
+"Keyword"><b><i><span style=
+'font-size:10.0pt;color:windowtext'>italics</span></i></b></span>
+<i>are not present in the code, but may be implied depending on
+flag settings.</i></p></td>
+<td valign="top" style=
+'width:3.0in;border-top:none;border-left:none; border-bottom:solid black 1.5pt;border-right:solid black 1.5pt;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX" align="left" style='text-align:left'>
+<i>Implicit</i> <span class="Annot"><i><span style=
+'font-size:10.0pt'>only</span></i></span> <i>annotation on mutable
+structure field if</i> <span class="Flag"><span style=
+'font-size:10.0pt'>structimponly</span></span> <i>is on.</i></p>
+<p class="lclintrun"><i>&nbsp;</i></p>
+<p class="TextFontCX" align="left" style='text-align:left'>
+<i>Implicit</i> <span class="Annot"><span style=
+'font-size:10.0pt'>only</span></span> <i>annotation on mutable
+global variables if</i> <span class="Flag"><span style=
+'font-size:10.0pt'>globimponly</span></span> <i>is on.</i></p>
+<p class="TextFontCX" align="left" style='text-align:left'>
+<i>&nbsp;</i></p>
+<p class="TextFontCX" align="left" style=
+'text-align:left;page-break-after:avoid'><i>Implicit</i>
+<span class="Annot"><span style=
+'font-size:10.0pt'>only</span></span> <i>annotation on mutable
+function result if</i> <span class="Flag"><span style=
+'font-size: 10.0pt'>retimponly</span></span> <i>is set.
+Implicit</i> <span class="Annot"><span style=
+'font-size:10.0pt'>temp</span></span> <i>annotation on mutable
+parameter if</i> <span class="Flag"><span style=
+'font-size:10.0pt'>paramimptemp</span></span> <i>is
+set.</i></p></td></tr></table>
+<table cellspacing="0" cellpadding="0" hspace="0" vspace="0">
+<tr>
+<td valign="top" align="left" style=
+'padding-top:.1in;padding-right: 9.35pt;padding-bottom:.1in;padding-left:9.35pt'>
+<p class="MsoCaption"><a name="_Toc534824612"></a><a name=
+"_Ref534822006">Figure 8</a>.&nbsp; Implicit
+Annotations</p></td></tr></table></center>
+<p class="TextFontCX">Unannotated return values, structure fields
+and global variables are assumed to be <span class=
+"Annot"><span style='font-size:10.0pt'>only</span></span>.&nbsp;
+With implicit annotations (on by default), turning on memory
+checking for an unannotated program will produce errors for any
+function that does not return unshared storage or assignment of
+shared storage to a global variable or structure field.&nbsp; If an
+exposure qualifier is used (see Section 6.2), the implied
+<span class="Annot"><span style=
+'font-size: 10.0pt'>dependent</span></span> annotation is used
+instead of the more generally implied <span class=
+"Annot"><span style='font-size:10.0pt'>only</span></span>
+annotation.&nbsp; (Controlled by <span class=
+      "Flag"><span style='font-size:10.0pt'>retimponly</span></span>,
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>structimponly</span></span> and
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>globimponly</span></span>.&nbsp; The
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>allimponly</span></span>&nbsp;flag sets
+      all of the implicit only flags.) &nbsp;&nbsp;</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534974968"></a><a name="_Ref534970957"></a><a name=
+"_Ref347469058"></a><a name="_Ref344907383"></a><a name=
+"_Toc344355411">5.4<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Reference Counting</a></h2>
+<p class="TextFontCX">Another approach to memory management is to
+add a field to a type to explicitly keep track of the number of
+references to that storage.&nbsp; Every time a reference is added
+or lost the reference count is adjusted accordingly; if it would
+become zero, the storage is released.&nbsp; Reference counting it
+difficult to do without automatic checking since it is easy to
+forget to increment or decrement the reference count, and
+exceedingly difficult to track down these errors.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Splint supports reference counting by using
+annotations to constrain the use of reference counted storage in a
+manner similar to other memory management annotations.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">A reference counted type is declared using
+the <span class="Annot"><span style=
+'font-size:10.0pt'>refcounted</span></span> annotation.&nbsp; Only
+pointer to <span class="CodeText"><span style=
+'font-size:10.0pt'>struct</span></span> types may be declared as
+<span class="Annot"><span style=
+'font-size:10.0pt'>refcounted</span></span>, since reference
+counted storage must have a field to count the references.&nbsp;
+One field in the structure (or integral type) is preceded by the
+<span class="Annot"><span style=
+'font-size:10.0pt'>refs</span></span> annotation to indicate that
+the value of this field is the number of live references to the
+structure. For example (in <span class="Keyword"><span style=
+'font-size:10.0pt;font-family:Arial; color:windowtext'>rstring.h</span></span>),</p>
+<p class="Verbatim" style='margin-top:6.0pt'>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typedef /*@abstract@*/
+/*@refcounted@*/ struct {</p>
+<p class="Verbatim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+/*@refs@*/ int refs;</p>
+<p class="Verbatim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char
+*contents;</p>
+<p class="Verbatim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } *rstring;</p>
+<p class="afterlist">declares <span class=
+      "CodeText"><span style='font-size:10.0pt'>rstring</span></span>
+      as an abstract, reference-counted type.&nbsp; The
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>refs</span></span> field counts the number
+      of references and the <span class="CodeText"><span style=
+      'font-size:10.0pt'>contents</span></span> field holds the
+      contents of a string.</p>
+<p class="TextFontCX">&nbsp;</p>
+<center>
+<table class="MsoNormalTable" border="0" cellspacing="0"
+cellpadding="0" style=
+'width:425.5pt;margin-left:.2in;border-collapse:collapse'>
+<tr>
+<td valign="top" style=
+'width:267.05pt;border:solid black 1.5pt; border-bottom:none;background:black;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<span class="Keyword"><b><span style=
+'font-size:10.0pt; color:white'>rstring.c</span></b></span></p></td>
+<td valign="top" style=
+'width:158.45pt;border-top:solid black 1.5pt; border-left:none;border-bottom:none;border-right:solid black 1.5pt; background:black;padding:0in 5.4pt 0in 5.4pt'>
+<p class="TextFontCX" align="center" style='text-align:center'>
+<b><span style='color:white'>Running
+Splint</span></b></p></td></tr>
+<tr>
+<td valign="top" style=
+'width:267.05pt;border:solid black 1.5pt; border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+<p class="Verbatim"><span style='font-size:9.0pt'># include
+"rstring.h"</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>&nbsp;</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>static rstring
+rstring_ref (rstring r)</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>{</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>&nbsp;
+r-&gt;refs++;</span></p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>6</span></span> <span style=
+'font-size:9.0pt'>return r;</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>}</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>&nbsp;</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>rstring
+rstring_first (rstring r1, rstring r2)</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>{</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>&nbsp; if (strcmp
+(r1-&gt;contents, r2-&gt;contents) &lt; 0)</span></p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>12</span></span><span style=
+'font-size:9.0pt'>&nbsp;&nbsp; return r1;</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>&nbsp;&nbsp;
+else</span></p>
+<p class="Verbatim"><span class="Line"><span style=
+'font-size:8.0pt'>14</span></span><span style=
+'font-size:9.0pt'>&nbsp;&nbsp;&nbsp;&nbsp; return rstring_ref
+(r2);</span></p>
+<p class="Verbatim"><span style='font-size:9.0pt'>}</span></p></td>
+<td valign="top" style=
+'width:158.45pt;border-top:none;border-left: none;border-bottom:solid black 1.5pt;border-right:solid black 1.5pt; padding:0in 5.4pt 0in 5.4pt'>
+<p class="lclintrun">&gt; splint rstring.c</p>
+<p class="lclintrun">rstring.c:12: Reference counted&nbsp;</p>
+<p class="lclintrun">&nbsp;&nbsp; storage returned without
+modifying</p>
+<p class="lclintrun">&nbsp;&nbsp; reference count: r1</p>
+<p class="lclintrun"><i>&nbsp;</i></p>
+<p class="TextFontCX" align="left" style='text-align:left'>
+<i><span style='font-size:10.0pt'>No error is reported for line 6
+since the reference count was incremented.&nbsp; No error is
+reported for line 14, since</span></i> <span class=
+"CodeText"><i><span style=
+'font-size:10.0pt'>rstring_ref</span></i></span><i><span style='font-size:10.0pt'>
+returns a new reference.</span></i></p>
+<p class="TextFontCX" align="left" style=
+'text-align:left;page-break-after:avoid'><span style=
+'font-size:10.0pt'>&nbsp;</span></p></td></tr></table>
+<table cellspacing="0" cellpadding="0" hspace="0" vspace="0"
+       align="center">
+<tr>
+<td valign="top" align="left" style=
+'padding-top:.1in;padding-right: 0in;padding-bottom:.1in;padding-left:0in'>
+<p class="MsoCaption"><a name="_Toc534824613"></a><a name=
+"_Ref534822069">Figure 9</a>.&nbsp; Reference
+Counting</p></td></tr></table></center>
+<br clear="all">
+ 
+<p class="TextFontCX">All functions that return <span class=
+"Annot"><span style='font-size:10.0pt'>refcounted</span></span>
+storage must increase the reference count before returning.&nbsp;
+Splint cannot determine if the reference count was increased, so
+any function that directly returns a reference to
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>refcounted</span></span> storage will
+      produce an error.&nbsp; This is avoided, by using a function
+      to return a new reference (e.g., <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>rstring_ref</span></span> in Figure
+      9).</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">A reference counted type may be passed as a
+<span class="Annot"><span style=
+'font-size:10.0pt'>temp</span></span> or <span class=
+"Annot"><span style='font-size:10.0pt'>dependent</span></span>
+parameter.&nbsp; It may not be passed as an <span class=
+"Annot"><span style='font-size:10.0pt'>only</span></span>
+parameter.&nbsp; Instead, the <span class=
+      "Annot"><span style='font-size:10.0pt'>killref</span></span>
+      annotation is used to denote a parameter whose reference is
+      eliminated by the function call.&nbsp; Like <span class=
+      "Annot"><span style='font-size:10.0pt'>only</span></span>
+      parameters, an actual parameter corresponding to a
+      <span class="Annot"><span style=
+      'font-size:10.0pt'>killref</span></span> formal parameter may
+      not be used in the calling function after the call.&nbsp;
+      Splint checks that the implementation of a function releases
+      all <span class="Annot"><span style=
+      'font-size:10.0pt'>killref</span></span> parameters, either
+      by passing them as <span class="Annot"><span style=
+      'font-size: 10.0pt'>killref</span></span> parameters, or
+      assigning or returning them without increasing the reference
+      count.</p>
+
+<p>
+
+<a href="sec6.html"><b>Next:</b> 6. Sharing</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

@@ -1,0 +1,88 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/memchecks1'
+lclint +lh -allimponly -macrovarprefixexclude +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+employee.c: (in function employee_setName)
+employee.c:14,11: Parameter 1 (e->name) to function strcpy is declared unique
+                     but may be aliased externally by parameter 2 (na)
+  A unique or only parameter may be aliased by some other parameter or visible
+  global. Use -mayaliasunique to suppress message.
+< checking eref.c >
+eref.c: (in function eref_alloc)
+eref.c:19,24: Unqualified storage passed as only param:
+                 realloc (eref_Pool.conts, ...)
+  Unqualified storage is transferred in an inconsistent way. Use
+  -unqualifiedtrans to suppress message.
+eref.c:29,27: Unqualified storage passed as only param:
+                 realloc (eref_Pool.status, ...)
+eref.c:45,21: Storage eref_Pool.status reachable from global is only (should be
+                 unqualified)
+  Storage derivable from a parameter does not match the alias kind expected for
+  the formal parameter. Use -compmempass to suppress message.
+   eref.c:30,48: Storage eref_Pool.status becomes only
+eref.c:45,21: Storage eref_Pool.conts reachable from global is only (should be
+                 unqualified)
+   eref.c:20,49: Storage eref_Pool.conts becomes only
+eref.c: (in function eref_initMod)
+eref.c:84,2: Storage eref_Pool.conts reachable from global is fresh (should be
+                unqualified)
+   eref.c:62,3: Fresh storage eref_Pool.conts allocated
+eref.c:84,2: Global storage *(eref_Pool.conts) contains 4 undefined fields when
+                call returns: ssNum, salary, gen, j
+  Storage derivable from a parameter, return value or global is not defined.
+  Use /*@out@*/ to denote passed or returned storage which need not be defined.
+  Use -compdef to suppress message.
+eref.c:84,2: Storage eref_Pool.status reachable from global is fresh (should be
+                unqualified)
+   eref.c:70,3: Fresh storage eref_Pool.status allocated
+eref.c:84,2: Global storage eref_Pool contains 1 undefined field when call
+                returns: status
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+erc.c: (in function erc_create)
+erc.c:39,10: Null storage c->vals derivable from return value: c
+  A possibly null pointer is dereferenced or misused. Value is either the
+  result of a function which may return null (in which case, code should check
+  it is not null), or a global, parameter or structure field declared with the
+  null qualifier. Use -null to suppress message.
+   erc.c:37,13: Storage c->vals becomes null
+erc.c:39,10: Fresh storage returned as unqualified (should be only): c
+  Fresh storage (newly allocated in this function) is transferred in a way that
+  the obligation to release storage is not propagated.  Use the /*@only@*/
+  annotation to indicate the a return value is the only reference to the
+  returned storage. Use -freshtrans to suppress message.
+   erc.c:29,3: Fresh storage c allocated
+erc.c: (in function erc_clear)
+erc.c:55,2: Function returns with null storage derivable from parameter c->vals
+   erc.c:53,13: Storage c->vals becomes null
+erc.c: (in function erc_final)
+erc.c:60,9: Implicitly temp storage c passed as only param: free (c)
+  Temp storage (associated with a formal parameter) is transferred to a
+  non-temporary reference. The storage may be released or new aliases created.
+  Use -temptrans to suppress message.
+erc.c: (in function erc_delete)
+erc.c:108,16: Released storage c->vals reachable from parameter at return point
+  Memory is used after it has been released (either by passing as an only param
+  or assigning to and only global. Use -usereleased to suppress message.
+   erc.c:106,10: Storage c->vals is released
+erc.c: (in function erc_sprint)
+erc.c:147,10: Fresh storage returned as unqualified (should be only): result
+   erc.c:128,3: Fresh storage result allocated
+< checking dbase.c >
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 15 code errors found
+392 spec, 3011 source (1207 before pre-processing) lines in 4.48 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/memchecks1'

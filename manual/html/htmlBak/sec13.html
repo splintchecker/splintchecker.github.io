@@ -1,0 +1,109 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 13. Completeness</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+<h1 style='margin-left:0in;text-indent:0in'><a name="_Ref534981356"></a><a
+name="_Ref534978939"></a><a name="_Toc534975023">13<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Completeness</a></h1>
+
+<p class=TextFontCX>Splint can report warnings for unused declarations and exported declarations that are not used externally.</p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534975024"></a><a
+name="_Ref534744216">13.1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Unused Declarations</a></h2>
+
+<p class=TextFontCX>Splint detects constants,
+functions, parameters, variables, types, enumerator members, and structure or
+union fields that are declared but never used.  The flags <span class=Flag><span
+style='font-size:10.0pt'>constuse</span></span>, <span
+class=Flag><span style='font-size:10.0pt'>fcnuse</span></span>, <span
+class=Flag><span style='font-size:10.0pt'>paramuse</span></span>, <span
+class=Flag><span style='font-size:10.0pt'>varuse</span></span>, <span
+class=Flag><span style='font-size:10.0pt'>typeuse</span></span>, <span
+class=Flag><span style='font-size:10.0pt'>enummemuse</span></span> and <span class=Flag><span style='font-size:10.0pt'>fielduse</span></span> control whether unused declaration errors are reported for each kind of
+declaration.  Errors for exported declarations are reported only if <span
+class=Flag><span style='font-size:10.0pt'>topuse</span></span> is on (see Section 13.2).</p>
+
+<p class=TextFontCX><a name="_Ref349900444"></a><a
+name="_Ref349850608"></a><a name="_Ref349850429">&nbsp;</a></p>
+
+<p class=TextFontCX>The <span class=Annot><span
+style='font-size:10.0pt'>/*@unused@*/</span></span> annotation can be used before a declaration to indicate that the item declared need
+not be used.  Unused declaration errors are not reported for identifiers
+declared with <span class=Annot><span style='font-size:10.0pt'>unused</span></span><a
+name="_Toc344355432"></a><a name="_Ref343110935">.</a></p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534975025"></a><a
+name="_Toc344355433"></a><a name="_Ref343110504">13.2<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Complete </a>Programs</h2>
+
+<p class=TextFontCX>Splint can be used on both complete and partial programs.  When checking complete programs, additional checks can
+be done to ensure that every identifier declared by the program is defined and
+used, and that functions that do not need to be exported are declared <span
+class=CodeText><span style='font-size:10.0pt'>static</span></span>. </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Splint checks that all
+declared variables and functions are defined (controlled by <span class=Flag><span
+style='font-size:10.0pt'>compdef</span></span><span
+class=Flag><span style='font-size:10.0pt'>)</span></span>.  Declarations of
+functions and variables that are defined in an external library, may be
+preceded by <span class=Annot><span style='font-size:10.0pt'>/*@external@*/</span></span> to suppress undefined declaration errors.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Splint reports external
+declarations that are unused (controlled by <span class=Flag><span
+style='font-size:10.0pt'>topuse</span></span>).  Which declarations are reported also depends on the declaration use flags (Section 13.1).  The <span
+class=Flag><span style='font-size:10.0pt'>+partial</span></span> flag sets flags for checking a partial system.  Top-level unused declarations, undefined declarations, and unnecessary external names are not reported if <span class=Flag><span
+style='font-size:10.0pt'>+partial</span></span> is set.</p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534975026">13.2.1<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span>Unnecessarily
+External Names</a></h3>
+
+<p class=TextFontCX>Splint can report variables and functions that are declared with global scope (i.e., without using <span
+class=CodeText><span style='font-size:10.0pt'>static</span></span>), that are
+not used outside the file in which they are defined.  In a stand-alone system,
+these identifiers should usually be declared using <span class=CodeText><span
+style='font-size:10.0pt'>static</span></span> to limit their scope.  If the <span
+class=Flag><span style='font-size:10.0pt'>export-static</span></span> flag is
+on, Splint will report declarations that could have file scope.  It should only
+be used when all relevant source files are listed on the Splint command line;
+otherwise, variables and functions may be incorrectly identified as only used
+in the file scope since Splint did not process the other file in which they are
+used.</p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534975027">13.2.2<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span>Declarations
+Missing from Headers</a></h3>
+
+<p class=TextFontCX>A common practice in C
+programming styles, is that every function or variable exported by <span
+class=Keyword><i><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>M</span></i></span><span
+class=Keyword><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>.c</span></span>
+is declared in <span class=Keyword><i><span style='font-size:10.0pt;font-family:
+Arial;color:windowtext'>M</span></i></span><span class=Keyword><span
+style='font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>. 
+If the <span class=Flag><span style='font-size:10.0pt'>export-header</span></span>
+flag is on, Splint will report exported declarations in <span class=Keyword><i><span
+style='font-size:10.0pt;font-family:Arial;color:windowtext'>M</span></i></span><span
+class=Keyword><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>.c</span></span>
+that are not declared in <span class=Keyword><i><span style='font-size:10.0pt;
+font-family:Arial;color:windowtext'>M</span></i></span><span class=Keyword><span
+style='font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>.</p>
+
+
+<p>
+<a href="sec14.html"><b>Next:</b> 14. Libraries and Header File Inclusion</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

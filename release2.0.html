@@ -1,0 +1,86 @@
+<html>
+<head>
+<title>Release 2.0</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<em>This is a release notice for an obsolete version of LCLint.  It is
+included for archival purposes only.  The links on this page may no
+longer be relevant or accurate.</em>
+
+<H2>
+LCLint Version 2.0<BR>
+</H2>
+<em>29 February 1996</em>
+<P>
+Version 2.0 is a major upgrade to the last publically released version
+of LCLint, Version 1.4c. 
+<p>
+The most important enhancement is detection of errors relating to
+dynamic memory management:  <A HREF="guide/guide.html#sec-5">uses of
+deallocated storage</A>, <A HREF="guide/guide.html#sec-5">memory leaks</A>,
+<A HREF="guide/guide.html#sec-6">dangerous data sharing or unexpected aliasing</A>, 
+<a href="guide/guide.html#sec-7.1">uses of possibly undefined storage</A>, 
+<a href="guide/guide.html#sec-7.2">dereferencing a possibly null
+pointer</A>.  These errors are detected using information provided in
+<a href="guide/guide.html#sec-2.3.1">annotations</a>.  This is described
+in 
+<blockquote>
+<A HREF="http://www.sds.lcs.mit.edu/~evs/pldi96-abstract.html">Static
+Detection of Dynamic Memory Errors</A>.  David Evans.  To appear in <A
+HREF="http://www.cs.wisc.edu/~fischer/pldi96/index.html"> SIGPLAN
+Conference on Programming Language Design and Implementation</A> (PLDI
+'96), Philadelphia, PA, May 1996.
+</blockquote>
+<p>
+Other new features include:
+<ul>
+<li> Support for customizable <A HREF="guide/guide.html#sec-9">naming
+conventions</A>. 
+<li> <A href="guide/guide.html#sec-8.2.1">Side-effect free macro
+parameters</a>.
+<li> More flexible checking of <A href="guide/guide.html#sec-4.2.1">
+global variables</a>. 
+<li> Checking of <a href="guide/guide.html#sec-10.2">control structures<a/>.
+<li> <a href="guide/guide.html#sec-2.1">Hints</a> providing more
+information on a reported error and how the message can be suppressed
+are optionally included. 
+<li> Source code comments can now be used to express everything that can
+be expressed in LCL specifications and is used in LCLint checking.
+<li> LCLint now manages memory explicitly and requires no garbage
+collector.  This was accompilshed using LCLint's static memory checking. 
+</ul>
+
+Many of these features were suggested by user comments.  Development is
+largely driven by user feedback, so please continue to send me
+suggestions, ideas, complaints and bug reports.  <a
+href="acknowledgements.html">Thanks</a> to everyone who sent comments
+and bug reports.  We are also interested in any more general feedback or
+experience you have to report. 
+
+<p>
+LCLint 2.0 can be downloaded from <a
+href="http://lclint.cs.virginia.edu/download.html">
+<tt>http://lclint.cs.virginia.edu/download.html</tt></a>.
+<p>
+Previous release notices:
+<ul>
+<li> <a href="release1.3.html">Version 1.3</a>
+<li> <a href="release1.4.html">Version 1.4</a>
+<li> <a href="release1.4a.html">Version 1.4a</a>
+<li> <a href="release1.4c.html">Version 1.4c</a>
+</ul>
+<HR>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

@@ -1,0 +1,24 @@
+Plain Differences between current directory and checkchecks2
+3a4
+> static /*@only@*/ ereftab known;
+39a41
+>    /*@modifies known@*/
+68a71,72
+>    /*@globals known@*/
+>    /*@modifies known@*/
+148c152,155
+<   if (initDone) return;
+---
+>   if (initDone) 
+>     {
+>       /*@-globstate@*/ return; /*@=globstate@*/
+>     }
+10,11d9
+< /*@only@*/ ereftab known;
+< 
+30c30
+<   modifies s;
+---
+>   modifies s, internalState;
+46a47
+>   modifies internalState;

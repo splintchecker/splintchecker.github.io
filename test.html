@@ -1,0 +1,80 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint - Win32 Installation</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<center><h2>
+Win32 Installation
+</h2></center>
+
+<p>
+Instructions for installing the Win32 version of LCLint:
+<ol>
+
+  <!--
+<li> Enter your email address here to be added to the
+lclint-announce mailing list.  This is optional, but highly
+recommended.  The list is only used to announce new lclint releases.
+
+     <FORM method="POST"
+action="http://www.sds.lcs.mit.edu/cgi-bin/lclint-subscribe-win32">
+email: 
+<INPUT type="text" name="email" size="50">
+<INPUT type="submit" value="Send">
+</FORM>
+-->
+     
+<P>
+<li> Download
+<a
+href="ftp/lclint/lclint-2.4b.win32.zip"><em>http://lclint.cs.virginia.edu/ftp/lclint/lclint-2.4b.win32.zip</em></a>.
+     <p>
+     <!--
+If that doesn't work (or you prefer to download using http), please try
+     <a
+href="ftp://ftp.sds.lcs.mit.edu/pub/lclint/lclint-2.4b.win32.zip"><em>ftp://ftp.sds.lcs.mit.edu/pub/lclint/lclint-2.4b.win32.zip</em></a> or use archie to find a mirror near you.
+-->
+<p>
+
+<li> Unzip the package.  This can be done using any unzip utility, such
+as <a href="http://www.winzip.com">WinZip</a>.  The zip file contains
+several directories.  Extract them to a new directory, for example
+<tt>C:\lclint-2.4b</tt>.  The lclint binary is in
+<tt>...\bin\lclint.exe</tt>.
+
+<p>
+<li>Set environment variables:
+<blockquote>
+<b>LARCH_PATH</b> - path to search for lclint libraries and
+initializations files. If you are using the standard directories, this
+should be <em>".;C:\lclint-2.4b\lib"</em>.
+<p>
+<b>LCLIMPORTDIR</b> - directory containing lcl imports files. If you are using
+the standard directories, this is <em>C:\lclint-2.4b\imports</em>.
+</blockquote>
+If you are using Windows NT, you can set these variables using the
+Control Panel | System.  Select the Environment tab and enter
+the Variable and Value.
+<p>
+Check that the <b>include</b> environment varialble is set to list the
+directories containing your system files.  (You probably do not need to
+change this variable.)
+<p>
+<blockquote>
+If you are using djgpp with Windows 98, please check <a
+href="http://www.delorie.com/howto/djgpp/lclint-and-djgpp.html">Daniel
+Barker's notes</a> on setting this variable.  
+</blockquote>
+<p>
+Set up your command <b>PATH</b> to include the directory containing
+<tt>lclint.exe</tt>, or move the binary to a directory on
+your command path.
+
+</ol>
+<a href="devstudio.html">Tips for using lclint with Microsoft Developer
+Studio.</a>
+
+<!--#include virtual="footer.html"-->

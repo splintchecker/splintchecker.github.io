@@ -1,0 +1,71 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/weakchecks'
+lclint +lh -weak +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+employee.c: (in function employee_equal)
+employee.c:24,37: Function strncmp expects arg 3 to be size_t gets int:
+                     maxEmployeeName
+  To allow arbitrary integral types to match any integral type, use
+  +matchanyintegral.
+< checking eref.c >
+< checking empset.c >
+empset.c: (in function empset_insert)
+empset.c:28,8: Variable er declared but not used
+  A variable is declared but never used. Use /*@unused@*/ in front of
+  declaration to suppress message. Use -varuse to suppress message.
+empset.c: (in function empset_disjointUnion)
+empset.c:85,34: Undocumented modification of s1 possible from call to
+                   erc_iterStart (through alias s2): erc_iterStart(s2)
+  An externally-visible object is modified by a function, but not listed in its
+  modifies clause. Use -mods to suppress message.
+empset.c:85,34: Undocumented modification of s2 possible from call to
+                   erc_iterStart: erc_iterStart(s2)
+empset.c: (in function empset_union)
+empset.c:108,34: Undocumented modification of s2 possible from call to
+                    erc_iterStart (through alias s1): erc_iterStart(s1)
+empset.c:108,34: Undocumented modification of s1 possible from call to
+                    erc_iterStart: erc_iterStart(s1)
+empset.c: (in function empset_subset)
+empset.c:139,34: Undocumented modification of s1 possible from call to
+                    erc_iterStart: erc_iterStart(s1)
+empset.c:135,12: Variable e declared but not used
+< checking ereftab.c >
+ereftab.c: (in function ereftab_lookup)
+ereftab.c:34,34: Undocumented modification of t possible from call to
+                    erc_iterStart: erc_iterStart(t)
+< checking erc.c >
+erc.c: (in function erc_member)
+erc.c:47,9: Operands of == are abstract type (eref): tmpc->val == er
+  An abstraction barrier is broken. If necessary, use /*@access <type>@*/ to
+  allow access to an abstract type. Use -abstract to suppress message.
+erc.c: (in function erc_delete)
+erc.c:78,11: Operands of == are abstract type (eref): elem->val == er
+erc.c: (in function erc_sprint)
+erc.c:141,13: Function malloc expects arg 1 to be size_t gets int:
+                 erc_size(c) * (employeePrintSize + 1) + 1
+erc.c:151,34: Undocumented modification of c possible from call to
+                 erc_iterStart: erc_iterStart(c)
+< checking dbase.c >
+dbase.c: (in function query)
+dbase.c:210,8: Variable er declared but not used
+dbase.c:211,12: Variable e declared but not used
+< checking drive.c >
+drive.c: (in function main)
+drive.c:123,4: Return value (type db_status) ignored: hire(e)
+  Result returned by function call is not used. If this is intended, can cast
+  result to (void) to eliminate message. Use -retvalother to suppress message.
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 16 code errors found
+405 spec, 3014 source (1233 before pre-processing) lines in 3.43 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/weakchecks'

@@ -1,0 +1,42 @@
+<h3>lclint-interest message 16</h3>
+<pre>
+Date: 09 Nov 94 13:11:58 EST
+From: "JR (John Rogers)" <72634.2402@compuserve.com>
+To: LCLint interest list <lclint-interest@larch.lcs.mit.edu>
+Subject: Ifdef C code for LCLint checking?
+
+Hi!  I was wondering if there is some standard way to #ifdef out code that
+is going to be checked by LCLint.  For instance, the UNIX lint command
+predefines 'lint'.  Newer versions of PC-lint predefine '_lint' instead.
+So, a common idiom is something like this:
+
+   #if ! (defined(lint) || defined(_lint))
+   static char * Copyright = "stuff";
+   #endif
+
+This avoids complaints about Copyright being defined but never used.
+Is there an equivalent predefined name for LCLint?  (Yes, I know I
+can use '-Dfoo' on the LCLint command line to predefine 'foo'.)  I'm
+hoping there is a standard name, perhaps '_lclint', that everyone
+can use.
+
+Thanks in advance...
+--JR (John Rogers)
+Internet: 72634.2402@CompuServe.com
+
+</pre>
+<A HREF="15.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="17.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

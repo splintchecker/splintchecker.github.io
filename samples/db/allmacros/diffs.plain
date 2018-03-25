@@ -1,0 +1,17 @@
+Plain Differences between current directory and memchecks3
+139a140
+>   empset_final (em1);
+145a147
+>   empset_final (em2);
+146a149
+>   empset_final (em3);
+162a166,168
+>   empset_final (em1);
+>   empset_final (em2);
+>   empset_final (em3);
+111a112
+>                   assert (prev != NULL);
+56c56
+<       return;
+---
+>       /*@-compdef@*/ return; /*@=compdef@*/

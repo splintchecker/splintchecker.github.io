@@ -1,0 +1,81 @@
+<h3>lclint-interest message 161</h3>
+<pre>
+From richard@harlequin.co.uk Tue Sep 23 11:12:49 1997
+X-Sender: richard@mailhost.long.harlequin.co.uk
+In-Reply-To: <199709230842.KAA06792@s424.iitb.fhg.de>
+References: <9709221936.AA04593@larch.lcs.mit.edu>; from David Evans on
+ Mon, Sep 22, 1997 at 03:36:00PM -0400
+ <199709221443.QAA06683@s424.iitb.fhg.de>
+ <9709221936.AA04593@larch.lcs.mit.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Date: Tue, 23 Sep 1997 11:08:57 +0100
+To: Harald Kirsch <kir@iitb.fhg.de>
+From: Richard Brooksby <richard@harlequin.co.uk>
+Subject: Re: How to annotate
+Cc: lclint-interest@larch.lcs.mit.edu
+
+Harald Kirsch wrote:
+
+> On Mon, Sep 22, 1997 at 03:36:00PM -0400, David Evans wrote:
+>
+> > Richard Brooksby's point that the code should be rewritten not annotated
+> > is a good one. ...
+>
+> I must admit that I was first a bit offended by Richard Brooksby's
+> remark, ...
+
+I apologise.  My mail was too short.  I should have explained myself.  I
+have just returned from holiday and have a very large pile of mail to get
+through.  It tends to make me terse.
+
+> ... I then reconsidered the code and found that rewriting made it
+> in fact less complex and, as you say, easier to understand and maintain.
+
+This illustrates the important difference between defect _detection_ and
+defect _prevention_.
+
+To merely detect defects you can use LCLint to make you double-check your
+code, make you think harder about tricky constructs.  You then supress the
+warnings when you are satisfied that your code is correct.  This will help
+you find defects.
+
+However, to realize longer term benefit from LCLint you should modify your
+conventions so that such warnings do not occur.  This will reduce the
+number of defects that you introduce into your code in the first place.
+
+It is _much_ cheaper to avoid introducing defects than to remove them
+later.  The later your remove them, the more they cost.  The greatest cost
+is when they have reached the end-user.
+
+Now, in this case there was no defect, but it cost you quite a bit of
+effort to make sure.  It would also cost everyone else who has to maintain
+the code a similar amount of effort.  LCLint is trying to tell you that.
+
+You will know when LCLint has been most effective in your development
+process when it no longer produces output.
+
+---
+Richard Brooksby <richard@harlequin.co.uk>
+Leader, Manager, and Developer / Memory Management / Harlequin
+Tel. Int. +44 1954 785451 (voice)  +44 1954 785444 (fax)
+
+
+
+
+</pre>
+<A HREF="160.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="162.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<html>
+<head>
+<title> Bugs Fixed</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<h1>
+Bugs <BR>
+</h1>
+
+This page documents reported bugs in LCLint 2.0 that are (believed to
+be) fixed in LCLint 2.1a.
+
+<P>
+<h4>parsing array declarations with type casts</h4>
+<blockquote>
+<b>Bug:</b> An array declaration like, <tt>x[(<em>user type</em>) N]
+</tt> is not parsed correctly is some contexts.<br>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4>old-style main declaration</h4>
+<blockquote>
+<b>Bug:</b> If <tt>main</tt> is declared using without parameter types,
+a type error results.<br>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4>time functions</h4>
+<blockquote>
+<b>Bug:</b> The standard libraries declare <tt>ctime</tt>,
+<tt>gmtime</tt> and <tt>localtime</tt> with a parameter of type
+<tt>time_t</tt>.  It should be a pointer to <tt>time_t</tt>.<br>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4><tt>perror</tt></h4>
+<blockquote>
+<b>Bug:</b> The standard libraries declare <tt>perror</tt> with no
+<tt>/*@null@*/</tt> annotation on its parameter.  It should have a null
+annotation. <br>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4><tt>offsetof</tt></h4>
+<blockquote>
+<b>Bug:</b> <tt>offsetof</tt> is not supported by LCLint 2.0.<br>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4>negative literals</h4>
+<blockquote>
+<b>Bug:</b> Numeric literals with - may not typecheck correctly (they
+are typed too strictly).
+<pre>
+short a = -2;
+</pre>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4>enum names</h4>
+<blockquote>
+<b>Bug:</b> Enumerator names may not be used inside the enum
+declaration, e.g.:
+<pre>
+enum enum_t { A, B = A } ;
+</pre>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4>enum scoping</h4>
+<blockquote>
+<b>Bug:</b> Enumerator names declared withing a structure scope are not
+visible, e.g.:
+<pre>
+struct struct_t
+{	
+  enum enum_t { A, B } type;
+};
+</pre>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4>function array types</h4>
+<blockquote>
+<b>Bug:</b> A function pointer type like,
+<pre>
+void (*f[10])(void);
+</pre>
+is not interpreted correctly.<br>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4>macro names</h4>
+<blockquote>
+<b>Bug:</b> A macro definition like,
+<pre>
+# define NAME\
+</pre>
+fails.  (No space between the macro name and continuation character.)<br>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4>exit</h4>
+<blockquote>
+<b>Bug:</b> Calling <tt>exit()</tt> produces a run-time bug report (when
+the (non-existent) argument to <tt>exit</tt> is checked.<br>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4>clock</h4>
+<blockquote>
+<b>Bug:</b> The <tt>clock</tt> library function is declared with
+<tt>/*@globals internalState@*/</tt>, not <tt>/*@modifies
+internalState@*/</tt>.  This causes loops that depend on
+<tt>clock()</tt> to be incorrectly reported as infinite.<br>
+<b>Fix:</b> Change declaration in <tt>standard,h</tt>,
+<tt>strict.h</tt>, <tt>unix.h</tt> to <tt>/*@modifies
+internalState@*/</tt>.<br>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+<br> 
+</blockquote>
+
+<h4>static arrays</h4>
+<blockquote>
+<b>Bug:</b> Local arrays declared with static are incorrectly marked as
+stack-allocated storage.<br>
+<b>Fix:</b> Static arrays should not be stack-alloacted.<br>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4><tt>sef</tt> and <tt>returned</tt> cannot be used together</h4>
+<blockquote>
+<b>Bug:</b> A parameter cannot be annotated with both <tt>sef</tt> and
+<tt>returned</tt>.<br>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4>header file inclusion</h4>
+<blockquote>
+<b>Bug:</b> There is no way to control if ANSI header files are skipped
+or included normally.<br>
+<b>Fix:</b> Flag <tt>skipansiheaders</tt>, change rules for skipping
+include files not listed in <tt>systemdirs</tt>.
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4>array parameters</h4>
+<blockquote>
+<b>Bug:</b> Function parameters of array type were incorrectly marked as
+stack-allocated storage.<br>
+<b>Fix:</b> Array parameters should not be stack-alloacted.<br>
+<b>Update:</b> <em>Coming in Version 2.1a</em><br>
+</blockquote>
+
+<h4><tt>%X</tt> format code to printf</h4>
+<blockquote>
+<b>Bug:</b> The type of <tt>%x</tt> is incorrect.  Was <tt>int</tt>, should be
+<tt>unsigned int</tt>.<br>
+<b>Fix:</b> Correct type in <tt>exprNode.c</tt>.<br>
+<b>Update:</b> Source and alpha packages, 21 March 1996.
+</blockquote>
+
+<h4>Standard libraries</h4>
+<blockquote>
+<b>Change:</b> Added annotations to declarations in standard library:
+<pre>
+extern /*@observer@*/ /*@null@*/ char *setlocale (int category, /*@null@*/ char *locale) 
+extern int setjmp (/*@out@*/ jmp_buf env) /*@modifies env;@*/ ;
+</pre>
+<b>Change:</b> Added to <tt>unix.h</tt>:
+<ul>
+<li> A bunch of type definitions like <tt>uchar_t</tt>, <tt>ino_t</tt>,
+etc.
+<li> A declaraction for <tt>struct stat</tt> that includes only those
+fields that are consistent on three Unix platforms (Digital Unix,
+Ultrix, and Solaris).
+<li> Declarations of <tt>stat</tt>, <tt>fstat</tt> and <tt>lstat</tt>.
+</ul>
+<b>Update:</b> Source and common packages, 20 March 1996
+</blockquote>
+
+<h4>Continuation markers in <tt>#if</tt>, <tt>#else</tt>, etc.</h4>
+<blockquote>
+<b>Bug:</b> Because of the <tt>#line</tt> marker generated in lclint's
+pre-preprocessing phase, multiple line preprocessor directives were not
+handler correctly.<br>
+<b>Fix:</b> Don't produce the <tt>#line</tt> marker for directives that
+include the continuation character.<br>
+<b>Update:</b> Source package, alpha, decmips, solaris, linux-elf, 20 March 1996<br>
+<br>
+</blockquote>
+
+<h4>struct types in <tt>.lh</tt> files</h4>
+<blockquote>
+<b>Bug:</b> The code generated for a forward struct in an <tt>.lh</tt>
+is missing the field declarations.<br>
+<b>Fix:</b> Fix <tt>lh.c</tt> to generate code for exposed type nodes
+with no declarators.<br>
+<b>Update:</b> Source package, alpha, decmips, solaris, linux-elf, 20 March 1996<br>
+</blockquote>
+
+<h4>fresh</h4>
+<blockquote>
+<b>Bug:</b> The <tt>fresh</tt> operator in LCL is only defined for
+mutable abstract types.  Should probably also be defined for exposed
+pointer types?<br>
+</blockquote>
+
+<h4>Cannot use <tt>unused</tt> in LCL</h4>
+<blockquote>
+<b>Bug:</b> The <tt>unused</tt> annotation is not recognized in LCL
+specifications.<br>
+<b>Fix:</b> Add <tt>unused</tt> to tokens in <tt>lclscanline.c</tt> and
+<tt>llgrammar.y</tt>.<br>
+<b>Update:</b> Source package, 20 March 1996; alpha, decmips, solaris, linux-elf, 20 March 1996<br>
+</blockquote>
+
+<h4>SunOS4.1 Bug Fix</h4>
+<blockquote>
+<b>Bug:</b> The code does not call <tt>fseek (..., SEEK_CUR)</tt> after
+reading and writing to the stream before calling <tt>ftell</tt>.
+Apparently, the call to <tt>fseek</tt> is necessary to ensure the
+correct result from <tt>ftell</tt>.  (So far, this problem is only
+manifest on SunOS4 systems.)<br>
+<b>Thanks:</b> Thanks to Jutta Degener <tt>&lt;jutta@cs.tu-berlin.de&gt;</tt> for
+providing this bug fix.<br>
+<b>Update:</b> Source package (change in <tt>macrocache.c</tt>), 11
+March 1996; alpha, decmips, solaris, linux-elf, 20 March 1996<br>
+</blockquote>
+  
+<h4>date</h4>
+<blockquote>
+<b>Change:</b> Instead of generating the date that is printed in the
+herald using the Unix <tt>date</tt> command, the date is read from the
+<tt>DATE</tt> file in the package.  This means the date is that date the
+package was created, not when the code was compiled.  This was mainly
+done because the interface to the <tt>date</tt> command is not
+standardized across UNIX platforms.<br>
+<b>Update:</b> Source package, 10 March 1996<br>
+</blockquote>
+
+<h4>test suite</h4>
+<blockquote>
+<b>Change:</b> Removed <tt>help -flags full</tt> test since the results
+may not match exactly if the machine has a different temporary
+directory.  Added -showcol flag to <tt>db</tt> tests since different
+preprocessors may produce slightly different column numbers for some of
+the messages.  <br>
+<b>Update:</b> Source and common packages, 10 March 1996<br>
+</blockquote>
+
+<h4>ssize_t</h4>
+<blockquote>
+<b>Change:</b> Added <tt>ssize_t</tt> to the standard libraries.  It is
+supported by POSIX, but not part of the ANSI Standard Library.  Perhaps,
+what is needed is a posix standard library.<br>
+<b>Update:</b> Source and common packages, 10 March 1996<br>
+</blockquote>
+
+<h4>notreached</h4>
+<blockquote>
+<b>Bug:</b> A parse error is reported if /*@notreached@*/ is not
+followed by a statement.<br>
+<b>Example:</b>
+<pre>   
+	void f (void) { /*@notreached@*/ } 
+</pre>
+<b>Fix:</b> Fixed grammar.<br>
+<b>Update:</b> Source and alpha packages, 8 March 1996; decmips, solaris,
+10 March 1996; linux-elf, 20 March 1996<br>
+</blockquote>
+
+<h4>Breaking do ... while loops</h4>
+<blockquote>
+<b>Bug:</b> An error is reported for a break inside a <tt>do ... while</tt> loop.<br>
+<b>Example:</b>
+<pre>   
+	do { break; } while (FALSE);
+</pre>
+<b>Fix:</b> Fixed so that while clause is entered after the <tt>do</tt>. <br>
+<b>Update:</b>Source and alpha packages, 7 March 1996; decmips, solaris,
+10 March 1996; linux-elf, 20 March 1996<br>
+</blockquote>
+
+<h4><tt>ignoresigns</tt> Flag</h4>
+<blockquote>
+<b>Bug:</b> The <tt>ignoresigns</tt> flag does not behave as documented
+for literal values.<br>
+<b>Example:</b>
+Running <tt>lclint +ignoresigns</tt> on, 
+<pre>   
+	unsigned int x = -2;
+</pre>
+should not produce an error message.<br>
+<b>Fix:</b> Fixed alternate types of numerics in <tt>cscanner.l</tt>,
+and type checking in <tt>cprim.c</tt>.
+<br>
+<b>Update:</b> Source and alpha packages, 7 March 1996; decmips, solaris,
+10 March 1996; linux-elf, 20 March 1996<br>
+</blockquote>
+
+<h4>Internal Type Definitions</h4>
+<blockquote>
+<b>Bug:</b> Type definitions inside function bodies produce and internal
+assertion failure.  <br>
+<b>Example:</b>
+<pre>
+     void f (void) { typedef int tint; }
+</pre>
+<b>Fix:</b> Removed assertion for type and tag declarations in
+<tt>usymtab_addEntryQuiet</tt> in <tt>usymtab.c</tt>. <br>
+<b>Update:</b>Source and alpha packages, 7 March 1996;  decmips, solaris,
+10 March 1996; linux-elf, 20 March 1996<br>
+</blockquote>
+
+<h4>Continuation markers in comments</h4>
+<blockquote>
+<b>Bug:</b> Continuation markers inside comments are lost by the
+pre-preprocessor.<br>
+<b>Example:</b>
+<pre>
+	/* this is a \
+           continued \
+           comment */ \
+</pre>
+<b>Fix:</b> Changed <tt>pcpp.c</tt> to not remove <tt>\</tt>'s in
+comments.  Report errors if a <tt>\</tt> in a comment is followed by
+<tt>*/</tt> or a <tt>\</tt> not in a comment is followed by a non-space
+character.<br>
+<b>Update:</b>Source and alpha packages, 7 March 1996; decmips, solaris,
+10 March 1996; linux-elf, 20 March 1996<br>
+
+</blockquote>
+
+<HR>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

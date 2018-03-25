@@ -1,0 +1,91 @@
+<h3>lclint-interest message 114</h3>
+<pre>
+From lbr@mjolner.dk Fri Oct 18 11:30:33 1996
+Sender: gnort@daimi.aau.dk
+To: lclint-interest@larch.lcs.mit.edu
+Subject: Hi and problem
+From: Lars Balker Rasmussen <lbr@mjolner.dk>
+Date: 18 Oct 1996 12:36:25 +0200
+In-Reply-To: Mike Ellis's message of Wed, 16 Oct 1996 13:31:46 +0100
+Lines: 58
+X-Mailer: Red Gnus v0.52/Emacs 19.33
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+I've been on this list for a couple of months now, but I haven't had the
+time to experiment with LCLint until now, so I postponed my introductory
+message.
+
+I'm a computer science student who's taken a year off for working as a
+software engineer on a large scale C project.  My interest in LCLint is
+due to the possible productivity gains in finding nasty bugs at a
+pre-test state, which is also the reason our entire project is expected
+to compile clean with `gcc -Wall -ansi -pedantic -Werror'.
+
+I'm currently seeing how big an impact LCLint will have on our
+coding-style.  Warnings are nice (well, you know what I mean :) ), but
+excessively arcane constructs to prevent warnings are not.
+
+Which leads me to my question:
+
+The following C-file gives LCLint (2.2a) problems:
+
+    #include <stdio.h>
+
+    typedef void (*f_t)(void);
+
+    f_t f[] = {
+        NULL
+    };
+
+I believe ending an array with a NULL element is a common idiom, but
+this gives the error:
+
+foo.c:4,5: Global funcs[0] initialized to null value: funcs[0] = NULL
+  A reference with no null annotation is assigned or initialized to NULL.  Use
+  /*@null@*/ to declare the reference as a possibly null pointer. (-nullassign
+  will suppress message)
+
+Hmm, so I'm expected to /*@null@*/ something in the declaration of f[].
+I've tried putting it in between literally all the tokens in the above
+programs, and either it has no effect, or I get (understandable) parse
+errors...  A quick perusal of the manual didn't give me anything much to
+go after either.
+
+I did find a solution:
+
+    typedef void (*f_t)(void);
+
+    /*@null@*/ static f_t null_func = NULL;
+
+    f_t f[] = {
+        null_func
+    };
+
+But now we're back with the arcane constructs;  my boss vetoed that one ;-)
+
+Is there any other way around this problem?
+-- 
+Lars Balker Rasmussen, Mjolner Informatics ApS
+lbr@mjolner.dk
+
+
+</pre>
+<A HREF="113.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="115.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,27 @@
+gmake[1]: Entering directory `/u/evs/lclint/web/sample/strictlib'
+lclint +lh +strict -exportconstant -exportlocal +showscan +stats employee eref empset ereftab erc dbase drive.c bool.lcl check.lcl
+LCLint 2.0 --- 21 Feb 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< reading spec bool.lcl >
+< reading spec check.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning .......... >
+
+Finished LCLint checking --- no code errors found
+402 spec, 2984 source (1363 before pre-processing) lines in 5.55 s.
+gmake[1]: Leaving directory `/u/evs/lclint/web/sample/strictlib'

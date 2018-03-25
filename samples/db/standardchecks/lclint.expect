@@ -1,0 +1,129 @@
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/standardchecks'
+lclint +lh -memchecks +showsummary -macrovarprefixexclude +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+eref.c: (in function eref_alloc)
+eref.c:25,10: Argument to exit has implementation defined behavior: 1
+  The argument to exit should be 0, EXIT_SUCCESS or EXIT_FAILURE Use -exitarg
+  to suppress message.
+eref.c:35,10: Argument to exit has implementation defined behavior: 1
+eref.c: (in function eref_initMod)
+eref.c:53,7: Use of == with bool variables (risks inconsistency because of
+                multiple true values): needsInit == FALSE
+  Two bool values are compared directly using a C primitive. This may produce
+  unexpected results since all non-zero values are considered TRUE, so
+  different TRUE values may not be equal. The file bool.h (included in
+  lclint/lib) provides bool_equal for safe bool comparisons. Use -boolcompare
+  to suppress message.
+eref.c:60,3: Statement has no effect: employee_initMod()
+  Statement has no visible effect --- no values are modified. Use -noeffect to
+  suppress message.
+eref.c:67,13: Argument to exit has implementation defined behavior: 1
+eref.c:75,13: Argument to exit has implementation defined behavior: 1
+eref.h: (in macro eref_assign)
+eref.h:24,54: Macro parameter used without parentheses: e
+  A macro parameter is used without parentheses. This could be dangerous if the
+  macro is invoked with a complex expression and precedence rules will change
+  the evaluation inside the macro. Use -macroparens to suppress message.
+eref.h: (in macro eref_equal)
+eref.h:26,32: Macro parameter used without parentheses: er1
+eref.h:26,39: Macro parameter used without parentheses: er2
+< checking empset.c >
+empset.c: (in function empset_union)
+empset.c:104,2: Return value (type bool) ignored: empset_insert(re...
+  Result returned by function call is not used. If this is intended, can cast
+  result to (void) to eliminate message. Use -retvalbool to suppress message.
+empset.c: (in function empset_intersect)
+empset.c:117,2: Return value (type bool) ignored: empset_insert(to...
+empset.c:122,7: Return value (type bool) ignored: empset_delete(s1...
+empset.c: (in function empset_initMod)
+empset.c:143,3: Statement has no effect: employee_initMod()
+empset.c:145,3: Statement has no effect: erc_initMod()
+empset.c:146,3: Statement has no effect: ereftab_initMod()
+< checking ereftab.c >
+ereftab.c: (in function ereftab_delete)
+ereftab.c:24,3: Return value (type bool) ignored: erc_delete(t, er)
+ereftab.c: (in function ereftab_initMod)
+ereftab.c:44,3: Statement has no effect: erc_initMod()
+< checking erc.c >
+erc.c: (in function erc_create)
+erc.c:34,13: Argument to exit has implementation defined behavior: 1
+erc.c: (in function erc_insert)
+erc.c:81,13: Argument to exit has implementation defined behavior: 1
+erc.c: (in function erc_sprint)
+erc.c:134,13: Argument to exit has implementation defined behavior: 1
+erc.h: (in macro erc_choose)
+erc.h:14,26: Macro parameter used without parentheses: c
+erc.h: (in macro erc_initMod)
+erc.h:15,36: Statement has no effect: employee_initMod()
+< checking dbase.c >
+dbase.c: (in function db_initMod)
+dbase.c:27,3: Statement has no effect: employee_initMod()
+dbase.c:29,3: Statement has no effect: erc_initMod()
+dbase.c:30,3: Statement has no effect: empset_initMod()
+dbase.c: (in function _db_addEmpls)
+dbase.c:78,4: Return value (type bool) ignored: empset_insert(s, e)
+dbase.c: (in function fire)
+dbase.c:133,8: Return value (type bool) ignored: erc_delete(db[i]...
+dbase.c: (in function promote)
+dbase.c:165,7: Return value (type bool) ignored: erc_delete(db[mN...
+dbase.c:170,7: Return value (type bool) ignored: erc_delete(db[fN...
+< checking drive.c >
+drive.c: (in function main)
+drive.c:23,3: Statement has no effect: employee_initMod()
+drive.c:24,3: Statement has no effect: empset_initMod()
+drive.c:49,7: Return value (type bool) ignored: employee_setName...
+drive.c:50,7: Return value (type bool) ignored: empset_insert(em...
+drive.c:65,7: Return value (type bool) ignored: employee_setName...
+drive.c:66,7: Return value (type bool) ignored: empset_delete(em...
+drive.c:83,7: Return value (type bool) ignored: employee_setName...
+drive.c:84,7: Return value (type bool) ignored: empset_insert(em...
+drive.c:108,7: Return value (type bool) ignored: empset_delete(em...
+drive.c:120,7: Return value (type bool) ignored: employee_setName...
+drive.c:132,34: Variable j used before definition
+  An rvalue is used that may not be initialized to a value on some execution
+  path. Use -usedef to suppress message.
+drive.c:135,3: Return value (type bool) ignored: fire(17)
+drive.c:159,3: Return value (type bool) ignored: fire(empset_choo...
+drive.c:12,26: Parameter argv not used
+  A function parameter is not used in the body of the function. If the argument
+  is needed for type compatibility or future plans, use /*@unused@*/ in the
+  argument declaration. Use -paramuse to suppress message.
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Error Type                Reported  Suppressed
+===================       ========  =========
+exitarg                      7           0
+usedef                       1           0
+noeffect                    11           0
+exporttype                   0           5
+retvalbool                  18           0
+macroempty                   0           1
+macroparens                  4           0
+usereleased                  0           1
+compdef                      0           1
+branchstate                  0           2
+newreftrans                  0           2
+temptrans                    0           2
+readonlytrans                0           6
+null                         0           2
+boolcompare                  1           0
+sizeoftype                   0           6
+paramuse                     1           0
+                          ========  =========
+Total:                      43          28
+
+Finished LCLint checking --- 43 code errors found
+388 spec, 3011 source (1207 before pre-processing) lines in 4.43 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/standardchecks'

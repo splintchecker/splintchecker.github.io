@@ -1,0 +1,97 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/original'
+lclint +lh -weak +showscan +stats +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+Warning: setting +showscan redundant with current value
+Warning: setting +stats redundant with current value
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+< preprocessing >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+employee.c: (in function employee_equal)
+<A HREF="employee.c.html#line18" target="source">employee.c:18,17</A>: Function strncmp expects arg 3 to be size_t gets int:
+                     maxEmployeeName
+  To allow arbitrary integral types to match any integral type, use
+  +matchanyintegral.
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+empset.c: (in function empset_insert)
+<A HREF="empset.c.html#line22" target="source">empset.c:22,8</A>: Variable er declared but not used
+  A variable is declared but never used. Use /*@unused@*/ in front of
+  declaration to suppress message. Use -varuse to suppress message.
+empset.c: (in function empset_disjointUnion)
+<A HREF="empset.c.html#line58" target="source">empset.c:58,32</A>: Undocumented modification of s1 possible from call to
+                   erc_iterStart (through alias s2): erc_iterStart(s2)
+  An externally-visible object is modified by a function, but not listed in its
+  modifies clause. Use -mods to suppress message.
+<A HREF="empset.c.html#line58" target="source">empset.c:58,32</A>: Undocumented modification of s2 possible from call to
+                   erc_iterStart: erc_iterStart(s2)
+empset.c: (in function empset_union)
+<A HREF="empset.c.html#line75" target="source">empset.c:75,32</A>: Undocumented modification of s2 possible from call to
+                   erc_iterStart (through alias s1): erc_iterStart(s1)
+<A HREF="empset.c.html#line75" target="source">empset.c:75,32</A>: Undocumented modification of s1 possible from call to
+                   erc_iterStart: erc_iterStart(s1)
+empset.c: (in function empset_subset)
+<A HREF="empset.c.html#line99" target="source">empset.c:99,32</A>: Undocumented modification of s1 possible from call to
+                   erc_iterStart: erc_iterStart(s1)
+<A HREF="empset.c.html#line95" target="source">empset.c:95,12</A>: Variable e declared but not used
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+ereftab.c: (in function ereftab_lookup)
+<A HREF="ereftab.c.html#line30" target="source">ereftab.c:30,32</A>: Undocumented modification of t possible from call to
+                    erc_iterStart: erc_iterStart(t)
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+erc.c: (in function erc_member)
+<A HREF="erc.c.html#line34" target="source">erc.c:34,9</A>: Operands of == are abstract type (eref): tmpc->val == er
+  An abstraction barrier is broken. If necessary, use /*@access <type>@*/ to
+  allow access to an abstract type. Use -abstract to suppress message.
+erc.c: (in function erc_delete)
+<A HREF="erc.c.html#line58" target="source">erc.c:58,9</A>: Operands of == are abstract type (eref): elem->val == er
+erc.c: (in function erc_sprint)
+<A HREF="erc.c.html#line103" target="source">erc.c:103,26</A>: Function malloc expects arg 1 to be size_t gets int:
+                 erc_size(c) * (employeePrintSize + 1) + 1
+<A HREF="erc.c.html#line110" target="source">erc.c:110,32</A>: Undocumented modification of c possible from call to
+                 erc_iterStart: erc_iterStart(c)
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+dbase.c: (in function query)
+<A HREF="dbase.c.html#line137" target="source">dbase.c:137,8</A>: Variable er declared but not used
+<A HREF="dbase.c.html#line138" target="source">dbase.c:138,12</A>: Variable e declared but not used
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+drive.c: (in function main)
+<A HREF="drive.c.html#line87" target="source">drive.c:87,25</A>: Return value (type db_status) ignored: hire(e)
+  Result returned by function call is not used. If this is intended, can cast
+  result to (void) to eliminate message. Use -retvalother to suppress message.
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+< cleaning .......... >
+
+Finished LCLint checking --- 16 code errors found
+299 spec, 2449 source (948 before pre-processing) lines in 8.67 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/original'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

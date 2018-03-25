@@ -1,0 +1,329 @@
+Plain Differences between current directory and strictchecks
+20c20,21
+< extern /*@unused@*/ void bool_initMod (void) /*@modifies internalState@*/ ;
+---
+> extern /*@unused@*/ void bool_initMod (void)
+>   /*@globals internalState@*/ /*@modifies internalState@*/ ;
+22c23
+< # define bool_initMod()
+---
+> # define bool_initMod() do { ; } while (FALSE)
+29,30c29,30
+<   /*@globals initDone, undef db@*/
+<   /*@modifies initDone, db@*/
+---
+>   /*@globals initDone, undef db, internalState@*/
+>   /*@modifies initDone, db, internalState@*/
+51c51
+< static eref db_ercKeyGet(erc c, int key) 
+---
+> static eref db_ercKeyGet(erc c, int key)  /*@*/
+55c55,58
+<       if (eref_get(er).ssNum == key) return (er);
+---
+>       if (eref_get(er).ssNum == key) 
+>         {
+>           return (er);
+>         }
+61c64
+< static eref db_keyGet (int key)
+---
+> static eref db_keyGet (int key) /*@globals db@*/
+79c82,83
+<   /*@modifies s@*/
+---
+>   /*@globals internalState@*/
+>   /*@modifies s, internalState@*/
+98c102
+< db_status db_hire (employee e)
+---
+> db_status db_hire (employee e) /*@globals db@*/
+100a105
+>     {
+101a107
+>     }
+103a110
+>     {
+104a112
+>     }
+106a115
+>     {
+107a117
+>     }
+109a120
+>     {
+110a122
+>     }
+117c129
+<    /*@globals db@*/
+---
+>    /*@globals db@*/ /*@modifies db@*/
+124a137
+>     {
+125a139
+>         {
+126a141
+>         }
+127a143
+>         {
+128a145,146
+>         }
+>     }
+129a148
+>     {
+130a150
+>         {
+131a152
+>         }
+132a154
+>         {
+134a157,158
+>     }
+> }
+137c161
+<   /*@globals db@*/
+---
+>   /*@globals db@*/ /*@modifies db@*/
+155c179
+<   /*@globals db@*/
+---
+>   /*@globals db@*/ /*@modifies db@*/
+166a191
+> 
+167a193
+>         {
+168a195,196
+>         }
+> 
+190c218
+< db_status db_setSalary (int ssNum, int sal)
+---
+> db_status db_setSalary (int ssNum, int sal) /*@globals db@*/
+41c41
+< bool db_fire (int ssNum) db d; 
+---
+> bool db_fire (int ssNum) db d; internalState;
+43c43
+<   modifies d;
+---
+>   modifies d, internalState;
+49c49
+< int db_query (db_q q, empset s) db d; 
+---
+> int db_query (db_q q, empset s) db d; internalState;
+51c51
+<   modifies s;
+---
+>   modifies s, internalState;
+92c92
+< void db_initMod(void) db d; 
+---
+> void db_initMod(void) db d; internalState;
+94c94
+<   modifies d;
+---
+>   modifies d, internalState;
+12a13
+>   /*@globals internalState@*/ /*@modifies internalState@*/
+118,119c119,137
+<       if (i < 10) e.gen = MALE; else e.gen = FEMALE;
+<       if (i < 15) e.j = NONMGR; else e.j = MGR;
+---
+> 
+>       if (i < 10) 
+>         {
+>           e.gen = MALE; 
+>         }
+>       else 
+>         {
+>           e.gen = FEMALE;
+>         }
+> 
+>       if (i < 15) 
+>         {
+>           e.j = NONMGR; 
+>         }
+>       else
+>         {
+>           e.j = MGR;
+>         }
+> 
+11c11,14
+<       if (i == maxEmployeeName) return FALSE;
+---
+>       if (i == maxEmployeeName) 
+>         {
+>           return FALSE;
+>         }
+49c49
+< void employee_initMod(void) 
+---
+> void employee_initMod(void) internalState;
+6c6
+< static eref empset_get (employee e, erc s) 
+---
+> static eref empset_get (employee e, erc s) /*@*/
+10a11
+> 
+11a13
+>         {
+12a15
+>         }
+28a32,33
+>   /*@globals internalState@*/
+>   /*@modifies internalState@*/
+114a120
+>         {
+115a122
+>         }
+127a135
+>         {
+128a137
+>         }
+143c152,155
+<       if (!empset_member(emp, s2)) return FALSE;
+---
+>       if (!empset_member(emp, s2)) 
+>         {
+>           return FALSE;
+>         }
+21c21
+< | bool : void | empset_insert(empset s, employee e) 
+---
+> | bool : void | empset_insert (empset s, employee e) internalState; 
+23c23
+<   modifies s;
+---
+>   modifies s, internalState;
+27c27
+< void empset_insertUnique(empset s, employee e) 
+---
+> void empset_insertUnique (empset s, employee e) internalState;
+40c40
+< only empset empset_union(empset s1, empset s2) 
+---
+> only empset empset_union(empset s1, empset s2) internalState;
+41a42
+>   modifies internalState;
+45c46
+< only empset empset_disjointUnion(empset s1, empset s2) 
+---
+> only empset empset_disjointUnion (empset s1, empset s2) internalState;
+52c53
+< void empset_intersect(empset s1, empset s2) 
+---
+> void empset_intersect (empset s1, empset s2) internalState;
+54c55
+<   modifies s1;
+---
+>   modifies s1, internalState;
+84c85
+< void empset_initMod(void) 
+---
+> void empset_initMod (void) internalState;
+1a2
+> 
+4c5
+< static size_t int_toSize (int x)
+---
+> static size_t int_toSize (int x) /*@*/
+21c22
+<   c = (erc) malloc (sizeof (ercInfo));
+---
+>   c = (erc) malloc (sizeof (*c));
+60c61,66
+<     if (eref_equal (tmpc->val, er)) return TRUE; 
+---
+>     {
+>       if (eref_equal (tmpc->val, er)) 
+>         {
+>           return TRUE; 
+>         }
+>     }
+68c74
+<   newElem = (ercElem *) malloc (sizeof (ercElem));
+---
+>   newElem = (ercElem *) malloc (sizeof (*newElem));
+121a128
+>     {
+122a130
+>     }
+6a7
+> /*@-exporttype@*/ /* These types should not be exported, but are used in macros. */
+9a11,12
+> /*@=exporttype@*/
+> 
+66c66
+< void erc_initMod(void) 
+---
+> void erc_initMod (void) internalState;
+4a5,11
+> typedef enum { ST_USED, ST_AVAIL } erefStatus;
+> typedef struct {
+>   /*@reldef@*/ /*@only@*/ employee *conts;
+>   /*@only@*/ erefStatus *status;
+>   int size;
+> } erefTable;
+> 
+14c21,24
+<   for (i=0; (eref_Pool.status[i] == ST_USED) && (i < eref_Pool.size); i++);
+---
+>   for (i=0; (eref_Pool.status[i] == ST_USED) && (i < eref_Pool.size); i++)
+>     {
+>       ;
+>     }
+22c32
+<                               2 * eref_Pool.size * sizeof (employee));
+---
+>                               2 * eref_Pool.size * sizeof (*eref_Pool.conts));
+32c42
+<                                  2 * eref_Pool.size * sizeof (erefStatus));
+---
+>                                  2 * eref_Pool.size * sizeof (*eref_Pool.status));
+42a53
+>         {
+44a56
+>     }
+51,52c63,64
+<    /*@globals undef eref_Pool, needsInit@*/
+<    /*@modifies eref_Pool, needsInit@*/
+---
+>    /*@globals undef eref_Pool, needsInit, internalState@*/
+>    /*@modifies eref_Pool, needsInit, internalState@*/
+66c78
+<   eref_Pool.conts = (employee *) malloc (size * sizeof (employee));
+---
+>   eref_Pool.conts = (employee *) malloc (size * sizeof (*eref_Pool.conts));
+74c86
+<   eref_Pool.status = (erefStatus *) malloc (size * sizeof (erefStatus));
+---
+>   eref_Pool.status = (erefStatus *) malloc (size * sizeof (*eref_Pool.status));
+8,15d7
+< /* Private typedefs used in macros  */
+< typedef enum { ST_USED, ST_AVAIL } erefStatus;
+< typedef struct {
+<   /*@reldef@*/ /*@only@*/ employee *conts;
+<   /*@only@*/ erefStatus *status;
+<   int size;
+< } erefTable;
+< 
+43c43
+< void eref_initMod(void) map m;
+---
+> void eref_initMod(void) map m; internalState;
+45c45
+<   modifies m;
+---
+>   modifies m, internalState;
+35c35,39
+<       if (employee_equal(&e, &e1)) return er;
+---
+> 
+>       if (employee_equal(&e, &e1)) 
+>         {
+>           return er;
+>         }
+28c28
+< void ereftab_initMod(void) 
+---
+> void ereftab_initMod (void) internalState;

@@ -1,0 +1,231 @@
+<html
+<head>
+<title> LCLint Sample - Naming Conventions</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<h1>
+LCLint Sample - Naming Conventions<BR>
+</h1>
+
+<H3> Changes from <A HREF="../checkchecks2/index.html">Checks Mode 2</A> </H3>
+
+<A HREF="diffs.html">Differences</A>
+<p>
+Fixed errors reported in second iteration.  
+<p>
+Now, running LCLint in checks mode detects <a
+href="lclint-checks.out.html">no anomalies</a>.
+<P>
+
+<H3> Modules </H3>
+
+<UL>
+<LI>employee - employee datatype (<A HREF="employee.lcl.html">LCL</A>,
+<A HREF="employee.c.html">Code</A>,  <A HREF="employee.h.html">Header</A>)
+<LI>empset - sets of employees (<A HREF="empset.lcl.html">LCL</A>,
+<A HREF="empset.c.html">Code</A>,  <A HREF="empset.h.html">Header</A>)
+<LI>dbase - database of employees (<A HREF="dbase.lcl.html">LCL</A>, 
+<A HREF="dbase.c.html">Code</A>,  <A HREF="dbase.h.html">Header</A>)
+<LI>eref - reference to an employee (<A HREF="eref.lcl.html">LCL</A>,
+<A HREF="eref.c.html">Code</A>,  <A HREF="eref.h.html">Header</A>)
+<LI>erc - collection of erefs (<A HREF="erc.lcl.html">LCL</A>, <A
+HREF="erc.c.html">Code</A>,  <A HREF="erc.h.html">Header</A>)
+<LI>ereftab - table of employees and erefs (<A
+HREF="ereftab.lcl.html">LCL</A>, <A HREF="ereftab.c.html">Code</A>, <A HREF="ereftab.h.html">Header</A>)
+</UL>
+
+<H3><A href="../../../guide/guide.html#sec-9">Naming Conventions</A></h3>
+
+Now we check that the code conforms to a naming convention.  There is no
+defined naming convention, so we will make one up that is close to what
+the code already (almost) follows.
+
+<h4> <A href="../../../guide/guide.html#sec-9.1.1">Czech Names</a></h4>
+
+The code most closely fits the Czech naming convention, where
+identifiers are preceded by the associated type name followed by and
+underscore. 
+
+We use the <tt>+czech</tt> flag to select the Czech naming convention.
+LCLint reports <A HREF="lclint.out.html">10 anomalies</A>.   
+
+The first message reports a constant that does not follow the Czech
+naming convention:
+<pre>
+<A HREF="eref.lcl.html#line7">eref.lcl:7,15</A>: Constant erefNIL name is not consistent with Czech naming
+                  convention.  The name should begin with eref_
+  Constant name is not consistent with Czech naming convention.  Use
+  -czechconsts to suppress message.
+</pre>
+In fact, it follows the Slovak convention (<type><Name>).  We could use
+the <tt>+slovakconstants</tt> flag to require that constants follow the
+Slovak instead of the Czech naming convention.  Instead, we change the
+name to <tt>eref_undefined</tt>.  After changing the declaration, we can
+run lclint using <tt>+repeatunrecog</tt> to find all the places where
+<tt>erefNIL</tt> appears and replace them with <tt>eref_undefined</tt>.
+(Of course, if this were a larger system we would want to use emacs tags
+and <tt>M-x tags-query-replace</tt> to do this more efficiently.)
+
+The next six messages report function names that are inconsistent with
+the Czech naming convention:
+<pre>
+< reading spec <A HREF="dbase.lcl.html">dbase.lcl</A> >
+<A HREF="dbase.lcl.html#line17">dbase.lcl:17</A>: Function hire name is not consistent with Czech naming
+                 convention.  Accessible types: db
+  Function or iterator name is not consistent with Czech naming convention. 
+  Use -czechfcns to suppress message.
+<A HREF="dbase.lcl.html#line32">dbase.lcl:32</A>: Function uncheckedHire name is not consistent with Czech naming
+                 convention.  Accessible types: db
+<A HREF="dbase.lcl.html#line41">dbase.lcl:41</A>: Function fire name is not consistent with Czech naming
+                 convention.  Accessible types: db
+<A HREF="dbase.lcl.html#line49">dbase.lcl:49</A>: Function query name is not consistent with Czech naming
+                 convention.  Accessible types: db
+<A HREF="dbase.lcl.html#line57">dbase.lcl:57</A>: Function promote name is not consistent with Czech naming
+                 convention.  Accessible types: db
+<A HREF="dbase.lcl.html#line68">dbase.lcl:68</A>: Function setSalary name is not consistent with Czech naming
+                 convention.  Accessible types: db
+</pre>
+
+The names are in the <tt>dbase</tt> module where the only accessible
+type is the specification-only type <tt>db</tt>.  We add <tt>db_</tt> in
+front of the names.
+<p>
+
+The other message is for <tt>check</tt>, which was added to <tt>bool.h</tt>:
+
+<pre>
+<A HREF="bool.h.html#line34">bool.h:34,29</A>: Function check name is not consistent with Czech naming
+                 convention.  Accessible types: bool
+</pre>
+
+The <tt>check</tt> macro really does not belong in the <tt>bool</tt>
+module.  In a real program, we would add a separate utilities file.
+Here, we add a <tt>/*@noaccess@*/</tt> comment <A
+HREF="bool-next.h.html#line34">before <tt>check</tt> is
+declared</A>.  Since there are no accessible types now, <tt>check</tt>
+is a valid function name.
+
+<p>
+The final two messages report type names that are inconsistent with the Czech
+naming convention:
+<pre>
+<A HREF="eref.h.html#line9">eref.h:9,30</A>: Datatype eref_status name violates Czech naming convention.  Czech
+                datatype names should not use the _ charater.
+  Type name is not consistent with Czech naming convention.  Czech type names
+  must not use the underscore character.  Use -czechtypes to suppress message.
+<A HREF="eref.h.html#line14">eref.h:14,3</A>: Datatype eref_ERP name violates Czech naming convention.  Czech
+                datatype names should not use the _ charater.
+</pre>
+
+Since the Czech prefix is distinguished by the underscore character,
+names of types cannot use the underscore character.  The types are
+renamed <tt>erefStatus</tt> and <tt>erefTable</tt>.
+
+<h4> <A href="../../../guide/guide.html#sec-9.3.2">Distinct Names</a> </h4>
+
+LCLint can detect names that are not sufficiently different from other
+names in the program.  This can be necessary to check portabilty to old
+compilers that only use the first <em>n</em> characters of an
+identifier.  It is also useful for the programmer, to reduce the
+possiblity of using the wrong names.
+
+Running LCLint using <tt>+distinctexternalnames</tt> produces <A
+HREF="lclint-external.out.html">34 messages</a>.  The default number of
+significant characters in an external name is 6, and alphabetic case is
+not significant in comparisons.  (This is the minimum that is acceptable
+in an ANSI conforming compiler.)
+<p>
+If we were really determined to have a program that is portable to old
+systems, we should change these names to be different in the first six
+characters.  (We would probably have to abandon the Czech naming
+convention to do this.)  Instead, we use <tt>-externalnamelength
+<em>n</em></tt> to find the minimum number of characters used in
+comparisons.  We can try different values to see how many errors are
+reported.  With <tt>-externalnamelength 12</tt>, <A
+HREF="lclint-externallen.out.html">2 errors</a> are reported.  With
+<tt>-externamelength 14</tt>, <A HREF="lclint-externallen14.out.html">no
+errors</a> are reported.  
+<p>
+We haven't made the program any more portable,
+but at least this is clearly documented now.  Someone trying to compile
+the program in an environment where less than 14 characters are used for
+external names, will need to edit the source code first.
+<p>
+Internal names can be checked similarly, except the default length is 31
+characters.  We can use <tt>+internalnamelookalike</tt> to check that
+names do not look the same (e.g., differ only in lookalike characters
+like <tt>1</tt> and <tt>l</tt>.  Checking reports <a
+href="lclint-internal.out.html">no errors</a>.
+
+<h4> <a href="../../../guide/guide.html#sec-9.2">Namespace Prefixes</a> </h4>
+
+The Czech naming convention prescribes prefixes for names associated
+with abstract types.  We can use specific namespace prefixes to restrict
+other names, and place more restrictions on the abstract type names.  
+<p>
+One common convention is that names of expanded macros should use all
+uppercase letters.  This is expressed by <tt>-uncheckedmacroprefix
+"^~*"</tt>.  That is, an uppercase letter followed by one or more
+non-lowercase letters.  Macros that implement functions or constants and
+are checked by LCLint do not have to match the uncheckedmacroprefix,
+since clients should not need to be aware that the implementation is a
+macro.  One message reports a violation of this convention:
+<pre>
+</pre>
+Since <tt>employeeFormat</tt> is preceeded by <tt>/*@notfunction@*/</tt>
+it is expanded normally, and is in the unchecked macro namespace.  We
+initially rename it to <tt>EMPLOYEEFORMAT</tt>.  This produces one new
+message:
+<pre>
+employee.h:8: Name EMPLOYEEFORMAT is reserved for future ANSI library
+    extensions. Macros beginning with E and a digit or uppercase letter may be
+    added to <errno.h>. (See ANSI, Section 4.13.1)
+  External name is reserved for system in ANSI standard.  Use -ansireserved to
+  suppress message.
+</pre>
+Names beginning with <tt>E</tt> may be reserved for the ANSI library, so
+we should use a different name.  It is changed to <tt>FORMATEMPLOYEE</tt>.
+<p>
+We might want to use a similar convention for enumerator members.  We
+add <tt>-enumprefix "^^~*"</tt>.  This means an enumerator must start
+with two capital letters, and the rest must be all non-lowercase
+letters.  <A HREF="lclint-prefixes.out.html">Fourteen messages</A> report
+violations of the enum prefix.  We fix these by changing the names to
+use all capitals. 
+<p>
+
+<h4>Initialization File</h4>
+
+Now, we move the name convention flags into an <A
+HREF="../strictchecks/.lclintrc"><tt>.lclintrc</tt></A> file. The
+<tt>.lclintrc</tt> file in the current directory is read before checking
+begins.  If we wanted this naming convention to apply to code in other
+directories too, we would put the flags in the <tt>.lclintrc</tt> file
+in our home directory. 
+
+
+<P>
+<HR>
+<A HREF="run.html">
+<IMG ALIGN=left SRC =
+"http://larch-www.lcs.mit.edu:8001/larch/lclint/lclint-run.jpg" ALT = "Run LCLint"></A>
+<A HREF="../strictchecks/index.html">
+<IMG ALIGN=left SRC =
+"http://larch-www.lcs.mit.edu:8001/larch/lclint/right-arrow.jpg" ALT =
+"Continue to Strict Checks"></A>
+<A HREF="../index.html">
+<IMG ALIGN=left SRC = "http://larch-www.lcs.mit.edu:8001/larch/lclint/up-arrow.jpg" ALT = "Return to Summary"></A>
+<A HREF="http://larch-www.lcs.mit.edu:8001/larch/lclint/index.html">
+<IMG ALIGN=left SRC = "http://larch-www.lcs.mit.edu:8001/larch/lclint/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://larch-www.lcs.mit.edu:8001/~evs">David
+Evans</a> <br>
+<A href="http://larch-www.lcs.mit.edu:8001/">Systematic Program Develpoment</A><br>
+<a
+href="mailto:evs@larch.lcs.mit.edu"><em>evs@larch.lcs.mit.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

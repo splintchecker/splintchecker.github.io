@@ -1,0 +1,53 @@
+<h3>lclint-interest message 90</h3>
+<pre>
+From evans@cs.virginia.edu Thu Jul 18 15:44:31 1996
+Date: Thu, 18 Jul 96 15:29:12 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: mikee@rd.bbc.co.uk, justin.mitchell@rd.bbc.co.uk
+In-Reply-To: Mike Ellis's message of Thu, 18 Jul 1996 16:11:41 +0100 <19997.9607181511@holly.rd.bbc.co.uk>
+Subject: Initialising arrays in loops
+
+
+Mike, 
+
+The problem here is that lclint can't tell that the loop body must
+always execute, and hence, if array[0] is defined after the loop.
+
+One way to fix this, is to use stylized comments to mark that the loop
+always executes:
+
+  /*@+loopexec@*/
+  for (count = 0; count <= 3; count++)
+    {
+      array[count] = count;
+    }
+  /*@=loopexec@*/
+
+(You could also set +loopexec at the command line if you want lclint to
+assume all loop bodies execute at least once, however, this could lead
+to relevant errors being undetected.)
+
+For loops with constant bounds like this one, lclint should probably be
+able to figure out without the hint that the loop body always executes,
+but currently there it doesn't do this.
+
+--- Dave
+
+
+</pre>
+<A HREF="89.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="91.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

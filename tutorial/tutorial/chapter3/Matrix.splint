@@ -1,0 +1,12 @@
+Splint 3.0.1.4 --- 19 Jan 2002
+
+Matrix.c: (in function main)
+Matrix.c:15:8: Break statement in nested loop
+  A break statement appears inside the body of a nested while or for statement.
+  This is perfectly reasonable code, but check that the break is intended to
+  break only the inner loop. The break statement may be preceded by
+  /*@innerbreak@*/ to suppress the message for this break only. (Use
+  -looploopbreak to inhibit warning)
+
+Finished checking --- 1 code warning
+21 source lines in 0.02 s.

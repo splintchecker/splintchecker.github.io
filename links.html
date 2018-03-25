@@ -1,0 +1,417 @@
+<html> <head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>
+Splint - Related Links
+</title>
+</head>
+
+<body>
+<!--#include virtual="header.html"-->
+
+<center><h1>
+Splint Related Links<BR>
+</h1></center>
+<p>
+This page collects some of the more interesting links related to Splint
+and static checking.  If you maintain a site which you think belongs here, let <a
+href="mailto:info@splint.org"><em>info@splint.org</em></a> know.
+<p>
+
+<h3>Connected Projects</h3>
+
+<a
+href="http://gasta.sourceforge.net/index.php3?page=gasta.php3">Gasta</a>
+-  Guillaume Thouvenin's GCC AST Analysis Project is working on
+automatically producing Splint annotations.<br>
+<a href="http://swarm.cs.virginia.edu">Programming the Swarm</a><br>
+<a href="http://www.cs.virginia.edu/~survive/">Information Survivability
+for Critical Infrastructure Protection</a><br>
+<a href="http://www.cs.virginia.edu/cs588/">CS588: Cryptology</a>
+
+<h3>Related Research Projects</h3>
+
+<a href="http://sdg.lcs.mit.edu/alloy/index.html">Alloy Analyzer</a>
+<blockquote>
+<a href="http://sdg.lcs.mit.edu/">MIT's Software Design Group</a>
+focuses on new kinds of tools: design checkers and error analyzers, 
+among others.  The <a
+href="http://sdg.lcs.mit.edu/alloy/index.html">Alloy Analyzer</a>
+analyzes models written in Alloy.
+</blockquote>
+
+<A HREF="http://www.sun.com:80/960201/cover/language.html">Assertion
+Definition Language</A>
+<blockquote>
+<a href="http://www.sun.com">Sun</a>'s ADL is a formal specification language for C programs.  The ADLT tool
+can be used to automate testing using an ADL specification.  They like
+to make unfounded claims about it being the first ever practical
+specification language.
+</blockquote>
+
+<a href="http://www.research.microsoft.com/sbt/asttoolkit/ast.asp">AST Toolkit</a> 
+<blockquote>
+Daniel Weise's group at Microsoft Research is working on toolkits for
+analyzing program parse trees.  Their AST Toolkit supports some
+LCLint-derivative checks.
+</blockquote>
+
+
+<A href="http://www.cs.berkeley.edu/Research/Aiken/bane.html">Berkeley Analysis Engine</a> (BANE)
+<blockquote>
+BANE is a toolkit for constructing program analyses such as dataflow and
+type inference systems developed by <a
+href="http://www.cs.berkeley.edu/Research/Aiken">Alex Aiken</a>.
+</blockquote>
+
+<a href="http://www.research.digital.com/SRC/esc/Esc.html">Extended Static Checking</a> 
+<blockquote>
+
+Project at <a href="http://www.research.digital.com/SRC">DEC Systems
+Research Center</a> using theorem proving technology to enable extensive
+static checking in Java and Modula-3.
+
+</blockquote>
+
+<a href="http://www.research.att.com/projects/cyclone/">Cyclone</a>
+<blockquote>
+Cyclone is a safe dialect of C developed by AT&T Labs Research and 
+<a href="http://www.cs.cornell.edu/home/jgm/">Greg Morrisett</a>'s group
+at Cornell University. 
+</blockquote>
+
+<a href="http://www.cs.berkeley.edu/~weimer/osq/">Open Source Quality
+Project</a>
+<blockquote>
+Berkeley's project on techniques and tools for assuring software
+qualify.  Focuses on formal verification and theorem proving, model
+checking, and large-scale software analysis.
+</blockquote>
+
+<a href="http://pavg.stanford.edu">Program Analysis and Verification Group</a>
+<blockquote>
+Research group at Stanford University led by David Luckham.
+</blockquote>
+
+<a href="http://research.microsoft.com/SLAM/">SLAM Project</a>
+<blockquote>
+The Software Productivity Tools Research group at Microsoft Research
+investigates relationships between Software (Specifications), Languages, 
+Analysis, and Model checking.  Their goal is to be able to check that
+software satisfies critical behavioral properties of the interfaces it
+uses, and to aid software engineers in designing interfaces and software
+to ensure reliable and correct functioning. 
+</blockquote>
+
+<a href="http://research.microsoft.com/vault/">Vault</a>
+<blockquote>
+
+Vault is a safe version of the C programming language developed by
+Microsoft Research's <a
+href="http://research.microsoft.com/spt/">Software Productivity
+Tools</a> research group.  Because of the language restrictions and
+sophisticated analyses, Vault can enforce many of the properties Splint
+checks soundly and completely.
+</blockquote>
+
+<h3>Commercial Static Analysis Tools</h3>
+
+Some commercial tools have been developed
+that focus on static checking, some can be used to check for conformance
+to various standards. 
+<blockquote>
+<li><a href="http://www.abxsoft.com"> Abraxas</a>'s <A
+HREF="http://www.abxsoft.com/codchk.htm">CodeCheck</A><br>
+
+<li><a href="http://www.centerline.com/">CenterLine</a>'s C++Expert
+does both 
+compile-time and run-time checking.  It incorporates checks based on
+Scott Meyer's "Effective C++" books. 
+
+<li><a href="http://www.gimpel.com">Gimpel</a>'s PC-Lint<br>
+
+<li><a href="http://www.cigital.com">Cigital</a>'s <a
+href="http://www.cigital.com/its4/">ITS4</a> scans code for possible
+security flaws
+
+<li><a href="http://www.knosof.co.uk/">Knowledge Software</a>'s <a
+href="http://www.knosof.co.uk/ospc.html">Open Systems Protability Checker</a><br>
+
+<li> <a href="http://www.mccabe.com">McCabe & Associates</a> offer a
+suite of tools and methodology that will assist software developers with
+software quality assurance, software testing, software reengineering and
+Year 2000 efforts.
+<li> <a href="http://www.parasoft.com/">Parasoft</a>'s <a
+href="http://www.parasoft.com/wizard/index.html">Code Wizard</a> is a
+source code analysis tool for C++, also based on Scott Meyer's books.
+
+<li> Intrinsa's Software Component Simulation uses simulation to
+detect software defects.  (Note: Intrinsa was bought by Microsoft and
+seems to have no web presence remaining.  The PREfix tool is widely used
+within Microsoft.)
+
+<li> <a href="http://www.polyspace.com">PolySpace</a> sells a 
+<a href="http://www.polyspace.com/product_datasheet/cverifier.htm">C
+Verifier</a>
+that uses abstract interpretation techniques to detect
+potential run-time errors (including array bounds errors).
+
+<li> <a href="http://www.prqa.co.uk/">Programming Research</a> offers <a
+href="http://www.prqa.co.uk/qac.htm">QA/C</a>, a static
+checking tool including code metrics.
+
+<li> <a href="http://www.securesw.com/rats/">RATS</a> - rough auditing
+tool for security
+
+<li> <a href="http://www.scitools.com/">Scientific Toolworks</a>
+produces tools that analyze Ada, C, C++ and FORTRAN source code to
+reverse engineer and automatically document programms.
+</ul>
+
+</blockquote>
+
+<p>
+<h3>Run-Time Checking Tools</h3>
+
+Splint hopes to extend the scope of what is checked statically, but
+there are many types of errors that are still only detectable at
+run-time.  Several commercial and research tools focus on detecting
+dynamic memory errors are run-time.
+
+<blockquote>
+<li> <a href="http://developer.kde.org/~sewardj/">Valgrind</a> is an
+open-source memory debugger for x86 GNU-Linux
+<li> <a href="http://www.centerline.com/">CenterLine</a>'s C++Expert also
+does run-time memory checking.
+Scott Meyer's "Effective C++" books. 
+<li> <a href="http://www.geodesic.com">Great Circle</a> is a glorified
+garbage collector.
+<li> <a href="http://www.immunix.org/">Immunix StackGuard</a>
+<li> <a href="http://www.numega.com">Numega</a>'s Bounds Checker
+<LI> <a href="http://www.parasoft.com">Parasoft</a>'s Insure++
+<li> <a href="http://www.rational.com">Rational Software</a>'s <a href="http://www.pure.com/products/purify_unix/index.jsp">Purify</a>
+<li> The <a href="http://www.npl.co.uk/">National Physical
+Laboratory</a> of the United Kingdom offers an 
+<a href="http://www.npl.co.uk/npl/sections/this/services/ccode/index.html">
+ISO C validation service</a>.  It uses both static and dynamic checking.
+<LI> Some other tools are listed at <a
+href="http://www.cs.colorado.edu/homes/zorn/public_html/Home.html">Ben Zorn</a>'s <A
+HREF="http://www.cs.colorado.edu/homes/zorn/public_html/MallocDebug.html">Debugging
+Tools for Dynamic Storage Allocation</A> page
+
+</blockquote>
+
+
+<h3>Formal Methods</h3>
+
+
+<h4>Larch</h4>
+<A HREF="http://www.sds.lcs.mit.edu/spd/larch/"> MIT Larch Page </A><br>
+<a href="http://www.intertrust.com/star/horning/larch.html">Jim
+Horning's Larch Page</a><br>
+<p>
+<a href="http://www.cs.iastate.edu/~leavens/larchc++.html">Larch
+C++</a>
+<blockquote>
+A Larch Interface Language for C++ developed by <a
+href="http://www.cs.iastate.edu/~leavens/homepage.html">Gary Leavens</a>
+and others at <a href="http://www.cs.iastate.edu/">Iowa State</a>.
+Currently there is nothing equivalent to Splint for Larch/C++.
+</blockquote>
+
+
+<a href="http://lal.cs.byu.edu/mlists/softverf/">Software
+Verification mailing list</a></br>
+<a
+href="http://www.comlab.ox.ac.uk/archive/formal-methods.html">Formal
+Methods Page</a>
+
+<h3>Secure Programming</h3>
+
+<a href="http://www.buildingsecuresoftware.com/">Building Secure
+Software</a> - web site for John Viega and Gary McGraw's book.
+<br>
+<a href="http://www.cigital.com/">Cigital</a>
+<br>
+<a href="http://www.cve.mitre.org/">Common Vulnerabilities and Exposures</a>
+<br>
+<a href="http://www.linuxsecurity.com/index.html">Linux Security</a>
+<br>
+<A href="http://www.dwheeler.com/secure-programs">Secure Programming for
+Linux and Unix HOWTO</a> by David A. Wheeler (a freely-available and
+detailed book on how to write secure programs)<Br>
+<a href="http://www.securityfocus.com/">SecurityFocus</a> 
+
+<h3>Reverse Links</h3>
+
+Links to some publications and web pages that reference Splint.
+
+<h4>Books</h4>
+
+<a href="http://www.securecoding.org"><em>Secure Coding: Principles
+and Practices</em></a>, by Mark G. Graff and Kenneth R. van Wyk,
+O'Reilly, 2003.
+<p>
+
+<a href="http://www.research.microsoft.com/~drh/">David Hanson</a>'s book 
+<a href="http://www.cs.princeton.edu/software/cii/">C Interfaces and
+Implementations</a> advocates a design methodology based on interfaces
+and implementations very similar to that supported by Splint.
+<blockquote>
+<em>However, if more C programmers read, understood, and imitated this
+book, the world would be a better and safer place.
+</em>
+--- From Richard O'Keefe's <a href="http://www.cs.princeton.edu/software/cii/review.html">review</a>
+</blockquote>
+
+<a
+href="http://www.amazon.com/exec/obidos/ASIN/0672318962/qid=989504161/sr=1-4/ref=sc_b_5/002-7138752-2991202">C
+Unleashed</a>, by Richard Heathfield, Lawrence Kirby, Mike Lee, Mathew
+Watson, Ben Pfaff, Dann Corbit, Peter Seebach, Brett Fishburne, Scott
+Fluhrer, Ian Woods, Sam Hobbs, Ian Kelly
+<blockquote>
+     Includes a short section describing running Splint with <tt>+strict</tt> and <tt>+checks</tt> on a 3-line program.
+     </blockquote>
+
+<a href="http://www.amazon.com/exec/obidos/ASIN/189311595X/qid%3D989504262/002-7138752-2991202">Cryptography in C and C++</a>, by Michael Welschenbach, David Kramer
+<blockquote>
+
+
+</blockquote>
+     
+<h4>FAQs</h4>
+
+<A
+HREF="http://www.eskimo.com/~scs/C-faq/q18.7.html">
+C Frequently Asked Questions</A> (also published as a book by
+Addison-Wesley in 1995)  Note the Splint information is out-of-date, but
+the C FAQ is no longer being updated.
+<p>
+
+LCLint is also mentioned in its evil twin, the comp.lang.c <A
+HREF="http://www.lysator.liu.se/c/c-iaq.html"> Infrequently Asked
+Questions </A> file (unfortunately, the entry for LCLint hasn't been
+true since before Version 2.0, but I'm counting on them to come up with
+a more suitable entry in the next edition.)
+
+<p>
+<A HREF="http://www.cis.ohio-state.edu/hypertext/faq/usenet/linux/faq/part1/faq.html">Linux Frequently Asked Questions</A>
+<p>
+<a href="ftp://www.mrc-apu.cam.ac.uk/pub/linux/GCC-FAQ.html">
+Linux GCC FAQ</A>
+<p>
+<A HREF="http://remarque.berkeley.edu/~muir/free-compilers/">Catalog of Free Compilers and Interpreters</A>
+<p>
+Shmoo Group's <a href="http://www.shmoo.com/securecode/">How to Write Secure Code</a>
+<p>
+David Wheeler's <a href="http://dwheeler.com/secure-programs/">Secure Programming for Linux and Unix HOWTO</a>
+
+<p>
+<a name="articles"><h4>Magazine Articles</h4>
+
+The German Computer Magazine <em>c't</em> describes Splint in the
+     article <a href="http://www.heise.de/ct/04/04/links/070.shtml">
+     <em>Fehlersuche in Java</em></a> in its 4/2004 issue (full article
+     not available on line, just links).
+<p>
+
+
+Linux Journal, <a href="http://www2.linuxjournal.com/lj-issues/issue73/3599.html">
+The Code Analyser LCLint</a>.  By David Santo Orcero, May 2000.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<em>&#147;Debugging code is never fun, but this tool makes it a bit easier.&#148;</em>
+<p>
+Linux Gazette, <a
+href="http://www.linuxgazette.com/issue51/pramode.html">Static
+checking of C programs with LCLint</a>.  By Pramode C E and Gopakumar
+C E.  Issue 51, March 2000.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<em>&#147;LCLint is justifiably angry at such amateurish use of C, but he is gentle in his admonishments.&#148;</em><br>
+<p>
+The German computer magazine, <a href="http://www.ix.de">Ix</a>,
+includes LCLint in an article, <em>Lint als C-Syntax-Prufer</em>
+in the <a href="http://www.ix.de/ix/inhalt.html">July 96 issue</a>.
+<p>
+
+MATLAB Digest, <a
+href="http://www.mathworks.com/company/digest/july03/checking_code.shtml">
+<em>Checking Code and Models in Production Environments</em></a>, July
+2003.  Focuses on checking standard compliance.
+
+
+<h4>Courses</h4>
+
+These courses either use Splint (or used LCLint) in a programming lab, or
+include Splint technical papers.  If you know of any other courses that
+should be listed here, please let <A
+HREF="mailto:evans@cs.virginia.edu">me</A> know.
+<blockquote>
+<A HREF="http://www.doc.ic.ac.uk/lab/secondyear/"> Second Year 
+programming lab </A> at the <A HREF="http://www.doc.ic.ac.uk/">Imperial
+College of Science, Technology and Medicine, University of London.</A>
+<br>
+<A HREF="http://www-theory.dcs.st-and.ac.uk/~sal/school/Larch/">Steve Linton's lectures on Larch</A> at <A HREF="http://www.st-and.ac.uk/">University of St. Andrews</A>, Scotland.
+<br>
+Daniel Jackson's <A
+HREF="http://www.cs.cmu.edu/afs/cs.cmu.edu/user/dnj/pub/www/810/hen75.txt">Tractable Representations for Software Development</A> course at <A
+HREF="http://www.cmu.edu">Carnegie Mellon</A>.
+<br>
+<A HREF="http://www.ece.uc.edu/~alex/larch/larch.html">University
+of Cincinatti</A>
+<br>
+<a href="http://www.cs.washington.edu/education/courses/503/00sp/lectures.htm">University of Washington CSE 503</a>
+<A
+HREF="http://www.nada.kth.se/nada/kurser/kth/2D5333/schema.html">
+l2D5333 Programverifiering, kursuppläggning</A> at the 
+<A HREF="http://www.nada.kth.se/index-en.html">Royal Institute of Technology</A>, Stockholm.
+<br>
+<a
+href="http://www.csd.uu.se/kurs/pm2/www/pm295.html">Programmeringsmetodik</a>
+at Uppsala University in Sweden. 
+<br>
+<A HREF="http://www.ifi.uio.no/~kt-lab/">Databehandlingslaboratorium</A> at the <A
+HREF="http://www.ifi.uio.no/">University of Oslo</A>.
+
+<br>
+Richard O'Keefe's <A
+href="http://www.cs.rmit.edu.au/AP/Undergraduate/1996/Subjects1/CS568.html">Systems
+Programming 1</a> course at <A href="http://www.cs.rmit.edu.au/">RMIT
+University</a> in Melbourne, Australia.
+</blockquote>
+<h4>Web Sites</h4>
+
+<A HREF="http://www.lysator.liu.se:7500/c/index.html">Lysator Programming in C</A> (under <A
+HREF="http://www.lysator.liu.se:7500/c/c-www.html">Other Sources</A>)<br>
+<a href="http://bach.cis.temple.edu/ACCU/c-links/">Association of C
+and C++ Users</a><br>
+<a
+href="http://www.linuxlinks.com/Software/Programming/Development/Tools/Code_Management/">Linux Links</a><br>
+<a href="http://wagner.princeton.edu/foldoc/cgi-script?lclint">Free On-Line Dictionary of Computing</a><br>
+<a href="http://www.ftc.nrcs.usda.gov/help/help.html">US Department of Agriculture, Information Technology Center</a><br>
+<A HREF="http://www.bluesky.net/rcn/programming.html">R. Nassif's Programming Page</A><br>
+<A
+HREF="http://www.w3.org/hypertext/WWW/People/Connolly/technologies/web-programming.html">Modern Web Programming</A><br>
+<a href="http://www.sterling.com/">Sterling Software Archives</a>
+in <a href="http://ftp.sterling.com/programming/tools/">programming
+tools</a><br>
+Ecole Nationale Supirieure de Techniques Avancies, in <A HREF="http://www.ensta.fr/internet/unix/programming/">Unix Programming</A><br>
+<a href="http://nswt.tuwien.ac.at:8000/htdocs/baudoin/">Internet
+Goodies</a> in <a href="http://nswt.tuwien.ac.at:8000/htdocs/baudoin/unix/programming/lclint.html">unix programming</a><br>
+<a href="http://www.fh-wedel.de/~herbert/en/index.html">Herbert Dietze's collection of useful programming information</a>
+
+
+<p>
+<h4>More Links</h4>
+<p>
+
+<a
+href="http://www.google.com/search?num=30&q=link:lclint.cs.virginia.edu/">Search
+Google for links to <em>lclint.cs.virginia.edu</em></a><br>
+<a href="http://www.google.com/search?num=30&q=link:splint.org/">Search
+Google for links to <em>www.splint.org</em></a><br>
+<a href="http://www.google.com/search?num=30&q=LCLint">Search Google for
+mentions of LCLint</a><br>
+<a href="http://www.google.com/search?num=30&q=Splint">Search Google for
+mentions of Splint</a> 
+
+
+<!--#include virtual="footer.html"-->
+
+

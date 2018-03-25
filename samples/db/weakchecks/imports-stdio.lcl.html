@@ -1,0 +1,331 @@
+<A NAME="line31"></A><html><head>
+<title>imports-stdio.lcl</title>
+</head><body>
+<h3>imports-stdio.lcl</h3>
+<PRE>
+<A NAME="line1"></A>/*
+<A NAME="line2"></A>** stdio.lcl
+<A NAME="line3"></A>**
+<A NAME="line4"></A>** based on /usr/include/stdio.h on red-cross
+<A NAME="line5"></A>*/
+<A NAME="line6"></A> 
+<A NAME="line7"></A>imports &lt;stdlib&gt; ;
+<A NAME="line8"></A> 
+<A NAME="line9"></A>/*
+<A NAME="line10"></A>** we need to allow casts to and from these types...
+<A NAME="line11"></A>** they should be exposed, but unknown type.
+<A NAME="line12"></A>*/
+<A NAME="line13"></A> 
+<A NAME="line14"></A>immutable type FILE;
+<A NAME="line15"></A> 
+<A NAME="line16"></A>typedef void *va_list;
+<A NAME="line17"></A>typedef void *fpos_t;
+<A NAME="line18"></A> 
+<A NAME="line19"></A>FILE *stdin;
+<A NAME="line20"></A>FILE *stdout;
+<A NAME="line21"></A>FILE *stderr;
+<A NAME="line22"></A> 
+<A NAME="line23"></A>constant int EOF ;
+<A NAME="line24"></A> 
+<A NAME="line25"></A>| int : char | getc (FILE *stream )
+<A NAME="line26"></A>{
+<A NAME="line27"></A>   ensures true;
+<A NAME="line28"></A>}
+<A NAME="line29"></A> 
+<A NAME="line30"></A>| int : char | getchar (void)
+<A NAME="line31"></A>{
+<A NAME="line32"></A>   ensures true;
+<A NAME="line33"></A>}
+<A NAME="line34"></A> 
+<A NAME="line35"></A>| int : void | putc (| int : char | c, FILE *stream)
+<A NAME="line36"></A>{
+<A NAME="line37"></A>   ensures true;
+<A NAME="line38"></A>}
+<A NAME="line39"></A> 
+<A NAME="line40"></A>int putchar (|int : char| c)
+<A NAME="line41"></A>{
+<A NAME="line42"></A>   ensures true;
+<A NAME="line43"></A>}
+<A NAME="line44"></A> 
+<A NAME="line45"></A>| int : bool | feof (FILE *stream)
+<A NAME="line46"></A>{
+<A NAME="line47"></A>   ensures true;
+<A NAME="line48"></A>}
+<A NAME="line49"></A> 
+<A NAME="line50"></A>| int : bool | ferror (FILE *stream )
+<A NAME="line51"></A>{
+<A NAME="line52"></A>   ensures true;
+<A NAME="line53"></A>}
+<A NAME="line54"></A> 
+<A NAME="line55"></A>int fileno (FILE *stream)
+<A NAME="line56"></A>{
+<A NAME="line57"></A>   ensures true;
+<A NAME="line58"></A>}
+<A NAME="line59"></A> 
+<A NAME="line60"></A>int _filbuf (FILE *p)
+<A NAME="line61"></A>{
+<A NAME="line62"></A>   ensures true;
+<A NAME="line63"></A>}
+<A NAME="line64"></A> 
+<A NAME="line65"></A>int _flsbuf (unsigned char x, FILE *p)
+<A NAME="line66"></A>{
+<A NAME="line67"></A>   ensures true;
+<A NAME="line68"></A>}
+<A NAME="line69"></A> 
+<A NAME="line70"></A>void clearerr (FILE *stream)
+<A NAME="line71"></A>{
+<A NAME="line72"></A>   ensures true;
+<A NAME="line73"></A>}
+<A NAME="line74"></A> 
+<A NAME="line75"></A>| int : void | fclose (FILE *stream )
+<A NAME="line76"></A>{
+<A NAME="line77"></A>   ensures true;
+<A NAME="line78"></A>}
+<A NAME="line79"></A> 
+<A NAME="line80"></A>FILE * fdopen (int filedes, char *ttype)
+<A NAME="line81"></A>{
+<A NAME="line82"></A>   ensures true;
+<A NAME="line83"></A>}
+<A NAME="line84"></A> 
+<A NAME="line85"></A>| int : void | fflush (FILE *stream )
+<A NAME="line86"></A>{
+<A NAME="line87"></A>   ensures true;
+<A NAME="line88"></A>}
+<A NAME="line89"></A> 
+<A NAME="line90"></A>| int : char | fgetc (FILE *stream )
+<A NAME="line91"></A>{
+<A NAME="line92"></A>   ensures true;
+<A NAME="line93"></A>}
+<A NAME="line94"></A> 
+<A NAME="line95"></A>int fgetpos (FILE *stream, fpos_t *pos )
+<A NAME="line96"></A>{
+<A NAME="line97"></A>   ensures true;
+<A NAME="line98"></A>}
+<A NAME="line99"></A> 
+<A NAME="line100"></A>char *fgets (char *s, int n, FILE *stream )
+<A NAME="line101"></A>{
+<A NAME="line102"></A>   ensures true;
+<A NAME="line103"></A>}
+<A NAME="line104"></A> 
+<A NAME="line105"></A> 
+<A NAME="line106"></A>FILE *fopen (char *filename, char *ttype )
+<A NAME="line107"></A>{
+<A NAME="line108"></A>   ensures true;
+<A NAME="line109"></A>}
+<A NAME="line110"></A> 
+<A NAME="line111"></A>printflike
+<A NAME="line112"></A>| int : void | fprintf (FILE *stream, char *format, ...)
+<A NAME="line113"></A>{
+<A NAME="line114"></A>   ensures true;
+<A NAME="line115"></A>}
+<A NAME="line116"></A> 
+<A NAME="line117"></A>printflike
+<A NAME="line118"></A>| int : void | sprintf (FILE *stream, char *format, ...)
+<A NAME="line119"></A>{
+<A NAME="line120"></A>   ensures true;
+<A NAME="line121"></A>}
+<A NAME="line122"></A> 
+<A NAME="line123"></A>| int : void | fputc (| int : char | c, FILE *stream )
+<A NAME="line124"></A>{
+<A NAME="line125"></A>   ensures true;
+<A NAME="line126"></A>}
+<A NAME="line127"></A> 
+<A NAME="line128"></A>| int : void | fputs( char *s, FILE *stream )
+<A NAME="line129"></A>{
+<A NAME="line130"></A>   ensures true;
+<A NAME="line131"></A>}
+<A NAME="line132"></A> 
+<A NAME="line133"></A>size_t fread (void *ptr, size_t size,
+<A NAME="line134"></A>	      size_t nitems, FILE *stream )
+<A NAME="line135"></A>{
+<A NAME="line136"></A>   ensures true;
+<A NAME="line137"></A>}
+<A NAME="line138"></A> 
+<A NAME="line139"></A>FILE *freopen (char *filename, char *ttype,
+<A NAME="line140"></A>	       FILE *stream)
+<A NAME="line141"></A>{
+<A NAME="line142"></A>   ensures true;
+<A NAME="line143"></A>}
+<A NAME="line144"></A> 
+<A NAME="line145"></A>scanflike
+<A NAME="line146"></A>int fscanf (FILE *stream, char *format, ... )
+<A NAME="line147"></A>{
+<A NAME="line148"></A>   ensures true;
+<A NAME="line149"></A>}
+<A NAME="line150"></A> 
+<A NAME="line151"></A>| int : void | fseek (FILE *stream, long offset, int ptrname)
+<A NAME="line152"></A>{
+<A NAME="line153"></A>   ensures true;
+<A NAME="line154"></A>}
+<A NAME="line155"></A> 
+<A NAME="line156"></A>int fsetpos (FILE *stream, fpos_t *pos)
+<A NAME="line157"></A>{
+<A NAME="line158"></A>   ensures true;
+<A NAME="line159"></A>}
+<A NAME="line160"></A> 
+<A NAME="line161"></A>long ftell (FILE *stream)
+<A NAME="line162"></A>{
+<A NAME="line163"></A>   ensures true;
+<A NAME="line164"></A>}
+<A NAME="line165"></A> 
+<A NAME="line166"></A>size_t fwrite (void *ptr, size_t size,
+<A NAME="line167"></A>	       size_t nitems, FILE *stream)
+<A NAME="line168"></A>{
+<A NAME="line169"></A>   ensures true;
+<A NAME="line170"></A>}
+<A NAME="line171"></A> 
+<A NAME="line172"></A>char *gets (char *s)
+<A NAME="line173"></A>{
+<A NAME="line174"></A>   ensures true;
+<A NAME="line175"></A>}
+<A NAME="line176"></A> 
+<A NAME="line177"></A>void perror (char *s)
+<A NAME="line178"></A>{
+<A NAME="line179"></A>   ensures true;
+<A NAME="line180"></A>}
+<A NAME="line181"></A> 
+<A NAME="line182"></A>FILE  *popen (char *command, char *ttype)
+<A NAME="line183"></A>{
+<A NAME="line184"></A>   ensures true;
+<A NAME="line185"></A>}
+<A NAME="line186"></A> 
+<A NAME="line187"></A>| int : void | ungetc(char c, FILE *stream)
+<A NAME="line188"></A>{
+<A NAME="line189"></A>   ensures true;
+<A NAME="line190"></A>}
+<A NAME="line191"></A> 
+<A NAME="line192"></A>printflike
+<A NAME="line193"></A>| int : void | printf (char *format, ...)
+<A NAME="line194"></A>{
+<A NAME="line195"></A>   ensures true;
+<A NAME="line196"></A>}
+<A NAME="line197"></A> 
+<A NAME="line198"></A>| int : void | puts (char *s)
+<A NAME="line199"></A>{
+<A NAME="line200"></A>   ensures true;
+<A NAME="line201"></A>}
+<A NAME="line202"></A> 
+<A NAME="line203"></A>| int : bool | remove (char *filename)
+<A NAME="line204"></A>{
+<A NAME="line205"></A>   ensures true;
+<A NAME="line206"></A>}
+<A NAME="line207"></A> 
+<A NAME="line208"></A>| int : bool | rename (char *from, char *to)
+<A NAME="line209"></A>{
+<A NAME="line210"></A>   ensures true;
+<A NAME="line211"></A>}
+<A NAME="line212"></A> 
+<A NAME="line213"></A>void rewind (FILE *stream)
+<A NAME="line214"></A>{
+<A NAME="line215"></A>   ensures true;
+<A NAME="line216"></A>}
+<A NAME="line217"></A> 
+<A NAME="line218"></A>scanflike
+<A NAME="line219"></A>| int : void | scanf (char *format, ...)
+<A NAME="line220"></A>{
+<A NAME="line221"></A>   ensures true;
+<A NAME="line222"></A>}
+<A NAME="line223"></A> 
+<A NAME="line224"></A>void setbuf (FILE *stream, char *buf)
+<A NAME="line225"></A>{
+<A NAME="line226"></A>   ensures true;
+<A NAME="line227"></A>}
+<A NAME="line228"></A> 
+<A NAME="line229"></A>int setvbuf (FILE *stream, char *buf,
+<A NAME="line230"></A>	     int ttype, size_t size )
+<A NAME="line231"></A>{
+<A NAME="line232"></A>   ensures true;
+<A NAME="line233"></A>}
+<A NAME="line234"></A> 
+<A NAME="line235"></A>scanflike
+<A NAME="line236"></A>| int : void | sscanf (char *s, char *format, ...)
+<A NAME="line237"></A>{
+<A NAME="line238"></A>   ensures true;
+<A NAME="line239"></A>}
+<A NAME="line240"></A> 
+<A NAME="line241"></A>FILE *tmpfile( void )
+<A NAME="line242"></A>{
+<A NAME="line243"></A>   ensures true;
+<A NAME="line244"></A>}
+<A NAME="line245"></A> 
+<A NAME="line246"></A>char *tmpnam (char *s)
+<A NAME="line247"></A>{
+<A NAME="line248"></A>   ensures true;
+<A NAME="line249"></A>}
+<A NAME="line250"></A> 
+<A NAME="line251"></A> 
+<A NAME="line252"></A> 
+<A NAME="line253"></A> 
+<A NAME="line254"></A> 
+<A NAME="line255"></A> 
+<A NAME="line256"></A> 
+<A NAME="line257"></A> 
+<A NAME="line258"></A> 
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

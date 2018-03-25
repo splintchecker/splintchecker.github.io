@@ -1,0 +1,43 @@
+gmake[3]: Entering directory `/u/evs/lclint/web/sample/original'
+lclint -specundef +lh +quiet -nof employee.lcl
+lclint -specundef +lh +quiet -nof empset.lcl
+lclint -specundef +lh +quiet -nof stdio.lcl
+lclint -specundef +lh +quiet -nof dbase.lcl
+lclint -specundef +lh +quiet -nof eref.lcl
+lclint -specundef +lh +quiet -nof erc.lcl
+lclint -specundef +lh +quiet -nof ereftab.lcl
+gcc -c dbase.c 
+gcc -c employee.c 
+In file included from employee.lh:2, from employee.h:8, from employee.c:2:
+bool.h:4: warning: `TRUE' redefined
+/usr/local/lib/gcc-lib/alpha-dec-osf1/2.3.3/include/sys/types.h:240: warning: this is the location of the previous definition
+employee.c: In function `employee_setName':
+employee.c:9: warning: type mismatch in implicit declaration for built-in function `strcpy'
+gcc -c empset.c 
+gcc -c erc.c 
+erc.c: In function `erc_create':
+erc.c:5: warning: cast to pointer from integer of different size
+erc.c: In function `erc_insert':
+erc.c:40: warning: cast to pointer from integer of different size
+erc.c: In function `erc_iterStart':
+erc.c:72: warning: cast to pointer from integer of different size
+erc.c: In function `erc_sprint':
+erc.c:104: warning: cast to pointer from integer of different size
+gcc -c eref.c 
+In file included from employee.lh:2, from employee.h:8, from eref.h:4, from eref.c:2:
+bool.h:4: warning: `TRUE' redefined
+/usr/local/lib/gcc-lib/alpha-dec-osf1/2.3.3/include/sys/types.h:240: warning: this is the location of the previous definition
+eref.c: In function `eref_alloc':
+eref.c:18: warning: cast to pointer from integer of different size
+eref.c:26: warning: cast to pointer from integer of different size
+eref.c: In function `eref_initMod':
+eref.c:47: warning: cast to pointer from integer of different size
+eref.c:53: warning: cast to pointer from integer of different size
+gcc -c ereftab.c 
+gcc -c drive.c 
+In file included from drive.c:6:
+bool.h:4: warning: `TRUE' redefined
+/usr/local/lib/gcc-lib/alpha-dec-osf1/2.3.3/include/sys/types.h:240: warning: this is the location of the previous definition
+gcc -o drive dbase.o employee.o empset.o erc.o eref.o ereftab.o  drive.o
+rm  erc.lh eref.lh ereftab.lh empset.lh dbase.lh employee.lh
+gmake[3]: Leaving directory `/u/evs/lclint/web/sample/original'

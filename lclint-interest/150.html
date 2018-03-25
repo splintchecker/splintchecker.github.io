@@ -1,0 +1,85 @@
+<h3>lclint-interest message 150</h3>
+<pre>
+From evans@cs.virginia.edu Mon Sep 15 19:28:11 1997
+Date: Mon, 15 Sep 97 19:26:58 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: kir@iitb.fhg.de
+Cc: lclint-interest@larch.lcs.mit.edu, kir@iitb.fhg.de
+In-Reply-To: Harald Kirsch's message of Mon, 15 Sep 1997 08:03:19 +0200 <341CCFA7.2462A74@iitb.fhg.de>
+Subject: How do I tell lclint that ...?
+
+
+* Reminder: Please do not send administrative requests to
+* lclint-interest.  They should be sent to lclint-interest-request,
+* so everyone on the list does not have to read them.
+
+Harald writes,
+
+> I like the idea of lclint very much, but often it is really hard
+> to tell it what I mean. Does anybody know how to annotate the
+> following code so that lclint does not complain about a memory
+> leak in the line
+>
+>   s1 = table[0].bobo(s1, s2);
+>
+> Here comes the code:
+> ----------------------------------------------------------------
+> #include <stdlib.h>
+> 
+> typedef char *
+> (*Bobo)(/*@only@*/char *s1, /*@only@*/char *s2);
+>
+> typedef struct s_Bla {
+>   int i;
+>   Bobo bobo;
+> } Bla;
+>
+>
+> extern char *bobo1(char *, char*);
+> extern char *bobo2(char *, char*);
+>
+> /**********************************************************/
+> Bla table[] = {
+>   {1, bobo1},
+>   {2, bobo2}
+> };
+> 
+> int
+> main(int argc, char **argv)
+> {
+>   char *s1 = malloc(10);
+>   char *s2 = malloc(20);
+> 
+>   s1 = table[0].bobo(s1, s2);
+>
+>   return 0;
+> }
+
+In fact, the annotations you have are correct, the problem is that there
+is (was) a bug in the way lclint handles pointers to functions.  What
+should happen here is you get an error when table[] is initialized,
+since bobo2 does not match the annotations of type Bobo.
+
+I've updated lclint to version 2.3i that fixes this problem.
+
+--- Dave
+
+
+
+
+</pre>
+<A HREF="149.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="151.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

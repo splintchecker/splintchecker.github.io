@@ -1,0 +1,137 @@
+<html>
+<head>
+<title>Release 2.2</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<center>
+<H2>
+LCLint Version 2.2
+</H2>
+<em>26 August 1996</em>
+</center>
+<P>
+Version 2.2 is a minor upgrade to the last publically released version
+of LCLint, Version 2.1b. 
+<p>
+<h3> Bug Fixes </h3>
+<a href="release2.2-bugs.html">All known bugs in Version 2.1b</a> have been fixed.
+
+<h3> New Features </h3>
+
+<h4> <A href="guide/appF.html">Libraries</a> </h4>
+
+The LCLint distribution now includes a POSIX standard library
+(contributed by Jens Schweikhardt).  Strict versions of the POSIX and
+UNIX libraries are also provided.  Flags may be used to select the
+standard libraries: <a href="guide/appC.html#flag-posixlib">
+<tt>posixlib</tt></a>, <a href="guide/appC.html#flag-posixstrictlib"><tt>posixstrictlib</tt></a>,
+<a href="guide/appC.html#flag-unixlib">
+<tt>unixlib</tt></a> and 
+<a href="guide/appC.html#flag-unixstrictlib">
+<tt>unixstrictlib</tt></a>.  The <a
+href="guide/appC.html#flag-skipposixheaders"><tt>skip-posix-headers</tt></a>
+flag controls inclusion of header files associated with the POSIX
+library when a library that includes the POSIX library (either
+<tt>posixlib</tt> or <tt>unixlib</tt>) is ussed.
+
+<h4> Prototype Parameters </h4>
+
+If <a
+href="guide/appC.html#flag-protoparamname"><tt>proto-param-name</tt></a>
+is set, LCLint will report messages for named parameters in prototypes.
+(Note, this is dangerous since the name could be defined by a macro.)  A
+new <a href="guide/sec9.html#sec-9.2">namespace</a> is added to handle prototype parameter names --- the
+<a
+href="guide/appC.html#flag-protoparamprefix"><tt>proto-param-prefix</tt></a> and
+<a
+href="guide/appC.html#flag-protoparamprefixexclude"><tt>proto-param-prefix-exclude</tt></a>
+flags control checking for prototype parameter names.  If
+<tt>proto-param-match</tt> is set, a message is reported if the name of
+the parameter in the prototype (after removing the
+<tt>protoprarmprefix</tt>, if set) does not match the name of the
+corresponding parameter in the function definition.
+
+<h4> Array Formal Parameters </h4>
+
+LCLint reports an error if the <tt>sizeof</tt> operator is used with an
+operand that is a formal parameter declared as an array (controlled by
+<a
+href="guide/appC.html#flag-sizeofformalarray"><tt>sizeof-formal-array</tt></a>).
+<p>
+A message is reported is a formal array parameter is declared with a
+size if <a href="guide/appC.html#flag-fixedformalarray"><tt>fixed-formal-array</tt></a> is set.  A message is reported for
+any formal array parameter if <a
+href="guide/appC.html#flag-formalarray"><tt>formal-array</tt></a> is set.
+
+<h4> Flag Names</h4>
+
+Flag names may now include hyphens (<tt>-</tt>), underscores
+(<tt>_</tt>) and spaces to enhance legibility.  These characters are
+stripped from the flag before it is interpreted.
+
+<h4> <a href="guide/sec3.html#sec-3.4.4">Arbitrary Integral Types</a> </h4>
+
+LCLint now supports more flexible arbitrary integral types, including
+<tt>unsignedintegral</tt> and <tt>signedintegral</tt>.
+
+<h4> Other New Flags </h4>
+
+<tt>cpp-names</tt>
+<blockquote>
+Identifier is a C++ keyword or reserved word. This could lead to
+problems if the code is compiled with a C++ compiler. 
+</blockquote>
+
+<tt>mod-file-sys</tt>
+<blockquote>
+Report undocumented file system modifications.
+</blockquote>
+<tt>nest-comment</tt>
+<blockquote>
+      A comment open sequence (<tt>/*</tt>) appears within a comment.  This usually
+      means an earlier comment was not closed.
+</blockquote>
+<tt>nested-extern</tt>
+<blockquote>
+      An <tt>extern</tt> declaration is used inside a function scope.
+</blockquote>
+
+<h3> Thanks </h3>
+
+Many people have contributed to this release with suggestions for new
+features, bug reports, and bug fixes.  As always, LCLint development is
+largely user-driven, and your comments and suggestions are much
+appreciated.  Special thanks go to Richard O'Keefe for suggesting many
+of the new checks and Jens Schweikhardt for contributing the POSIX
+library.  I hope his example will inspire others to contribute standard
+libraries to future LCLint releases.
+
+<p>
+
+<h3>Previous release notices</h3>
+
+<ul>
+<li> <a href="release1.3.html">Version 1.3</a>
+<li> <a href="release1.4.html">Version 1.4</a>
+<li> <a href="release1.4a.html">Version 1.4a</a>
+<li> <a href="release1.4c.html">Version 1.4c</a>
+<li> <a href="release2.0.html">Version 2.0</a>
+<li> <a href="release2.1a.html">Version 2.1a</a>
+<li> <a href="release2.1b.html">Version 2.1b</a>
+</ul>
+
+<HR>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

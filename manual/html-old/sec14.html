@@ -1,0 +1,449 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 14. Libraries and Header File Inclusion</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+
+
+<h1 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975028"></a><a name="_Ref534642392"></a><a name=
+"_Ref349900301">14<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<a id="libraries" name="libraries">
+Libraries</a> and Header File Inclusion</a></h1>
+<p class="TextFontCX">Libraries can be used to record interface
+information.&nbsp; A library containing information about the
+standard C Library is used to enable checking of library
+calls.&nbsp; Program libraries can be created to enable fast
+checking of single modules in a large program.</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975029"></a><a name="_Ref534035506"></a><a name=
+"_Ref348801560"></a><a name="_Ref347465531"></a><a name=
+"_Ref344887939"></a><a name="_Toc344355445">14.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Standard Librar</a>ies</h2>
+<p class="TextFontCX">In order to check calls to library functions,
+Splint uses an annotated standard library.&nbsp; This contains more
+information about function interfaces then is available in the
+system header files since it uses annotations.&nbsp; Further, it
+contains only those functions documented in the ISO C99
+standard.&nbsp; Many systems include extra functions in their
+system libraries; programs that use these functions cannot be
+compiled on other systems that do not provide them.&nbsp; Certain
+types defined by the library are treated as abstract&nbsp;types
+(e.g., a program should not rely on how the <span class=
+"CodeText"><span style='font-size:10.0pt'>FILE</span></span> type
+is implemented).&nbsp; When checking source code, Splint does
+include system headers corresponding to files in the library, but
+instead uses the library description of the standard library.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">The Splint distribution includes several
+different standard libraries: the ANSI standard library, the POSIX
+standard library<a href="appNotes.html#_ftn9" name="_ftnref19" title=
+""><span class="MsoFootnoteReference"><span class=
+"MsoFootnoteReference"><span style=
+'font-size:11.0pt;font-family:"Times New Roman"'>[19]</span></span></span></a>,
+and a UNIX library based on the Open Group&#8217;s Single Unix
+Specification.&nbsp; Each library comes in two versions: the
+standard version and the strict version.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975030">14.1.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;</span> ISO
+Standard Library</a></h3>
+<p class="TextFontCX">The default behavior of Splint is to use the
+ISO standard library (loaded from <span class=
+"CodeText"><span style=
+'font-size:10.0pt'>standard.lcd</span></span>).&nbsp; This library
+is based on the standard library described in the ISO C99
+standard.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975031">14.1.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;</span> POSIX
+Library</a></h3>
+<p class="TextFontCX">The POSIX library is selected by the
+<span class="Flag"><span style=
+'font-size:10.0pt'>+posixlib</span></span> flag.&nbsp;&nbsp; The
+POSIX library is based on the IEEE Std 1003.1-1990. &nbsp;</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975032">14.1.3<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;</span> UNIX
+Library</a></h3>
+<p class="afterlist">The UNIX library is selected by the
+<span class="Flag"><span style=
+'font-size:10.0pt'>+unixlib</span></span> flag.&nbsp; This library
+is based on the Open Group&#8217;s Single Unix Specification,
+Version 2.&nbsp; In the UNIX library, <span class=
+"CodeText"><span style='font-size:10.0pt'>free</span></span> is
+declared with a non-null&nbsp;parameter.&nbsp; ISO specifies that
+<span class="CodeText"><span style=
+'font-size:10.0pt'>free</span></span> should handle the argument
+<span class="CodeText"><span style=
+'font-size:10.0pt'>NULL</span></span>, but several UNIX platforms
+crash if <span class="CodeText"><span style=
+'font-size:10.0pt'>NULL</span></span> is passed to
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>free</span></span>.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975033">14.1.4<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;</span> Strict
+Libraries</a></h3>
+<p class="TextFontCX">Stricter versions of the libraries are used
+is the <span class="Flag"><span style=
+'font-size:10.0pt'>-ansi-strict</span></span>, <span class=
+"Flag"><span style=
+'font-size:10.0pt'>posix-strict-lib</span></span>&nbsp;or
+<span class="Flag"><span style=
+'font-size:10.0pt'>unix-strict-lib</span></span>&nbsp;flag is used.
+These libraries use a stricter interpretation of the library.&nbsp;
+They will detect more errors in some programs, but may to produce
+many spurious errors for typical code.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="beforelist">The differences between the standard
+libraries and the strict libraries are:</p>
+<p class="MsoListBullet"><span style=
+'font-family:Symbol'>&#183;<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+The standard libraries declare the printing functions
+      (<span class="CodeText"><span style=
+      'font-size:10.0pt'>fprintf</span></span>, <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>printf</span></span>, and <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>sprintf</span></span>) that may return
+      error codes to return <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span> or <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>void</span></span>.&nbsp; This prevents
+      typical programs from leading to deluge of ignored return
+      value errors, but may mean some relevant errors are not
+      detected.&nbsp; In the strict library, they are declared to
+      return <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span>, so ignored return value
+      errors will be reported (depending on other flag
+      settings).&nbsp; Programs should check that this return value
+      is non-negative.</p>
+<p class="MsoListBullet"><span style=
+'font-family:Symbol'>&#183;<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+The standard libraries declare some parameters and return values to
+be alternate types (<span class="CodeText"><span style=
+'font-size:10.0pt'>int</span></span> or <span class=
+"CodeText"><span style='font-size:10.0pt'>bool</span></span>, or
+<span class="CodeText"><span style=
+'font-size:10.0pt'>int</span></span> or <span class=
+"CodeText"><span style=
+'font-size:10.0pt'>char</span></span>).&nbsp; The ISO C99 standard
+specifies these types as <span class="CodeText"><span style=
+'font-size: 10.0pt'>int</span></span> to be compatible with older
+versions of the library, but logically they make more sense as
+<span class="CodeText"><span style=
+'font-size:10.0pt'>bool</span></span> or <span class=
+"CodeText"><span style='font-size:10.0pt'>char</span></span>.&nbsp;
+In the strict library, the stronger type is used.&nbsp; The
+parameter to <span class="CodeText"><span style=
+'font-size:10.0pt'>assert</span></span>&nbsp;is <span class=
+"CodeText"><span style='font-size:10.0pt'>int</span></span> or
+<span class="CodeText"><span style=
+'font-size:10.0pt'>bool</span></span> in the standard library, and
+<span class="CodeText"><span style=
+'font-size:10.0pt'>bool</span></span> in the strict library.&nbsp;
+The parameter to the character functions <span class=
+"CodeText"><span style='font-size:10.0pt'>isalnum</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>isalpha</span></span>, <span class=
+"CodeText"><span style='font-size:10.0pt'>iscntrl</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>isdigit</span></span>, <span class=
+"CodeText"><span style='font-size:10.0pt'>isgraph</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>islower</span></span>, <span class=
+"CodeText"><span style='font-size:10.0pt'>isprint</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>ispunct</span></span>, <span class=
+"CodeText"><span style='font-size:10.0pt'>isspace</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>isupper</span></span>, <span class=
+"CodeText"><span style='font-size:10.0pt'>isxdigit</span></span>,
+<span class="CodeText"><span style=
+'font-size:10.0pt'>tolower</span></span>&nbsp;and
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>toupper</span></span>&nbsp;is <span class=
+      "CodeText"><span style='font-size:10.0pt'>char</span></span>
+      or <span class="CodeText"><span style=
+      'font-size:10.0pt'>unsigned char</span></span> or
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span> in the standard library
+      and <span class="CodeText"><span style=
+      'font-size:10.0pt'>char</span></span> in the strict
+      library.&nbsp; The type of the return value of the character
+      classification functions (all of the previous character
+      functions except <span class="CodeText"><span style=
+      'font-size:10.0pt'>tolower</span></span> and <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>toupper</span></span>) is <span class=
+      "CodeText"><span style='font-size:10.0pt'>bool</span></span>
+      or <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span> in the standard library
+      and <span class="CodeText"><span style=
+      'font-size:10.0pt'>bool</span></span> in the strict
+      library.&nbsp; The type of the first parameter to
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>ungetc</span></span> is <span class=
+      "CodeText"><span style='font-size:10.0pt'>char</span></span>
+      or <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span> in the standard library
+      and <span class="CodeText"><span style=
+      'font-size:10.0pt'>char</span></span> in the strict library
+      (<span class="CodeText"><span style=
+      'font-size:10.0pt'>EOF</span></span> should not be passed to
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>ungetc</span></span>).&nbsp; The second
+      parameter to <span class="CodeText"><span style=
+      'font-size:10.0pt'>strchr</span></span>&nbsp;and <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>strrchr</span></span>&nbsp;is <span class=
+      "CodeText"><span style='font-size:10.0pt'>char</span></span>
+      or <span class="CodeText"><span style=
+      'font-size:10.0pt'>int</span></span> in the standard library
+      and <span class="CodeText"><span style=
+      'font-size:10.0pt'>char</span></span> in the strict
+      library.</p>
+<p class="MsoListBullet"><span style=
+'font-family:Symbol'>&#183;<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+The global variables <span class="CodeText"><span style=
+'font-size:10.0pt'>stdin</span></span>, <span class=
+"CodeText"><span style=
+'font-size:10.0pt'>stdout</span></span>&nbsp;and <span class=
+"CodeText"><span style=
+'font-size:10.0pt'>stderr</span></span>&nbsp;are declared as
+<span class="CodeText"><span style=
+'font-size:10.0pt'>unchecked</span></span> variables (see Section
+7.2) in the standard libraries.&nbsp; In the strict libraries, they
+are<span class="CodeText"><span style=
+'font-size:10.0pt'>checked</span></span>.</p>
+<p class="MsoListBullet"><span style=
+'font-family:Symbol'>&#183;<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>
+The global variable <span class="CodeText"><span style=
+'font-size:10.0pt'>errno</span></span>&nbsp;is declared
+      <span class="CodeText"><span style=
+      'font-size:10.0pt'>unchecked</span></span>&nbsp;in the
+      standard libraries, but declared <span class=
+      "CodeText"><span style=
+      'font-size:10.0pt'>checkedstrict</span></span>&nbsp;in the
+      strict libraries.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">If no library flag is used, Splint will load
+the standard library, <span class="Keyword"><span style=
+'font-size:10.0pt;font-family:Arial;color:windowtext'>standard.lcd</span></span>.&nbsp;
+If <span class="Flag"><span style=
+'font-size:10.0pt'>+nolib</span></span> is set, no library is
+loaded.&nbsp; The library source files can easily be modified, and
+new libraries created to better suit a particular application.</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975034"></a><a name="_Toc344355447">14.2<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Generating Libraries</a></h2>
+<p class="TextFontCX">To enable running Splint on large systems,
+mechanisms are provided for creating libraries containing necessary
+information.&nbsp; This means source files can be checked
+independently, after a library has been created. The command line
+option <span class="Flag"><span style=
+'font-size:10.0pt'>-dump</span></span> <span class=
+"Flag"><span style='font-size:10.0pt'><i>library</i></span></span>
+stores information in the file <span class=
+      "Keyword"><i><span style='font-size:10.0pt; font-family:Arial;color:windowtext'>
+library</span></i></span> (the default extension <span class=
+"Keyword"><span style=
+'font-size:10.0pt;font-family:Arial; color:windowtext'>.lcd</span></span>
+is added). Then, <span class="Flag"><span style=
+'font-size:10.0pt'>-load</span></span> <span class=
+"Flag"><span style='font-size:10.0pt'><i>library</i></span></span>
+loads the library.&nbsp; The library contains interface information
+from the files checked when the library was created.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975035">14.2.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;</span> Generating
+the Standard Libraries</a></h3>
+<p class="TextFontCX">The standard libraries are generated from
+header files included in the Splint distribution.&nbsp; Some
+libraries are generated from more than one header file.&nbsp; Since
+the POSIX library subsumes the standard library, the headers for
+the standard and POSIX libraries are combined to produce the POSIX
+library.&nbsp; Similarly, the UNIX library is composed of the
+standard, POSIX and UNIX headers.&nbsp; The header files include
+some sections that are conditionally selected by defining
+<span class="CodeText"><span style=
+'font-size:10.0pt'>STRICT</span></span>.&nbsp; The commands to
+generate the standard libraries are:</p>
+<p class="example" style=
+'margin-top:0in;margin-right:.2in;margin-bottom:0in; margin-left:.2in;margin-bottom:.0001pt'>
+splint -nolib ansi.h -dump ansi</p>
+<p class="example" style=
+'margin-top:0in;margin-right:.2in;margin-bottom:0in; margin-left:.2in;margin-bottom:.0001pt'>
+splint -nolib -DSTRICT ansi.h -dump ansistrict</p>
+<p class="example" style=
+'margin-top:0in;margin-right:.2in;margin-bottom:0in; margin-left:.2in;margin-bottom:.0001pt'>
+splint -nolib ansi.h posix.h -dump posix</p>
+<p class="example" style=
+'margin-top:0in;margin-right:.2in;margin-bottom:0in; margin-left:.2in;margin-bottom:.0001pt'>
+splint -nolib -DSTRICT ansi.h posix.h -dump posixstrict</p>
+<p class="example" style=
+'margin-top:0in;margin-right:.2in;margin-bottom:0in; margin-left:.2in;margin-bottom:.0001pt'>
+splint -nolib ansi.h posix.h unix.h -dump unix</p>
+<p class="example" style=
+'margin-top:0in;margin-right:.2in;margin-bottom:0in; margin-left:.2in;margin-bottom:.0001pt'>
+splint -nolib -DSTRICT ansi.h posix.h unix.h -dump unixstrict</p>
+<h2 style='margin-left:0in;text-indent:0in'><a name=
+"_Ref534979539"></a><a name="_Toc534975036"></a><a name=
+"_Ref348080056"></a><a name="_Toc344355448">14.3<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Header File Inclusion</a></h2>
+<p class="TextFontCX">The standard behavior of Splint on
+encountering</p>
+<p class="example"><span class="Keyword"><span style=
+'font-size:10.0pt'>#include &lt;<i>X</i>.h&gt;</span></span></p>
+<p class="TextFontCX">is to search for a file named
+      <span class="Keyword"><i><span style=
+      'font-size:10.0pt;font-family:Arial; color:windowtext'>X</span></i></span><span class="Keyword">
+<span style=
+'font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>
+on the include search path (set using <span class=
+"Flag"><span style='font-size: 10.0pt'>&#8211;I</span></span>) and
+then the system base include path (read from the <span class=
+"CodeText"><span style='font-size:10.0pt'>include</span></span>
+environment variable if set or using a default value, usually
+<span class="Keyword"><span style=
+'font-size:10.0pt;font-family:Arial;color:windowtext'>/usr/include</span></span>).&nbsp;
+If <span class="Keyword"><i><span style=
+'font-size:10.0pt;font-family:Arial; color:windowtext'>X</span></i></span><span class="Keyword">
+<span style=
+'font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>
+is the name of a header file in a loaded standard library and
+<span class="Keyword"><i><span style=
+'font-size:10.0pt;font-family:Arial;color:windowtext'>X</span></i></span><span class="Keyword">
+<span style=
+'font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>
+is found in a directory that is a system directory (as set by the
+<span class="Flag"><span style=
+'font-size:10.0pt'>-sysdirs</span></span> flag; the default is
+<span class="Keyword"><span style=
+'font-size:10.0pt;font-family:Arial;color:windowtext'>/usr/include</span></span>),
+<span class="Keyword"><i><span style=
+'font-size:10.0pt;font-family:Arial; color:windowtext'>X</span></i></span><span class="Keyword">
+<span style=
+'font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>
+will not be included if <span class="Flag"><span style=
+'font-size:10.0pt'>+skip-iso-headers</span></span>&nbsp;or
+<span class="Flag"><span style=
+'font-size:10.0pt'>+skip-posix-headers</span></span>&nbsp;(depending
+on whether <span class="Keyword"><i><span style=
+'font-size:10.0pt;font-family:Arial;color:windowtext'>X</span></i></span><span class="Keyword">
+<span style=
+'font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>
+is an ISO or POSIX header file) is on (both are on by
+default).&nbsp; To force all headers to be included normally, use
+<span class="Flag"><span style=
+'font-size: 10.0pt'>&#8209;skip-iso-headers</span></span>.&nbsp;</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Sometimes headers in system directories
+contain non-standard syntax that Splint is unable to parse.&nbsp;
+The <span class="Flag"><span style=
+'font-size:10.0pt'>+skip-sys-headers</span></span>&nbsp;flag may be
+used to prevent any include file in a system directory from being
+included.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">Splint is fast enough that it can be run on
+medium-size (10,000 line) programs without performance
+concerns.&nbsp; Libraries can be used to enable efficient checking
+of small modules in large programs.&nbsp; To further improve
+performance, header file inclusion can be optimized.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">When processing a complete system in which
+many files include the same headers, a large fraction of processing
+time is wasted re-reading header files unnecessarily.&nbsp; If you
+are checking a 100-file program, and every file includes
+<span class="Flag"><span style=
+'font-size:10.0pt;font-family:Arial;color:windowtext'>utils.h</span></span>,
+Splint will have to process <span class=
+      "Keyword"><span style='font-size:10.0pt; font-family:Arial;color:windowtext'>
+utils.h</span></span> 100 times (as would most C compilers).&nbsp;
+If the <span class="Flag"><span style=
+'font-size:10.0pt'>+single-include</span></span> flag is used, each
+header file is processed only once.&nbsp; Single header file
+processing produces a significant efficiency improvement when
+checking large programs split into many files, but is only safe if
+the same header file included in different contexts always has the
+same meaning (i.e., it does not depend on preprocessor variable
+defined differently at different inclusion sites).</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">When processing a single file in a large
+system, a large fraction of the time is spent processing included
+header files.&nbsp; This can be avoided if the information in the
+header files is stored in a library instead.&nbsp; If
+      <span class="Flag"><span style=
+      'font-size:10.0pt'>+never-include</span></span> is set,
+      inclusion of files ending in <span class="Flag"><span style=
+      'font-size: 10.0pt;font-family:Arial;color:windowtext'>.h</span></span>
+      is prevented.&nbsp; Files with different suffixes are
+      included normally.&nbsp; To do this the header files must not
+      include any expanded macros. That is, the header file must be
+      processed with <span class="Flag"><span style=
+      'font-size:10.0pt'>+all-macros</span></span>, and there must
+      be no <span class="Annot"><span style=
+      'font-size:10.0pt'>/*@notfunction@*/</span></span>&nbsp;control
+      comments in the header.&nbsp; Then, the <span class=
+      "Flag"><span style=
+      'font-size:10.0pt'>+never-include</span></span> flag may be
+      used to prevent inclusion of header files.&nbsp; Alternately,
+      non-function macros can be moved to a different file with a
+      name that does not end in <span class="Keyword"><span style=
+      'font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>.&nbsp;
+      Remember, that this file must be included directly from the
+      <span class="Keyword"><span style=
+      'font-size:10.0pt;font-family:Arial;color:windowtext'>.c</span></span>
+      file, since if it is included from an <span class=
+      "Keyword"><span style=
+      'font-size:10.0pt;font-family:Arial;color:windowtext'>.h</span></span>
+      file indirectly, that <span class="Keyword"><span style=
+      'font-size:10.0pt; font-family:Arial;color:windowtext'>.h</span></span>
+      file is ignored so the other file is never included.</p>
+<p class="TextFontCX">&nbsp;</p>
+<p class="TextFontCX">These options can be used for significant
+performance improvements on large systems.&nbsp; The performance
+depends on how the code is structured, but checking a single module
+in a large program is several times faster if libraries and
+<span class="Flag"><span style=
+'font-size:10.0pt'>+noinclude</span></span> are used.</p>
+<h3 style='margin-left:0in;text-indent:0in'><a name=
+"_Toc534975037">14.3.1<span style=
+'font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;</span>
+Preprocessing Constants</a></h3>
+<p class="TextFontCX">Splint defines the preprocessor constant
+<span class="CodeText"><span style=
+'font-size:10.0pt'>S_SPLINT_S</span></span> when preprocessing
+source files.&nbsp; If you want to include code that is processed
+only when Splint is used, surround the code with</p>
+<p class="TextFontCX" align="left" style='text-align: left'>
+<span class="Keyword"><span style=
+'font-size:10.0pt'>&nbsp;</span></span></p>
+<p class="TextFontCX" align="left" style='text-align: left'>
+<span class="Keyword"><span style='font-size:10.0pt'># ifdef
+S_SPLINT_S</span></span></p>
+<p class="TextFontCX" align="left" style='text-align: left'>
+&nbsp;&nbsp;&nbsp;&nbsp; &#8230;</p>
+<p class="TextFontCX"><span class="Keyword"><span style=
+'font-size:10.0pt'># endif</span></span></p>
+
+<p>
+<a href="appA.html"><b>Next:</b> Appendix A. Availability</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

@@ -1,0 +1,109 @@
+<A NAME="line44"></A><html><head>
+<title>ereftab.lcl</title>
+</head><body>
+<h3>ereftab.lcl</h3>
+<PRE>
+<A NAME="line1"></A>imports <A HREF="employee.lcl.html">employee</A>, <A HREF="eref.lcl.html">eref</A>;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>mutable type ereftab; 
+<A NAME="line4"></A> 
+<A NAME="line5"></A>ereftab ereftab_create(void) 
+<A NAME="line6"></A>{
+<A NAME="line7"></A>  /* ensures result' = empty; */
+<A NAME="line8"></A>}
+<A NAME="line9"></A> 
+<A NAME="line10"></A>void ereftab_insert(ereftab t, employee e, eref er) 
+<A NAME="line11"></A>{
+<A NAME="line12"></A>  /* requires getERef(t^, e) = erefNIL; */
+<A NAME="line13"></A>  modifies t;
+<A NAME="line14"></A>  /* ensures t' = add(t^, e, er); */
+<A NAME="line15"></A>}
+<A NAME="line16"></A> 
+<A NAME="line17"></A>bool ereftab_delete(ereftab t, eref er) 
+<A NAME="line18"></A>{
+<A NAME="line19"></A>  modifies t;
+<A NAME="line20"></A>  /* ensures result = in(t^, er) /\ t' = delete(t^, er); */
+<A NAME="line21"></A>}
+<A NAME="line22"></A> 
+<A NAME="line23"></A>eref ereftab_lookup(employee e, ereftab t) 
+<A NAME="line24"></A>{
+<A NAME="line25"></A>  /* ensures result = getERef(t^, e); */
+<A NAME="line26"></A>}
+<A NAME="line27"></A> 
+<A NAME="line28"></A>void ereftab_initMod(void) 
+<A NAME="line29"></A>{
+<A NAME="line30"></A>  modifies internalState;
+<A NAME="line31"></A>  ensures true;
+<A NAME="line32"></A>}
+<A NAME="line33"></A> 
+<A NAME="line34"></A>iter ereftab_elements(ereftab s, yield eref x);
+<A NAME="line35"></A> 
+<A NAME="line36"></A> 
+</pre>
+<HR>
+<A HREF="index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html"><IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A> <author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a><pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

@@ -1,0 +1,184 @@
+<html>
+<head>
+<title>LCLint Output</title>
+</head>
+<body bgcolor="#FFCC33" link="#CC0000" alink="#FF3300" vlink="#000088">
+<pre>
+gmake[2]: Entering directory `/u/evs/lclint/web/samples/db/namechecks'
+lclint +lh +checks -allimponly +allmacros +distinctexternalnames +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.1a --- 18 Apr 96
+
+< reading spec <A HREF="employee.lcl.html" target="source">employee.lcl</A> >
+<A HREF="employee.lcl.html#line6" target="source">employee.lcl:6,43</A>: External identifier gender is not distinguishable from
+                      gender_ANY in the first 6 characters (gender)
+  An external name is not distinguishable from another external name using the
+  number of significant characters. According to ANSI Standard (3.1), an
+  implementation may only consider the first 6 characters significant, and
+  ignore alphabetical case distinctions. The +externalnamelen <n> flag may be
+  used to change the number of significant characters, and -externalnamecaseinse
+  nsitive to make alphabetical case significant in external names. Use
+  -distinctexternalnames to suppress message.
+   <A HREF="employee.lcl.html#line6" target="source">employee.lcl:6,30</A>: Specification of gender_ANY
+<A HREF="employee.lcl.html#line16" target="source">employee.lcl:16,3</A>: External identifier employee is not distinguishable from
+                      employeePrintSize in the first 6 characters (employ)
+   <A HREF="employee.lcl.html#line4" target="source">employee.lcl:4,14</A>: Specification of employeePrintSize
+<A HREF="employee.lcl.html#line18" target="source">employee.lcl:18</A>: External identifier employee_sprint is not distinguishable
+                    from employeePrintSize in the first 6 characters (employ)
+   <A HREF="employee.lcl.html#line4" target="source">employee.lcl:4,14</A>: Specification of employeePrintSize
+   One or more additional indistinguishable external names not reported
+<A HREF="employee.lcl.html#line27" target="source">employee.lcl:27</A>: External identifier employee_equal is not distinguishable from
+                    employeePrintSize in the first 6 characters (employ)
+   <A HREF="employee.lcl.html#line4" target="source">employee.lcl:4,14</A>: Specification of employeePrintSize
+   One or more additional indistinguishable external names not reported
+<A HREF="employee.lcl.html#line37" target="source">employee.lcl:37</A>: External identifier employee_setName is not distinguishable
+                    from employeePrintSize in the first 6 characters (employ)
+   <A HREF="employee.lcl.html#line4" target="source">employee.lcl:4,14</A>: Specification of employeePrintSize
+   One or more additional indistinguishable external names not reported
+<A HREF="employee.lcl.html#line49" target="source">employee.lcl:49</A>: External identifier employee_initMod is not distinguishable
+                    from employeePrintSize in the first 6 characters (employ)
+   <A HREF="employee.lcl.html#line4" target="source">employee.lcl:4,14</A>: Specification of employeePrintSize
+   One or more additional indistinguishable external names not reported
+< reading spec <A HREF="eref.lcl.html" target="source">eref.lcl</A> >
+<A HREF="eref.lcl.html#line22" target="source">eref.lcl:22</A>: External identifier eref_assign is not distinguishable from
+                eref_alloc in the first 6 characters (eref_a)
+   <A HREF="eref.lcl.html#line9" target="source">eref.lcl:9</A>: Specification of eref_alloc
+< reading spec <A HREF="empset.lcl.html" target="source">empset.lcl</A> >
+<A HREF="empset.lcl.html#line9" target="source">empset.lcl:9</A>: External identifier empset_final is not distinguishable from
+                 empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+<A HREF="empset.lcl.html#line15" target="source">empset.lcl:15</A>: External identifier empset_clear is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+<A HREF="empset.lcl.html#line21" target="source">empset.lcl:21</A>: External identifier empset_insert is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+<A HREF="empset.lcl.html#line27" target="source">empset.lcl:27</A>: External identifier empset_insertUnique is not distinguishable
+                  from empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+<A HREF="empset.lcl.html#line34" target="source">empset.lcl:34</A>: External identifier empset_delete is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+<A HREF="empset.lcl.html#line40" target="source">empset.lcl:40</A>: External identifier empset_union is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+<A HREF="empset.lcl.html#line45" target="source">empset.lcl:45</A>: External identifier empset_disjointUnion is not distinguishable
+                  from empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+<A HREF="empset.lcl.html#line52" target="source">empset.lcl:52</A>: External identifier empset_intersect is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+<A HREF="empset.lcl.html#line58" target="source">empset.lcl:58</A>: External identifier empset_size is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+<A HREF="empset.lcl.html#line63" target="source">empset.lcl:63</A>: External identifier empset_member is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+<A HREF="empset.lcl.html#line68" target="source">empset.lcl:68</A>: External identifier empset_subset is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+<A HREF="empset.lcl.html#line73" target="source">empset.lcl:73</A>: External identifier empset_choose is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+<A HREF="empset.lcl.html#line79" target="source">empset.lcl:79</A>: External identifier empset_sprint is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+<A HREF="empset.lcl.html#line84" target="source">empset.lcl:84</A>: External identifier empset_initMod is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+<A HREF="empset.lcl.html#line90" target="source">empset.lcl:90,6</A>: External identifier empset_elements is not distinguishable
+                    from empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+< reading spec <A HREF="ereftab.lcl.html" target="source">ereftab.lcl</A> >
+<A HREF="ereftab.lcl.html#line5" target="source">ereftab.lcl:5</A>: External identifier ereftab_create is not distinguishable from
+                  ereftab in the first 6 characters (erefta)
+   <A HREF="ereftab.lcl.html#line3" target="source">ereftab.lcl:3,1</A>: Specification of ereftab
+<A HREF="ereftab.lcl.html#line10" target="source">ereftab.lcl:10</A>: External identifier ereftab_insert is not distinguishable from
+                   ereftab in the first 6 characters (erefta)
+   <A HREF="ereftab.lcl.html#line3" target="source">ereftab.lcl:3,1</A>: Specification of ereftab
+   One or more additional indistinguishable external names not reported
+<A HREF="ereftab.lcl.html#line17" target="source">ereftab.lcl:17</A>: External identifier ereftab_delete is not distinguishable from
+                   ereftab in the first 6 characters (erefta)
+   <A HREF="ereftab.lcl.html#line3" target="source">ereftab.lcl:3,1</A>: Specification of ereftab
+   One or more additional indistinguishable external names not reported
+<A HREF="ereftab.lcl.html#line23" target="source">ereftab.lcl:23</A>: External identifier ereftab_lookup is not distinguishable from
+                   ereftab in the first 6 characters (erefta)
+   <A HREF="ereftab.lcl.html#line3" target="source">ereftab.lcl:3,1</A>: Specification of ereftab
+   One or more additional indistinguishable external names not reported
+<A HREF="ereftab.lcl.html#line28" target="source">ereftab.lcl:28</A>: External identifier ereftab_initMod is not distinguishable from
+                   ereftab in the first 6 characters (erefta)
+   <A HREF="ereftab.lcl.html#line3" target="source">ereftab.lcl:3,1</A>: Specification of ereftab
+   One or more additional indistinguishable external names not reported
+<A HREF="ereftab.lcl.html#line34" target="source">ereftab.lcl:34,6</A>: External identifier ereftab_elements is not distinguishable
+                     from ereftab in the first 6 characters (erefta)
+   <A HREF="ereftab.lcl.html#line3" target="source">ereftab.lcl:3,1</A>: Specification of ereftab
+   One or more additional indistinguishable external names not reported
+< reading spec <A HREF="erc.lcl.html" target="source">erc.lcl</A> >
+<A HREF="erc.lcl.html#line66" target="source">erc.lcl:66</A>: External identifier erc_initMod is not distinguishable from
+               erc_insert in the first 6 characters (erc_in)
+   <A HREF="erc.lcl.html#line17" target="source">erc.lcl:17</A>: Specification of erc_insert
+< reading spec <A HREF="dbase.lcl.html" target="source">dbase.lcl</A> >
+<A HREF="dbase.lcl.html#line4" target="source">dbase.lcl:4,30</A>: External identifier genderERR is not distinguishable from
+                   gender_ANY in the first 6 characters (gender)
+   <A HREF="employee.lcl.html#line6" target="source">employee.lcl:6,30</A>: Specification of gender_ANY
+< preprocessing >
+< checking <A HREF="employee.c.html" target="source">employee.c</A> >
+< checking <A HREF="eref.c.html" target="source">eref.c</A> >
+<A HREF="eref.h.html#line14" target="source">eref.h:14,3</A>: External identifier eref_ERP is not distinguishable from
+    eref_equal in the first 6 characters because alphabetical case is ignored
+   <A HREF="eref.lcl.html#line35" target="source">eref.lcl:35</A>: Specification of eref_equal
+< checking <A HREF="empset.c.html" target="source">empset.c</A> >
+<A HREF="empset.h.html#line8" target="source">empset.h:8,13</A>: External identifier empset is not distinguishable from
+                  empset_create in the first 6 characters (empset)
+   <A HREF="empset.lcl.html#line4" target="source">empset.lcl:4</A>: Specification of empset_create
+   One or more additional indistinguishable external names not reported
+< checking <A HREF="ereftab.c.html" target="source">ereftab.c</A> >
+< checking <A HREF="erc.c.html" target="source">erc.c</A> >
+< checking <A HREF="dbase.c.html" target="source">dbase.c</A> >
+<A HREF="dbase.c.html#line7" target="source">dbase.c:7,3</A>: External identifier employeeKinds is not distinguishable from
+                employeePrintSize in the first 6 characters (employ)
+   <A HREF="employee.lcl.html#line4" target="source">employee.lcl:4,14</A>: Specification of employeePrintSize
+   One or more additional indistinguishable external names not reported
+<A HREF="dbase.c.html#line21" target="source">dbase.c:21,58</A>: External identifier employeeKinds_all is not distinguishable
+                  from employeePrintSize in the first 6 characters (employ)
+   <A HREF="employee.lcl.html#line4" target="source">employee.lcl:4,14</A>: Specification of employeePrintSize
+   One or more additional indistinguishable external names not reported
+< checking <A HREF="drive.c.html" target="source">drive.c</A> >
+< checking macros <A HREF="bool.h.html" target="source">bool.h</A> >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 34 code errors found
+392 spec, 2986 source (1275 before pre-processing) lines in 4.62 s.
+gmake[2]: Leaving directory `/u/evs/lclint/web/samples/db/namechecks'
+</pre>
+<p>
+<hr>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Return"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+
+

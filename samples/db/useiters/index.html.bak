@@ -1,0 +1,138 @@
+<html
+<head>
+<title> LCLint Sample - Iterators</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<h1>
+LCLint Sample - Iterators<BR>
+</h1>
+
+<H3> Changes from <A HREF="../weakchecks/index.html">Weak Checks</A> </H3>
+
+<A HREF="diffs.html">Differences</A>
+<p>
+
+The anomalies detected in weak mode have been corrected:
+<P>
+<UL>
+<LI> Unused variable declarations removed
+<LI> Changed type of <tt>maxEmployeeName</tt> to <tt>size_t</tt>
+<LI> Used call to <tt>int_toUnsigned</tt> to check argument to <tt>malloc</tt>
+<LI> Fixed abstract violations by using calls to <tt>eref_equal</tt>
+<LI> Added <tt>assert</tt> to check result of <tt>hire</tt> call is <tt>db_OK</tt>
+<LI> Suppressed modification errors by using syntactic comments in the
+code (and fixed the one that used <tt>return</tt> inside the loop)
+</UL>
+<P>
+Now, running LCLint with weak checking detects <A HREF="lclint.out.html">no errors</A>.
+
+<H3> Modules </H3>
+
+<UL>
+<LI>employee - employee datatype (<A HREF="employee.lcl.html">LCL</A>,
+<A HREF="employee.c.html">Code</A>,  <A HREF="employee.h.html">Header</A>)
+<LI>empset - sets of employees (<A HREF="empset.lcl.html">LCL</A>,
+<A HREF="empset.c.html">Code</A>,  <A HREF="empset.h.html">Header</A>)
+<LI>dbase - database of employees (<A HREF="dbase.lcl.html">LCL</A>, 
+<A HREF="dbase.c.html">Code</A>,  <A HREF="dbase.h.html">Header</A>)
+<LI>eref - reference to an employee (<A HREF="eref.lcl.html">LCL</A>,
+<A HREF="eref.c.html">Code</A>,  <A HREF="eref.h.html">Header</A>)
+<LI>erc - collection of erefs (<A HREF="erc.lcl.html">LCL</A>, <A
+HREF="erc.c.html">Code</A>,  <A HREF="erc.h.html">Header</A>)
+<LI>ereftab - table of employees and erefs (<A
+HREF="ereftab.lcl.html">LCL</A>, <A HREF="ereftab.c.html">Code</A>, <A HREF="ereftab.h.html">Header</A>)
+</UL>
+
+<H3> Using <a href="../../../guide/guide.html#sec-8.4">Iterators</a> </h3>
+
+We had to suppress the modification errors because they used generators
+to go through a collection.  Instead, we can use stylized iterators.
+This has the advantage that LCLint will check the definition and use of
+the iterator, and the iterator is now clearly documented. 
+<P>
+The original code uses the <A
+HREF="erc.h.html#line25"><tt>for_ercElems</tt></A> macro to iterate through the elements of an <tt>erc</tt>.  This requires modifying the
+<tt>erc</tt>, creating an instance of the <tt>ercIter</tt> type, and
+destroying the <tt>ercIter</tt> at the end of the loop to restore the
+<tt>erc</tt> to its original state.  
+<P>
+Instead, we define an iterator that goes through each element of the
+<tt>erc</tt>, assigning a variable to the new element for each
+iteration.  The specification for <tt>erc_elements</tt> is:
+<PRE>
+iter erc_elements (erc c, yield eref el);
+</PRE>
+This could also be expressed directly in the C source or header file,
+as:
+<PRE>
+/*@iter erc_elements (erc c, yield eref el);@*/
+</PRE>
+The yield parameter, <tt>el</tt> is assigned a value corresponding to a
+different elements of the <tt>erc</tt> each time through the loop.  
+<P>
+Now we can rewrite the code to use the iterator.  For example, the loop
+in <A HREF="dbase.c.html#line45"> <tt>_db_ercKeyGet</tt></A>:
+<PRE>
+eref _db_ercKeyGet (erc c, int key)
+{
+  eref er;
+  ercIter it;
+  
+  for_ercElems (er, it, c)
+    {
+      if (eref_get (er).ssNum == key)
+	{
+	  erc_iterReturn (it, er);
+	}
+    }
+  
+  return erefNIL;
+}
+</PRE>
+is rewritten as:
+<PRE>
+static eref _db_ercKeyGet(erc c, int key) 
+{
+  erc_elements(c, er)
+    {
+      if (eref_get(er).ssNum == key) return (er);
+    } end_erc_elements ;
+  return erefNIL;
+}
+</PRE>
+<P>
+The <tt>erc_elements</tt> iterator and its matching end are defined using macros:
+
+<PRE>
+# define erc_elements(c, m_x) \
+  { erc m_c = (c); ercElem *m_ec = (m_c)-&gtvals; unsigned int m_i = 0; \
+    while (m_i &lt (m_c)-&gtsize) { \
+      eref m_x = m_ec-&gtval; m_ec = m_ec-&gtnext; m_i++;
+
+# define end_erc_elements }}
+</PRE>
+
+Similarly, <tt>empset_elements</tt>, <tt>erc_elements</tt> and
+<tt>ereftab_element</tt> are used to iterate through other collection
+types.
+<p>
+<HR>
+<A HREF="run.html">
+<IMG ALIGN=left SRC =
+"http://larch-www.lcs.mit.edu:8001/larch/lclint/lclint-run.jpg" ALT = "Run LCLint"></A>
+<A HREF="../standardchecks/index.html">
+<IMG ALIGN=left SRC =
+"http://larch-www.lcs.mit.edu:8001/larch/lclint/right-arrow.jpg" ALT = "Continue to Standard Checks"></A>
+<A HREF="../index.html">
+<IMG ALIGN=left SRC = "http://larch-www.lcs.mit.edu:8001/larch/lclint/up-arrow.jpg" ALT = "Return to Summary"></A>
+<A HREF="http://larch-www.lcs.mit.edu:8001/larch/lclint/index.html">
+<IMG ALIGN=left SRC = "http://larch-www.lcs.mit.edu:8001/larch/lclint/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://larch-www.lcs.mit.edu:8001/~evs">David
+Evans</a> <br>
+<A href="http://larch-www.lcs.mit.edu:8001/">Systematic Program Develpoment</A><br>
+<a
+href="mailto:evs@larch.lcs.mit.edu"><em>evs@larch.lcs.mit.edu</em></a>
+</author>
+</body>
+</html>

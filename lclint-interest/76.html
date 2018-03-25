@@ -1,0 +1,47 @@
+<h3>lclint-interest message 76</h3>
+<pre>
+From evans@cs.virginia.edu Thu May 16 12:24:30 1996
+Date: Thu, 16 May 96 12:19:06 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: Martin.Weitzel@rent-a-guru.de
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Martin Weitzel's message of Thu, 16 May 1996 15:29:24 +0100 (MEZ) <9605161429.AA05315@mwtech.rent-a-guru.de>
+Subject: ignored return value of printf
+
+
+Martin,
+
+LCLint does complain about ignored return values for printf, but only if
+the strict version of the standard library is used.  Use the +strictlib
+flag to get this.  The return value for printf (and similar functions)
+may be ignored if the standard library is used, since this is so common
+in practice (even if it can be dangerous).  There are some other
+differences between the strict and standard versions of the library that
+are described in Appendix F of the User's Guide
+(http://lclint.cs.virginia.edu/guide/appF.html).
+
+--- Dave
+
+PS. When the article is finished, if copyright allows, we'd be
+    interested in it posted here.  If not, lets us know where 
+    its available.
+
+
+
+
+</pre>
+<A HREF="75.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="77.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

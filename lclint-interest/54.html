@@ -1,0 +1,55 @@
+<h3>lclint-interest message 54</h3>
+<pre>
+From evs Thu Mar 21 12:26:40 1996
+Date: Thu, 21 Mar 96 11:57:58 -0500
+From: evs (David Evans)
+To: mikee@rd.bbc.co.uk
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Mike Ellis's message of Thu, 21 Mar 96 08:06:32 GMT <28325.9603210806@holly.rd.bbc.co.uk>
+Subject: Enumerated boolean types and printf("%lX", foo)
+
+
+Mike,
+
+> I normally use the following boolean type:
+>
+> typedef enum { false = (0==1), true } bool;
+>
+> However,  LCLint reports this as an error every time I use a bool 
+> variable or the enumerated names true and false.  It also claims
+
+The reason that you are getting errors is that lclint uses TRUE and
+FALSE as the default names of the boolean constants, not true and false.
+You can change this by using (you probably will want to add these to
+your .lclintrc file):
+
+	-booltrue true -boolfalse false
+	
+> generates the warning "Format argument 1 to printf (%X) expects long int 
+> gets unsignedlong int".  According to my copy of the ISO standard,
+> raw %X expects an unsigned int,  while %lX expects an unsigned long int.
+
+Looks like I have misinterpreted the standard here.  You're correct ---
+it should be an unsigned long int.  This is fixed in the source package
+now, and will be fixed in the binary packages soon.
+
+--- Dave
+
+
+
+</pre>
+<A HREF="53.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="55.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

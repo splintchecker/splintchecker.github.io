@@ -1,0 +1,59 @@
+<HTML>
+<PRE>
+lclint -allimponly +showscan +showfunc +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.0 --- 11 Feb 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+eref.c: (in function eref_initMod)
+<A HREF="eref.c.html#line56">eref.c:56,14</A>: Global storage eref_Pool contains 2 undefined fields when call
+                 returns: status, size
+  Storage derivable from a parameter, return value or global is not defined. 
+  Use /*@out@*/ to denote passed or returned storage which need not be defined.
+   Use -compdef to suppress message.
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+erc.c: (in function erc_delete)
+<A HREF="erc.c.html#line105">erc.c:105,5</A>: Arrow access from possibly null pointer prev: prev->next
+  A possibly null pointer is dereferenced or misused.  Value is either the
+  result of a function which may return null (in which case, code should check
+  it is not null), or a global, parameter or structure field declared with the
+  null qualifier.  Use -null to suppress message.
+   <A HREF="erc.c.html#line101">erc.c:101,29</A>: Storage prev may become null
+< checking dbase.c >
+< checking drive.c >
+drive.c: (in function main)
+<A HREF="drive.c.html#line140">drive.c:140,16</A>: Fresh storage em1 not released before assignment:
+                   em1 = empset_create()
+  A memory leak has been detected.  Newly-allocated or only-qualified storage
+  is not released before the last reference to is it lost.  Use -mustfree to
+  suppress message.
+   <A HREF="drive.c.html#line35">drive.c:35,3</A>: Fresh storage em1 allocated
+<A HREF="drive.c.html#line146">drive.c:146,16</A>: Fresh storage em2 not released before assignment:
+                   em2 = empset_create()
+   <A HREF="drive.c.html#line74">drive.c:74,3</A>: Fresh storage em2 allocated
+<A HREF="drive.c.html#line147">drive.c:147,3</A>: Fresh storage em3 not released before assignment:
+                  em3 = empset_disjointUnion(em2, em1)
+   <A HREF="drive.c.html#line87">drive.c:87,3</A>: Fresh storage em3 allocated
+<A HREF="drive.c.html#line163">drive.c:163,12</A>: Fresh storage em1 not released before return
+   <A HREF="drive.c.html#line140">drive.c:140,16</A>: Fresh storage em1 allocated
+<A HREF="drive.c.html#line163">drive.c:163,12</A>: Fresh storage em2 not released before return
+   <A HREF="drive.c.html#line146">drive.c:146,16</A>: Fresh storage em2 allocated
+<A HREF="drive.c.html#line163">drive.c:163,12</A>: Fresh storage em3 not released before return
+   <A HREF="drive.c.html#line147">drive.c:147,3</A>: Fresh storage em3 allocated
+< checking macros bool.h >
+< global checks >
+< cleaning ......... >
+
+Finished LCLint checking --- 8 code errors found
+391 spec, 2837 source (1219 before pre-processing) lines in 7.00 s.
+</PRE>
+</HTML>

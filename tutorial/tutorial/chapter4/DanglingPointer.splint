@@ -1,0 +1,10 @@
+Splint 3.0.1.4 --- 19 Jan 2002
+
+DanglingPointer.c: (in function main)
+DanglingPointer.c:8:3: Variable ip used after being released
+  Memory is used after it has been released (either by passing as an only param
+  or assigning to an only global). (Use -usereleased to inhibit warning)
+   DanglingPointer.c:7:8: Storage ip released
+
+Finished checking --- 1 code warning
+10 source lines in 0.02 s.

@@ -1,0 +1,89 @@
+<A NAME="line0"></A><html><head>
+<title>annotglobs.c</title>
+</head><body>
+<h3>annotglobs.c</h3>
+<PRE>
+<A NAME="line1"></A>int globnum;
+<A NAME="line2"></A> 
+<A NAME="line3"></A>struct { 
+<A NAME="line4"></A>  char *firstname;
+<A NAME="line5"></A>  char *lastname;
+<A NAME="line6"></A>  int id; 
+<A NAME="line7"></A>} globname;
+<A NAME="line8"></A> 
+<A NAME="line9"></A>void 
+<A NAME="line10"></A>initialize (/*@only@*/ char *name)
+<A NAME="line11"></A>  /*@globals undef globnum,
+<A NAME="line12"></A>             undef globname @*/
+<A NAME="line13"></A>{
+<A NAME="line14"></A>  globname.id = globnum;
+<A NAME="line15"></A>  globname.lastname = name;
+<A NAME="line16"></A>}
+<A NAME="line17"></A> 
+<A NAME="line18"></A>void finalize (void)
+<A NAME="line19"></A>   /*@globals killed globname@*/
+<A NAME="line20"></A>{
+<A NAME="line21"></A>  free (globname.lastname);
+<A NAME="line22"></A>}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

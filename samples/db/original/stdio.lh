@@ -1,0 +1,12 @@
+/* Output from LCLint 2.1a */
+# include "bool.h"
+
+
+extern const FILE  *stdin;
+extern const FILE  *stdout;
+extern const FILE  *stderr;
+
+# ifndef EXPOSED_TYPE_ioStream
+typedef char ioStream[];
+# endif
+

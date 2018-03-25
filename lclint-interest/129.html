@@ -1,0 +1,36 @@
+<h3>lclint-interest message 129</h3>
+<pre>
+From seebs@solon.com Sun Dec 22 14:49:35 1996
+Date: Sun, 22 Dec 1996 11:18:57 -0600 (CST)
+From: Peter Seebach <seebs@solon.com>
+To: lclint-interest@larch.lcs.mit.edu
+Subject: Re: FILE object resource leaks
+
+The problem is, it's not a leak to never fclose() a FILE, unless you
+terminate abnormally.  Or, at least, it's guaranteed that they're closed
+at termination... How would we represent that?
+
+It's actually fairly hard to identify a memory leak which recovers before
+termination; I had a bug like this, where my program would get up into
+the 20-30 MB range, even though it was only *using* about 20k of memory,
+but since it freed it all before exiting, it was fairly hard to tell.
+
+-s
+
+
+</pre>
+<A HREF="128.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="130.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

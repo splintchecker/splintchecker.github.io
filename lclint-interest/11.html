@@ -1,0 +1,49 @@
+<h3>lclint-interest message 11</h3>
+<pre>
+From: evs (David Evans)
+Subject: ``imports'' clause
+To: wilma@deis65.cineca.it
+Date: Mon, 7 Nov 94 15:40:09 -0500
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Wilma Penzo's message of Mon, 7 Nov 1994 21:18:02 +0100 (MET) <9411072018.AA05712@deis65.cineca.it>
+
+
+Sorry, my earlier answer was somewhat unclear.  LCL types, variables and
+constants may be used, but not functions.  (My guess is that this was
+done to make the distinction between the interface specification and the
+shared specification clear and to make sure the ensures clause has
+defined semantics?  Perhaps Yang Meng, Jim or John can clarify/correct
+me on this one.)
+
+Note that this doesn't have anything to do with the imports clause.  You
+cannot use an LCL function in the ensures clause even if it is defined
+in the same LCL module.  
+
+> Well, there was any confusion in the use of LCL functions in
+> the ensures clause. I purposely used them since I believed 
+> it was possible (as it is suggested in the literature).
+
+Where?  It shouldn't be.  (Although, the only clear explanation I could
+find of what goes in a function specification is in Yang Meng Tan's
+thesis (MIT/LCS/TR-619) p. 109.)
+
+Hope this clears things up,
+
+--- Dave
+
+</pre>
+<A HREF="10.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="12.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

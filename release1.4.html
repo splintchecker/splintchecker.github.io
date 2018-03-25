@@ -1,0 +1,215 @@
+<html>
+<head>
+<title>LCLint Version 1.4</title>
+</head>
+<body>
+
+<H1>
+LCLint Version 1.4<BR>
+</H1>
+
+<em>This is a release notice for an obsolete version of LCLint.  It is
+included for archival purposes only.</em>
+<p>
+<pre>
+			   LCLint Version 1.4
+		       MIT/LCS Distribution Site
+			     7 October 1994
+
+			      David Evans
+			 evans@cs.virginia.edu
+
+Contents:
+   1. Overview
+   2. Changes from Version 1.3
+   3. Availability
+   4. References
+   5. Feedback and Mailing Lists
+
+1. Overview
+
+LCLint is a lint-like tool for ANSI C.  It can be used like a traditional
+lint to detect certain classes of C errors statically; if formal
+specifications are also supplied, it can do more powerful checking to
+detect inconsistencies between specifications and code.
+
+Without specifications, LCLint does many of the checks done by a
+traditional lint.  It reports unused declarations, type inconsistencies,
+use-before-definition, unreachable code, ignored return values,
+execution paths with no return, likely infinite loops, and fall-through
+cases.  It provides options for stricter type-checking than standard C
+(e.g., char and bool types can be treated as distinct from ints.).  It
+does not do much of the portability checking (e.g., pointer alignment)
+done by typical lints.
+
+With partial specifications, written in the Larch interface language,
+LCL, LCLint does stronger checking.  For example, a one-line
+specification file can declare a type as abstract; LCLint checks that
+the data abstraction barrier is maintained in clients of the type.  This
+provides the advantages of data encapsulation, making programs easier to
+understand and maintain.
+
+Adding more specifications enables further checking, including the
+detection of:
+
+   o inconsistent use of global variables
+   o undocumented modification of client-visible state
+   o inconsistent use of an uninitialized formal parameter or 
+        failure to initialize an actual parameter
+   o macros specified as functions do not behave functionally
+
+LCLint can be customized to a particular coding style using command line
+flags.  Stylized comments may be used to suppress messages and control
+checking at a local level.
+
+2. Changes from Version 1.3
+
+This list briefly describes the main changes between version 1.3 and
+version 1.4.  For more details, see the User's Guide.  Since some of
+these changes produce stricter checking, new errors may be programs
+which were checked using old versions of lclint.
+
+New Platforms:
+
+In addition to the original platforms (DEC Alpha AXP running OSF/1,
+DECstation running Ultrix, Sun workstation (Sparc) running Solaris 2,
+and Sun workstation (Sparc) running SunOS4.1/Solaris), lclint now
+supports PC running linux and SGIs runing IRIX.  It has also been
+compiled sucessfully on several other platforms.  Source code is freely
+available if you are interested in building a version for some other
+platform.
+
+Changes:
+
+o must modify checking (off in default mode, use +mustmod)
+    reports instances where a specified modification is not detected in
+    the implementation.
+
+o rep exposure (off in default mode, use +repexpose, +retexpose, +assignexpose)
+    reports instances where an abstract representation is exposed by
+    either:
+	1. returning a pointer or mutable object which is a
+	      component of an abstract representation (+retexpose)
+        2. assigning a component of an abstract type to a pointer or
+	      mutable object to which the client has access (+assignexpose)
+    (+repexpose turns both on)	
+
+o return aliases (off in default mode, use +retalias)
+    reports instances where the return value is an alias to a parameter
+    or global
+
+o support for stylized iterators 
+    see User's Guide, section 1.5.
+
+o checking unspecified macros as functions (off in default mode,
+	use +allmacros)
+    prevents expansion of all parameterized macros and checks them
+    as functions of unknown type.  When using +allmacros, a single
+    macro definition can be preceded by /*@notfunction*/ to force
+    its expansion and prevent it being checked as a function.
+
+o printf, scanf (and variants) format arguments checking
+    checks types of additional arguments to printf and scanf calls
+    if the format string is known at compile time.
+
+o boolean comparisons (on in default mode, use -boolcompare to suppress)
+    reports instances where bool values are compared
+    (dangerous since C allows multiple true values)
+
+o checks mode
+    new mode with checking between standard and strict
+
+o .lclintrc
+    the .lclintrc file in the current directory (if it exists) is now
+    read, after the ~/.lclintrc file.
+
+Bug fixes:
+
+As far as I know, all known bugs in version 1.3 have been fixed.  If you
+encountered a bug in version 1.3 that has not been fixed in version 1.4,
+please send a bug report to lclint-bug@larch.lcs.mit.edu.
+
+o grammar parse problems
+o include file semantics in different directories
+o abstract bool (+bool) now handles abstract access correctly
+
+3. Availability
+
+LCLint is available by anonymous ftp from larch.lcs.mit.edu in
+pub/Larch/lclint/.
+
+Installation pacakages are available for the following platforms:
+
+    o DEC Alpha AXP running OSF/1 (alpha) 
+    o DECstation running Ultrix (decmips)
+    o Sun workstation (Sparc) running Solaris 2 (solaris2)
+    o Sun workstation (Sparc) running SunOS4.1/Solaris 1 (sun4)
+    o PC running linux (linux)
+    o SGIs runing IRIX (irix)
+
+The easiest, most complete way is to pick up one file containing
+everything you need to run lclint.  These are called:
+
+	lclint<version>.<platform>.tar.Z
+
+Each installation package includes the lclint executable, library files,
+manual pages, user's guide, an emacs mode, and a few samples.  Packages
+may be uncompressed using gunzip.
+
+For more information on installation packages, read the file
+pub/Larch/lclint/INSTALL.  (This file is included in the installation
+packages also.)
+
+4. References
+
+More information on LCLint is available in "Using Specifications to
+Check Source Code", David Evans, MIT/LCS/TR-628.  Available as hard-copy
+from MIT Laboratory of Computer Science, Reading Room, 545 Technology
+Square, Cambridge, MA 02139.  Available electronically as
+ftp://ftp.sds.lcs.mit.edu/pub/lclint/tr.ps.Z.
+
+A web page on the Larch project is available at URL
+    http://larch-www.lcs.mit.edu:8001/larch/
+
+A web page for LCLint specifically, including an html version of the
+User's Guide, is available at URL
+
+   http://www.sds.lcs.mit.edu/lclint.html
+
+There are two mailing lists associated with LCLint:
+
+   lclint-announce@larch.lcs.mit.edu
+
+      Reserved for announcements of new releases and bug fixes.
+
+   lclint-interest@larch.lcs.mit.edu
+
+      Informal discussions on the use and development of lclint.
+
+Send a (human-readable) message to lclint-request@larch.lcs.mit.edu to
+subscribe to a list.
+
+-------------------------------------------------------------------------
+
+LCLint is the result of a joint R&D project (Larch) involving Digital
+Equipment Corporation and MIT.  It was written in ANSI C by David Evans,
+building on an LCL checker written by Yang Meng Tan, which in turn built
+on work done by Gary Feldman, Steve Garland, and Joe Wild.  Thanks to
+Chris Flatters for producing the Solaris port and Thomas G. McWilliams
+for the linux port.  Many others have reported bugs or provided useful
+suggestions for improving LCLint.
+</pre>
+<P>
+<HR>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">Systematic Program Developsment</A><br>
+<a
+href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
+
+

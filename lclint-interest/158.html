@@ -1,0 +1,57 @@
+<h3>lclint-interest message 158</h3>
+<pre>
+From evans@cs.virginia.edu Mon Sep 22 15:37:27 1997
+Date: Mon, 22 Sep 97 15:36:00 -0400
+From: evans@cs.virginia.edu (David Evans)
+To: kir@iitb.fhg.de
+Cc: lclint-interest@larch.lcs.mit.edu
+In-Reply-To: Harald Kirsch's message of Mon, 22 Sep 1997 16:43:09 +0200 <199709221443.QAA06683@s424.iitb.fhg.de>
+Subject: How to annotate
+
+
+Harald writes: 
+
+> I understand that the case is for lclint not as trivial as it may appear
+> to us. It has to prove that the value of `i' does not change between the
+> two if-statements.
+> 
+> However, I thought lclint does some data-flow analysis and I cannot
+> decide, if it should know that `f' is defined at the place where it
+> gives the error.
+
+LCLint doesn't do deep enough analysis to determine that the second
+predicate is true only if the first predicate was also true and f is
+therefore defined.  
+
+Richard Brooksby's point that the code should be rewritten not annotated
+is a good one.  (Of course, I understand that this is just an example to
+make things as simple as possible.)  In general, I would claim that many
+of the times lclint reports spurious errors because it cannot determine
+that the code is correct are the same types of code that it is hard for
+a human to determine it is correct (and know what that correctness
+depends on so it will break when maintainence changes are made).
+
+If you want to suppress the warning, you could use the /*@-usedef@*/
+syntactic comment:
+
+	/*@-usedef@*/ float g = f; /*@=usedef@*/
+
+--- Dave
+
+
+</pre>
+<A HREF="157.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="159.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

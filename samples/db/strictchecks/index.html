@@ -1,0 +1,257 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>LCLint Sample - Strict Checks</title>
+</head>
+<body>
+<!--#include virtual="../../../header.html"-->
+
+<center><h1>
+Strict Checks
+</h1></center>
+
+<H3> Changes from <A HREF="../namechecks/index.html">Naming Conventions</A> </H3>
+
+<A HREF="diffs.html">Differences</A>
+<p>
+Replaced names to match selected naming convention.
+<p>
+Now, running LCLint in checks mode detects <a
+href="lclint-checks.out.html">no anomalies</a>.
+<P>
+
+<H3> Modules </H3>
+
+<UL>
+<LI>employee - employee datatype (<A HREF="employee.lcl.html">LCL</A>,
+<A HREF="employee.c.html">Code</A>,  <A HREF="employee.h.html">Header</A>)
+<LI>empset - sets of employees (<A HREF="empset.lcl.html">LCL</A>,
+<A HREF="empset.c.html">Code</A>,  <A HREF="empset.h.html">Header</A>)
+<LI>dbase - database of employees (<A HREF="dbase.lcl.html">LCL</A>, 
+<A HREF="dbase.c.html">Code</A>,  <A HREF="dbase.h.html">Header</A>)
+<LI>eref - reference to an employee (<A HREF="eref.lcl.html">LCL</A>,
+<A HREF="eref.c.html">Code</A>,  <A HREF="eref.h.html">Header</A>)
+<LI>erc - collection of erefs (<A HREF="erc.lcl.html">LCL</A>, <A
+HREF="erc.c.html">Code</A>,  <A HREF="erc.h.html">Header</A>)
+<LI>ereftab - table of employees and erefs (<A
+HREF="ereftab.lcl.html">LCL</A>, <A HREF="ereftab.c.html">Code</A>, <A HREF="ereftab.h.html">Header</A>)
+</UL>
+
+<H3> Strict Checks </h3>
+
+Now we check the code using <tt>strict</tt> mode.  Strict mode turns on
+many checks not done in checks mode.  Some of these checks are
+probably too severe for real programs.
+<p>
+Running with <tt>+strict</tt> reports <a href="lclint.out.html">115
+anomalies</a>. 
+
+<h4> <A href="../../../guide/sec10.html#sec-10.2.4">Empty/Block Bodies</a></h4>
+
+<a href="lclint-blocks.out.html">Twenty-six messages</a> report empty statements
+or unblocked bodies of loop and selection statements.  We turn these
+statements into compound blocks by adding braces.  It makes the code
+longer, but easier to read and edit.
+
+<h4> <A href="../../../guide/appG.html">Unspecified Exports</a></h4>
+
+<a href="lclint-exports.out.html">Nineteen anomalies</a> report
+declarations that are exported but not specified.  
+<p>
+Five of them concern type definitions:
+<pre>
+<A HREF="eref.h.html#line9">eref.h:9,36</A>: Type exported, but not specified: erefStatus
+  A type is exported, but not specified.  Use -exporttype to suppress message.
+<A HREF="eref.h.html#line14">eref.h:14,3</A>: Type exported, but not specified: erefTable
+< checking <A HREF="empset.c.html">empset.c</A> >
+<A HREF="erc.h.html#line7">erc.h:7,67</A>: Type exported, but not specified: ercElem
+<A HREF="erc.h.html#line8">erc.h:8,18</A>: Type exported, but not specified: ercList
+<A HREF="erc.h.html#line9">erc.h:9,55</A>: Type exported, but not specified: ercInfo
+</pre>
+
+The two types in <tt>eref.h</tt> can be moved to <A
+HREF="eref-next.c.html#line5"><tt>eref.c</tt></a>.  There is no need for
+these types to be exported.
+<p>
+The three types in <tt>erc.h</tt> are used in macros defined in
+<tt>erf.h</tt>  Hence, they cannot be moved to <tt>erc.c</tt>.  They
+shouldn't be part of the interface though, so are not documented in the
+specification.  We add <tt>-exporttype</tt> comments <A
+HREf="erc-next.h.html#line7">around the type declarations</A>. 
+<p>
+Another 5 messages concern functions.  The functions
+<tt>bool_initMod</tt>, <tt>bool_unparse</tt>, <tt>bool_not</tt>,
+<tt>bool_equal</tt>, and <tt>check</tt> are not specified.  We add a
+specification file <A HREF="bool-next.lcl.html"><tt>bool.lcl</tt></a>
+containing specifications of the boolean function, and <A
+HREF="check-next.lcl.html"><tt>check.lcl</tt></a> containing a
+specification of <tt>check</tt>.
+<p>
+The other 7 (of the original 9, two are no longer reported since the
+declarations of <tt>ST_USED</tt> and <tt>ST_AVAIL</tt> were moved with
+the <tt>erefStatus</tt> type definition)  messages concern constants.  
+<p>
+All of these are "pre-processor" constants, that are used to prevent
+multiple inclusion of header files.  Instead of adding them to the
+specifications, we use the <tt>-exportconstant</tt> flag to suppress the
+messages. 
+
+<h4> <A href="../../../guide/sec4.html#sec-4.2">Missing Globals</a></h4>
+
+Seven messags warn that global variables that appear in a modifies
+clause are not listed in the globals list.  For example.  
+<pre>
+<A HREF="employee.lcl.html#line49">employee.lcl:49</A>: Modifies list for employee_initMod uses global internal state,
+                    not included in globals list.
+  A global variable is used in the modifies clause, but it not listed in the
+  globals list.   The variable will be added to the globals list.  Use
+  -warnmissingglobs to suppress message.
+   <A HREF="employee.lcl.html#line49">employee.lcl:49</A>: Specification of employee_initMod
+</pre>
+
+Normally, a variable (or special state) that appears in a modifies
+clause but no in the globals list is added to the globals list silently.
+In strict mode, a message is reported.  We add <tt>internalState</tt> to
+the globals lists for <A
+HREF="employee-next.lcl.html#line49"><tt>employee_initMod</tt></a>.  The
+other six messages are fixed similarly.
+
+<h4> <A href="../../../guide/sec4.html#sec-4.2">Undocumented Global Uses</a></h4>
+
+One message reports an undocumented use of a global variable:
+<pre>
+dbase.c: (in function db_keyGet)
+<A HREF="dbase.c.html#line68">dbase.c:68,26</A>: Undocumented use of file static db
+  A checked global variable is used in the function, but not listed in its
+  globals clause.  By default, only globals specified in .lcl files are
+  checked.  To check all globals, use +allglobals.  To check globals
+  selectively use /*@checked@*/ in the global declaration.  Use -globs to
+  suppress message.
+</pre>
+
+This message was not reported earlier, since <tt>db_keyGet</tt> is
+declared with no globals list.  Without <tt>+globnoglobs</tt> and
+<tt>+impcheckedstrictstatics</tt> (both are set on in strict mode) this
+message would not be produced.
+<p>
+We add <tt>/*@globals db@*/</tt> to the declaration of
+<tt>db_keyGet</tt>.  This propagates to produce two new messages:
+<pre>
+dbase.c: (in function db_hire)
+dbase.c:119,23: Called procedure db_keyGet may access file static db
+  A checked global variable is used in the function, but not listed in its
+  globals clause.  By default, only globals specified in .lcl files are
+  checked.  To check all globals, use +allglobals.  To check globals
+  selectively use /*@checked@*/ in the global declaration.  Use -globs to
+  suppress message.
+dbase.c: (in function db_setSalary)
+dbase.c:228,8: Called procedure db_keyGet may access file static db
+</pre>
+
+We add globals lists to <tt>db_hire</tt> and <tt>db_setSalary</tt>.
+After this, no undocumented globals use messages are reported.
+
+<h4><A href="../../../guide/sec4.html#sec-4.1.1">Indirect Internal State</a></h4>
+
+<A HREF="lclint-internalstate.edit.html">Twenty-two messages</a> report calls to
+functions that use or modify internalState from a function that does not
+include internalState in its globals list.
+
+Although no internal state in the calling function is used or modified
+directly, internal state in a called function is used or modified.  This
+may be important for checking evaluation order, side-effect free
+parameters, etc.  We add <tt>internalState</tt> to the globals and
+modifies lists of <A
+HREF="eref-next.lcl.html#line43"><tt>eref_initMod</tt></A>,
+<A HREF="empset-next.lcl.html#line21"><tt>empset_insert</tt></A>,
+<A HREF="dbase-next.lcl.html#line92"><tt>db_initMod</tt></A> 
+and <A HREf="drive-next.c.html#line12"><tt>main</tt></a>.
+<p>
+These changes propagate, leading us to add <tt>internalState</tt> to the
+globals and modifies lists of several other functions:
+<A HREF="empset-next.lcl.html#line42"><tt>empset_union</tt></A>, 
+<A HREF="empset-next.lcl.html#line42"><tt>empset_intersect</tt></A>, 
+<A HREF="dbase-next.c.html#line81"><tt>db_addEmpls</tt></A>, and
+<A HREF="dbase-next.lcl.html#line49"><tt>db_query</tt></A>.
+
+<h4><A href="../../../guide/sec4.html#sec-4.1">Unconstrained Calls</a></h4>
+
+<A HREF="lclint-moduncon.out.html">Sixteen messages</a> report possible
+undetected modifications through unconstrained function calls.  When an
+unspecified function declared with no modifies clause is called, LCLint
+has no information about what the function may modify.  If
+<tt>+moduncon</tt> (and <tt>+modunconnomods</tt> for functions with no
+modifies clause) is set, an error is reported.
+<p>
+We add modifies clauses to the unconstrained (file static) functions <A
+HREF="empset-next.c.html#line6"><tt>empset_get</tt></A>,
+<A HREF="erc-next.c.html#line5"><tt>int_toSize</tt></A>, and
+<A HREF="dbase-next.c.html#line51"><tt>db_ercKeyGet</tt></A>.  The
+shorthand <tt>/*@*/</tt> is used to indicate the function uses no global
+state and modifies nothing. 
+<p>
+<h4><A href="../../../guide/sec4.html#sec-4.1">Undocumented Modifications</a></h4>
+
+Some of the original modification errors have been eliminated by the
+previous changes.  <A HREF="lclint-mods.edit.html">Nine modification
+errors</A> remain, all concerning the file static variable <tt>db</tt>
+in <tt>db_uncheckedHire</tt>, <tt>db_fire</tt> and <tt>db_promote</tt>.
+<p>
+We add <tt>db</tt> to the source-code modifies clauses for
+<A HREF="dbase-next.c.html#line128"><tt>db_uncheckedHire</tt></A>,
+<A HREF="dbase-next.c.html#line160"><tt>db_fire</tt></A> and 
+<A HREF="dbase-next.c.html#line178"><tt>db_promote</tt></A>.
+
+<h4>Sizeof Types</h4>
+
+The parameter to the <tt>sizeof</tt> operator can be an expression or a
+type.  If <tt>+sizeoftype</tt> is set (as it is in strict mode), LCLint
+will report places where the argument is a type.  This is considered
+"dangerous", since is the type of the variable changes the sizeof could
+produce the wrong value.
+<p>
+Six <tt>sizeoftype</tt> messages are reported.  For example,
+<pre>
+eref.c: (in function eref_alloc)
+<A HREF="eref.c.html#line32">eref.c:32,48</A>: Parameter to sizeof is type employee: sizeof(employee)
+  Parameter to sizeof operator is a type.  (Safer to use expression, int *x =
+  sizeof (*x); instead of sizeof (int).)  Use -sizeoftype to suppress message.
+</pre>
+
+We fix these by using expression arguments to the <tt>sizeof</tt>
+operator, as suggested by the error message.  
+
+<h4>Empty Macro</h4>
+
+One message reports an empty macro body:
+
+<pre>
+bool.h: (in macro bool_initMod)
+<A HREF="bool.h.html#line24">bool.h:24,1</A>: Macro definition for bool_initMod is empty
+  A macro definition has no body.  Use -macroempty to suppress message.
+</pre>
+
+Empty macro bodies can cause syntax problems, so we replace the
+definition with, <tt>do { ; } while (FALSE)</tt>.
+
+<A name="localexports">
+<h4><A href="../../../guide/sec10.html#sec-10.5.2">Local Exports</a></h4>
+
+The final <A HREF="lclint-exportlocal.out.html">eight messages</A>
+report declarations that are exported but not used outside the defining
+module.  If this were a complete system, these declarations should be
+changed to static.  Since we only have a simple test driver instead of a
+real application, we leave the declarations as exported since it makes
+sense for a real application to use them.  (We might wonder if the test
+driver is adequate if these functions are not tested, however.)
+<p>
+We add the <tt>-exportlocal</tt> flag to suppress these messages.
+
+<P>
+
+<b><A HREF="../strictlib/index.html">Next: Continue to Strict Library</a></b><br>
+<A HREF="../index.html">Return to Summary</A>
+
+<!--#include virtual="../../../footer.html"-->
+
+

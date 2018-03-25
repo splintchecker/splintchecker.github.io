@@ -1,0 +1,81 @@
+<p><h4>Changes in <A HREF="employee.lcl.html">employee.lcl</A> (<A HREF="../memchecks1/employee.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../memchecks1/employee.lcl.html#line37">line 37</A> with <A HREF="employee.lcl.html#line37">line 37</A><pre>
+&lt; bool employee_setName(employee *e, char na[]) 
+---
+&gt; bool employee_setName (employee *e, unique char na[]) 
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset-next.lcl.html">empset-next.lcl</A> (<A HREF="../memchecks1/empset-next.lcl.html">previous version</A>)</h4><pre>
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.c.html">erc.c</A> (<A HREF="../memchecks1/erc.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../memchecks1/erc.c.html#line92">line 92</A> to <A HREF="../memchecks1/erc.c.html#line93">line 93</A> with <A HREF="erc.c.html#line92">line 92</A><pre>
+&lt;   ercList elem;
+&lt;   ercList prev;
+---
+&gt;   ercList elem = c-&gt;vals;
+</pre><br>Replaced <A HREF="../memchecks1/erc.c.html#line95">line 95</A> to <A HREF="../memchecks1/erc.c.html#line97">line 97</A> with <A HREF="erc.c.html#line94">line 94</A><pre>
+&lt;   for (prev = 0, elem = c-&gt;vals;
+&lt;        elem != 0;
+&lt;        prev = elem, elem = elem-&gt;next) 
+---
+&gt;   if (elem != NULL)
+</pre><br>Deleted <A HREF="../memchecks1/erc.c.html#line101">line 101</A> (matches <A HREF="erc.c.html#line97">line 97</A>)<pre>
+&lt;           if (prev == 0)
+</pre><br>Added <A HREF="erc.c.html#line99">line 99</A> to <A HREF="erc.c.html#line102">line 102</A> (was <A HREF="../memchecks1/erc.c.html#line102">line 102</A>)<pre>
+&gt;           free (elem);
+&gt;           c-&gt;size--;
+&gt;           return TRUE;
+&gt;         }
+</pre><br>Replaced <A HREF="../memchecks1/erc.c.html#line104">line 104</A> with <A HREF="erc.c.html#line104">line 104</A> to <A HREF="erc.c.html#line106">line 106</A><pre>
+&lt;             prev-&gt;next = elem-&gt;next;
+---
+&gt;         {
+&gt;           ercList prev = elem;
+&gt;           elem = elem-&gt;next;
+</pre><br>Added <A HREF="erc.c.html#line108">line 108</A> to <A HREF="erc.c.html#line112">line 112</A> (was <A HREF="../memchecks1/erc.c.html#line105">line 105</A>)<pre>
+&gt;           for (; elem != 0; prev = elem, elem = elem-&gt;next) 
+&gt;             {
+&gt;               if (eref_equal (elem-&gt;val, er))
+&gt;                 { 
+&gt;                   prev-&gt;next = elem-&gt;next;
+</pre><br>Added <A HREF="erc.c.html#line116">line 116</A> to <A HREF="erc.c.html#line117">line 117</A> (was <A HREF="../memchecks1/erc.c.html#line108">line 108</A>)<pre>
+&gt;                 }
+&gt;             }
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.h.html">erc.h</A> (<A HREF="../memchecks1/erc.h.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="erc.h.html#line4">line 4</A> (was <A HREF="../memchecks1/erc.h.html#line3">line 3</A>)<pre>
+&gt; # include &lt;assert.h&gt;
+</pre><br>Replaced <A HREF="../memchecks1/erc.h.html#line8">line 8</A> with <A HREF="erc.h.html#line9">line 9</A><pre>
+&lt; typedef struct { ercList vals; int size; } ercInfo;
+---
+&gt; typedef struct { /*@null@*/ ercList vals; int size; } ercInfo;
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.lcl.html">erc.lcl</A> (<A HREF="../memchecks1/erc.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../memchecks1/erc.lcl.html#line5">line 5</A> with <A HREF="erc.lcl.html#line5">line 5</A><pre>
+&lt; erc erc_create(void) 
+---
+&gt; only erc erc_create(void) 
+</pre><br>Replaced <A HREF="../memchecks1/erc.lcl.html#line55">line 55</A> with <A HREF="erc.lcl.html#line55">line 55</A><pre>
+&lt; char *erc_sprint(erc c) 
+---
+&gt; only char *erc_sprint(erc c) 
+</pre><br>Replaced <A HREF="../memchecks1/erc.lcl.html#line60">line 60</A> with <A HREF="erc.lcl.html#line60">line 60</A><pre>
+&lt; void erc_final(erc c) 
+---
+&gt; void erc_final (only erc c) 
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.c.html">eref.c</A> (<A HREF="../memchecks1/eref.c.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="eref.c.html#line80">line 80</A> (was <A HREF="../memchecks1/eref.c.html#line79">line 79</A>)<pre>
+&gt;   /*@+loopexec@*/
+</pre><br>Added <A HREF="eref.c.html#line85">line 85</A> (was <A HREF="../memchecks1/eref.c.html#line83">line 83</A>)<pre>
+&gt;   /*@=loopexec@*/
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.h.html">eref.h</A> (<A HREF="../memchecks1/eref.h.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../memchecks1/eref.h.html#line11">line 11</A> to <A HREF="../memchecks1/eref.h.html#line12">line 12</A> with <A HREF="eref.h.html#line11">line 11</A> to <A HREF="eref.h.html#line12">line 12</A><pre>
+&lt;   employee *conts;
+&lt;   eref_status *status;
+---
+&gt;   /*@reldef@*/ /*@only@*/ employee *conts;
+&gt;   /*@only@*/ eref_status *status;
+</pre><p><p>
+<p><h4>Changes in <A HREF="ereftab-next.lcl.html">ereftab-next.lcl</A> (<A HREF="../memchecks1/ereftab-next.lcl.html">previous version</A>)</h4><pre>
+</pre><p><p>

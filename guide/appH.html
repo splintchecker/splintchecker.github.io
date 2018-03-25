@@ -1,0 +1,40 @@
+<html>
+<head>
+<title>LCLint User's Guide - Appendix H  Emacs</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<a name="app-H"></a>
+<h2>Appendix H  Emacs</h2></a></a><p>
+<b></b>LCLint can be used most productively with the emacs text editor.  The
+release package includes emacs files for running LCLint and editing code with
+annotations.
+<a name="_Toc349905971"><p>
+<b><i>Editing Abbreviations</a></i></b><p>
+<b><i></i></b>An additional file, <tt>emacs/lclint-abbrevs</tt> contains abbreviations
+for LCLint syntactic comments and annotations.  If it is loaded, the comment
+surrounding an LCLint annotation will be added automatically.  For example,
+typing "<tt>only</tt>" and a space, will produce "<tt>/*@only@*/</tt> ".
+Abbreviations are provided for each LCLint syntactic comment.  The
+abbreviation of  <tt>/*@null@*/</tt> is <tt>nll</tt> (not null), since
+it is often necessary to type NULL.  <p> 
+Abbreviations are loaded and used when a <tt>.c</tt> or <tt>.h</tt> file is edited by adding
+these lines to your .emacs file:
+<a name="_Toc344355450"><p>
+<tt>(quietly-read-abbrev-file "</tt><i>&lt;directory&gt;</i><tt>/lclint-abbrevs")</tt><p>
+<tt>(setq c-mode-hook (function (lambda nil (abbrev-mode 1))))</tt>
+
+<hr>
+<A HREF="references.html">
+<IMG ALIGN=left SRC = "right-arrow.jpg" ALT = "Next Section"></A>
+<A HREF="guide.html#contents">
+<IMG ALIGN=left SRC = "up-arrow.jpg" ALT = "Contents"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> 
+<a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<h3>lclint-interest message 4</h3>
+<pre>
+To: peterc@a3.ph.man.ac.uk (Peter Chang)
+Cc: evans@cs.virginia.edu (David Evans), horning@src.dec.com
+Subject: Re: improvement on predicates?
+In-Reply-To: Message of Mon, 24 Oct 1994 18:45:54 +0100
+    from peterc@a3.ph.man.ac.uk (Peter Chang)
+Date: Mon, 24 Oct 94 12:29:32 -0700
+From: horning@src.dec.com
+X-Mts: smtp
+
+Peter,
+
+Sorry, I should have been a little more specific.  Bool isn't a standard
+type of C, it's a standard type of LCL and LCLint.  Bool.h is
+
+#if !defined(BOOL_H)
+#define BOOL_H
+#define FALSE 0
+#DEFINE TRUE (! FALSE)
+typedef int bool;
+#define bool_initMod()
+#endif
+
+Pretty trivial, but, by using a different name, it allows LCL to distinguish
+between things that are intended to be numbers and things that are intended
+to be logical values.
+
+Jim H.
+
+</pre>
+<A HREF="3.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="5.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

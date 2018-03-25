@@ -1,0 +1,620 @@
+<html> <head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>
+Splint - Related Links
+</title>
+</head>
+
+<body>
+<!--#include virtual="header.html"-->
+
+<center>
+<h1>
+Splint Change Log
+</h1>
+</center>
+
+This page documents changes to Splint.  See CVS repository (<a 
+href="http://sourceforge.net/projects/lclint/"><em>http://sourceforge.net/projects/lclint/</em></a>)
+for details.
+
+<h3>3.1.2 Release (12 July 2007)</h3>
+
+<h4>Bug Fixes</h4>
+
+<b>Declarations of intptr_t and uintptr_t</b>
+<blockquote>
+The standard library declares the <tt>intptr_t</tt> and
+<tt>uintptr_t</tt> types incorrectly.  They are declared as <tt>int *</tt> and
+<tt>unsigned int *</tt>, but should be integral types (large enough to
+hold a pointer) instead.  
+<p>
+(Reported by David Sanderson, 25 Sep 2004.  Fixed in development
+standard.h.)
+</blockquote>
+
+<b>Mode help</b>
+<blockquote>
+Splint crashes when run with <tt>-help weak</tt> or another mode flag.
+<p>
+(Reported by Clive Bach, 27 July 2004. Fixed in CVS 28 July 2004.)
+</blockquote>
+
+<b>Missing va_copy</b>
+<blockquote>
+The standard library is missing <tt>va_copy</tt>.
+<p>
+(Reported by Roland Illig, 21 May 2004.  Fixed in CVS, 21 May 2004.)
+</blockquote>
+
+<b>Shifting in pre-processor expressions</b>
+<blockquote>
+Splint will report an internal error for a preprocessor expression that
+shifts a negative value.  This should produce a warning message instead.
+<p>
+(Reported by Dirk Herrmann, 10 Nov 2003.  Fixed in CVS, 18 May 2004, but
+no warning message added yet.)
+</blockquote>
+
+<b>gmtime and localtime</b>
+<blockquote>
+The return type is incorrectly specified as /*@null@*/ in the standard
+library.  <tt>gmtime</tt> and <tt>localtime</tt> are guaranteed to
+return non-null values.
+<p>
+(Reported by Terry Colligan, 30 Oct 2003.  Fixed in CVS, 2 Nov 2003.)
+</blockquote>
+
+<b>Redefining __func__</b>
+<blockquote>
+Splint will report an internal bug if built in special definitions like
+<tt>__func__</tt> are redefined.
+<p>
+(Reported by Terry Colligan, 28 Oct 2003.  Fixed in CVS, 28 Oct 2003.)
+</blockquote>
+
+<b>Pragma Line Numbers</b>
+<blockquote>
+Splint does not count
+<pre>
+#pragma ...
+</pre>
+lines in the line number.
+<p>
+(Reported by Scott Frazer, 27 Oct 2003.  Fixed in CVS, 27 Oct 2003.)
+</blockquote>
+
+<b>Files Unclosed in Win32</b>
+<blockquote>
+Options that involve writing messages to files do not work in Win32.
+The check that all files are closed was somehow copied to a location it
+shouldn't be (llmain:830).
+<p>
+(Fixed in CVS 18 Sept 2003.)
+</blockquote>
+
+
+<b>Multi-dimensional Arrays</b>
+<blockquote>
+Splint does not interpret declarations of multidimensional arrays
+correctly.  A declaration like int a[][10] is misinterpreted as int
+a[10][].
+<p>
+(Reported by Bill Leahy, 15 Sept 2003.  Fixed in CVS 15 Sept 2003.)
+</blockquote>
+<b>&& and || guards</b>
+<blockquote>
+Splint does not correctly interpret guards for non-boolean expressions
+in <tt>&&</tt> and <tt>||</tt> clauses (e.g., <tt>if (s && t)</tt>).
+<p>
+(Reported by Andrew Bishop.  Fixed in CVS 13 August 2003.)
+</blockquote>
+
+<b>scanf %x</b>
+<blockquote>
+Splint interprets <tt>%x</tt> in a scanf format string as an <tt>int
+*</tt>, but it should be an <tt>unsigned int *</tt>.
+<p>
+(Reported by Andrew Bishop.  Fixed in CVS 13 August 2003.)
+</blockquote>
+
+<b>+matchanyintegral and unsignedintegrals</b>
+<blockquote>
+When +matchanyintegral is set, splint should allow any int type to match
+an aribtrary unsigned integral.
+<p>
+(Reported by John Makecki.  Fixed in CVS 18 July 2003.)
+</blockquote>
+
+
+<b>Shadow updates</b>
+<blockquote>
+When a variable declaration is shadowed, the sRef_updateSref function
+will find the inner reference when there is an alias to the outer
+reference.  
+<p>
+(Reported by John Makecki.  Fixed in CVS 18 July 2003.)
+</blockquote>
+
+<b>Internal assertion fails for unconventional bounds</b>
+<blockquote>
+An internal assertion will fail for strange array indexes like,
+<tt>i["]&lt;i;++i){--i;}"]</tt>.
+<p>
+(Reported by Xose Vazquez Perez.  Fixed in CVS 12 July 2003.)
+</blockquote>
+
+<b>Assignments with global structs</b>
+<blockquote>
+Splint does not correctly update state when the rhs of an assignment is
+a struct with global scope.
+<p>
+(Reported by Steve Brooke.  Fixed in CVS, 10 July 2003.)
+</blockquote>
+
+<b>Defining __STDC__</b>
+<blockquote>
+Splint should define <tt>__STDC__</tt>.  See <a
+"href=http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=171437&msg=7"> 
+http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=171437&msg=7</a> for
+details.
+<p>
+(Reported by Vincent Lefevre.  Fixed in CVS, 10 July 2003)
+</blockquote>
+
+<b>Missing signal.h definitions</b>
+<blockquote>
+The posix library is missing some definitions from signal.h.
+<p>
+(Reported by Jerry James.  Fixed in CVS, 13 June 2003)
+</blockquote>
+
+<b>Pre-processing ISO8859-1 characters</b>
+<blockquote>
+Splint does not process ISO8859-1 characters correctly since it is
+building on a pre-ISO8859-1 version of gcc's pre-processor, and
+character \377 is indistinguishable from EOF.
+<p>
+(Reported by Kai Hofmann.  Fixed in CVS, 6 June 2003)
+</blockquote>
+
+<b>Printing lltok</b>
+<blockquote>
+Splint prints -> tokens in specifications incorrectly as ".".  Reported
+and fixed by Psanzani.
+<p>
+(Fixed in CVS, 6 June 2003)
+</blockquote>
+
+
+<p>
+<h3>3.1.0 Release (21 April 2003)</h3>
+<p>
+<h4>Enhancements</h4>
+
+Added support for numabstract types.  A type defined with
+/*@numabstract@*/ is treated like an abstract type, except the
+standard C numeric operators (++, --, +, -, <, >, etc.) can be used on
+it.  If +numabstractlit is set, then number literals may be used as
+numabstract type values.  If +numabstractcast is set, casting to a
+numabstract produces a warning.  If +numabstractindex is set,
+numabstract types may be used to index arrays.  If +numabstractprint is
+set, a warning is produced if a numabstract value is passed as a %d
+parameter in a printf format string.  (Suggested by Simon Hosie)
+<p>
+
+Changed Boolean support to be more consistent with ISO C99.  <Tt>_Bool</tt> is
+the default boolean type (and <tt>bool</tT> is defined), and <tt>true</tt> and <tt>false</tt> are
+the default <tt>true</tt> and <tt>false</tt> values (instead of <tt>TRUE</tt> and <tt>FALSE</tt>).
+<p>
+Added <tt>messagestream</tt>, <tt>warningstream</tt> and <tt>errorstream</tt> control flags so
+each type of message can be directed to a different standard stream or
+output file:
+<pre>
+     messagestreamstdout, messagestreamstderr, messagestream <file>
+     warningstreamstdout, warningstreamstderr, warningstream <file>
+     errorstreamstdout, errorstreamstderr, errorstream <file>
+</pre>
+<p>
+Added <tt>htmlfileformat</tt> flag for producing links around file locations.
+(Requested by Hien Phan)
+<p>
+Added <tt>csv</tt> flag to generate comma separated values formatted output
+file to enable storing and manipulating warings in a database (or
+Excel).  (Suggested by Brian Parrott)
+<p>
+Added support for <tt>+longint</tt> and <tt>+shortint</tt> flags, and changed type
+checking accordingly.
+<p>
+Added flag <tt>nullinit</tt> to control warnings about initializations that may
+be missing null annotations.
+<p>
+Add the flags <tt>likelybounds</tt>, <tt>likelybounds-read</tt>, and <tt>likelybounds-write</tt>.
+These flags cause Splint to produce warnings for potential bounds
+errors that when there is a high probabity that there is a real
+problem.
+<p>
+Adding support for the <tt>-i &lt;dir&gt;</tt> command line include option.
+<p>
+Added the <tt>emptyreturn</tt> flag to control warnings about missing
+return values.
+<p>
+Added <tt>abstractcompare</tt> flag to distinguish warnings about object
+equality comparisons on abstract types, from uses of other operators.
+<p>
+Added anytype constant to support /*@alt anytype@*/ properly.
+<p>
+
+<h4>Bug Fixes</h4>
+
+Fixed bugs causing Splint to report spurious bounds-errors for code
+involving certain loops.
+<p>
+Fixed bugs Splint to report spurious bounds-errors for certain if-else
+statements.
+<p>
+Fixed problem with multiple passes on type definitions with <tt>/*@alt@*/</tt>
+<p>
+Fixed build problem with Mac OS X.
+<p>
+Fixed problem causing crashes if multiple globals clauses are used.
+<p>
+Fixed bug causing Splint to incorrectly display the file name path in
+error messages when it was given the absolute path name of a file
+outside of the current directory and the subdirectories below the
+current directory.
+<p>
+Fixed bug causing Splint to report spurious bounds-errors for code in
+which sizeof was applied to a string literal.
+<p>
+Fixed bug causing an internal error if a directory was listed on the
+command line instead a sourcefile.
+<p>
+The <tt>getgrgid</tt>, <tt>getgrnam</tt>, and <tt>getpwnam</tt> functions the Posix and Unix
+libraries are now declared to return <Tt>/*@observer@*/</tt> references.
+<p>
+
+Added <tt>snprintf</tt> to the standard library.  It was added to ISO
+C99, so should be in the standard library in addition to the Unix
+library.
+
+<p>
+Fixed bug causing Splint to misinterpret initializations of char
+arrays with string literals.  In code like <tt>char s[] = "abc";</tt>
+was incorrectly marked as observer.  Requested by (Olivier L'Heureux.)
+<p>
+Fixed bug causing the pre-processor to lose necessary whitespace
+before an identifier that corresponds to the name of a parameterized
+macro inside a macro expansion.  (Reported by Adam Clarke.)
+<p>
+Fixed bugs in which Splint couldnot parse offsetof expressions where
+the field designator is an array fetch:
+<tt>offsetof(some_struct_t,d[index])</tt>.  (Reported by Asger Overby.
+<p>
+Updated the declarations of <tt>struct iovec</tt> and <tt>struct msghdr</tt> in the
+unix library to include the <tt>/*@dependent@*/</tt> annotations on their
+pointer fields; the implicit only annotations were incorrect. (Reported
+by Enrico Scholz.)
+<p>
+Fixed bug causing Splint to report spurious redeclartion warnings for
+forward enum tags.
+<p>
+Fixed bug causing Splint to report the wrong line number after a
+multi-line macro instantiation (it only counts as one line). (Reported
+by Andreas Rasmusson.)
+<p>
+Changed flags.def to make the library setting flags idempotent
+(doesn't matter if you use - or +).  This prevents spurious flag
+warnings.
+<p>
+Fixed problem with unnamed union definitions within structure
+definitions.  (Reported by Charles Lecklider)
+<p>
+Fixed line and column printing in uses lists (<tt>+showalluses</tt>) to be
+consistent with <tt>parenfileformat</tt>.  (Reported by Mat Butler)
+<p>
+Fixed initializations of string literals.  An initialization like,
+   <tt>char s[] = "test";</tt> copies the literal into the array, so s may be
+modified.  This is different from <Tt>char *s = "test";</tt> which makes <tt>s</tt> an
+observer.  (Reported by Ralf Wildenhues)
+<p>
+Fixed problem with resetting null state after error for constants.
+<p>
+Fixed problem with loop guards in loop test effects.  New test case
+looptesteffect.  (Reported by Anders Pilegaard)
+<p>
+Added code to fileTable.c for relative paths on systemDir.  (Suggested
+by Jim Zelenka.)
+<p>
+Fixed missing sRef_clearDerived in usymtab_exitScope.  This causes
+dangling references to old sRef's.
+<p>
+Changed pre-processor so multi-line macro parameters do not mess up
+line numbers.
+<p>
+Added grammar support for compound literals.  No checking is done for
+these yet.  (Reported by Peter Anttu.)
+<p>
+Fixed warning message for shiftsigned flag.  (Reported by Melson
+Beebe.)
+<p>
+Fixed skipisoheaders flag.  skipansiheaders and skipisoheaders are
+both supported now.  (Reported by Jeroen Ruigrok van der Werven.)
+<p>
+Changed declaration of BUFSIZ to be size_t.  (Reported by Walter
+Briscoe.)
+<p>
+
+<h3>Release 3.0.1.6</h3>
+
+Fixed bug with internal error for unrecognized file names in #line
+pre-processor directives.  (Reported by Stefan Allius.)
+<p>
+Extended grammar to support ISO C99 and gcc obsolete extension for
+initializing structure fields and array elements using explicit
+designators.  The ISO C99 syntax is <tt>struct evil_struct s = {
+.bad_integer = 1 };</tt>.  An obsolete gcc extension is supported also:
+<tt>struct evil_struct s = { bad_integer: 1 };</tt>.  The syntax is
+supported to allow Splint to parse code that uses this, but no checking
+is done for the initialzer.
+<p>
+Fixed type parsing to interpret parenthesized pointers correctly (e.g.,
+int (*p)[];).  (Reported by Ralf Wildenhues)
+<p>
+Relaxed grammar to allow null statements as external declarations.
+(This appears to not be allowed according to the ISO C99 grammar, but
+gcc and some other compilers allow it.)  (Reported by Mark Baushke.)
+<p>
+Fixed division by zero error in constant value analysis.  (Reported by
+Sami Farin)
+<p>
+Internal bug report for unnamed enum declarations inside structure
+declarations.  (Reported by Thomas Nordin)
+<p>
+Internal bug report for ((a[0][1]) != 0).  (Reported by Thomas Nordin)
+<blockquote>
+   Both of these were instances of overly cautious internal bug
+   reporting.
+</blockquote>
+
+<h3>Release 3.0.1.5</h3>
+
+<h4>Enhancements</h4>
+
+The flag <b>+show-constraint-location</b> is now set by default.  This
+flags causes Splint to include the expression which caused the error in
+error messages for potential out of bounds errors.</p>
+<p>
+The flag <b>bounds-compact-error-messages</b> has been added.  If
+this flag is set, new lines are not included in the error messages for
+bounds errors.  This flag is intended for situations  in which the
+difference in format between bounds error messages and other type of splint
+error messages made parsing difficult.  It may also be useful in cases
+where screen space is limited.
+<p>
+<h4>Bug Fixes</h4>
+
+Fixed bug in which Splint would crash if there is a typedef involving a fixed
+ size array.  This problem occured if the flags <b>bounds, boundsread,
+  or boundswrite</b> were set.
+(Reported by Jim Francis ) Fixed in CVS, 25 Jan 2002.
+<p>
+Fixed bug in which Splint would erroneously warn that a "string literal is
+ assigned to a char array too small to hold it" if an array is initialized
+ with a string containing escape sequences.
+ (Reported by Jeff Johnson) Fixed in CVS, 22 Jan 2002.
+<p>
+
+<h3>Release 3.0.1.4</h3>
+
+Fixed explicit array bounds parsing (reported by Randi J. Relander).  C
+syntax puts array sizes backwards, need to reverse in
+ctype_makeInnerFixedArray.
+<p>
+
+<h3>Release 3.0.1</h3>
+
+Changed name to Splint
+<p>
+.lclintrc changed to .splintrc
+<blockquote>
+   Splint will look for .splintrc and .lclintrc files.  If both exist, a
+   warning is produced (FLG_WARNRC)
+</blockquote>
+<p>
+Call showHerald() in llgenerrorreal so herald is displayed before
+command line warnings.
+<p>
+Fixed sRef's so definitely null references always have alias kind
+unknown (cannot produce an aliasing error)
+<p>
+Added checking for union initializers (bug reported by Jim Zelenka).
+<p>
+Fixed handling of unrecognized pre-processor directives (bug reported by
+Pierluigi Sanzani).
+<p>
+Fixed problems with wide character literals (L"string") (bug reported by
+Nelson Beebe).
+<p>
+Changed grammar to allow multiple /*@fallthrough@*/, /*FALLTHRU*/ and
+/*FALLTHROUGH*/ comments for one case.  (suggested by Nelson Beebe)
+<p>
+Fixed bug in uentry_makeVarFunction for type defined function pointers
+(bug reported by Alexander Mai)
+<p>
+loopexec is now divided into forloopexec, whileloopexec and iterloopexec
+flags (all off by default).
+<p>
+Added obviousloopexec (on by default) flag and implemented
+exprNode_loopMustExec to handle for loops that "obviously" must
+execute.  (This sould be intergrated with the buffer overflow analysis
+that probably does this more precisely.)
+<p>
+Make /*@special@*/ annotation no longer imply allocated storage.  (This
+was pretty silly.  special annotation shouldn't be necessary at all,
+except for documentation maybe.)
+<p>
+Fixed pre-functions for sets and allocates state clauses to set the
+state to undefined on entry. 
+<p>
+Fixed checking for shift expressions.  Replaced shiftsigned with
+shiftnegative (warns if the right operand of a shift may be negative)
+and shiftimplementation (warns if left operation of a shift may be
+negative).
+<p>
+Splint mustfree into mustfreeonly and mustfreefresh to allow more
+precise control over memory leak checking.  mustfree is now a special
+flag that sets both.
+<p>
+Added call from grammar to check if predicate to report error in before
+checking body.
+<p>
+Replaced ansilimits with ansi89limits and iso99limits to reflect changes
+in translation limits between ANSI C89 and ISO C99.
+<p>
+Replaced +control flag with duplicatecases, alwaysexits, emptyreturn and
+macroreturn (all plain, default +)
+<p>
+
+<h3>Release 3.0.0.19</h3>
+
+Build now uses autoconf. The test suite is now run automaticly each time
+a top level make is done.  (We thank Tim Van Holder for producing the
+automake and autoconf distribution.)
+<p>
+Improved defaults for LARCH_PATH and LCLIMPORTDIR
+<p>
+Various fixes and improvements in the buffer overflow detection code.
+<p>
+Added the flag slashslashcomment which detects c++ sytle // comments
+which are not supported by some older compilers additional functions
+added to the unix library.
+
+<h3>Release 3.0.0.18</h3>
+
+Changed typechecking for NULL values to report warnings for mistyped
+comparisions involving cast NULL pointers (e.g., char *s = (int *)
+NULL). (Reported by Nelson Beebe.)
+<p>
+Fixed scanner to allow octal constants with L and UL specifiers.
+(Reported by Nelson Beebe.)
+<p>
+Fixed problem with path flow in do ... while loops.  (Reported by Jim
+Zelenka.)
+<p>
+Fixed but in aliasing for += assignments.  (Reported by Nelson Beebe.)
+<p>
+Fixed %c handling in format strings - its an int converted to unsigned
+char.  (Reported by Nelson Beebe.)
+<p>
+Fixed spelling of "preceeding" ("preceding").  (Suggested by Nelson Beebe.)
+<p>
+Changed char_fromInt assertions to allow non-ASCII character
+sets. (Suggested by Anthony Giorgio)
+<p>
+<h3>Release 3.0.0.17</h3>
+
+Expanded the unix library.
+<br>
+<p>The unix library now includes the stdio.h and stdlib.h interfaces as
+defined by the Single Unix Specification, Version 2.  Additionally a number 
+of missing functions were added to the unix library. </P>
+
+<h3>Release 3.0.0.16</h3>
+
+Added table of open files to deal with unclosed files on fatal exits.  This is
+important since some platforms cannot unlink open files, and hence,
+temporary files will not be removed.
+<p>
+Fixed parsing of undeclared macros with parameter lists.
+<p>
+Fixed exprNode_arrayFetch so e1 and e2 are not swapped when type of e1
+is ctype_unknown.  (Avoid errors for a[0] where a is unknown.)
+<p>
+Made sRef_enterFunctionScope cleanup state if in a macro definition
+
+<h3>Release 3.0.0.15 </h3>
+
+Fixed fileloc internal assertions for syntactic comments spanning
+multiple lines comtaining regular comment opens.   Added warnings for
+likely unclosed syntactic comments (/* inside syntactic comment).
+(Reported by gcarter)
+<p>
+Incorporated Herbert Dietze's fixed to cstring_getCannonicalPrefix (and
+moved to osd_getCannonicalPrefix).  Added test for empty directory
+strings in context.c. (Suggested by Herbert Dietze)
+<p>
+Changed include path behavior - added C_INCLUDE_PATH files to sysdirs.
+Some thought and investigation still needed on the right way to handle
+include paths and sysdirs.  (Suggested by Herbert Dietze)
+<p>
+Remove replace_unixdir_with_windir from cpplib.c, replaced with
+cstring_replaceAll (Suggested by Herbert Dietze)
+<p>
+Removed 
+<pre>
+# ifdef WIN32
+extern int yywrap (void) /*@*/ ;
+# endif
+</pre>
+from globals.h (Suggested by Herbert Dietze)
+<p>
+Allowed .pp files on command line when -nopp is used (warning otherwise)
+<p>
+Added warning in README about bison versions 
+<p>
+Fixed spelling of "envirnoment" (Suggested by Alexander Mai)
+<p>
+Added sys/types.h from Standard UNIX Spec to unix.h
+changed ino_t from integraltype to unsignedintegraltype
+<p>
+Added random functions from stdlib.h Standard UNIX Spec to unix.h
+Added netinet/in.h from Standard UNIX Spec to unix.h
+<p>
+<h3>Release 3.0.0.14</h3>
+<p>
+Added src/DATE to distribution
+<p>
+<h3>Release 3.0.0.13</h3>
+
+<pre>
+sRef.c:  removed assertion
+      /* evans 2001-08-27 no: can change this - llassert
+      (s->info->arrayfetch->arr == arr); */
+      this fails for code like:
+          addr = &((unsigned char *)chp) [x];
+	  addr[0] = 3;
+      because setArrayFetchState tries to simplify &a[0] => a[].
+      (This may be a bad idea in general!)
+osd.c:418
+fixed OS -> OS2
+# if defined(UNIX) || defined(OS2) || defined(MSDOS) || defined(WIN32)
+</pre>
+
+Added support for -I- to turn on ignore source directory include path
+searching.  Code provided by Robin Watts.
+<p>
+Fixed reflection of post clauses on inner fields derived through
+aliases.  (Didn't use sRef_aliasSetCompleteParam!)
+(Bug reported by Mikhail Bessonov.)
+<p>
+Added warnuse flags: portability, unixstandard
+<p>
+Fixed unix.h to include isascii, toascii, _toupper and to_lower from
+ctype.h
+(Bugs reported by Alexander Mai.)
+<p>
+Fixed unix.h to follow Standard UNIX Specification for sys/stat.h
+(Bugs reported by Alexander Mai.)
+<p>
+Added check to report warnings for < and <= comparisons of unsigned with
+0.  Controled by +unsignedcompare (on in standard and higher modes).
+Test: unsignedcompare
+(Suggested by Martin Smoot.)
+<p>
+
+<h3>Release 3.0.0.12</h3>
+
+Started change log.
+
+<!--#include virtual="footer.html"-->

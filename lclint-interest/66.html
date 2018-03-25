@@ -1,0 +1,69 @@
+<h3>lclint-interest message 66</h3>
+<pre>
+From eric@rrinc.com Mon Apr  1 18:41:36 1996
+Sender: eric@access.rrinc.com
+Date: Mon, 01 Apr 1996 17:43:32 -0500
+From: Eric Bloodworth <eric@rrinc.com>
+Organization: Recognition Research, Inc
+X-Mailer: Mozilla 2.01 (X11; I; AIX 2)
+Mime-Version: 1.0
+To: lclint_sig <lclint-interest@larch.lcs.mit.edu>
+Subject: flags are too blunt an instrument...
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+I often find myself turning flags off for blocks of 
+code to avoid an error message having to do with one variable. 
+What would be better is the ability to control what lclint thinks of 
+a particular variable, since there may be other such violations in the 
+code between the flag-off/flag-on comments.  A probable scenario is 
+that code is modified (incorrectly) much later, and it is not noticed that 
+certain flags are turned off.
+
+For example, in the following contrived example,
+I'd like be able to force lclint to think p is completely defined 
+after the for loop, but using -compdef will hide the fact that 
+q is being used before being defined. 
+
+#include <stdlib.h>
+
+int main(int argc, char *argv[]) 
+{
+	int *p,*q; 
+	int i; 
+	int foo; 
+
+	p = malloc(200*sizeof(int)); 
+	if (NULL != p) {
+		for (i = 0; i < 200; i++) 
+			p[i] = i; 
+
+
+		foo = p[100] + p[10] + p[1] + q[0]; 
+		printf("foo = %d\n", foo); 
+	}
+	exit(0); 
+}
+
+I can't find anything in the user's guide on this, so I'm assuming 
+there's not already a way to do it. 
+
+-- Eric
+
+
+</pre>
+<A HREF="65.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="67.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

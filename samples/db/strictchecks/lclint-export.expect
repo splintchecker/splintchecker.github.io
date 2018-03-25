@@ -1,0 +1,45 @@
+gmake[1]: Entering directory `/u/evs/lclint/web/sample/strictchecks'
+lclint +lh +checks +exportlocal +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.0 --- 21 Feb 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+< checking employee.c >
+< checking eref.c >
+< checking empset.c >
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+eref.lh:9,13: Function exported but not used outside eref: eref_free
+  A declaration is exported, but not used outside this module. Declaration can
+  use static qualifier.  Use -exportlocal to suppress message.
+   eref.c:97,1: Definition of eref_free
+empset.lh:9,13: Function exported but not used outside empset: empset_clear
+   empset.c:26,1: Definition of empset_clear
+empset.lh:11,13: Function exported but not used outside empset:
+                    empset_insertUnique
+   empset.c:55,1: Definition of empset_insertUnique
+empset.lh:17,13: Function exported but not used outside empset: empset_member
+   empset.c:21,1: Definition of empset_member
+empset.lh:18,13: Function exported but not used outside empset: empset_subset
+   empset.c:147,1: Definition of empset_subset
+ereftab.lh:10,13: Function exported but not used outside ereftab:
+                     ereftab_delete
+   ereftab.c:26,1: Definition of ereftab_delete
+dbase.lh:27,13: Function exported but not used outside dbase: db_promote
+   dbase.c:188,1: Definition of db_promote
+dbase.lh:28,18: Function exported but not used outside dbase: db_setSalary
+   dbase.c:212,1: Definition of db_setSalary
+< cleaning .......... >
+
+Finished LCLint checking --- 8 code errors found
+396 spec, 2923 source (1282 before pre-processing) lines in 5.50 s.
+gmake[1]: Leaving directory `/u/evs/lclint/web/sample/strictchecks'

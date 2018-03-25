@@ -1,0 +1,15 @@
+# This is a file of constants for the makefiles 
+# for the C/Splint tutorial
+
+GCC=gcc
+MAKE=make
+
+RUNSPLINT=../scripts/runsplint
+COMPILECHECK=../scripts/compile_check
+SPLINT=splint
+SPLINTFLAGS=+stats +nof
+EXTRACT_LINES=../scripts/extract_lines.pl
+INS_LINE_NOS=../scripts/insert_line_numbers.pl
+
+export SPLINT
+export GCC

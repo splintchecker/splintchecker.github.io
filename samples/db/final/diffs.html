@@ -1,0 +1,349 @@
+<p><h4>Changes in <A HREF="bool.h.html">bool.h</A> (<A HREF="../strictlib/bool.h.html">previous version</A>)</h4><pre>
+</pre><br>Added <A HREF="bool.h.html#line4">line 4</A> (was <A HREF="../strictlib/bool.h.html#line3">line 3</A>)<pre>
+&gt; #include &lt;assert.h&gt;
+</pre><p><p>
+<p><h4>Changes in <A HREF="dbase.c.html">dbase.c</A> (<A HREF="../strictlib/dbase.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictlib/dbase.c.html#line18">line 18</A> to <A HREF="../strictlib/dbase.c.html#line19">line 19</A> with <A HREF="dbase.c.html#line18">line 18</A><pre>
+&lt; typedef /*@only@*/ erc o_erc;
+&lt; static o_erc db[numERCS];
+---
+&gt; static erc db[numERCS];
+</pre><br>Replaced <A HREF="../strictlib/dbase.c.html#line83">line 83</A> to <A HREF="../strictlib/dbase.c.html#line84">line 84</A> with <A HREF="dbase.c.html#line82">line 82</A> to <A HREF="dbase.c.html#line83">line 83</A><pre>
+&lt;   /*@globals internalState@*/
+&lt;   /*@modifies s, internalState@*/
+---
+&gt;   /*@globals internalState, stderr@*/
+&gt;   /*@modifies s, internalState, *stderr@*/
+</pre><br>Replaced <A HREF="../strictlib/dbase.c.html#line307">line 307</A> with <A HREF="dbase.c.html#line306">line 306</A><pre>
+&lt;   printf ("Employees:\n");
+---
+&gt;   check (printf ("Employees:\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/dbase.c.html#line312">line 312</A> with <A HREF="dbase.c.html#line311">line 311</A><pre>
+&lt;       printf ("%s", printVal);
+---
+&gt;       check (printf ("%s", printVal) &gt;= 0);
+</pre><p><p>
+<p><h4>Changes in <A HREF="dbase.lcl.html">dbase.lcl</A> (<A HREF="../strictlib/dbase.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictlib/dbase.lcl.html#line17">line 17</A> with <A HREF="dbase.lcl.html#line17">line 17</A><pre>
+&lt; db_status db_hire (employee e) db d; 
+---
+&gt; db_status db_hire (employee e) db d; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/dbase.lcl.html#line19">line 19</A> with <A HREF="dbase.lcl.html#line19">line 19</A><pre>
+&lt;   modifies d;
+---
+&gt;   modifies d, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/dbase.lcl.html#line32">line 32</A> with <A HREF="dbase.lcl.html#line32">line 32</A><pre>
+&lt; void db_uncheckedHire (employee e) db d; 
+---
+&gt; void db_uncheckedHire (employee e) db d; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/dbase.lcl.html#line37">line 37</A> with <A HREF="dbase.lcl.html#line37">line 37</A><pre>
+&lt;   modifies d;
+---
+&gt;   modifies d, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/dbase.lcl.html#line49">line 49</A> with <A HREF="dbase.lcl.html#line49">line 49</A><pre>
+&lt; int db_query (db_q q, empset s) db d; internalState;
+---
+&gt; int db_query (db_q q, empset s) db d; internalState; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/dbase.lcl.html#line51">line 51</A> with <A HREF="dbase.lcl.html#line51">line 51</A><pre>
+&lt;   modifies s, internalState;
+---
+&gt;   modifies s, internalState, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/dbase.lcl.html#line57">line 57</A> with <A HREF="dbase.lcl.html#line57">line 57</A><pre>
+&lt; bool db_promote (int ssNum) db d; 
+---
+&gt; bool db_promote (int ssNum) db d; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/dbase.lcl.html#line59">line 59</A> with <A HREF="dbase.lcl.html#line59">line 59</A><pre>
+&lt;   modifies d;
+---
+&gt;   modifies d, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/dbase.lcl.html#line83">line 83</A> with <A HREF="dbase.lcl.html#line83">line 83</A><pre>
+&lt; void db_print(void) db d; FILE *stdout; 
+---
+&gt; void db_print(void) db d; FILE *stdout; FILE *stderr; 
+</pre><br>Replaced <A HREF="../strictlib/dbase.lcl.html#line85">line 85</A> with <A HREF="dbase.lcl.html#line85">line 85</A><pre>
+&lt;   modifies *stdout^;
+---
+&gt;   modifies *stdout^, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/dbase.lcl.html#line92">line 92</A> with <A HREF="dbase.lcl.html#line92">line 92</A><pre>
+&lt; void db_initMod(void) db d; internalState;
+---
+&gt; void db_initMod(void) db d; internalState; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/dbase.lcl.html#line94">line 94</A> with <A HREF="dbase.lcl.html#line94">line 94</A><pre>
+&lt;   modifies d, internalState;
+---
+&gt;   modifies d, internalState, *stderr^;
+</pre><p><p>
+<p><h4>Changes in <A HREF="drive.c.html">drive.c</A> (<A HREF="../strictlib/drive.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line13">line 13</A> with <A HREF="drive.c.html#line13">line 13</A> to <A HREF="drive.c.html#line14">line 14</A><pre>
+&lt;   /*@globals internalState@*/ /*@modifies internalState@*/
+---
+&gt;   /*@globals internalState, stderr, stdout@*/
+&gt;   /*@modifies internalState, *stderr, *stdout@*/
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line31">line 31</A> to <A HREF="../strictlib/drive.c.html#line32">line 32</A> with <A HREF="drive.c.html#line32">line 32</A> to <A HREF="drive.c.html#line33">line 33</A><pre>
+&lt;       printf ("FormatPos: Wrong number of arguments. Given %d needs 0.\n",
+&lt;               argc - 1);
+---
+&gt;       check (fprintf (stderr, "FormatPos: Wrong number of arguments. "
+&gt;                       "Given %d needs 0.\n", argc - 1) &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line41">line 41</A> with <A HREF="drive.c.html#line42">line 42</A><pre>
+&lt;       printf("Size should be 0.\n");
+---
+&gt;       check (printf("Size should be 0.\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line57">line 57</A> with <A HREF="drive.c.html#line58">line 58</A><pre>
+&lt;       printf("Size should be 500.\n");
+---
+&gt;       check (printf("Size should be 500.\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line73">line 73</A> with <A HREF="drive.c.html#line74">line 74</A><pre>
+&lt;       printf("Size should be 250.\n");
+---
+&gt;       check (printf("Size should be 250.\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line93">line 93</A> with <A HREF="drive.c.html#line94">line 94</A><pre>
+&lt;       printf("Size should be 350.\n");
+---
+&gt;       check (printf("Size should be 350.\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line100">line 100</A> with <A HREF="drive.c.html#line101">line 101</A><pre>
+&lt;       printf("Size should be 350.\n");
+---
+&gt;       check (printf("Size should be 350.\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line103">line 103</A> with <A HREF="drive.c.html#line104">line 104</A><pre>
+&lt;   printf("Print two different employees:\n");
+---
+&gt;   check (printf("Print two different employees:\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line109">line 109</A> with <A HREF="drive.c.html#line110">line 110</A><pre>
+&lt;       printf("%s\n", &(na[0]));
+---
+&gt;       check (printf("%s\n", &(na[0])) &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line151">line 151</A> to <A HREF="../strictlib/drive.c.html#line152">line 152</A> with <A HREF="drive.c.html#line152">line 152</A> to <A HREF="drive.c.html#line154">line 154</A><pre>
+&lt;   printf("Should print true: %s\n", 
+&lt;          bool_unparse (/*@-usedef@*/ status == DBS_DUPLERR /*@=usedef@*/)); 
+---
+&gt;   check (printf("Should print true: %s\n", 
+&gt;                 bool_unparse (/*@-usedef@*/ status == DBS_DUPLERR /*@=usedef@*/))
+&gt;          &gt;= 0); 
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line154">line 154</A> with <A HREF="drive.c.html#line156">line 156</A><pre>
+&lt;   printf("Employees 0 - 19\n");
+---
+&gt;   check (printf("Employees 0 - 19\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line158">line 158</A> with <A HREF="drive.c.html#line160">line 160</A><pre>
+&lt;   printf("Employees 0 - 16, 18 - 19\n");
+---
+&gt;   check (printf("Employees 0 - 16, 18 - 19\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line164">line 164</A> with <A HREF="drive.c.html#line166">line 166</A><pre>
+&lt;   printf("Should get two females: %d\n%s\n", i, sprintResult);
+---
+&gt;   check (printf("Should get two females: %d\n%s\n", i, sprintResult) &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line174">line 174</A> with <A HREF="drive.c.html#line176">line 176</A> to <A HREF="drive.c.html#line177">line 177</A><pre>
+&lt;   printf("Should get two females and ten males: %d\n%s\n", i, sprintResult);
+---
+&gt;   check (printf("Should get two females and ten males: %d\n%s\n", i, sprintResult)
+&gt;          &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line180">line 180</A> with <A HREF="drive.c.html#line183">line 183</A><pre>
+&lt;   printf("Should get two females: %d\n%s\n", i, sprintResult);
+---
+&gt;   check (printf("Should get two females: %d\n%s\n", i, sprintResult) &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/drive.c.html#line184">line 184</A> with <A HREF="drive.c.html#line187">line 187</A><pre>
+&lt;   printf("Should get 18 employees\n");
+---
+&gt;   check (printf("Should get 18 employees\n") &gt;= 0);
+</pre><p><p>
+<p><h4>Changes in <A HREF="empset.lcl.html">empset.lcl</A> (<A HREF="../strictlib/empset.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line1">line 1</A> with <A HREF="empset.lcl.html#line1">line 1</A><pre>
+&lt; imports employee;
+---
+&gt; imports employee, &lt;stdio&gt;;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line4">line 4</A> with <A HREF="empset.lcl.html#line4">line 4</A><pre>
+&lt; only empset empset_create(void) 
+---
+&gt; only empset empset_create(void) FILE *stderr;
+</pre><br>Added <A HREF="empset.lcl.html#line6">line 6</A> (was <A HREF="../strictlib/empset.lcl.html#line5">line 5</A>)<pre>
+&gt;   modifies *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line21">line 21</A> with <A HREF="empset.lcl.html#line22">line 22</A> to <A HREF="empset.lcl.html#line23">line 23</A><pre>
+&lt; | bool : void | empset_insert (empset s, employee e) internalState; 
+---
+&gt; | bool : void | empset_insert (empset s, employee e) 
+&gt;    internalState; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line23">line 23</A> with <A HREF="empset.lcl.html#line25">line 25</A><pre>
+&lt;   modifies s, internalState;
+---
+&gt;   modifies s, internalState, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line27">line 27</A> with <A HREF="empset.lcl.html#line29">line 29</A><pre>
+&lt; void empset_insertUnique (empset s, employee e) internalState;
+---
+&gt; void empset_insertUnique (empset s, employee e) internalState; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line30">line 30</A> with <A HREF="empset.lcl.html#line32">line 32</A><pre>
+&lt;   modifies s, internalState;
+---
+&gt;   modifies s, internalState, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line40">line 40</A> with <A HREF="empset.lcl.html#line42">line 42</A> to <A HREF="empset.lcl.html#line43">line 43</A><pre>
+&lt; only empset empset_union(empset s1, empset s2) internalState;
+---
+&gt; only empset empset_union(empset s1, empset s2) 
+&gt;    internalState; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line42">line 42</A> with <A HREF="empset.lcl.html#line45">line 45</A><pre>
+&lt;   modifies internalState;
+---
+&gt;   modifies internalState, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line46">line 46</A> with <A HREF="empset.lcl.html#line49">line 49</A> to <A HREF="empset.lcl.html#line50">line 50</A><pre>
+&lt; only empset empset_disjointUnion (empset s1, empset s2) internalState;
+---
+&gt; only empset empset_disjointUnion (empset s1, empset s2) 
+&gt;   internalState; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line48">line 48</A> with <A HREF="empset.lcl.html#line52">line 52</A><pre>
+&lt;   modifies internalState;
+---
+&gt;   modifies internalState, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line53">line 53</A> with <A HREF="empset.lcl.html#line57">line 57</A><pre>
+&lt; void empset_intersect (empset s1, empset s2) internalState;
+---
+&gt; void empset_intersect (empset s1, empset s2) internalState; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line55">line 55</A> with <A HREF="empset.lcl.html#line59">line 59</A><pre>
+&lt;   modifies s1, internalState;
+---
+&gt;   modifies s1, internalState, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line80">line 80</A> with <A HREF="empset.lcl.html#line84">line 84</A><pre>
+&lt; only char *empset_sprint(empset s) 
+---
+&gt; only char *empset_sprint(empset s) FILE *stderr;
+</pre><br>Added <A HREF="empset.lcl.html#line86">line 86</A> (was <A HREF="../strictlib/empset.lcl.html#line81">line 81</A>)<pre>
+&gt;   modifies *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line85">line 85</A> with <A HREF="empset.lcl.html#line90">line 90</A><pre>
+&lt; void empset_initMod (void) internalState;
+---
+&gt; void empset_initMod (void) internalState; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/empset.lcl.html#line87">line 87</A> with <A HREF="empset.lcl.html#line92">line 92</A><pre>
+&lt;   modifies internalState;
+---
+&gt;   modifies internalState, *stderr^;
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.c.html">erc.c</A> (<A HREF="../strictlib/erc.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictlib/erc.c.html#line2">line 2</A> with <A HREF="erc.c.html#line2">line 2</A><pre>
+&lt; 
+---
+&gt; # include &lt;assert.h&gt;
+</pre><br>Replaced <A HREF="../strictlib/erc.c.html#line5">line 5</A> with <A HREF="erc.c.html#line5">line 5</A><pre>
+&lt; static size_t int_toSize (int x) /*@*/
+---
+&gt; static size_t int_toSize (int x) /*@globals stderr@*/ /*@modifies *stderr@*/
+</pre><br>Replaced <A HREF="../strictlib/erc.c.html#line9">line 9</A> with <A HREF="erc.c.html#line9">line 9</A><pre>
+&lt;       fprintf (stderr, "Error: int_toSize is negative: %d", x);
+---
+&gt;       check (fprintf (stderr, "Error: int_toSize is negative: %d", x) &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/erc.c.html#line26">line 26</A> with <A HREF="erc.c.html#line26">line 26</A><pre>
+&lt;       printf ("Malloc returned null in erc_create\n");
+---
+&gt;       check (fprintf (stderr, "Malloc returned null in erc_create\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/erc.c.html#line78">line 78</A> with <A HREF="erc.c.html#line78">line 78</A><pre>
+&lt;       printf ("Malloc returned null in erc_insert\n");
+---
+&gt;       check (fprintf (stderr, "Malloc returned null in erc_insert\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/erc.c.html#line143">line 143</A> with <A HREF="erc.c.html#line143">line 143</A><pre>
+&lt;       printf ("Malloc returned null in erc_sprint\n");
+---
+&gt;       check (fprintf (stderr, "Malloc returned null in erc_sprint\n") &gt;= 0);
+</pre><p><p>
+<p><h4>Changes in <A HREF="erc.lcl.html">erc.lcl</A> (<A HREF="../strictlib/erc.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictlib/erc.lcl.html#line1">line 1</A> with <A HREF="erc.lcl.html#line1">line 1</A><pre>
+&lt; imports eref;
+---
+&gt; imports eref, &lt;stdio&gt;;
+</pre><br>Replaced <A HREF="../strictlib/erc.lcl.html#line5">line 5</A> with <A HREF="erc.lcl.html#line5">line 5</A><pre>
+&lt; only erc erc_create(void) 
+---
+&gt; only erc erc_create(void) FILE *stderr;
+</pre><br>Added <A HREF="erc.lcl.html#line7">line 7</A> (was <A HREF="../strictlib/erc.lcl.html#line6">line 6</A>)<pre>
+&gt;   modifies *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/erc.lcl.html#line17">line 17</A> with <A HREF="erc.lcl.html#line18">line 18</A><pre>
+&lt; void erc_insert(erc c, eref er) 
+---
+&gt; void erc_insert(erc c, eref er) FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/erc.lcl.html#line20">line 20</A> with <A HREF="erc.lcl.html#line21">line 21</A><pre>
+&lt;   modifies c;
+---
+&gt;   modifies c, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/erc.lcl.html#line48">line 48</A> with <A HREF="erc.lcl.html#line49">line 49</A><pre>
+&lt; void erc_join(erc c1, erc c2) 
+---
+&gt; void erc_join(erc c1, erc c2) FILE *stderr; 
+</pre><br>Replaced <A HREF="../strictlib/erc.lcl.html#line51">line 51</A> with <A HREF="erc.lcl.html#line52">line 52</A><pre>
+&lt;   modifies c1;
+---
+&gt;   modifies c1, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/erc.lcl.html#line55">line 55</A> with <A HREF="erc.lcl.html#line56">line 56</A><pre>
+&lt; only char *erc_sprint(erc c) 
+---
+&gt; only char *erc_sprint(erc c) FILE *stderr; 
+</pre><br>Added <A HREF="erc.lcl.html#line58">line 58</A> (was <A HREF="../strictlib/erc.lcl.html#line56">line 56</A>)<pre>
+&gt;   modifies *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/erc.lcl.html#line66">line 66</A> with <A HREF="erc.lcl.html#line68">line 68</A><pre>
+&lt; void erc_initMod (void) internalState;
+---
+&gt; void erc_initMod (void) internalState; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/erc.lcl.html#line68">line 68</A> with <A HREF="erc.lcl.html#line70">line 70</A><pre>
+&lt;   modifies internalState;
+---
+&gt;   modifies internalState, *stderr^;
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.c.html">eref.c</A> (<A HREF="../strictlib/eref.c.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictlib/eref.c.html#line36">line 36</A> with <A HREF="eref.c.html#line36">line 36</A><pre>
+&lt;           printf ("Malloc returned null in eref_alloc\n");
+---
+&gt;           check (fprintf (stderr, "Malloc returned null in eref_alloc\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/eref.c.html#line46">line 46</A> with <A HREF="eref.c.html#line46">line 46</A><pre>
+&lt;           printf ("Malloc returned null in eref_alloc\n");
+---
+&gt;           check (fprintf (stderr, "Malloc returned null in eref_alloc\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/eref.c.html#line82">line 82</A> with <A HREF="eref.c.html#line82">line 82</A><pre>
+&lt;       printf ("Malloc returned null in eref_initMod\n");
+---
+&gt;       check (fprintf (stderr, "Malloc returned null in eref_initMod\n") &gt;= 0);
+</pre><br>Replaced <A HREF="../strictlib/eref.c.html#line90">line 90</A> with <A HREF="eref.c.html#line90">line 90</A><pre>
+&lt;       printf ("Malloc returned null in eref_initMod\n");
+---
+&gt;       check (fprintf (stderr, "Malloc returned null in eref_initMod\n") &gt;= 0);
+</pre><p><p>
+<p><h4>Changes in <A HREF="eref.lcl.html">eref.lcl</A> (<A HREF="../strictlib/eref.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictlib/eref.lcl.html#line1">line 1</A> with <A HREF="eref.lcl.html#line1">line 1</A><pre>
+&lt; imports employee;
+---
+&gt; imports employee, &lt;stdio&gt;;
+</pre><br>Replaced <A HREF="../strictlib/eref.lcl.html#line10">line 10</A> with <A HREF="eref.lcl.html#line10">line 10</A><pre>
+&lt; eref eref_alloc(void) map m; 
+---
+&gt; eref eref_alloc(void) map m; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/eref.lcl.html#line12">line 12</A> with <A HREF="eref.lcl.html#line12">line 12</A><pre>
+&lt;   modifies m;
+---
+&gt;   modifies m, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/eref.lcl.html#line43">line 43</A> with <A HREF="eref.lcl.html#line43">line 43</A><pre>
+&lt; void eref_initMod(void) map m; internalState;
+---
+&gt; void eref_initMod(void) map m; FILE *stderr; internalState;
+</pre><br>Replaced <A HREF="../strictlib/eref.lcl.html#line45">line 45</A> with <A HREF="eref.lcl.html#line45">line 45</A><pre>
+&lt;   modifies m, internalState;
+---
+&gt;   modifies m, internalState, *stderr^;
+</pre><p><p>
+<p><h4>Changes in <A HREF="ereftab.lcl.html">ereftab.lcl</A> (<A HREF="../strictlib/ereftab.lcl.html">previous version</A>)</h4><pre>
+</pre><br>Replaced <A HREF="../strictlib/ereftab.lcl.html#line5">line 5</A> with <A HREF="ereftab.lcl.html#line5">line 5</A><pre>
+&lt; only ereftab ereftab_create(void) 
+---
+&gt; only ereftab ereftab_create(void) FILE *stderr;
+</pre><br>Added <A HREF="ereftab.lcl.html#line7">line 7</A> (was <A HREF="../strictlib/ereftab.lcl.html#line6">line 6</A>)<pre>
+&gt;   modifies *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/ereftab.lcl.html#line10">line 10</A> with <A HREF="ereftab.lcl.html#line11">line 11</A><pre>
+&lt; void ereftab_insert(ereftab t, employee e, eref er) 
+---
+&gt; void ereftab_insert(ereftab t, employee e, eref er) FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/ereftab.lcl.html#line13">line 13</A> with <A HREF="ereftab.lcl.html#line14">line 14</A><pre>
+&lt;   modifies t;
+---
+&gt;   modifies t, *stderr^;
+</pre><br>Replaced <A HREF="../strictlib/ereftab.lcl.html#line28">line 28</A> with <A HREF="ereftab.lcl.html#line29">line 29</A><pre>
+&lt; void ereftab_initMod (void) internalState;
+---
+&gt; void ereftab_initMod (void) internalState; FILE *stderr;
+</pre><br>Replaced <A HREF="../strictlib/ereftab.lcl.html#line30">line 30</A> with <A HREF="ereftab.lcl.html#line31">line 31</A><pre>
+&lt;   modifies internalState;
+---
+&gt;   modifies internalState, *stderr^;
+</pre><p><p>

@@ -1,0 +1,411 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/manual.css" title="style1">
+<title>Splint Manual - 1. Operation</title>
+</head>
+<body>
+<!--#include virtual="manual-header.html"-->
+
+
+<p class=TextFontCX><span style='font-size:16.0pt'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span
+style='font-size:16.0pt'>Splint User’s Manual</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'>&nbsp;</p>
+
+<p class=MsoNormal align=center style='text-align:center'>Version 3.0.1</p>
+
+<p class=MsoNormal align=center style='text-align:center'>7 January 2002</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Splint<a href="#_ftn1"
+name="_ftnref1" title=""><span class=MsoFootnoteReference><span
+class=MsoFootnoteReference><span style='font-size:11.0pt;font-family:"Times New Roman"'>[1]</span></span></span></a>
+is a tool for statically checking C programs for security vulnerabilities and
+programming mistakes.  Splint does many of the traditional lint checks
+including unused declarations, type inconsistencies, use before definition, unreachable code, ignored return values, execution paths with no return, likely
+infinite loops, and fall through cases.  More powerful checks are made possible
+by additional information given in source code annotations.  Annotations are stylized comments that document assumptions about functions, variables,
+parameters and types.  In addition to the checks specifically enabled by
+annotations, many of the traditional lint checks are improved by exploiting
+this additional information.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>As more effort is put into
+annotating programs, better checking results. A representational effort-benefit
+curve for using Splint is shown in Figure 1.  Splint is designed to be flexible and allow programmers to select appropriate points on the effort-benefit curve for particular projects.  As different checks are turned on and more information is given in code
+annotations the number of bugs that can be detected increases dramatically.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=beforelist>Problems detected by Splint include:</p>
+
+<p class=TextFontCX style='margin-left:12.95pt;
+text-indent:-12.95pt'><span style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Dereferencing a possibly null pointer (Section 2);</p>
+
+<p class=TextFontCX style='margin-left:12.95pt;
+text-indent:-12.95pt'><span style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Using possibly undefined storage or returning storage that is not
+properly defined (Section&nbsp;3);</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>Type
+mismatches, with greater precision and flexibility than provided by C compilers
+(Section 4.1–4.2);</p>
+
+<p class=MsoListBullet><span style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span>Violations
+of information hiding (Section 4.3);</p>
+
+<p class=TextFontCX style='margin-left:12.95pt;
+text-indent:-12.95pt'><span style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Memory management errors including uses of dangling references
+and memory leaks  (Section 5);</p>
+
+<p class=TextFontCX style='margin-left:12.95pt;
+text-indent:-12.95pt'><span style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Dangerous aliasing (Section 6);</p>
+
+<p class=TextFontCX style='margin-left:12.95pt;
+text-indent:-12.95pt'><span style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Modifications and global variable uses that are inconsistent with
+specified interfaces (Section 7);</p>
+
+<p class=TextFontCX style='margin-left:12.95pt;
+text-indent:-12.95pt'><span style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Problematic control flow such as likely infinite loops (Section 8.3.1), fall through cases or incomplete switches (Section 8.3.2), and suspicious statements (Section 8.4);</p>
+
+<p class=TextFontCX style='margin-left:12.95pt;
+text-indent:-12.95pt'><span style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Buffer overflow vulnerabilities (Section 9);</p>
+
+<p class=TextFontCX style='margin-left:12.95pt;
+text-indent:-12.95pt'><span style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Dangerous macro implementations or invocations (Section 11); and</p>
+
+<p class=TextFontCX style='margin-left:12.95pt;
+text-indent:-12.95pt'><span style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Violations of customized naming conventions.  (Section 12).</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=MsoCaption>
+<center><img width=572 height=350
+src="http://www.splint.org/manual/manual-301_files/image003.gif"><center>
+</p>
+
+<p class=MsoCaption><a name="_Toc534824605"></a><a name="_Ref534821281">Figure </a>1.  Typical Effort-Benefit Curve</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Splint checking can be
+customized to select what classes of errors are reported using command line
+flags and stylized comments in the code.  In addition, users can define new annotations and associated checks to extend Splint’s checking or to enforce application
+specific properties (Section 10).</p>
+
+<p class=TextFontCX><a name="_Ref343085763"></a><a
+name="_Ref343065516">&nbsp;</a></p>
+
+<p class=TextFontCX><b>About This Document</b></p>
+
+<p class=TextFontCX>This document is a guide to
+using Splint.  Section 1 explains how to run Splint, interpret messages and
+control checking.  Sections 2–13 describe particular checks done by Splint.  There are some minor dependencies between sections, but in general they can be read in any order.  Section 14 covers issues involving libraries and header file inclusion important for running Splint on large systems.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>This document does not
+describe technical details of the checking.  For technical background and
+analysis of Splint’s effectiveness in practice, see the papers available at <a
+href="http://www.splint.org/"><span style='font-size:10.0pt;font-family:Arial'>http://www.splint.org</span></a>. 
+</p>
+
+<center>
+<table cellspacing=0 cellpadding=0 hspace=0 width="80%" style="border-collapse: collapse" bordercolor="#111111">
+ <tr>
+  <td valign=top align=left style='padding-top:0in;padding-right:
+  9.35pt;padding-bottom:0in;padding-left:9.35pt'>
+  <p class=TextFontCX align=right
+  style='text-align:right'><a name="_Ref349497354"></a><a name="_Ref348079997"><i><span
+  style='font-size:9.0pt'>Since human beings themselves are not fully debugged
+  yet, there will be bugs in your code no matter what you do.</span></i></a></p>
+  <p class=TextFontCX align=right
+  style='margin-left:4.5pt;text-align:right'><span style='font-size:9.0pt'>Chris
+  Mason,</span><i><span style='font-size:9.0pt'> Zero-defects  memo </span></i><span
+  style='font-size:9.0pt'>(quoted in <i>Microsoft Secrets</i>, Cusumano and Selby)</span></p>
+  </td>
+ </tr>
+</table>
+</center>
+
+<a name="Section1">
+<h1 style='margin-left:0in;text-indent:0in'><a name="_Toc534974932"></a><a
+name="_Ref348785755">1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Operation</a></h1>
+
+<p class=TextFontCX>Splint is invoked by listing
+files to be checked.  Initialization files, command line flags, and stylized comments may be used to customize checking globally and locally.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>The best way to learn to use
+Splint, of course, is to actually use it (if you don’t already have Splint
+installed on your system, see Appendix A).  Before you read much further in
+this document, I recommend finding a small C program.  Then, try running:</p>
+
+<p class=example align="left">splint *.c</p>
+
+<center>
+<center>
+
+<p class=TextFontCX>For the most C programs, this
+will produce a large number of warnings.  To turn off reporting for some of the
+warnings, try:<a name="_Ref347468509"></a><a name="_Ref345591726"></a><a
+name="_Ref345568136"></a><a name="_Ref345515100"></a><a name="_Ref345497041"></a><a
+name="_Ref345435155"></a><a name="_Ref345257971"></a><a name="_Ref344916723"></a><a
+name="_Ref344907348"></a><a name="_Ref344891202"></a><a name="_Toc344355397"></a></p>
+
+<p class=example align="left">splint -weak *.c</p>
+
+<center><center>
+
+<p class=TextFontCX>The <span class=Flag><span
+style='font-size:10.0pt'>-weak</span></span> flag is a mode flag that sets many checking parameters to select weaker checking than is done in the
+default mode.  Other Splint flags will be introduced in the following sections;
+a complete list is given in Appendix B.</p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534974933"></a><a
+name="_Toc344355435">1.1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Warnings</a></h2>
+
+<p class=beforelist>A typical warning message is:</p>
+
+<p class=IndentText align="left" style="margin-bottom: 0.0003pt"><span style='font-size:10.0pt;font-family:Arial'>sample.c:
+(in function faucet)</span></p>
+
+<p class=IndentText align="left"><span style='font-size:10.0pt;font-family:Arial'>sample.c:11:12</span><span style='font-size:10.0pt;
+font-family:Arial'>: Fresh storage x not released before return</span></p>
+
+<p class=IndentText align="left"><span style='font-size:10.0pt;font-family:Arial'>  A memory
+leak has been detected. Storage allocated locally is not released</span></p>
+
+<p class=IndentText align="left"><span style='font-size:10.0pt;font-family:Arial'>  before
+the last reference to it is lost. (Use -mustfreefresh to inhibit</span></p>
+
+<p class=IndentText align="left"><span style='font-size:10.0pt;font-family:Arial'>  warning)</span></p>
+
+<p class=IndentText align="left"><span style='font-size:10.0pt;font-family:Arial'>  
+sample.c:5:47: Fresh storage x allocated</span></p>
+
+<center><center>
+
+<p class=afterlist>The first line gives the name of the function in which the
+error is found.  This is printed before the first message reported for a
+function.  The second line is the text of the message.  This message reports a
+memory leak—storage allocated in a function is not deallocated before the
+function returns.  The file name, line and column number where the error is
+located precedes the text.  </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>The next line is a hint
+giving more information about the suspected error, including information on how
+the warning message may be suppressed.  For this message, using the <span
+class=Flag><span style='font-size:10.0pt'>&#8209;mustfreefresh</span></span> flag would prevent this warning from being reported.  This flag can be set at the
+command line, or more precisely just around the code point in question by using
+annotations (see Section 1.3.2).</p>
+
+<p class=TextFontCX> </p>
+
+<p class=TextFontCX>The final line of the message
+gives additional location information.  For this message, it tells where the
+leaking storage was allocated.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=beforelist>The generic message format is (parts enclosed in square
+brackets are optional):</p>
+
+<p class=Verbatim align="left"><span style='font-family:Arial'>  [&lt;file&gt;:&lt;line&gt;
+(in &lt;context&gt;)]</span></p>
+
+<p class=Verbatim align="left"><span style='font-family:Arial'> 
+&lt;file&gt;:&lt;line&gt;[,&lt;column&gt;]: <i>message</i></span></p>
+
+<p class=Verbatim align="left"><span style='font-family:Arial'>     [<i>hint</i>]</span></p>
+
+<p class=Verbatim align="left"><span style='font-family:Arial'>      &lt;file&gt;:&lt;line&gt;,&lt;column&gt;:
+<i>extra location information, if appropriate</i></span></p>
+
+<center>
+<center>
+
+<p class=afterlist>Users can customize the format and content of messages
+printed by Splint.  The function context is not printed if <span class=Flag><span
+style='font-size:10.0pt'>-showfunc</span></span> is used.  Column numbers are not printed if <span
+class=Flag><span style='font-size:10.0pt'>&#8209;showcol</span></span> is used.  The <span
+class=Flag><span style='font-size:10.0pt'>+parenfileformat</span></span> flag can be used to generate file locations in the format recognized by Microsoft Visual Studio.  If <span class=Flag><span style='font-size:10.0pt'>+parenfileformat</span></span> is
+set, the line number follows the file name in parentheses (e.g., <span
+class=PlainText><span style='font-size:10.0pt;font-family:Arial'>sample.c(11)</span></span>.) 
+Messages are split into lines of length less than the value set using <span
+class=Flag><span style='font-size:10.0pt'>-linelen <i>&lt;number&gt;</i></span></span>.  The default line length is 80 characters.  Splint attempts to split lines in a sensible place as near to the line length limit as possible.  </p>
+
+<p class=afterlist style='margin-top:0in'>&nbsp;</p>
+
+<p class=afterlist style='margin-top:0in'>The <span class=Flag><span
+style='font-size:10.0pt'>&#8209;hints</span></span> prevents any hints from being printed.  Normally, a hint is given only the first time a class of error is reported.  To have Splint print a hint for every message regardless, use <span
+class=Flag><span style='font-size:10.0pt'>+forcehints</span></span>.</p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534974934"></a><a
+name="_Ref348343333"></a><a name="_Ref348343330"></a><a name="_Ref348092990"></a><a
+name="_Ref344882148"></a><a name="_Ref344870278"></a><a name="_Toc344355436">1.2<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Flags</a></h2>
+
+<p class=TextFontCX>So that many programming
+styles can be supported, Splint provides several hundred flags for controlling
+checking and message reporting.  Some of the flags are introduced in the body
+of this document.  Appendix B describes every flag.  Modes and shortcut flags are provided for setting many flags at once.  Individual flags can override the mode settings.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Flags are preceded by <span
+class=Flag><span style='font-size:10.0pt'>+</span></span> or <span class=Flag><span
+style='font-size:10.0pt'>-</span></span>.  When a flag is preceded by <span
+class=Flag><span style='font-size:10.0pt'>+</span></span> we say it is <i>on</i>;
+when it is preceded by <span class=Flag><span style='font-size:10.0pt'>-</span></span>
+it is <i>off</i>. The precise meaning of on and off depends on the type of
+flag.  </p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>The <span class=Flag><span
+style='font-size:10.0pt'>+</span></span>/<span class=Flag><span
+style='font-size:10.0pt'>-</span></span> flag settings are used for consistency
+and clarity, but contradict standard UNIX usage and it is easy to accidentally
+use the wrong one.  To reduce the likelihood of using the wrong flag, Splint
+issues warnings when a flag is set in an unusual way.  Warnings are issued when
+a flag is redundantly set to the value it already had (these errors are not
+reported if the flag is set using a stylized comment), if a mode flag or
+special flag is set after a more specific flag that will be set by the general
+flag was already set, if value flags are given unreasonable values, of if flags
+are set in an inconsistent way.  The <span class=Flag><span style='font-size:
+10.0pt'>-warnflags</span></span> flag suppresses these warnings.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Default flag settings will be read from <span class=Keyword><span style='font-size:10.0pt;font-family:
+Arial;color:windowtext'>~/.splintrc</span></span> if it is readable.  If there is a <span
+class=Keyword><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>.splintrc</span></span> file in the working directory, settings in this file will be read next and its settings will override those in <span class=Keyword><span style='font-size:10.0pt;font-family:Arial;
+color:windowtext'>~/.splintrc</span></span>.  Command-line flags override settings in either file.  The syntax of the <span
+class=Keyword><span style='font-size:10.0pt;font-family:Arial;color:windowtext'>.splintrc</span></span> file is the same as that of command-line flags, except that flags may be on separate lines and the <span class=CodeText><span style='font-size:10.0pt'>#</span></span>
+character may be used to indicate that the remainder of the line is a comment.
+The <span class=Flag><span style='font-size:10.0pt'>-nof</span></span> flag prevents the <span class=Keyword><span style='font-size:10.0pt;font-family:
+Arial;color:windowtext'>~/.splintrc</span></span> file from being loaded.  The <span
+class=Flag><span style='font-size:10.0pt'>-f </span></span><span
+class=Flag><span style='font-size:10.0pt'><i>&lt;filename&gt;</i></span></span>
+flag loads options from <i>filename</i>.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>To make flag names more
+readable, hyphens (<span class=Flag><span style='font-size:10.0pt'>-</span></span>),
+underscores (<span class=Flag><span style='font-size:10.0pt'>_</span></span>)
+and spaces in flags at the command line are ignored.  Hence, <span class=Flag><span
+style='font-size:10.0pt'>warnflags</span></span>, <span class=Flag><span
+style='font-size:10.0pt'>warn-flags</span></span> and <span class=Flag><span
+style='font-size:10.0pt'>warn_flags</span></span> all select the <span
+class=Flag><span style='font-size:10.0pt'>warnflags</span></span> option.</p>
+
+<h2 style='margin-left:0in;text-indent:0in'><a name="_Toc534974935"></a><a
+name="_Toc344355442"></a><a name="_Ref343086686">1.3<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Stylized Comments</a></h2>
+
+<p class=TextFontCX>Stylized comments are used to
+provide extra information about a type, variable or function interface to
+improve checking, or to control flag settings locally.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>All stylized comments begin
+with <span class=CodeText><span style='font-size:10.0pt'>/*@</span></span> and
+are closed by the end of the comment.  The role of the <span class=CodeText><span
+style='font-size:10.0pt'>@</span></span> may be played by any printable character.  Use <span class=Flag><span style='font-size:10.0pt'>-commentchar</span></span><span
+class=Flag><span style='font-size:10.0pt'> <i>&lt;char&gt;</i></span></span> to
+select a different stylized comment marker.</p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974936">1.3.1<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Annotations</a></h3>
+
+<p class=TextFontCX>Annotations are stylized comments that follow a definite syntax.  Although they are comments,
+they may only be used in fixed grammatical contexts (e.g., like a type qualifier).</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Sections 2–6­ describe annotations for expressing assumptions about variables, parameters, return values, structure fields and type definitions.  For example, <span class=Annot><span style='font-size:10.0pt'>/*@null@*/</span></span>
+is used to express an assumption that a parameter may be NULL.  Section 7 describes annotations for describing function interfaces.  Other annotations are
+described in later sections and Section 10 describes mechanisms users can employ to define new annotations.  A summary of annotations is found in Appendix C.</p>
+
+<p class=TextFontCX>&nbsp;</p>
+
+<p class=TextFontCX>Some annotations, known as
+control comments, may appear between any two tokens in a C program (unlike
+regular C comments, control comments should not be used within a single token
+as they introduce new separators in the code).  Syntactically, they are no
+different from standard comments.  Control comments are used to provide
+source-level control of Splint checking.  They may be used to suppress spurious
+messages, set flags, and control checking locally in other ways.</p>
+
+<h3 style='margin-left:0in;text-indent:0in'><a name="_Toc534974937"></a><a
+name="_Ref534648584">1.3.2<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>Setting Flags</a></h3>
+
+<p class=TextFontCX>Most flags (all except those
+characterized as “global” in Appendix B) can be set locally using control comments.  A control comment can set flags locally to override the command line settings.  The original flag settings are restored before processing the next file. The syntax for
+setting flags in control comments is the same as that of the command line,
+except that flags may also be preceded by <span class=CodeText><span
+style='font-size:10.0pt'>=</span></span> to restore their setting to the
+original command-line value.  For instance,</p>
+
+<p class=example><span class=Annot><span style='font-size:10.0pt'>/*@+charint </span></span><span
+class=Annot><span style='font-size:10.0pt'>-modifies</span></span><span class=Annot><span style='font-size:10.0pt'> =showfunc</span></span><span
+class=Annot><span style='font-size:10.0pt'>@*/</span></span></p>
+
+<p class=TextFontCX>sets <span class=Flag><span
+style='font-size:10.0pt'>charint</span></span> on (this makes <span
+class=CodeText><span style='font-size:10.0pt'>char</span></span> and <span
+class=CodeText><span style='font-size:10.0pt'>int</span></span>
+indistinguishable types), sets <span class=Flag><span style='font-size:10.0pt'>modifies</span></span>
+off (this prevents reporting of modification errors), and sets <span class=Flag><span style='font-size:10.0pt'>showfunc</span></span> to its original setting (this controls  whether or not the name of a function <a name="_Toc344355449">is displayed before a message).</a><a name="_Ref348845205"></a><a
+name="_Ref348845200"></a><a name="_Ref348785779"> </a></p>
+
+
+<hr align=left size=1 width="33%">
+
+<div id=ftn1>
+
+<p class=MsoFootnoteText><a href="#_ftnref1" name="_ftn1" title=""><span
+class=MsoFootnoteReference><span class=MsoFootnoteReference><span
+style='font-size:10.0pt;font-family:"Times New Roman"'>[1]</span></span></span></a>
+Lint is a common programming tool for detecting anomalies in C programs.  S. C.
+Johnson developed the original lint in the late seventies, mainly because early
+versions of C did not support function prototypes.  Splint was originally named
+LCLint because it was originally intended to check for inconsistencies between
+LCL specifications and C implementations.  To reflect divergence from LCL and
+increased focus on detecting security vulnerabilities, the name was changed to Splint, short for “Specification Lint” and “Secure Programming Lint”.</p>
+
+</div>
+
+<p>
+<a href="sec2.html"><b>Next:</b> 2. Null Dereferences</a><br>
+<a href="contents.html"><b>Return to Contents</b></a>
+
+<p>
+
+<!--#include virtual="manual-footer.html"-->
+

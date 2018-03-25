@@ -1,0 +1,60 @@
+<h3>lclint-interest message 153</h3>
+<pre>
+From matteo@eolo.usr.dsi.unimi.it Thu Sep 18 13:08:14 1997
+From: Matteo Vaccari <matteo@eolo.usr.dsi.unimi.it>
+Subject: mixing signed & unsigned arithmetic
+To: lclint-interest@larch.lcs.mit.edu
+Date: Thu, 18 Sep 1997 11:31:44 +0200 (MET DST)
+X-Mailer: ELM [version 2.4 PL25]
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+
+Hi all,
+
+I wonder why lclint says the following program contains no errors:
+
+----------------
+#include <stdio.h>
+
+int main() {
+  unsigned u = 2;
+  int i = -2;
+
+  printf("i/u == %d, u/i == %d\n", i/u, u/i);
+  return 0;
+}
+----------------
+
+The results of executing the above are not what I would expect.  
+Yes, _now_ I know that I shouldn't mix unsigned and signed
+arithmetics, but I think a warning from lclint would be useful.
+
+(The above concern comes from an ad from Gimpel Software,
+www.gimpel.com.  They sell a lint program.  See their web pages for
+their "bug of the month" series.)
+
+Dave, thanks for being back on Lclint!
+
+	Matteo
+
+
+
+
+</pre>
+<A HREF="152.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="154.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

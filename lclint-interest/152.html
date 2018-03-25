@@ -1,0 +1,300 @@
+<h3>lclint-interest message 152</h3>
+<pre>
+From kir@iitb.fhg.de Thu Sep 18 13:07:07 1997
+X-Env: (mailgw1.fhg.de) kir@iitb.fhg.de -> lclint-interest@larch.lcs.mit.EDU.VIA-SMTP
+Sender: kir@fhg.de
+Date: Thu, 18 Sep 1997 08:59:41 +0200
+From: "Harald Kirsch (@home)" <kir@iitb.fhg.de>
+Organization: IITB
+X-Mailer: Mozilla 3.01Gold (X11; I; Linux 2.0.18 i586)
+Mime-Version: 1.0
+To: lclint-interest@larch.lcs.mit.edu
+Subject: lclint and dyla
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi there,
+
+thank you for the help with my dyla-library. I am replying from
+at home so I cannot quote your message, but said that you downloaded
+the dyla-package and it depended on an include-file which you do
+not have. Could you please let me know which one. I thought the
+dyla-stuff is ANSI-C or at least GNU.
+
+I continued to annotate dyla.h so that clients using it with lclint
+will get useful error messages and not spurious ones resulting
+>from bad annotation.
+
+In a small test program which uses dyla, there are two lclint-errors
+left, the first one of which I cannot understand. Below I include
+a self-extracting shell-archive (shar) which contains 
+   dyla.h
+   lintest.c
+and my personal .lclintrc.
+
+When I run lclint-2.3i on lintest.c, there remains the error on line
+62. Can I do anything against it? (I did not include libdyla.a or the
+whole source code of the library, so you may not be able to link
+lintest.c. But you should at least be able to compile it.)
+
+I suppose you are working on a unix system, so that you are able to
+unpack the shar.
+
+	Thank you for your time,
+	Harald Kirsch
+-- 
+----------------///|/////////////\------------------------------------
+Harald Kirsch   +----------------+ If you don't like make, have a look
+kir@iitb.fhg.de | IITB Karlsruhe | at http://www.iitb.fhg.de/~kir/Bras
+
+#!/bin/sh
+# This is a shell archive (produced by GNU sharutils 4.2).
+# To extract the files from this archive, save it to some FILE, remove
+# everything before the `!/bin/sh' line above, then type `sh FILE'.
+#
+# Made on 1997-09-18 08:43 MET DST by <kir@Gauss>.
+# Source directory was `/home1/kir/tmp'.
+#
+# Existing files will *not* be overwritten unless `-c' is specified.
+#
+# This shar contains:
+# length mode       name
+# ------ ---------- ------------------------------------------
+#   6990 -rw-r--r-- dylatest/dyla.h
+#   1839 -rw-r--r-- dylatest/lintest.c
+#    518 -rw-r--r-- dylatest/.lclintrc
+#
+save_IFS="${IFS}"
+IFS="${IFS}:"
+gettext_dir=FAILED
+locale_dir=FAILED
+first_param="$1"
+for dir in $PATH
+do
+  if test "$gettext_dir" = FAILED && test -f $dir/gettext \
+     && ($dir/gettext --version >/dev/null 2>&1)
+  then
+    set `$dir/gettext --version 2>&1`
+    if test "$3" = GNU
+    then
+      gettext_dir=$dir
+    fi
+  fi
+  if test "$locale_dir" = FAILED && test -f $dir/shar \
+     && ($dir/shar --print-text-domain-dir >/dev/null 2>&1)
+  then
+    locale_dir=`$dir/shar --print-text-domain-dir`
+  fi
+done
+IFS="$save_IFS"
+if test "$locale_dir" = FAILED || test "$gettext_dir" = FAILED
+then
+  echo=echo
+else
+  TEXTDOMAINDIR=$locale_dir
+  export TEXTDOMAINDIR
+  TEXTDOMAIN=sharutils
+  export TEXTDOMAIN
+  echo="$gettext_dir/gettext -s"
+fi
+touch -am 1231235999 $$.touch >/dev/null 2>&1
+if test ! -f 1231235999 && test -f $$.touch; then
+  shar_touch=touch
+else
+  shar_touch=:
+  echo
+  $echo 'WARNING: not restoring timestamps.  Consider getting and'
+  $echo "installing GNU \`touch', distributed in GNU File Utilities..."
+  echo
+fi
+rm -f 1231235999 $$.touch
+#
+if mkdir _sh01321; then
+  $echo 'x -' 'creating lock directory'
+else
+  $echo 'failed to create lock directory'
+  exit 1
+fi
+# ============= dylatest/dyla.h ==============
+if test ! -d 'dylatest'; then
+  $echo 'x -' 'creating directory' 'dylatest'
+  mkdir 'dylatest'
+fi
+if test -f 'dylatest/dyla.h' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'dylatest/dyla.h' '(file already exists)'
+else
+  $echo 'x -' extracting 'dylatest/dyla.h' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01321/gzi
+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
+"``#W
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'dylatest/dyla.h' &&
+  gzip -d < _sh01321/gzi > 'dylatest/dyla.h' &&
+  $shar_touch -am 0918083597 'dylatest/dyla.h' &&
+  chmod 0644 'dylatest/dyla.h' ||
+  $echo 'restore of' 'dylatest/dyla.h' 'failed'
+  if ( md5sum --help 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version 2>&1 | grep -v 'textutils 1.12' ) >/dev/null;
+then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'dylatest/dyla.h:' 'MD5 check failed'
+03d4a556d3522c0c0fd17a28ac81e222  dylatest/dyla.h
+SHAR_EOF
+  else
+    shar_count="`LC_ALL= LC_CTYPE= LANG= wc -c < 'dylatest/dyla.h'`"
+    test 6990 -eq "$shar_count" ||
+    $echo 'dylatest/dyla.h:' 'original size' '6990,' 'current size'
+"$shar_count!"
+  fi
+fi
+# ============= dylatest/lintest.c ==============
+if test -f 'dylatest/lintest.c' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'dylatest/lintest.c' '(file already exists)'
+else
+  $echo 'x -' extracting 'dylatest/lintest.c' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01321/gzi
+M'XL(`+G+(#0"`ZU4RV[;,!`\5U^Q<=-8:F39/CLV$.11!'#1(NFE@(&`D586
+M49D,2,JI6^3?NTL]K+S02PP8(KG+X<SND.//[_(+`$JI'%J7I#`:P8]"6K@W
+M>FW$!C*-%I1VA51K,"C*<@>5Q;PJ$[ARH!7-G9%H"<5I#@'E0+8KQ>BK2(VV
+M8#6X0C@H4SX&"F%!0%H(E2)OL4B?`C<@%6%X`)6!%3O:N,'Z8'&G*^>S8I`Y
+M#PP"L;2)*Q(/(G9)0-NO%.0B=3&G=!J(=F99(TG)C=Z`=9E44"DG2Y`.4*6:
+M)FA8Q,6WRX1*@(HC]X88MUMIB\$M92%HDZ'Q!QY>XU9:J=5A#(?GPN%A\#Y=
+M&0=!\%&JM*PRA!-FK)-BL5\:<(F38A`$YQ=GR]/KB]OSG\O3\(::H=8QE==$
+ML]="-JZ_%`U(7+`14H5;+;,H^$MZZB#863=NY/,"MR\M>&3E'[QUD%E',#0?
+M>\YP1J5VU$!XT.87")HU(`F$S'=H>1'PMT.5809D!85(HX,(2#'APMQ[IP9J
+MU<!TPG^FW!UUX[01:X1<&^^XND<>I!Z^`F3[2'LH]D?C"=X*=[OZZ\$>"EEB
+MR+8XF(=I,<_7Z-+09T<11,!%H\KD(55F/A^NU+!;!,_@>V6+T%.*P4:S)O(_
+MH9SS"%B2V5Z`$5#H&YP6;690__>:Z'IE)4(IK.N)89H,LT2U=@04+28=V]>Y
+M/N'`*9<&,6QBO1JF6J5TQ^GCI*J$HQO1;PEU*22SS"<S]LQ)CX-/BD93'S@^
+M;MDT/J2U);.OB_4%7<N.`HWVQHIED]/`-AMKRW0L3\G,FM\3VR&3$2T]8S!<
+MK89Q*X-?#T4N[96N<T*YF,+14<>GP8FA'$TC-L"J;X#V.IFT)^,:-WJ+/27'
+MT\X7]57TO=#W>Q4?QFQ3WN:)MI3JEIR)'HWFJ`YPW[-G@3<+5EOO67_]2_C&
+M0_CDHKQH;<]BK>E96AV<!<^=/5Q-)I-A$_"GYN'@DUVI`6D;+;:]+4^LV%MJ
+5H6G-H*N,@LDL>`S^`95B9`TO!P``
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'dylatest/lintest.c' &&
+  gzip -d < _sh01321/gzi > 'dylatest/lintest.c' &&
+  $shar_touch -am 0918083597 'dylatest/lintest.c' &&
+  chmod 0644 'dylatest/lintest.c' ||
+  $echo 'restore of' 'dylatest/lintest.c' 'failed'
+  if ( md5sum --help 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version 2>&1 | grep -v 'textutils 1.12' ) >/dev/null;
+then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'dylatest/lintest.c:' 'MD5 check failed'
+7bf60f5e8b617536bd05158eabb271c5  dylatest/lintest.c
+SHAR_EOF
+  else
+    shar_count="`LC_ALL= LC_CTYPE= LANG= wc -c < 'dylatest/lintest.c'`"
+    test 1839 -eq "$shar_count" ||
+    $echo 'dylatest/lintest.c:' 'original size' '1839,' 'current size'
+"$shar_count!"
+  fi
+fi
+# ============= dylatest/.lclintrc ==============
+if test -f 'dylatest/.lclintrc' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'dylatest/.lclintrc' '(file already exists)'
+else
+  $echo 'x -' extracting 'dylatest/.lclintrc' '(gzipped)'
+  sed 's/^X//' << 'SHAR_EOF' | uudecode &&
+begin 600 _sh01321/gzi
+M'XL(`/S+(#0"`SU0RVX;,0R\ZRNFV(.3.-D`O?04)$!.!?(1H66M+81++B0J
+MM1'TWTOM!KWH00YGAC,,B#K/)$=PEH0ILQ]:\/;ZEL5"&`;4L_YQ%+=9L&C-
+MEE60!:D4+?4Y/'2`]U<P)SG9&3I!FRW-5MH:'OKE/?SZN<)FK88F)*)&EHY.
+M['*I5%!)R//".6;C*VHRF.)=A:^[^RZ[4+$<&U/I1%"<6`_$J*:%3NF[6)*U
+M(O@D;BZ_U:J5%KW<UTQ\K&%/S*[5N5=7\4R%HMOP=:4:B57W_Y&PHQTB"0X)
+MK;I;JN[$QK#O$_[B[$.T)>"<F"D6K?#E_%D^?.+Q[L5_4Y/8XWNY>\3</((S
+M?280EJ*F=EW2:FF;#F'?T[YP/JR\OQV5)O?F<4@Z>6K_0[O?#*UK`A<\N2JS
+BQIMQO/TNYND&/RZXQ1?&<<3?,.P7*QM/^`<74.(.!@(``+O?
+`
+end
+SHAR_EOF
+  $echo 'gunzipping file' 'dylatest/.lclintrc' &&
+  gzip -d < _sh01321/gzi > 'dylatest/.lclintrc' &&
+  $shar_touch -am 0918083697 'dylatest/.lclintrc' &&
+  chmod 0644 'dylatest/.lclintrc' ||
+  $echo 'restore of' 'dylatest/.lclintrc' 'failed'
+  if ( md5sum --help 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version 2>&1 | grep -v 'textutils 1.12' ) >/dev/null;
+then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'dylatest/.lclintrc:' 'MD5 check failed'
+9ff9b0a4294512168cbb398336c4cfc5  dylatest/.lclintrc
+SHAR_EOF
+  else
+    shar_count="`LC_ALL= LC_CTYPE= LANG= wc -c < 'dylatest/.lclintrc'`"
+    test 518 -eq "$shar_count" ||
+    $echo 'dylatest/.lclintrc:' 'original size' '518,' 'current size'
+"$shar_count!"
+  fi
+fi
+rm -fr _sh01321
+exit 0
+
+
+</pre>
+<A HREF="151.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="153.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<h3>lclint-interest message 67</h3>
+<pre>
+From evs Tue Apr  2 11:57:32 1996
+Date: Tue, 2 Apr 96 11:37:26 -0500
+From: evs (David Evans)
+To: lclint-interest@larch.lcs.mit.edu
+Cc: eric@access.rrinc.com
+In-Reply-To: Eric Bloodworth's message of Mon, 01 Apr 1996 17:43:32 -0500 <31605C14.2847@rrinc.com>
+Subject: Re: flags are too blunt an instrument...
+
+
+Yes, I agree that it would be nice to have a way to set flag-settings
+for particular variables, or at least be able to suppress messages
+concerning a particular variable.  (No plans to add this to LCLint
+anytime soon, though, I'm afraid.)
+
+For the particular example, there are a couple things you could do.
+
+One possibility is to use +loopexec around the loop that defines p[]:
+
+...
+	if (NULL != p) {
+                /*@+loopexec@*/
+		for (i = 0; i < 200; i++) 
+			p[i] = i; 
+                /*@=loopexec@*/
+	        
+		foo = p[100] + p[10] + p[1] + q[0]; 
+...
+
+This instructs lclint to check the code assuming the body of the loop
+always executes.  (In this case it would be better if lclint could
+figure out that a loop with compile-time known bounds like this always
+executes, but it doesn't attempt to do this.)  Now, p is defined after
+the loop, and no use-before-definition error is reported for p.
+
+Without using loopexec, you can use the suppression comments or -usedef
+is local ways to make sure only the intended message is suppressed.
+
+For example, if you expect there to be 3 spurious use-before-definitions
+errors on the line, do:
+
+		/*@i3@*/ foo = p[100] + p[10] + p[1] + q[0]; 
+
+This means lclint will suppress errors on the line, but will report if
+the number of errors suppressed is not equal to 3.
+
+You can also place the /*@-usedef@*/ ... /*@=usedef@*/ comments locally,
+to make sure only the indended messages are suppressed:
+
+	foo = /*@-usedef@*/ p[100] + p[10] + p[1] /*@=usedef@*/ + q[0]; 
+
+This suppresses the messages for p between the comments, but on other
+messages.
+
+--- Dave
+
+
+
+
+</pre>
+<A HREF="66.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="68.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

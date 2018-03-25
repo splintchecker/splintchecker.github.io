@@ -1,0 +1,266 @@
+<A NAME="line314"></A><html><head>
+<title>drive.c</title>
+</head><body>
+<h1>drive.c</h1>
+<PRE>
+<A NAME="line1"></A>/* Part of a driver used to test dbase  */
+<A NAME="line2"></A> 
+<A NAME="line3"></A>/* Include those modules that export things that are used explicitly here */
+<A NAME="line4"></A> 
+<A NAME="line5"></A># include &ltstdio.h&gt
+<A NAME="line6"></A># include &ltassert.h&gt
+<A NAME="line7"></A>#include "<A HREF="bool.h.html">bool.h</A>"
+<A NAME="line8"></A>#include "<A HREF="employee.h.html">employee.h</A>"
+<A NAME="line9"></A>#include "<A HREF="empset.h.html">empset.h</A>"
+<A NAME="line10"></A>#include "<A HREF="dbase.h.html">dbase.h</A>"
+<A NAME="line11"></A> 
+<A NAME="line12"></A>int main (int argc, /*@unused@*/ char *argv[]) 
+<A NAME="line13"></A>  /*@globals internalState@*/ /*@modifies internalState@*/
+<A NAME="line14"></A>{
+<A NAME="line15"></A>  employee e;
+<A NAME="line16"></A>  empset em1, em2, em3;
+<A NAME="line17"></A>  char na[10000];
+<A NAME="line18"></A>  char * sprintResult;
+<A NAME="line19"></A>  int i;
+<A NAME="line20"></A>  db_status status;
+<A NAME="line21"></A>  db_q q;
+<A NAME="line22"></A>  
+<A NAME="line23"></A>  /* Initialize all of the LCL-specified modules that were included */
+<A NAME="line24"></A>  bool_initMod();
+<A NAME="line25"></A>  employee_initMod();
+<A NAME="line26"></A>  empset_initMod();
+<A NAME="line27"></A>  db_initMod();
+<A NAME="line28"></A>  
+<A NAME="line29"></A>  if (argc != 1) 
+<A NAME="line30"></A>    {
+<A NAME="line31"></A>      printf ("FormatPos: Wrong number of arguments. Given %d needs 0.\n",
+<A NAME="line32"></A>	      argc - 1);
+<A NAME="line33"></A>      return 1;
+<A NAME="line34"></A>    }
+<A NAME="line35"></A>  
+<A NAME="line36"></A>  /* Unit test empset */
+<A NAME="line37"></A>  em1 = empset_create();
+<A NAME="line38"></A> 
+<A NAME="line39"></A>  if (!(empset_size(em1) == 0))
+<A NAME="line40"></A>    {
+<A NAME="line41"></A>      printf("Size should be 0.\n");
+<A NAME="line42"></A>    }
+<A NAME="line43"></A> 
+<A NAME="line44"></A>  for (i = 0; i &lt 500; i++) 
+<A NAME="line45"></A>    {
+<A NAME="line46"></A>      e.ssNum = i;
+<A NAME="line47"></A>      e.salary = 100000;
+<A NAME="line48"></A>      e.gen = MALE;
+<A NAME="line49"></A>      e.j = MGR;
+<A NAME="line50"></A>      (void) sprintf(na, "S.S. Doe %d", i);
+<A NAME="line51"></A>      check (employee_setName(&e, na));
+<A NAME="line52"></A>      empset_insert(em1, e);
+<A NAME="line53"></A>    }
+<A NAME="line54"></A> 
+<A NAME="line55"></A>  if (!(empset_size(em1) == 500)) 
+<A NAME="line56"></A>    {
+<A NAME="line57"></A>      printf("Size should be 500.\n");
+<A NAME="line58"></A>    }
+<A NAME="line59"></A> 
+<A NAME="line60"></A>  for (i = 0; i &lt 250; i++) 
+<A NAME="line61"></A>    {
+<A NAME="line62"></A>      e.ssNum = i;
+<A NAME="line63"></A>      e.salary = 100000;
+<A NAME="line64"></A>      e.gen = MALE;
+<A NAME="line65"></A>      e.j = MGR;
+<A NAME="line66"></A>      (void) sprintf(na, "S.S. Doe %d", i);
+<A NAME="line67"></A>      check (employee_setName(&e, na));
+<A NAME="line68"></A>      empset_delete(em1, e);
+<A NAME="line69"></A>    }
+<A NAME="line70"></A> 
+<A NAME="line71"></A>  if (!(empset_size(em1) == 250)) 
+<A NAME="line72"></A>    {
+<A NAME="line73"></A>      printf("Size should be 250.\n");
+<A NAME="line74"></A>    }
+<A NAME="line75"></A> 
+<A NAME="line76"></A>  em2 = empset_create();
+<A NAME="line77"></A> 
+<A NAME="line78"></A>  for (i = 0; i &lt 100; i++) 
+<A NAME="line79"></A>    {
+<A NAME="line80"></A>      e.ssNum = i;
+<A NAME="line81"></A>      e.salary = 100000;
+<A NAME="line82"></A>      e.gen = MALE;
+<A NAME="line83"></A>      e.j = MGR;
+<A NAME="line84"></A>      (void) sprintf(na, "S.S. Doe %d", i);
+<A NAME="line85"></A>      check (employee_setName(&e, na));
+<A NAME="line86"></A>      empset_insert(em2, e);
+<A NAME="line87"></A>    }
+<A NAME="line88"></A> 
+<A NAME="line89"></A>  em3 = empset_union(em1, em2);
+<A NAME="line90"></A> 
+<A NAME="line91"></A>  if (!(empset_size(em3) == 350))
+<A NAME="line92"></A>    {
+<A NAME="line93"></A>      printf("Size should be 350.\n");
+<A NAME="line94"></A>    }
+<A NAME="line95"></A> 
+<A NAME="line96"></A>  empset_intersect(em3, em3);
+<A NAME="line97"></A> 
+<A NAME="line98"></A>  if (!(empset_size(em3) == 350))
+<A NAME="line99"></A>    {
+<A NAME="line100"></A>      printf("Size should be 350.\n");
+<A NAME="line101"></A>    }
+<A NAME="line102"></A> 
+<A NAME="line103"></A>  printf("Print two different employees:\n");
+<A NAME="line104"></A> 
+<A NAME="line105"></A>  for (i = 0; i &lt 2; i++) 
+<A NAME="line106"></A>    {
+<A NAME="line107"></A>      e = empset_choose(em3);
+<A NAME="line108"></A>      employee_sprint(na, e);
+<A NAME="line109"></A>      printf("%s\n", &(na[0]));
+<A NAME="line110"></A>      empset_delete(em3, e);
+<A NAME="line111"></A>    }
+<A NAME="line112"></A>  
+<A NAME="line113"></A>  /* Test dbase  */
+<A NAME="line114"></A> 
+<A NAME="line115"></A>  for (i = 0; i &lt 20; i++) 
+<A NAME="line116"></A>    {
+<A NAME="line117"></A>      e.ssNum = i;
+<A NAME="line118"></A>      e.salary = 10 * i;
+<A NAME="line119"></A> 
+<A NAME="line120"></A>      if (i &lt 10) 
+<A NAME="line121"></A>	{
+<A NAME="line122"></A>	  e.gen = MALE; 
+<A NAME="line123"></A>	}
+<A NAME="line124"></A>      else 
+<A NAME="line125"></A>	{
+<A NAME="line126"></A>	  e.gen = FEMALE;
+<A NAME="line127"></A>	}
+<A NAME="line128"></A> 
+<A NAME="line129"></A>      if (i &lt 15) 
+<A NAME="line130"></A>	{
+<A NAME="line131"></A>	  e.j = NONMGR; 
+<A NAME="line132"></A>	}
+<A NAME="line133"></A>      else
+<A NAME="line134"></A>	{
+<A NAME="line135"></A>	  e.j = MGR;
+<A NAME="line136"></A>	}
+<A NAME="line137"></A> 
+<A NAME="line138"></A>      (void) sprintf(na, "J. Doe %d", i);
+<A NAME="line139"></A>      check (employee_setName(&e, na));
+<A NAME="line140"></A> 
+<A NAME="line141"></A>      if ((i/2)*2 == i) 
+<A NAME="line142"></A>	{
+<A NAME="line143"></A>	  check (db_hire(e) == DBS_OK); 
+<A NAME="line144"></A>	}
+<A NAME="line145"></A>      else 
+<A NAME="line146"></A>	{
+<A NAME="line147"></A>	  db_uncheckedHire(e); status = db_hire(e);
+<A NAME="line148"></A>	}
+<A NAME="line149"></A>    }
+<A NAME="line150"></A>  
+<A NAME="line151"></A>  printf("Should print true: %s\n", 
+<A NAME="line152"></A>	 bool_unparse (/*@-usedef@*/ status == DBS_DUPLERR /*@=usedef@*/)); 
+<A NAME="line153"></A> 
+<A NAME="line154"></A>  printf("Employees 0 - 19\n");
+<A NAME="line155"></A>  db_print();
+<A NAME="line156"></A>  check (db_fire(17));
+<A NAME="line157"></A>  q.g = FEMALE; q.j = JOB_UNKNOWN; q.l = 158; q.h = 185;
+<A NAME="line158"></A>  printf("Employees 0 - 16, 18 - 19\n");
+<A NAME="line159"></A>  db_print();
+<A NAME="line160"></A> 
+<A NAME="line161"></A>  empset_final (em1);
+<A NAME="line162"></A>  i = db_query(q, em1 = empset_create());
+<A NAME="line163"></A>  sprintResult = empset_sprint(em1);
+<A NAME="line164"></A>  printf("Should get two females: %d\n%s\n", i, sprintResult);
+<A NAME="line165"></A>  free(sprintResult);
+<A NAME="line166"></A> 
+<A NAME="line167"></A>  q.g = MALE; q.j = NONMGR; q.l = 0; q.h = 185;
+<A NAME="line168"></A>  empset_final (em2);
+<A NAME="line169"></A>  i = db_query(q, em2 = empset_create());
+<A NAME="line170"></A>  empset_final (em3);
+<A NAME="line171"></A>  em3 = empset_disjointUnion(em2, em1);
+<A NAME="line172"></A>  sprintResult = empset_sprint(em3);
+<A NAME="line173"></A>  i = empset_size(em3);
+<A NAME="line174"></A>  printf("Should get two females and ten males: %d\n%s\n", i, sprintResult);
+<A NAME="line175"></A>  free(sprintResult);
+<A NAME="line176"></A>  
+<A NAME="line177"></A>  empset_intersect(em1, em3);
+<A NAME="line178"></A>  sprintResult = empset_sprint(em1);
+<A NAME="line179"></A>  i = empset_size(em1);
+<A NAME="line180"></A>  printf("Should get two females: %d\n%s\n", i, sprintResult);
+<A NAME="line181"></A>  free(sprintResult); 
+<A NAME="line182"></A> 
+<A NAME="line183"></A>  check (db_fire(empset_choose(em3).ssNum));
+<A NAME="line184"></A>  printf("Should get 18 employees\n");
+<A NAME="line185"></A>  db_print();
+<A NAME="line186"></A> 
+<A NAME="line187"></A>  empset_final (em1);
+<A NAME="line188"></A>  empset_final (em2);
+<A NAME="line189"></A>  empset_final (em3);
+<A NAME="line190"></A>  return 0;
+<A NAME="line191"></A>}
+</pre>
+<P>
+<HR>
+<A HREF="index.html">Return to Index</A> | <A HREF="http://lclint.cs.virginia.edu/index.html">LCLint Home Page</A> <BR> <BR>
+<author> <a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+<pre>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</pre>
+</body></html>

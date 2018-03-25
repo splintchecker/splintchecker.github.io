@@ -1,0 +1,104 @@
+<h3>lclint-interest message 142</h3>
+<pre>
+From janjaap@wit381304.student.utwente.nl Thu Jul  3 12:43:09 1997
+Date: Wed, 2 Jul 1997 22:57:05 +0100 (WET DST)
+From: Jan-Jaap van der Heijden <janjaap@wit381304.student.utwente.nl>
+Reply-To: Jan-Jaap van der Heijden <J.J.vanderHeijden@student.utwente.nl>
+To: lclint list <lclint-interest@larch.lcs.mit.edu>
+Subject: out of memory
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+Hello all,
+
+I am Jan-Jaap van der Heijden, member of the GNU Pascal project.
+I intend to use lclint for bug-hunting and syntax purifying of the GNU
+Pascal compiler (GPC).
+
+My first attempt, on my Linux based home system failed, because it used up
+all virtual memory.
+
+So, I moved to an R10000 based SGI irix6.2 system. I built lclint using
+GCC (irix5.3 targeting configuration)
+
+`lclint -help version' reports:
+LCLint 2.2a --- 04 Sep 96
+
+Maintainer: lclint-bug@larch.lcs.mit.edu
+Compiled using gcc -DSTDC_HEADERS=1 -DSYSIRIX64 on IRIX64 cuthbert 6.2 06101031
+IP28 by janjaap
+
+Running lclint on GPC sources:
+
+lclint -weak +posixlib +gnuextensions +trytorecover -I. -I.. -I../../gcc-2.7.2.2/p -I../../gcc-2.7.2.2/p/.. -I../../gcc-2.7.2.2/p/../config \
+	../../gcc-2.7.2.2/p/gpc-cccp.c \
+	../../gcc-2.7.2.2/p/gpc-common.c \
+	../../gcc-2.7.2.2/p/gpc-convert.c \
+	../../gcc-2.7.2.2/p/gpc-decl.c \
+	../../gcc-2.7.2.2/p/gpc-lang.c \
+	../../gcc-2.7.2.2/p/gpc-lex.c \
+	../../gcc-2.7.2.2/p/gpc-typeck.c \
+	../../gcc-2.7.2.2/p/gpc.c \
+	../../gcc-2.7.2.2/p/module.c \
+	../../gcc-2.7.2.2/p/parse.c \
+	../../gcc-2.7.2.2/p/setop.c \
+	../../gcc-2.7.2.2/p/util.c \
+	../../gcc-2.7.2.2/p/version.c
+LCLint 2.2a --- 04 Sep 96
+
+../../gcc-2.7.2.2/p/gpc-cccp.c:212: Include file <varargs> is inconsistent with
+                                       ANSI library (should use <stdarg.h>)
+  Header <varargs.h> is not part of ANSI Standard. Should use <stdarg.h>
+  instead. (-usevarargs will suppress message)
+
+[more complaints snipped]
+
+../../gcc-2.7.2.2/p/module.c:62,21: Function declaration with non-function type
+                                       (likely parse error): module_t : int
+../../gcc-2.7.2.2/p/module.c: (in function module_t)
+../../gcc-2.7.2.2/p/module.c:62,21: Parse Error. Attempting to continue.
+../../gcc-2.7.2.2/p/module.c:62,23: Function declared inside function (likely
+                                       parse error): module_list : int
+../../gcc-2.7.2.2/p/module.c:62,36: Function declaration with non-function type
+                                       (likely parse error): NULL_MODULE : int
+../../gcc-2.7.2.2/p/module.c: (in function NULL_MODULE)
+../../gcc-2.7.2.2/p/module.c:63,24: Function declared inside function (likely
+                                       parse error): module_t : int
+../../gcc-2.7.2.2/p/module.c:63,24: Out of memory.  Allocating 1079831748 bytes
+                                       at sRefSet.c:545.
+*** Cannot continue.
+gmake: *** [lint] Error 1
+
+
+I'm not surpised it cannot allocate a gig. Is this behaviour the result of
+a failed attempt to recover from a parse error or a bug in lclint?
+
+greetings,
+JanJaap
+
+---
+With sufficient thrust, pigs fly just fine. However, this is not
+necessarily a good idea. It is hard to be sure where they are going
+to land, and it could be dangerous sitting under them as they fly
+overhead.  -- RFC1925.
+
+
+
+
+
+</pre>
+<A HREF="141.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/left-arrow.jpg" ALT = "Previous Message"></A>
+<A HREF="143.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/right-arrow.jpg" ALT = "Next Message"></A>
+<A HREF="index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/up-arrow.jpg" ALT = "Archive Summary"></A>
+<A HREF="http://lclint.cs.virginia.edu/index.html">
+<IMG ALIGN=left SRC = "http://lclint.cs.virginia.edu/lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> <a href="http://www.cs.virginia.edu/~evans">David
+Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>

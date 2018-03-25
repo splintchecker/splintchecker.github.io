@@ -1,0 +1,147 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<title>Splint Publications</title>
+</head>
+<body>
+<!--#include virtual="header.html"-->
+
+<center><h2>
+Splint Publications
+</h2></center>
+
+<h3>Refereed Papers</h3>
+
+<a href="http://www.cs.virginia.edu/evans/pubs/ieeesoftware-abstract.html">
+<em>Improving Security Using Extensible Lightweight Static
+Analysis</em></a>
+<blockquote>
+David Evans and David Larochelle. In  <a href="http://www.computer.org/software/">IEEE Software</a>, Jan/Feb
+2002.  (<a
+href="http://www.cs.virginia.edu/evans/pubs/ieeesoftware-revised.pdf">PDF</a>,
+12 pages)
+<p>
+Most security attacks exploit instances of well-known classes of
+implementations flaws.  This article describes how Splint can be used to
+detect common security vulnerabilities (including buffer overflows and
+format string vulnerabilities).
+
+</blockquote>
+
+<a href="http://www.cs.virginia.edu/~evans/usenix01-abstract.html"><em>Statically Detecting Likely Buffer Overflow Vulnerabilities</em></a>
+<blockquote>
+David Larochelle and David Evans.  In
+<a
+href="http://www.usenix.org/events/sec01/"<em>
+2001 USENIX Security Symposium</em></a>, Washington, D. C., August
+13-17, 2001.  (<a
+href="http://lclint.cs.virginia.edu/usenix01.pdf">PDF</a>, <a
+href="http://lclint.cs.virginia.edu/usenix01.html">HTML</a>, 13 pages)
+
+(<a href="http://www.cs.virginia.edu/evans/talks/usenix.ppt">
+Talk slides</a> [<a
+href="http://www.cs.virginia.edu/evans/talks/usenix.ppt">PPT</a>]
+ [<a
+href="http://www.cs.virginia.edu/evans/talks/usenix.pdf">PDF</a>])
+<p>
+Buffer overflow attacks may be today's single most important security
+threat. This paper presents a new approach to mitigating buffer
+overflow vulnerabilities by detecting likely vulnerabilities through
+an analysis of the program source code. Our approach exploits
+information provided in semantic comments and uses lightweight and
+efficient static analyses. This paper describes an implementation of
+our approach that extends the LCLint annotation-assisted static
+checking tool. Our tool is as fast as a compiler and nearly as easy to
+use. We present experience using our approach to detect buffer
+overflow vulnerabilities in two security-sensitive programs.
+</blockquote>
+
+<p>
+<a href="http://www.cs.virginia.edu/~evans/icse-position.html">
+Annotation-Assisted Lightweight Static Checking</a>
+<blockquote>
+David Evans.  <a href="http://ase.arc.nasa.gov/icse2000/">The First International Workshop on Automated Program Analysis, Testing and Verification</a> (ICSE 2000).  Feb 25, 2000.
+<p>
+A short position paper describing the research agenda behind LCLint.
+</blockquote>
+<p>
+<A HREF="http://www.cs.virginia.edu/~evans/pldi96-abstract.html">Static Detection of Dynamic Memory
+Errors</A>
+<blockquote> David Evans.  In <A
+HREF="http://www.cs.wisc.edu/~fischer/pldi96/index.html"> SIGPLAN
+Conference on Programming Language Design and Implementation</A> (PLDI
+'96), Philadelphia, PA, May 1996.  (<a href="http://www.cs.virginia.edu/~evans/pldi96.pdf">PDF</a>, <a href="http://www.cs.virginia.edu/~evans/pldi96.ps.gz">gzipped
+postscript</a>; 10 pages)
+<p>
+Describes approach for exploiting annotations added to code to detect
+a wide class of errors, focusing on memory management concerns.
+</blockquote>
+
+<P>
+<A HREF="http://www.cs.virginia.edu/~evans/sigsoft94.html">LCLint: A Tool for Using Specifications to
+Check Code</A>
+<blockquote> David Evans, John Guttag, Jim Horning and Yang Meng Tan,
+SIGSOFT Symposium on the Foundations of Software Engineering, December
+1994.  (<a href="http://www.cs.virginia.edu/~evans/fse94.pdf">PDF</a>, <a href="http://www.cs.virginia.edu/~evans/fse94.ps.gz">gzipped postscript</a>; 10 pages)
+<p>
+
+An introduction to LCLint from a software engineering perspective.
+Shows how LCLint can be used to improve a small <a href="samples/db/">sample program</a>.
+</blockquote>
+
+<h3>Theses</h3>
+
+<p>
+<a href="http://www.cs.virginia.edu/~evans/theses/index.html#barker">Static Error Checking of C Applications Ported from
+UNIX to WIN32 Systems Using LCLint</a>, March 2001. [<a href="http://www.cs.virginia.edu/~evans/theses/barker.pdf">PDF</a>, <a href="http://www.cs.virginia.edu/~evans/theses/barker.doc">Word</a>]
+<blockquote>
+Christopher Barker, UVA Bachelor of Science in Computer Engineering, March 2001.
+<p>
+
+Describes process and experience using LCLint meta-annotations to
+define and use annotations designed to assist the process of porting
+applications.  (Some of the LCLint features described in this report
+are not yet available in the public release.  Contact <a
+href="mailto:lclint@cs.virginia.edu"><em>lclint@cs.virginia.edu</em></a>
+if you are interested in using a pre-release version.)
+
+</blockquote>
+
+<A HREF="http://www.cs.virginia.edu/~evans/tr-628.html">Using Specifications to Check Source Code</A>
+<blockquote>David Evans, MIT/LCS/TR-628, June 1994, SM Thesis.
+<p>
+MIT Master's Thesis on LCLint.  Detailed description of the motivation
+and use of LCLint (but somewhat out of date).
+</blockquote>
+<p>
+Undergratuate Theses in Progress:
+<ul>
+<li><a href="mailto:dkf5k@virginia.edu">David Friedman</a> -
+investigating effectiveness of static analysis in security
+<li><a href="mailto:lanouette@virginia.edu">Michael Lanouette</a> -
+<em>Static Checking of Coding Standards</em>
+<li><a href="mailto:hlp4z@virginia.edu">Hien Phan</a> - <em>Developing a
+Web Interface for the LCLint Static Checker</em>
+</ul>
+
+
+<h3>Manual</h3>
+
+<a href="http://www.splint.org/manual/">Splint Manual</a>
+<blockquote>
+Secure Programming Group, 2002.  (<a href="http://www.splint.org/manual/manual.html">HTML</a>, <a href="http://www.splint.org/manual/manual.pdf">PDF</a>, <a href="manual/manual.ps">postscript</a>)
+<p>
+A comprehensive guide to using Splint.
+</blockquote>
+
+<a href="http://www.splint.org/guide/">LCLint User's Guide</a>
+<blockquote>
+
+David Evans, 1996-2000.  (<a href="http://www.splint.org/guide/guide.html">HTML</a>, <a
+href="http://www.splint.org/guide/guide.pdf">PDF</a>, <a href="http://www.splint.org/guide/guide.ps">postscript</a>)
+
+<p>
+A comprehensive guide to using LCLint (superceded by Splint Manual).
+</blockquote>
+
+<!--#include virtual="footer.html"-->

@@ -1,0 +1,61 @@
+gmake[1]: Entering directory `/u/evs/lclint/web/sample/strictchecks'
+lclint +lh +checks -allimponly +allmacros +exportany +showscan +stats employee eref empset ereftab erc dbase drive.c
+LCLint 2.0 --- 20 Feb 96
+
+< reading spec employee.lcl >
+< reading spec eref.lcl >
+< reading spec empset.lcl >
+< reading spec ereftab.lcl >
+< reading spec erc.lcl >
+< reading spec dbase.lcl >
+< preprocessing >
+employee.h:3: Constant exported, but not specified: EMPLOYEE_H
+  A constant is exported, but not specified.  Use -exportconst to suppress
+  message.
+< more preprocessing . >
+bool.h:3: Constant exported, but not specified: BOOL_H
+< more preprocessing . >
+bool.h:23: Function exported, but not specified: bool_initMod
+  A function is exported, but not specified.  Use -exportfcn to suppress
+  message.
+< more preprocessing . >
+bool.h:27: Function exported, but not specified: bool_unparse
+< more preprocessing . >
+bool.h:30: Function exported, but not specified: bool_not
+< more preprocessing . >
+bool.h:33: Function exported, but not specified: bool_equal
+< more preprocessing . >
+bool.h:37: Function exported, but not specified: check
+< more preprocessing . >
+eref.h:3: Constant exported, but not specified: EREF_H
+< more preprocessing . >
+empset.h:3: Constant exported, but not specified: EMPSET_H
+< more preprocessing . >
+erc.h:3: Constant exported, but not specified: ERC_H
+< more preprocessing . >
+ereftab.h:5: Constant exported, but not specified: EREFTAB_H
+< more preprocessing . >
+dbase.h:3: Constant exported, but not specified: DBASE_H
+< more preprocessing . >
+< checking employee.c >
+< checking eref.c >
+eref.h:9,35: Constant exported, but not specified: ST_USED
+eref.h:9,35: Constant exported, but not specified: ST_AVAIL
+eref.h:9,36: Type exported, but not specified: erefStatus
+  A type is exported, but not specified.  Use -exporttype to suppress message.
+eref.h:14,3: Type exported, but not specified: erefTable
+< checking empset.c >
+erc.h:7,67: Type exported, but not specified: ercElem
+erc.h:8,18: Type exported, but not specified: ercList
+erc.h:9,55: Type exported, but not specified: ercInfo
+< checking ereftab.c >
+< checking erc.c >
+< checking dbase.c >
+< checking drive.c >
+< checking macros bool.h >
+< global checks >
+< cleaning .......... >
+
+Finished LCLint checking --- 19 code errors found
+396 spec, 2923 source (1282 before pre-processing) lines in 5.60 s.
+gmake[1]: Leaving directory `/u/evs/lclint/web/sample/strictchecks'

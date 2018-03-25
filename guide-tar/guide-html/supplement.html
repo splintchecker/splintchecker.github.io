@@ -1,0 +1,331 @@
+<html>
+<head>
+<title>LCLint User's Guide - Supplement</title>
+</head>
+<body bgcolor="#FFFFFF" link="#CC0000" alink="#FF3300" vlink="#000088">
+
+<H1>
+<center>
+LCLint User's Guide<BR>
+</center>
+</H1>
+<P>
+<H2>
+<center>
+Version 2.1a Supplement<br>
+18 April 1996<br>
+</center>
+</H2>
+<p>
+<h4>
+<center><a href="http://www.cs.virginia.edu/~evans">David Evans</A><br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science Group</A><br>
+<A HREF="http://www.lcs.mit.edu/">MIT Laboratory for Computer Science</A><br>
+</center>
+</h4>
+<p>
+
+This is a supplement to the LCLint User's Guide describing changes
+between Version 2.0 and Version 2.1a.  These sections are also included
+in the <a href="guide.html">LCLint User's Guide, Version 2.1a</a>.
+<p>
+<h2>Special Clauses</h2>
+<p>
+
+Sometimes it is necessary to specify function interfaces at a lower
+level than is possible with the standard annotations.  For example, if a
+function defines some fields of a returned structure but does not define
+all the fields.  The <tt>/*@special@*/</tt> annotation is used to mark a
+parameter, global variable, or return value that is described using
+special clauses.  The usual implicit definition rules do not apply to a
+special declaration.
+<p>
+
+Special clauses may be used to constrain the state of a parameter or
+return value before or after a call.  One or more special clauses may
+appear in a function declaration, before the modifies or globals
+clauses.  Special clauses may be listed in any order, but the same
+special clause should not be used more than once.  Parameters used in
+special clauses must be annotated with <tt>/*@special@*/</tt> in the function
+header.  In a special clause list, result is used to refer to the return
+value of the function.  If result appears in a special clause, the
+function return value must be annotated with <tt>/*@special@*/</tt>.
+<p>
+
+The following special clauses are used to describe the definition state
+or parameters before and after the function is called and the return
+value after the function returns:
+<p>
+
+<tt>/*@uses </tt><em>references</em><tt>@*/</tt> 
+<blockquote>
+References in the uses clause must be completely defined before the
+function is called.  They are assumed to be defined at function entrance
+when the function is checked.
+</blockquote>
+
+<tt>/*@sets </tt><em>references</em><tt>@*/</tt>
+<blockquote>
+References in the sets clause must be allocated before the function is
+called.  They are completely defined after the function returns. When
+the function is checked, they are assumed to be allocated at function
+entrance and an error is reported if there is a path on which they are
+not defined before the function returns.
+</blockquote>
+
+<tt>/*@defines </tt><em>references</em><tt>@*/</tt>
+<blockquote>
+References in the defines clause must not refer to unshared, allocated
+storage before the function is called.  They are completely defined
+after the function returns. When the function is checked, they are
+assumed to be undefined at function entrance and an error is reported if
+there is a path on which they are not defined before the function
+returns.
+</blockquote>
+
+<tt>/*@allocates </tt><em>references</em><tt>@*/</tt>
+<blockquote>
+References in the allocates clause must not refer to unshared, allocated
+storage before the function is called.  They are allocated but not
+necessarily defined after the function returns. When the function is
+checked, they are assumed to be undefined at function entrance and an
+error is reported if there is a path on which they are not allocated
+before the function returns.
+</blockquote>
+
+<tt>/*@releases </tt><em>references</em><tt>@*/</tt>
+<blockquote>
+References in the releases clause are deallocated by the function.  They
+must correspond to storage which could be passed as an only parameter
+before the function is called, and are dead pointers after the function
+returns.  When the function is checked, they are assumed to be allocated
+at function entrance and an error is reported if they refer to live,
+allocated storage at any return point.
+</blockquote>
+<p>
+
+Additional generic special clauses can be used to describe other aspects
+of the state of inner storage before or after a call.  Generic special
+clauses have the form <em>state</em><tt>:</tt><em>constraint</em>.  The
+state is either <tt>pre</tt> (before the function is called), or
+<tt>post</tt> (after the function is called).  The constraint is similar
+to an annotation.  The following constraints are supported:
+
+<blockquote>
+<h4>Aliasing Annotations</h4>
+
+<tt>pre:only</tt>, <tt>post:only</tt><br>
+<tt>pre:shared</tt>, <tt>post:shared</tt><br>
+<tt>pre:owned</tt>, <tt>post:owned</tt><br>
+<tt>pre:dependent</tt>, <tt>post:dependent</tt><br>
+<blockquote>
+References refer to <tt>only</tt>, <tt>shared</tt>, <tt>owned</tt> or
+<tt>dependent</tt> storage before (<tt>pre</tt>) or after
+(<tt>post</tt>) the call.
+</blockquote>
+
+<h4>Exposure Annotations</h4>
+
+<tt>pre:observer</tt>, <tt>post:observer</tt><br>
+<tt>pre:exposed</tt>, <tt>post:exposed</tt><br>
+<blockquote>
+
+References refer to <tt>observer</tt> or <tt>exposed</tt> storage before
+(<tt>pre</tt>) or after (<tt>post</tt>) the call.
+
+</blockquote>
+
+<h4>Null State Annotations</h4>
+
+<tt>pre:isnull</tt>, <tt>post:isnull</tt>
+<blockquote>
+References have the value <tt>NULL</tt> before (<tt>pre</tt>) or after
+(<tt>post</tt>) the call. Note, this is not the same name or meaning as
+the null annotation (which means the value may be <tt>NULL</tt>.)  
+</blockquote>
+<tt>pre:notnull</tt>, <tt>post:notnull</tt>
+<blockquote>
+References do not have the value <tt>NULL</tt> before (<tt>pre</tt>) or
+after (<tt>post</tt>) the call. 
+</blockquote>
+</blockquote>
+
+Some examples of special clauses are shown in <a
+href="fig17.html">Figure 17</a>. The defines clause for
+<tt>record_new</tt> indicates that the <tt>id</tt> field of the
+structure pointed to by the result is defined, but the <tt>name</tt>
+field is not.  So, <tt>record_create</tt> needs to call
+<tt>record_setName</tt> to define the <tt>name</tt> field.  Similarly,
+the releases clause for <tt>record_clearName</tt> indicates that no
+storage is associated with the <tt>name</tt> field of its parameter
+after the return, so no failure to deallocate storage message is
+produced for the call to <tt>free</tt> in <tt>record_free</tt>.
+
+<h2>Include Semantics</h2>
+
+A major problem with LCLint 2.0 is handling system header files on
+various platforms.  Since compilers are free to do whatever they want in
+system header files, on many platforms these files contain
+compiler-specific keywords and syntax that is not part of the C standard
+and is not recognized by LCLint.  A few enhancements to LCLint 2.1a are
+intended to alleviate these problems (eventually, the LCLint release
+package should include a standardized set of annotated header files
+instead of using the system header files).
+<p>
+The standard behavior of LCLint on encountering
+<pre>
+   #include &lt;X.h&gt;
+</pre>
+
+is to search for a file named <tt>X.h</tt> on the include search path (set using
+<tt>-I</tt>) and then the system base include path (usually <tt>/usr/include</tt>, default
+is set when LCLint is compiled).  The file <tt>X.h</tt> will be included
+normally, unless <tt>X.h</tt> is the name of a standard library include file, <tt>X.h</tt>
+is found in directory that is a system directory (as set by the
+<tt>-systemdirs</tt> flag; the default is <tt>/usr/include</tt>), and
+<tt>skipansiheaders</tt> is on (it is on by default).  To force all
+headers to be included normally, use <tt>-skipansiheaders</tt>.
+
+<p> Processing header files on gcc systems may require the
++gnuextensions flag.  This causes LCLint to support some of the gcc
+extensions including <tt>__asm__</tt>, <tt>__attribute__</tt> and
+alternate keywords.
+
+<h2>Arbitrary Integral Types</h2>
+<p>
+
+In LCLint 2.0, the standard library types <tt>size_t</tt>,
+<tt>ptr_diff</tt> and <tt>wchar_t</tt> were declared to have type
+<tt>long unsigned</tt>.  In fact, the standard does not constrain their
+types other than limiting them to integral types. In LCLint 2.1a, an
+arbitrary integral type is used to represent these library types.  The
+<tt>matchanyintegral</tt>, <tt>longintegral</tt>, and
+<tt>longunsignedanyintegral</tt> flags control type checking for the arbitrary 
+integral type.  If none of these flags is on, a type mismatch is
+reported anywhere an arbitrary integral type is used where a specific
+(possibly inconsistent) integral type is expected.
+<p>
+<h2>Flags</h2>
+
+These flags are new for Version 2.1a.  For general information on flags,
+see the <a href="appC.html">LCLint User's Guide</a>.
+
+<h4>
+File Inclusion, Parsing
+</h4>
+
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-skipansiheaders">
+<tt>skipansiheaders</tt>
+<p>
+Prevent inclusion of header files in a system directory with names that
+match standard ANSI headers. The symbolic information in the standard library is used instead.
+<p>
+
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-systemdirexpandmacros">
+<tt>systemdirexpandmacros</tt>
+<p>
+Expand macros in system directories regardless of other settings, except
+for macros corresponding to names defined in a load library. 
+<p>
+
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-continuecomment">
+<tt>continuecomment</tt>
+<p>
+A line continuation marker (<tt>\</tt>) appears inside a comment on the
+same line as the comment close. Preprocessors should handle this correctly, but it causes problems for some preprocessors.
+
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-duplicatequals">
+<tt>duplicatequals</tt>
+<p>
+
+Report duplicate type qualifiers (e.g., <tt>long long</tt>).  Duplicate type
+qualifiers not supported by ANSI, but some compilers (e.g., <tt>gcc</tt>) do
+support duplicate qualifiers.
+
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-gunextensions">
+<tt>gnuextensions</tt>
+<p>
+Support some GNU (gcc) language extensions.
+
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-unrecogcomments">
+<tt>unrecogcomments</tt>
+<p>
+Stylized comment is unrecognized.
+
+<h4>
+Type Checking
+</h4>
+
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-castfcnptr">
+<tt>castfcnptr</tt>
+<p>
+ A pointer to a function is cast to (or used as) a pointer to void (or
+vice versa).
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>+</tt><br>
+<a name="flag-charintliteral">
+<tt>charintliteral</tt>
+<p>A character constant may be used as an <tt>int</tt>.
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="flag-longintegral">
+<tt>longintegral</tt>
+<p>
+Allow <tt>long</tt> type to match an arbitrary integral type (e.g., <tt>size_t</tt>).
+<p>
+<a href="appC.html#mode-key">m: </a><tt>+---</tt><br>
+<a name="longunsignedintegral">
+<tt>longunsignedintegral</tt>
+<p>
+Allow <tt>long unsigned</tt> type to match an arbitrary integral type (e.g.,
+<tt>size_t</tt>).
+<p>
+<a href="appC.html#plain-key">plain</a>: <tt>-</tt><br>
+<a name="matchanyintegral">
+<tt>matchanyintegral</tt>
+<p>
+Allow any integral type to match an arbitrary integral type (e.g.,
+<tt>size_t</tt>).
+
+<h4>Memory Transfers</h4>
+
+<a href="appC.html#mode-key">m:</a> <tt>--++</tt><br>
+<a name="onlyunqglobaltrans">
+<tt>onlyunqglobaltrans</tt>
+<p>
+
+Only storage transferred to an unqualified global or static reference.
+This may lead to a memory leak, since the new reference is not
+necessarily released.
+<p>
+<a href="appC.html#mode-key">m:</a> <tt>--++</tt></a><br>
+<a name="staticinittrans">
+<tt>staticinittrans</tt>
+<p>
+Static storage is used as an initial value in an inconsistent way.
+<p>
+<a href="appC.html#mode-key">m:</a> <tt>--++</tt><br>
+<a name="unqualifiedinittrans">
+<tt>unqualifiedinittrans</tt>
+<p>
+Unqualified storage is used as an initial value in an inconsistent way.
+<p>
+
+<hr>
+<a href="http://lclint.cs.virginia.edu/"><IMG ALIGN=left SRC = "lclint-home-small.jpg" ALT = "LCLint Home Page"></A>
+<author> 
+<a href="http://www.cs.virginia.edu/~evans">David Evans</a> <br>
+<a href="http://www.cs.virginia.edu">University of Virginia, Computer Science</A><br>
+<a href="mailto:evans@cs.virginia.edu"><em>evans@cs.virginia.edu</em></a>
+</author>
+</body>
+</html>
