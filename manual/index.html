@@ -1,10 +1,81 @@
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="http://www.splint.org/splint.css" title="style1">
+<link rel="stylesheet" type="text/css" href="//www.splint.org/splint.css" title="style1">
 <title>Splint Manual</title>
 </head>
 <body>
-<!--#include virtual="header.html"-->
+<table border="0" rules="none" bgcolor="#FFFFFF" width="95%" align=center cellpadding=0 cellspacing=0>
+<tr>
+<td colspan=2 bgcolor="#FFFFFF"></td>
+</tr>
+<tr>
+<td colspan=2 bgcolor="#FFFFFF"></td>
+</tr>
+<tr>
+<td colspan=2 bgcolor="#FFFFFF"></td>
+</tr>
+<tr>
+<td colspan=2 bgcolor="#FFFFFF"></td>
+</tr>
+<tr>
+<td colspan=2 bgcolor="#FFFFFF"></td>
+</tr>
+<tr>
+<td colspan=2 bgcolor="#FFFFFF"></td>
+</tr>
+<tr>
+<td>
+<font color="darkblue" face="arial,helvetica"><a href="//www.splint.org/"><b>Splint</b> - Secure Programming Lint</a><br></font>
+</td>
+<td align=right>
+<font face="arial,helvetica,sans-serif"><font color="darkblue">
+<font size=-1>
+<a href="mailto:info@splint.org">info@splint.org</a></font>
+</font></font>
+</td>
+</tr>
+<tr>
+<td colspan=2 bgcolor="darkblue"></td>
+</tr>
+<tr>
+<td colspan=2 bgcolor="darkblue"></td>
+</tr>
+<tr>
+<td colspan=2 bgcolor="white"></td>
+</tr>
+<tr>
+<td colspan=2 bgcolor="slate"></td>
+</tr>
+<tr>
+<td>
+<font face="arial,helvetica,sans-serif" size=-1>
+<a
+href="//www.splint.org/download.html">Download</a>
+- 
+<A
+HREF="//www.splint.org/documentation/">Documentation</a>
+-
+<a href="//www.splint.org/manual/">Manual</a>
+-
+<a
+href="//www.splint.org/links.html">Links</a>
+</font>
+</td>
+<td align=right>
+<font face="arial,helvetica,sans-serif" size=-1>
+<a
+href="//www.splint.org/sponsors.html">Sponsors</a>
+-
+<a
+href="//www.splint.org/credits.html">Credits</a>
+</font>
+</td>
+</tr>
+</table>
+
+<p>
+<blockquote>
+
 
 <H1>
 <center>
@@ -25,11 +96,11 @@ The current version of the Splint Manual is also available as:
 <ul>
 <li><a href="manual.html">HTML Complete</a> - a single HTML file
 containing the entire Manual
-<li><a href="http://www.splint.org/downloads/manual.pdf">Adobe PDF
+<li><a href="//www.splint.org/downloads/manual.pdf">Adobe PDF
 Format</a> (can be read using the <a
-href="http://www.adobe.com/acrobat/">Adobe Acrobat</a> reader)</li>
+href="//www.adobe.com/acrobat/">Adobe Acrobat</a> reader)</li>
 
-<!--<li><a href="http://lclint.cs.virginia.edu/downloads/lclint-guide.tar.gz">HTML Tar File</a> - same as on-line version for easy off-line viewing.  Un-tars to <tt>lclint-guide/</tt> directory.</li>
+<!--<li><a href="//lclint.cs.virginia.edu/downloads/lclint-guide.tar.gz">HTML Tar File</a> - same as on-line version for easy off-line viewing.  Un-tars to <tt>lclint-guide/</tt> directory.</li>
 <li><a href="guide.doc">Microsoft Word document</a>
      <li><a href="guide.ps">PostScript</a></li>-->
 
@@ -42,73 +113,166 @@ This manual and the other Splint documentation on this website including
 <a href="../bugs.html">bugs.html</a>, <a
 href="../changes.html">changes.html</a>, and the <A
 href="../faq.html">FAQ</a> are licensed under the <a
-href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons
+href="//creativecommons.org/licenses/by-sa/3.0/">Creative Commons
 Attribution-Share Alike 3.0</a> license.  This permits free sharing and
 adaptation of the work, so long as the credit attributions are
 maintained and you do not apply a commercial license to the work.  See 
 <a
-href="http://creativecommons.org/licenses/by-sa/3.0/"><em>http://creativecommons.org/licenses/by-sa/3.0/</em></a> for details.
+href="//creativecommons.org/licenses/by-sa/3.0/"><em>//creativecommons.org/licenses/by-sa/3.0/</em></a> for details.
 <p>
 
 <h3>Contents</h3>
-<a href="html/sec1.html">1</a><span style='font-size:12.0pt;font-weight:normal'>      </span><a href="html/sec1.html">Operation</a><br>
+<a href="html/sec1.html">1</a><span style='font-size:12.0pt;font-weight:normal'> </span><a href="html/sec1.html">Operation</a><br>
 
 <a href="html/sec2.html">
-2</a><span style='font-size:12.0pt;font-weight:normal'>      </span>
+2</a><span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
 <a href="html/sec2.html">Null Dereferences</a><br>
 
 <a href="html/sec3.html">
-3</a><span style='font-size:12.0pt;font-weight:normal'>      </span>
+3</a><span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
 <a href="html/sec3.html">Undefined
 Values</a><br>
 
 
-<a href="html/sec4.html">4</a><span style='font-size:12.0pt;font-weight:normal'>      </span><a href="html/sec4.html">Types</a><br>
+<a href="html/sec4.html">4</a><span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><a href="html/sec4.html">Types</a><br>
 
-<a href="html/sec5.html">5</a><span style='font-size:12.0pt;font-weight:normal'>      </span><a href="html/sec5.html">Memory Management</a><br>
+<a href="html/sec5.html">5</a><span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><a href="html/sec5.html">Memory Management</a><br>
 
-<a href="html/sec6.html">6</a><span style='font-size:12.0pt;font-weight:normal'>      </span><a href="html/sec6.html">Sharing</a><br>
+<a href="html/sec6.html">6</a><span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><a href="html/sec6.html">Sharing</a><br>
 
-<a href="html/sec7.html">7</a><span style='font-size:12.0pt;font-weight:normal'>      </span><a href="html/sec7.html">Function
+<a href="html/sec7.html">7</a><span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><a href="html/sec7.html">Function
 Interfaces</a><br>
 
-<a href="html/sec8.html">8</a><span style='font-size:12.0pt;font-weight:normal'>      </span><a href="html/sec8.html">Control
+<a href="html/sec8.html">8</a><span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><a href="html/sec8.html">Control
 Flow</a><br>
 
-<a href="html/sec9.html">9</a><span style='font-size:12.0pt;font-weight:normal'>      </span><a href="html/sec9.html">Buffer
+<a href="html/sec9.html">9</a><span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><a href="html/sec9.html">Buffer
 Sizes</a><br>
 
 
-<a href="html/sec10.html">10</a><span style='font-size:12.0pt;font-weight:normal'>      </span><a href="html/sec10.html">Extensible
+<a href="html/sec10.html">10</a><span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><a href="html/sec10.html">Extensible
 Checking</a><br>
 
-<a href="html/sec11.html">11</a><span style='font-size:12.0pt;font-weight:normal'>      </span><a href="html/sec11.html">Macros</a><br>
+<a href="html/sec11.html">11</a><span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><a href="html/sec11.html">Macros</a><br>
 
-<a href="html/sec12.html">12</a><span style='font-size:12.0pt;font-weight:normal'>      </span><a href="html/sec12.html">Naming
+<a href="html/sec12.html">12</a><span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><a href="html/sec12.html">Naming
 Conventions</a><br>
 
-<a href="html/sec13.html">13</a><span style='font-size:12.0pt;font-weight:normal'>      </span><a href="html/sec13.html">Completeness</a><br>
+<a href="html/sec13.html">13</a><span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><a href="html/sec13.html">Completeness</a><br>
 
-<a href="html/sec14.html">14</a><span style='font-size:12.0pt;font-weight:normal'>      </span><a href="html/sec14.html">Libraries
+<a href="html/sec14.html">14</a><span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><a href="html/sec14.html">Libraries
 and Header File Inclusion</a><br>
 
-<a href="html/appA.html">Appendix A<span style='font-size:12.0pt;font-weight:normal'>    </span>Availability</a><br>
+<a href="html/appA.html">Appendix A<span style='font-size:12.0pt;font-weight:normal'></span>Availability</a><br>
 
-<a href="html/appB.html">Appendix B<span style='font-size:12.0pt;font-weight:normal'>    </span>Flags</a><br>
-
-
-<a href="html/appC.html">Appendix C<span style='font-size:12.0pt;font-weight:normal'>    </span>Annotations</a><br>
+<a href="html/appB.html">Appendix B<span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Flags</a><br>
 
 
-<a href="html/appD.html">Appendix D<span style='font-size:12.0pt;font-weight:normal'>    </span>Specifications</a><br>
+<a href="html/appC.html">Appendix C<span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Annotations</a><br>
 
 
-<a href="html/appE.html">Appendix E<span style='font-size:12.0pt;font-weight:normal'>    </span>Annotated
+<a href="html/appD.html">Appendix D<span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Specifications</a><br>
+
+
+<a href="html/appE.html">Appendix E<span style='font-size:12.0pt;font-weight:normal'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Annotated
 Bibliography</a><br>
 
 <a href="html/appIndex.html">Index</a><br> 
 
-<!--#include virtual="footer.html"-->
+</blockquote>
+
+<table border="0" rules="none" bgcolor="#FFFFFF" width="95%" align=center cellpadding=0 cellspacing=0>
+
+<tr valign=top>
+<td colspan=2 bgcolor="darkblue"></td>
+<tr valign=top>
+<td colspan=2 bgcolor="darkblue"></td>
+<tr valign=top>
+<td colspan=2 bgcolor="white"></td>
+</tr>
+<tr valign=top>
+<td width=135 >
+<a href="//www.splint.org"><img src="//www.splint.org/glowingwall-narrows.jpg"
+width=132 height=65 border=0 alt=""></a>
+</td>
+<td>
+<table cellpadding=0 cellspacing=0 width="100%">
+<tr>
+<td colspan=2 bgcolor="slate"></td>
+</tr>
+<tr>
+<td>
+<font color="darkblue" face="arial,helvetica"><a href="//www.splint.org/"><b>Splint</b> - Secure Programming Lint</a></font>
+</td>
+<td align=right>
+<font face="arial,helvetica,sans-serif"><font color="darkblue">
+<font size=-1>
+<a href="mailto:info@splint.org">info@splint.org</a></font>
+</font></font>
+</td>
+</tr>
+
+<tr>
+<td>
+<font face="arial,helvetica,sans-serif" size=-1>
+<a
+href="//www.splint.org/download.html">Download</a>
+- 
+<A
+HREF="//www.splint.org/documentation/">Documentation</a>
+-
+<a href="//www.splint.org/manual/">Manual</a>
+-
+<a
+href="//www.splint.org/links.html">Links</a><br>
+
+<a
+href="//www.splint.org/source.html">Source</a>
+- 
+<A
+HREF="//www.splint.org/linux.html">Linux</a>
+-
+<a href="//www.splint.org/pubs.html">Publications</a>
+-
+<a
+href="//www.splint.org/talks.html">Talks</a><br>
+
+</font>
+
+</td>
+<td align=right valign=top>
+
+<font face="arial,helvetica,sans-serif" size=-1>
+<a
+href="//www.splint.org/sponsors.html">Sponsors</a>
+-
+<a
+href="//www.splint.org/credits.html">Credits</a>
+</font>
+</td>
+</tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3775212-3");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+
+</body>
+</html>
+
+
+
 
 
 
