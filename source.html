@@ -1,6 +1,6 @@
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="//www.splint.org/splint.css" title="style1">
+<link rel="stylesheet" type="text/css" href="/splint.css" title="style1">
 <title>Splint - Source Code Installation</title>
 </head>
 <body>
@@ -91,11 +91,7 @@ Source Code Installation
 <p>
 
 <p>
-Splint should compile effortlessly on standard Unix systems, and with
-a bit of effort on non-Unix platforms.  If you produce a port for a
-non-Unix platform, please let <a
-href="mailto:splint@cs.virginia.edu"><em>splint@cs.virginia.edu</em></a>
-know.  <p>
+Splint should compile (relatively) effortlessly on typical Unix systems, and with a bit of effort on non-Unix platforms.  If you produce a port for a non-Unix platform, please let us know by submitting an <a href="https://github.com/splintchecker/splint/issues">issue</a> to the github repository.<p>
 
 <p>
 To build Splint you need:
@@ -118,18 +114,8 @@ Instructions:
 <ol>
   
 <li> 
-Download
-<a href="//www.splint.org/downloads/splint-3.1.2.src.tgz"><em>//www.splint.org/downloads/splint-3.1.2.src.tgz</em></a>.
- 
-</a> (the latest stable release).  
-<p>
-Copy this package to the directory where you want to build Spint.  When
-the tar file is extracted, it will create a splint-3.1.2 subdirectory. 
-<p>
-<li><tt>tar xzf splint-3.1.2.src.tgz</tt> (extract files from the archive)
-<p>
-<li><tt>cd splint-3.1.2</tt> (enter the extracted directory)
-<p>
+Clone the repository at <a href="https://github.com/splintchecker/splint"><em>https://github.com/splintchecker/splint</em></a> and 
+ enter the cloned directory.
 <li><tt>configure</tt>
   <blockquote>
    This will create a Makefile with settings for your system.  Use
@@ -191,23 +177,20 @@ configure).
 <blockquote>
 <tt>LARCH_PATH</tt> - path to search for splint libraries and
 initializations files. If you are using the standard directories, this
-should be <tt>.:<em>base-directory</em>/splint-3.1.2/lib</tt>.
+should be <tt>.:<em>base-directory</em>/lib</tt>.
 <p>
 <tt>LCLIMPORTDIR</tt> - directory containing lcl imports files. If you are using
-the standard directories, this is <tt><em>base-directory</em>/splint-3.1.2/imports</tt>.
+the standard directories, this is <tt><em>base-directory</em>/imports</tt>.
 </blockquote>
 Put the commands to set these variables (the actual commands will depend
 on the shell you are using) in one of your initialization dotfiles
 (usually <tt>~/.environment</tt>). 
 <p>
 Set up your <tt>PATH</tt> to include the directory containing
-<tt>splint-3.1.2/bin/splint</tt>, or move the binary to a directory on
+ <tt><em>base-directory</em>/bin/splint</tt>, or move the binary to a directory on
 your command path.
 <p>
 </blockquote>
-<li> Subscribe to the Splint <a href="lists.html">mailing lists</a> by
-visiting <a href="//www.splint.org/lists.html"><em>//www.splint.org/lists.html</em></a>.
-
 <p>
 </blockquote>
 
